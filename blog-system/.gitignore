@@ -44,3 +44,6 @@ gen/
 logs/
 log
 temp/
+
+### Custom ###
+**/src/main/resources/application.yml
