@@ -12,6 +12,6 @@ public class TestController {
     @ResponseBody
     @PostMapping("test")
     public CommonResponse<Object> test() {
-        return CommonResponse.success();
+        return CommonResponse.success("成功");
     }
 }

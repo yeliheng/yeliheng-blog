@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:mysql://address:port/yeliheng_blog?charset=utf8mb4&useSSL=false&serverTimezone=Asia/Shanghai
+    username:
+    password:
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: false
+server:
+  error:
+    whitelabel:
+      enabled: false
