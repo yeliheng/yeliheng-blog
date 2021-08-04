@@ -10,3 +10,8 @@ server:
   error:
     whitelabel:
       enabled: false
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+  type-aliases-package: com.yeliheng.**.entity
+  mapper-locations: classpath*:mapper/**/*Mapper.xml
