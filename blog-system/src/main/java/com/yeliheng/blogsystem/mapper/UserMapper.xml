@@ -17,4 +17,18 @@
     <select id="selectUserByUserName" resultMap="BaseResultMap">
         select * from user where username=#{username}
     </select>
+
+    <insert id="insertUser" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+        insert into user(
+            <if test="username != null and username != ''">username,</if>
+            <if test="password != null and password != ''">password,</if>
+            created_at,
+            updated_at
+        )values (
+            <if test="username != null and username != ''">#{username},</if>
+            <if test="password != null and password != ''">#{password},</if>
+            sysdate(),
+            sysdate()
+        )
+    </insert>
 </mapper>
