@@ -22,7 +22,7 @@ public class LoginController {
     @PostMapping("/login")
     public CommonResponse<Object> login( @RequestParam("username")  @NotBlank String username,
                                          @RequestParam("password")  @NotBlank String password){
-        loginService.login(username,password);
-        return CommonResponse.success();
+        String token = loginService.login(username,password);
+        return CommonResponse.success(token);
     }
 }

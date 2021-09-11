@@ -15,3 +15,9 @@ mybatis:
     map-underscore-to-camel-case: true
   type-aliases-package: com.yeliheng.**.entity
   mapper-locations: classpath*:mapper/**/*Mapper.xml
+# token 配置
+token:
+  # 令牌有效期(默认30分钟)
+  expireTime: 30
+  # 令牌密钥
+  secret: yeliheng123
