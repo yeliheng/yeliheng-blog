@@ -34,7 +34,6 @@ public class LoginServiceImpl implements ILoginService {
         User user = (User) authentication.getPrincipal();
         //user.getUsername();
        String token = tokenUtils.createToken(user);
-       logger.info(token);
 
         return token;
     }

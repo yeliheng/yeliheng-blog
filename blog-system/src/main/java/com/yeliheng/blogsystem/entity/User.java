@@ -1,18 +1,21 @@
 package com.yeliheng.blogsystem.entity;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.persistence.Entity;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Collection;
 
+@Entity
 public class User implements Serializable, UserDetails {
 
     private static final long serialVersionUID = 1L;
 
     private User user;
-
+    @Id
     private Long id;
 
     private String username;
