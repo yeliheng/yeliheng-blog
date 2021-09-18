@@ -1,4 +1,4 @@
-package com.yeliheng.blogsystem.web;
+package com.yeliheng.blogsystem.controller;
 
 
 import com.yeliheng.blogsystem.common.CommonResponse;

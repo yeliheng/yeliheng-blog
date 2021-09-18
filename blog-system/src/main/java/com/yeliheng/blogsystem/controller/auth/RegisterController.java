@@ -1,6 +1,5 @@
-package com.yeliheng.blogsystem.web;
+package com.yeliheng.blogsystem.controller.auth;
 
-import com.sun.istack.internal.NotNull;
 import com.yeliheng.blogsystem.common.CommonResponse;
 import com.yeliheng.blogsystem.entity.RegisterUser;
 import com.yeliheng.blogsystem.exception.RequestFormatException;
@@ -9,8 +8,6 @@ import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;

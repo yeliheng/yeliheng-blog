@@ -48,7 +48,6 @@ public class TokenUtils {
             logger.warn("Invalid JWT token - {}", ex.getMessage());
         } catch (ExpiredJwtException ex) {
             logger.warn("Expired JWT token - {}", ex.getMessage());
-            ex.printStackTrace();
         } catch (UnsupportedJwtException ex) {
             logger.warn("Unsupported JWT token - {}", ex.getMessage());
         } catch (IllegalArgumentException ex) {
