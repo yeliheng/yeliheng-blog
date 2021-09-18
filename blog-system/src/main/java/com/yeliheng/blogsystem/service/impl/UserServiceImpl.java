@@ -1,6 +1,5 @@
 package com.yeliheng.blogsystem.service.impl;
 
-import com.yeliheng.blogsystem.entity.RegisterUser;
 import com.yeliheng.blogsystem.entity.User;
 import com.yeliheng.blogsystem.mapper.UserMapper;
 import com.yeliheng.blogsystem.service.IUserService;
