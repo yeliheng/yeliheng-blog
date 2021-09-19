@@ -35,4 +35,10 @@ public class UserServiceImpl implements IUserService {
     public Boolean registerUser(User user) {
         return userMapper.insertUser(user) > 0;
     }
+
+    @Override
+    public Long selectUidByUsername(String username) {
+       return userMapper.selectUidByUsername(username);
+    }
+
 }

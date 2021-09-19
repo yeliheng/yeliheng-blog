@@ -3,6 +3,7 @@ package com.yeliheng.blogsystem.exception;
 import com.yeliheng.blogsystem.dto.ErrorDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -46,11 +47,16 @@ public class ApiExceptionHandlerAdvice{
             errorDTO.setMessage("请求格式错误");
             errorDTO.setHttpCode(400);
             errorDTO.setDetail(exception.getMessage());
-        }else if (exception instanceof MissingServletRequestParameterException){
+        }else if (exception instanceof MissingServletRequestParameterException) {
             errorDTO.setErrCode("REQUEST_FORMAT_INVALID");
             errorDTO.setMessage("请求格式错误");
             errorDTO.setHttpCode(400);
             errorDTO.setDetail(exception.getMessage());
+        }else if(exception instanceof HttpMessageNotReadableException) {
+            errorDTO.setErrCode("REQUEST_FORMAT_INVALID");
+            errorDTO.setMessage("请求格式错误");
+            errorDTO.setHttpCode(400);
+            errorDTO.setDetail("application/json非法或为空");
         }else{
             errorDTO.setErrCode("UNKNOWN_ERROR");
             errorDTO.setMessage("未知系统错误");

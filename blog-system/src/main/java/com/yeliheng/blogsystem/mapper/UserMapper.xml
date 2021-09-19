@@ -18,6 +18,10 @@
         select * from user where username=#{username}
     </select>
 
+    <select id="selectUidByUsername" resultType="Long">
+        select id from user where username=#{username}
+    </select>
+
     <insert id="insertUser" parameterType="User" useGeneratedKeys="true" keyProperty="id">
         insert into user(
             <if test="username != null and username != ''">username,</if>

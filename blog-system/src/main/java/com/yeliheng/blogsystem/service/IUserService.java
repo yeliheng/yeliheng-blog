@@ -18,6 +18,8 @@ public interface IUserService {
 
     public Boolean registerUser(User user);
 
+    public Long selectUidByUsername(String username);
+
 
 
 }

@@ -9,4 +9,6 @@ public interface UserMapper {
     Boolean checkUsernameUnique(String username);
 
     Integer insertUser(User user);
+
+    Long selectUidByUsername(String username);
 }

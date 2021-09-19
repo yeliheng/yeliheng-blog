@@ -21,7 +21,7 @@ public class Article {
 
     private String url;
 
-    private Integer vivible;
+    private Integer visible;
 
     private LocalDateTime createdAt;
 
@@ -75,12 +75,12 @@ public class Article {
         this.url = url;
     }
 
-    public Integer getVivible() {
-        return vivible;
+    public Integer getVisible() {
+        return visible;
     }
 
-    public void setVivible(Integer vivible) {
-        this.vivible = vivible;
+    public void setVisible(Integer visible) {
+        this.visible = visible;
     }
 
     public LocalDateTime getCreatedAt() {

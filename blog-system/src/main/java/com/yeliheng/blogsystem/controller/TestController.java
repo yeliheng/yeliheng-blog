@@ -3,6 +3,7 @@ package com.yeliheng.blogsystem.controller;
 
 import com.yeliheng.blogsystem.common.CommonResponse;
 import com.yeliheng.blogsystem.mapper.UserMapper;
+import com.yeliheng.blogsystem.utils.UserUtils;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,11 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private UserUtils userUtils;
     @ResponseBody
     @PostMapping("test")
-    public CommonResponse<Object> test(@RequestParam("username") String username) {
+    public CommonResponse<Object> test() {
        // throw new UnauthorizedException("认证失败!");
 
-        return CommonResponse.success(userMapper.selectUserByUserName(username));
+        return CommonResponse.success(userUtils.getLoginUserId());
     }
 }
