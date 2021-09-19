@@ -1,9 +1,11 @@
 package com.yeliheng.blogsystem.service;
 
 import com.yeliheng.blogsystem.entity.Article;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public interface IArticleService {
 
     /* 新增文章 */
