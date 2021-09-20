@@ -13,8 +13,24 @@ server:
 mybatis:
   configuration:
     map-underscore-to-camel-case: true
+    #打印Sql
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   type-aliases-package: com.yeliheng.**.entity
   mapper-locations: classpath*:mapper/**/*Mapper.xml
+#通用Mapper
+mapper:
+  mappers:
+    mappers:
+      - tk.mybatis.mapper.common.Mapper
+      - tk.mybatis.mapper.common.Mapper2
+  not-empty: false
+  identity: MYSQL
+#分页插件
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
 # token 配置
 token:
   # 令牌有效期(默认30分钟)

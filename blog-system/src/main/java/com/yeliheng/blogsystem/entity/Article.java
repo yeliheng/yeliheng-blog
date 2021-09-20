@@ -2,11 +2,13 @@ package com.yeliheng.blogsystem.entity;
 
 import io.swagger.annotations.ApiModel;
 
+import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 @ApiModel(description = "文章")
 public class Article {
+    @Id
     private Long id;
 
     private Long userId;
@@ -20,7 +22,7 @@ public class Article {
     private String content;
 
     private String url;
-    
+
     private Integer visible;
 
     private LocalDateTime createdAt;
