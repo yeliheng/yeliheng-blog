@@ -23,11 +23,10 @@ public interface IArticleService {
 
     /**
      *  修改文章
-     * @param articleId 文章id
      * @param article 文章实体
      *
      *  */
-    void updateArticle(Integer articleId,Article article);
+    void updateArticle(Article article);
 
     /**
      *  获取分页的文章

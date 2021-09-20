@@ -35,4 +35,18 @@
         sysdate()
         )
     </insert>
+
+    <update id="updateArticle" parameterType="Article">
+        update article
+        <set>
+            <if test="userId != null and userId != ''">user_id = #{userId},</if>
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="summary != null and summary != ''">summary = #{summary},</if>
+            <if test="content != null and content != ''">content = #{content},</if>
+            <if test="visible != null and visible != ''">visible = #{visible},</if>
+            <if test="url != null and url != ''">url = #{url},</if>
+            updated_at = sysdate()
+        </set>
+        where id = #{id}
+    </update>
 </mapper>

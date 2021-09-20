@@ -20,7 +20,7 @@ public class Article {
     private String content;
 
     private String url;
-
+    
     private Integer visible;
 
     private LocalDateTime createdAt;
@@ -98,4 +98,6 @@ public class Article {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+
 }

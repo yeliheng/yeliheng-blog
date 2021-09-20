@@ -4,4 +4,7 @@ import com.yeliheng.blogsystem.entity.Article;
 
 public interface ArticleMapper {
     boolean addArticle(Article article);
+
+    int updateArticle(Article article);
+
 }

@@ -1,6 +1,7 @@
 package com.yeliheng.blogsystem.service.impl;
 
 import com.yeliheng.blogsystem.entity.Article;
+import com.yeliheng.blogsystem.exception.GeneralException;
 import com.yeliheng.blogsystem.exception.InternalServerException;
 import com.yeliheng.blogsystem.exception.UnexpectedException;
 import com.yeliheng.blogsystem.mapper.ArticleMapper;
@@ -43,12 +44,12 @@ public class ArticleServiceImpl implements IArticleService {
     /**
      * 修改文章
      *
-     * @param articleId 文章id
      * @param article   文章实体
      */
     @Override
-    public void updateArticle(Integer articleId, Article article) {
-
+    public void updateArticle(Article article) {
+        int rows = articleMapper.updateArticle(article);
+        if(rows <= 0) throw new GeneralException("更新失败，文章可能不存在");
     }
 
     /**
