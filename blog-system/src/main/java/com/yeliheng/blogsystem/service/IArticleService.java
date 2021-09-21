@@ -1,5 +1,6 @@
 package com.yeliheng.blogsystem.service;
 
+import com.github.pagehelper.PageInfo;
 import com.yeliheng.blogsystem.entity.Article;
 
 import java.util.List;
@@ -35,7 +36,7 @@ public interface IArticleService {
      * @return 文章列表
      *
      *  */
-    List<Article> getArticles(Integer page,Integer pageSize);
+    PageInfo<Article> getArticles(Integer page, Integer pageSize);
 
     /**
      * 通过Id获取文章

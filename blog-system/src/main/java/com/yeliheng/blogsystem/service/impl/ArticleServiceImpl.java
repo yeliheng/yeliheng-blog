@@ -1,14 +1,16 @@
 package com.yeliheng.blogsystem.service.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.yeliheng.blogsystem.entity.Article;
 import com.yeliheng.blogsystem.exception.GeneralException;
 import com.yeliheng.blogsystem.exception.InternalServerException;
 import com.yeliheng.blogsystem.exception.NotFoundException;
-import com.yeliheng.blogsystem.exception.UnexpectedException;
 import com.yeliheng.blogsystem.mapper.ArticleMapper;
 import com.yeliheng.blogsystem.service.IArticleService;
 import com.yeliheng.blogsystem.utils.UserUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,7 @@ import java.util.List;
 
 @Service
 public class ArticleServiceImpl implements IArticleService {
+    private static final Logger logger = LoggerFactory.getLogger(ArticleServiceImpl.class);
     @Autowired
     private ArticleMapper articleMapper;
     @Autowired
@@ -62,9 +65,10 @@ public class ArticleServiceImpl implements IArticleService {
      * @return 文章列表
      */
     @Override
-    public List<Article> getArticles(Integer page, Integer pageSize) {
+    public PageInfo<Article> getArticles(Integer page, Integer pageSize) {
         PageHelper.startPage(page,pageSize);
-        return articleMapper.getArticles();
+        List<Article> articleList = articleMapper.getArticles();
+        return new PageInfo<>(articleList);
     }
 
     /**
