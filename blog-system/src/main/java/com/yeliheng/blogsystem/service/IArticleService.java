@@ -20,7 +20,7 @@ public interface IArticleService {
      * @param articleId 文章Id
      *
      *  */
-    void deleteAritcle(Integer articleId);
+    void deleteAritcle(Long articleId);
 
     /**
      *  修改文章
@@ -52,7 +52,7 @@ public interface IArticleService {
      * @return 文章列表
      *
      *  */
-    List<Article> getArticlesByCategory(Integer categoryId);
+    List<Article> getArticlesByCategory(Long categoryId);
 
     /**
      *  通过标签获取文章
@@ -60,5 +60,5 @@ public interface IArticleService {
      * @return 文章列表
      *
      *  */
-    List<Article> getArticlesByTag(Integer tagId);
+    List<Article> getArticlesByTag(Long tagId);
 }

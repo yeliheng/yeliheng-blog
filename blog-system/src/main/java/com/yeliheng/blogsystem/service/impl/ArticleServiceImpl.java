@@ -33,7 +33,7 @@ public class ArticleServiceImpl implements IArticleService {
     public void addArticle(Article article) {
         article.setUserId(userUtils.getLoginUserId());
         boolean result = articleMapper.addArticle(article);
-        if(!result) throw new InternalServerException("数据库错误");
+        if(!result) throw new InternalServerException("发布文章失败，未知错误");
     }
 
     /**
@@ -42,7 +42,7 @@ public class ArticleServiceImpl implements IArticleService {
      * @param articleId 文章Id
      */
     @Override
-    public void deleteAritcle(Integer articleId) {
+    public void deleteAritcle(Long articleId) {
 
     }
 
@@ -92,7 +92,7 @@ public class ArticleServiceImpl implements IArticleService {
      * @return 文章列表
      */
     @Override
-    public List<Article> getArticlesByCategory(Integer categoryId) {
+    public List<Article> getArticlesByCategory(Long categoryId) {
         return null;
     }
 
@@ -103,7 +103,7 @@ public class ArticleServiceImpl implements IArticleService {
      * @return 文章列表
      */
     @Override
-    public List<Article> getArticlesByTag(Integer tagId) {
+    public List<Article> getArticlesByTag(Long tagId) {
         return null;
     }
 }
