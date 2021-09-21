@@ -1,5 +1,6 @@
 package com.yeliheng.blogsystem.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.yeliheng.blogsystem.entity.Article;
 import com.yeliheng.blogsystem.exception.GeneralException;
 import com.yeliheng.blogsystem.exception.InternalServerException;
@@ -62,7 +63,8 @@ public class ArticleServiceImpl implements IArticleService {
      */
     @Override
     public List<Article> getArticles(Integer page, Integer pageSize) {
-        return null;
+        PageHelper.startPage(page,pageSize);
+        return articleMapper.getArticles();
     }
 
     /**
@@ -74,7 +76,7 @@ public class ArticleServiceImpl implements IArticleService {
     @Override
     public Article getArticleById(Long articleId) {
         Article article = articleMapper.selectByPrimaryKey(articleId);
-        if(article == null)
+        if(article == null || article.getVisible() != 1)
             throw new NotFoundException("文章不存在");
         return article;
     }

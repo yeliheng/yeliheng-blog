@@ -20,9 +20,7 @@ mybatis:
 #通用Mapper
 mapper:
   mappers:
-    mappers:
-      - tk.mybatis.mapper.common.Mapper
-      - tk.mybatis.mapper.common.Mapper2
+    - tk.mybatis.mapper.common.Mapper
   not-empty: false
   identity: MYSQL
 #分页插件

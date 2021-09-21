@@ -49,4 +49,8 @@
         </set>
         where id = #{id}
     </update>
+
+    <select id="getArticles" resultType="Article">
+        select id,user_id,title,url,summary,visible,created_at,updated_at from article
+    </select>
 </mapper>

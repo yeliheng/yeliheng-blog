@@ -54,8 +54,9 @@ public class ArticleController {
     }
 
     @GetMapping("/articles")
-    public CommonResponse<Object> getArticles(){
-        return CommonResponse.success();
+    public CommonResponse<Object> getArticles(@RequestParam("page") Integer page,@RequestParam("pageSize") Integer pageSize){
+
+        return CommonResponse.success(articleService.getArticles(page,pageSize));
     }
 
 }
