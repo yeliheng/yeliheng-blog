@@ -1,10 +1,9 @@
 package com.yeliheng.blogsystem;
 
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-@SpringBootApplication
 
+@SpringBootApplication
 @tk.mybatis.spring.annotation.MapperScan(basePackages = "com.yeliheng.blogsystem.mapper")
 public class BlogSystemApplication {
 

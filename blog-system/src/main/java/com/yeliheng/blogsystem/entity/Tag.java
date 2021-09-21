@@ -1,5 +1,6 @@
 package com.yeliheng.blogsystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 
 import javax.validation.constraints.NotBlank;
@@ -15,8 +16,10 @@ public class Tag {
     @NotBlank(message = "标签名称不能为空")
     private String tagName;
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updatedAt;
 
     public Long getId() {

@@ -43,7 +43,7 @@ public interface IArticleService {
      * @return 文章实体
      *
      * */
-    Article getArticleById(Integer articleId);
+    Article getArticleById(Long articleId);
 
     /**
      *  通过分类获取文章

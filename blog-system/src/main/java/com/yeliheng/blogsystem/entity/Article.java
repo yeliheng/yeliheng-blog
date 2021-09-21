@@ -1,5 +1,6 @@
 package com.yeliheng.blogsystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 
 import javax.persistence.Id;
@@ -25,8 +26,10 @@ public class Article {
 
     private Integer visible;
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updatedAt;
 
     public Long getId() {

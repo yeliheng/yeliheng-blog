@@ -3,6 +3,7 @@ package com.yeliheng.blogsystem.service.impl;
 import com.yeliheng.blogsystem.entity.Article;
 import com.yeliheng.blogsystem.exception.GeneralException;
 import com.yeliheng.blogsystem.exception.InternalServerException;
+import com.yeliheng.blogsystem.exception.NotFoundException;
 import com.yeliheng.blogsystem.exception.UnexpectedException;
 import com.yeliheng.blogsystem.mapper.ArticleMapper;
 import com.yeliheng.blogsystem.service.IArticleService;
@@ -71,8 +72,11 @@ public class ArticleServiceImpl implements IArticleService {
      * @return 文章实体
      */
     @Override
-    public Article getArticleById(Integer articleId) {
-        return null;
+    public Article getArticleById(Long articleId) {
+        Article article = articleMapper.selectByPrimaryKey(articleId);
+        if(article == null)
+            throw new NotFoundException("文章不存在");
+        return article;
     }
 
     /**
