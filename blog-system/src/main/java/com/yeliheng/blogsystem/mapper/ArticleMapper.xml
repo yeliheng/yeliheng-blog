@@ -3,20 +3,10 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yeliheng.blogsystem.mapper.ArticleMapper">
-    <resultMap id="BaseResultMap" type="com.yeliheng.blogsystem.entity.Article">
-        <id column="id" property="id" />
-        <result column="user_id" property="userId"/>
-        <result column="title" property="title"/>
-        <result column="summary" property="summary"/>
-        <result column="content" property="content"/>
-        <result column="url" property="url"/>
-        <result column="visible" property="visible"/>
-        <result column="created_at" property="createdAt"/>
-        <result column="updated_at" property="updatedAt"/>
-    </resultMap>
     <insert id="addArticle" parameterType="Article" useGeneratedKeys="true" keyProperty="id">
         insert into article(
         <if test="userId != null and userId != ''">user_id,</if>
+        <if test="categoryId != null and categoryId != ''">category_id,</if>
         <if test="title != null and title != ''">title,</if>
         <if test="summary != null and summary != ''">summary,</if>
         <if test="content != null and content != ''">content,</if>
@@ -26,6 +16,7 @@
         updated_at
         )values (
         <if test="userId != null and userId != ''">#{userId},</if>
+        <if test="categoryId != null and categoryId != ''">#{categoryId},</if>
         <if test="title != null and title != ''">#{title},</if>
         <if test="summary != null and summary != ''">#{summary},</if>
         <if test="content != null and content != ''">#{content},</if>
@@ -40,6 +31,7 @@
         update article
         <set>
             <if test="userId != null and userId != ''">user_id = #{userId},</if>
+            category_id = #{categoryId},
             <if test="title != null and title != ''">title = #{title},</if>
             <if test="summary != null and summary != ''">summary = #{summary},</if>
             <if test="content != null and content != ''">content = #{content},</if>
@@ -51,6 +43,7 @@
     </update>
 
     <select id="getArticles" resultType="Article">
-        select id,user_id,title,url,summary,visible,created_at,updated_at from article
+        select id,user_id,category_id,title,url,summary,visible,created_at,updated_at from article
     </select>
+
 </mapper>

@@ -14,6 +14,8 @@ public class Article {
 
     private Long userId;
 
+    private Long categoryId;
+
     @NotBlank(message = "标题不能为空")
     private String title;
 
@@ -46,6 +48,14 @@ public class Article {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public Long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
     }
 
     public String getTitle() {

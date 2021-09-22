@@ -7,12 +7,15 @@ import com.yeliheng.blogsystem.exception.GeneralException;
 import com.yeliheng.blogsystem.exception.InternalServerException;
 import com.yeliheng.blogsystem.exception.NotFoundException;
 import com.yeliheng.blogsystem.mapper.ArticleMapper;
+import com.yeliheng.blogsystem.mapper.CategoryMapper;
 import com.yeliheng.blogsystem.service.IArticleService;
+import com.yeliheng.blogsystem.utils.StringUtils;
 import com.yeliheng.blogsystem.utils.UserUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.util.StringUtil;
 
 import java.util.List;
 
@@ -21,6 +24,8 @@ public class ArticleServiceImpl implements IArticleService {
     private static final Logger logger = LoggerFactory.getLogger(ArticleServiceImpl.class);
     @Autowired
     private ArticleMapper articleMapper;
+    @Autowired
+    private CategoryMapper categoryMapper;
     @Autowired
     private UserUtils userUtils;
 
@@ -32,6 +37,10 @@ public class ArticleServiceImpl implements IArticleService {
     @Override
     public void addArticle(Article article) {
         article.setUserId(userUtils.getLoginUserId());
+        if(StringUtils.isNotNull(article.getCategoryId()))
+            if(!categoryMapper.existsWithPrimaryKey(article.getCategoryId()))
+                throw new GeneralException("分类不存在，请修改后重新发布！");
+
         boolean result = articleMapper.addArticle(article);
         if(!result) throw new InternalServerException("发布文章失败，未知错误");
     }
@@ -53,6 +62,9 @@ public class ArticleServiceImpl implements IArticleService {
      */
     @Override
     public void updateArticle(Article article) {
+        if(StringUtils.isNotNull(article.getCategoryId()))
+            if(!categoryMapper.existsWithPrimaryKey(article.getCategoryId()))
+                throw new GeneralException("分类不存在，请修改后重新发布！");
         int rows = articleMapper.updateArticle(article);
         if(rows <= 0) throw new GeneralException("更新失败，文章可能不存在");
     }
@@ -106,4 +118,5 @@ public class ArticleServiceImpl implements IArticleService {
     public List<Article> getArticlesByTag(Long tagId) {
         return null;
     }
+
 }
