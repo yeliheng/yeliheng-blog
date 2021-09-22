@@ -3,12 +3,14 @@ package com.yeliheng.blogsystem.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 
+import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 @ApiModel(description = "Tag")
 public class Tag {
 
+    @Id
     private Long id;
 
     private Long userId;

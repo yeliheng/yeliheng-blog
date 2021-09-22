@@ -2,12 +2,14 @@ package com.yeliheng.blogsystem.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import javax.persistence.Id;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 public class Role implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    @Id
     private Long id;
 
     private String roleChar;
