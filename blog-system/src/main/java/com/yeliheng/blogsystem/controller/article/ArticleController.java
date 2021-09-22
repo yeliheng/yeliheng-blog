@@ -54,11 +54,26 @@ public class ArticleController {
         return CommonResponse.success(articleService.getArticleById(articleId));
     }
 
+    /**
+     *
+     * 获取所有文章
+     * @param page 当前页
+     * @param pageSize 一页多少
+     * @return
+     */
     @GetMapping()
     public CommonResponse<Object> getArticles(@RequestParam("page") Integer page,@RequestParam("pageSize") Integer pageSize){
         return CommonResponse.success(articleService.getArticles(page,pageSize));
     }
 
+    /**
+     *
+     * 根据分类获取文章
+     * @param categoryId 分类Id
+     * @param page 当前页
+     * @param pageSize 一页多少
+     * @return
+     */
     @GetMapping("/category")
     public CommonResponse<Object> getArticlesByCategoryId(
             @RequestParam("categoryId") Long categoryId,
