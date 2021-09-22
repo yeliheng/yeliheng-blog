@@ -46,4 +46,7 @@
         select id,user_id,category_id,title,url,summary,visible,created_at,updated_at from article
     </select>
 
+    <select id="getArticlesByCategoryId" resultType="Article">
+        select * from article where category_id = #{categoryId} and visible = 1
+    </select>
 </mapper>

@@ -13,4 +13,6 @@ public interface ArticleMapper extends Mapper<Article> {
 
     List<Article> getArticles();
 
+    List<Article> getArticlesByCategoryId(Long categoryId);
+
 }

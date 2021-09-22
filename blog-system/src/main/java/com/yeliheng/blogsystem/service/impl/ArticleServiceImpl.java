@@ -104,8 +104,10 @@ public class ArticleServiceImpl implements IArticleService {
      * @return 文章列表
      */
     @Override
-    public List<Article> getArticlesByCategory(Long categoryId) {
-        return null;
+    public PageInfo<Article> getArticlesByCategory(Long categoryId,Integer page, Integer pageSize) {
+        PageHelper.startPage(page,pageSize);
+        List<Article> articleList = articleMapper.getArticlesByCategoryId(categoryId);
+        return new PageInfo<>(articleList);
     }
 
     /**

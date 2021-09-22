@@ -52,7 +52,7 @@ public interface IArticleService {
      * @return 文章列表
      *
      *  */
-    List<Article> getArticlesByCategory(Long categoryId);
+    PageInfo<Article> getArticlesByCategory(Long categoryId,Integer page, Integer pageSize);
 
     /**
      *  通过标签获取文章
