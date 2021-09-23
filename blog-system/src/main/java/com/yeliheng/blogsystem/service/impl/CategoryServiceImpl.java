@@ -3,6 +3,7 @@ package com.yeliheng.blogsystem.service.impl;
 import com.yeliheng.blogsystem.entity.Category;
 import com.yeliheng.blogsystem.exception.GeneralException;
 import com.yeliheng.blogsystem.exception.InternalServerException;
+import com.yeliheng.blogsystem.mapper.ArticleMapper;
 import com.yeliheng.blogsystem.mapper.CategoryMapper;
 import com.yeliheng.blogsystem.service.ICategoryService;
 import com.yeliheng.blogsystem.utils.UserUtils;
@@ -38,6 +39,8 @@ public class CategoryServiceImpl implements ICategoryService {
      */
     @Override
     public void deleteCategory(Long categoryId) {
+        if(categoryMapper.checkIfExistArticle(categoryId) > 0)
+            throw new GeneralException("删除失败，该分类下存在文章");
         int result = categoryMapper.deleteByPrimaryKey(categoryId);
         if(result <= 0) throw new GeneralException("删除失败，分类可能不存在");
     }
