@@ -1,8 +1,11 @@
 package com.yeliheng.blogsystem.controller.article;
 
 import com.yeliheng.blogsystem.common.CommonResponse;
+import com.yeliheng.blogsystem.entity.AritcleTag;
 import com.yeliheng.blogsystem.entity.Tag;
+import com.yeliheng.blogsystem.exception.RequestFormatException;
 import com.yeliheng.blogsystem.service.ITagService;
+import com.yeliheng.blogsystem.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -35,5 +38,13 @@ public class TagController {
     @GetMapping()
     public CommonResponse<List<Tag>> getCategories(){
         return CommonResponse.success(tagService.getTags());
+    }
+
+    @PostMapping("/set")
+    public CommonResponse<Object> setArticleTags(@RequestBody List<AritcleTag> aritcleTag){
+        if(aritcleTag.isEmpty())
+            throw new RequestFormatException("请求格式有误");
+        tagService.setArticleTags(aritcleTag);
+        return CommonResponse.success();
     }
 }

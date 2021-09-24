@@ -1,5 +1,6 @@
 package com.yeliheng.blogsystem.service.impl;
 
+import com.yeliheng.blogsystem.entity.AritcleTag;
 import com.yeliheng.blogsystem.entity.Tag;
 import com.yeliheng.blogsystem.exception.GeneralException;
 import com.yeliheng.blogsystem.exception.InternalServerException;
@@ -62,4 +63,17 @@ public class TagServiceImpl implements ITagService {
     public List<Tag> getTags() {
         return tagMapper.selectAll();
     }
+
+    /**
+     * 设置文章标签列表
+     *
+     * @param articleTagList 文章标签实体
+     */
+    @Override
+    public void setArticleTags(List<AritcleTag> articleTagList) {
+        int rows = tagMapper.setArticleTags(articleTagList);
+        if(rows <= 0) throw new GeneralException("设置标签失败");
+    }
+
+
 }

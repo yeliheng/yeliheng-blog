@@ -49,4 +49,8 @@
     <select id="getArticlesByCategoryId" resultType="Article">
         select * from article where category_id = #{categoryId} and visible = 1
     </select>
+
+    <insert id="setTags" useGeneratedKeys="true" keyProperty="id">
+
+    </insert>
 </mapper>

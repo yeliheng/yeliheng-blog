@@ -1,5 +1,6 @@
 package com.yeliheng.blogsystem.service;
 
+import com.yeliheng.blogsystem.entity.AritcleTag;
 import com.yeliheng.blogsystem.entity.Tag;
 
 import java.util.List;
@@ -33,4 +34,12 @@ public interface ITagService {
      * @return 标签列表
      */
     List<Tag> getTags();
+
+    /**
+     *
+     * 设置文章标签列表
+     * @param tagIdList 标签Id列表
+     */
+    void setArticleTags(List<AritcleTag> articleTagList);
+
 }

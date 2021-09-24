@@ -15,4 +15,6 @@ public interface ArticleMapper extends Mapper<Article> {
 
     List<Article> getArticlesByCategoryId(Long categoryId);
 
+    int setTags(Long tagId);
+
 }
