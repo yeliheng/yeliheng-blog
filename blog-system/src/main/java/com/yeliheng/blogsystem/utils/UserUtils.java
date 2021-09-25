@@ -16,6 +16,7 @@ public class UserUtils {
 
     public Long getLoginUserId(){
         String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        logger.info(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
         return userService.selectUidByUsername(username);
 
     }

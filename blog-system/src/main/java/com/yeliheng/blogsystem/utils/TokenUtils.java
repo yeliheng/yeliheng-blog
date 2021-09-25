@@ -1,5 +1,6 @@
 package com.yeliheng.blogsystem.utils;
 
+import com.yeliheng.blogsystem.entity.LoginUser;
 import com.yeliheng.blogsystem.service.IUserService;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
@@ -34,7 +35,7 @@ public class TokenUtils {
 
     private static final Long MILLIS_MINUTE_TEN = 20 * 60 * 1000L;
 
-    public String createToken(User user) {
+    public String createToken(LoginUser user) {
         return Jwts.builder().setSubject(String.format("%s", user.getUsername()))
                 .setExpiration(new Date(System.currentTimeMillis() + expireTime * MILLIS_MINUTE))
                 .signWith(SignatureAlgorithm.HS512, secret).compressWith(CompressionCodecs.GZIP).compact();

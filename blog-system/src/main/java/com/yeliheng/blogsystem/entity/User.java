@@ -2,14 +2,11 @@ package com.yeliheng.blogsystem.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.data.annotation.Id;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Collection;
 
-public class User implements Serializable, UserDetails {
+public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -32,8 +29,6 @@ public class User implements Serializable, UserDetails {
 
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updatedAt;
-
-    private Collection<? extends GrantedAuthority> authorities;
 
     public User(){}
 
@@ -61,34 +56,10 @@ public class User implements Serializable, UserDetails {
         return username;
     }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
-
     public void setUsername(String username) {
         this.username = username;
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
-    }
 
     public String getPassword() {
         return password;
