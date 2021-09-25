@@ -16,6 +16,6 @@ public interface TagMapper extends Mapper<Tag> {
 
     int checkIfExistTag(Long tagId);
 
-    int setArticleTags(List<AritcleTag> articleTagList);
+
 
 }

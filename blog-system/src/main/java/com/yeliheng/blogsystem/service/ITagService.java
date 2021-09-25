@@ -35,11 +35,4 @@ public interface ITagService {
      */
     List<Tag> getTags();
 
-    /**
-     *
-     * 设置文章标签列表
-     * @param tagIdList 标签Id列表
-     */
-    void setArticleTags(List<AritcleTag> articleTagList);
-
 }

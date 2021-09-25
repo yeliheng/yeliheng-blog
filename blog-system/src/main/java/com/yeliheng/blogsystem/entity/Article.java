@@ -28,11 +28,14 @@ public class Article {
 
     private Integer visible;
 
+    private Long[] tagIds;
+
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
 
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updatedAt;
+
 
     public Long getId() {
         return id;
@@ -96,6 +99,14 @@ public class Article {
 
     public void setVisible(Integer visible) {
         this.visible = visible;
+    }
+
+    public Long[] getTagIds() {
+        return tagIds;
+    }
+
+    public void setTagIds(Long[] tagIds) {
+        this.tagIds = tagIds;
     }
 
     public LocalDateTime getCreatedAt() {

@@ -30,11 +30,4 @@
     <select id="checkIfExistArticle" parameterType="Long" resultType="int">
         select count(1) from article where tag_id = #{tagId}
     </select>
-
-    <insert id="setArticleTags" parameterType="java.util.List">
-        insert into article_tag(article_id,tag_id) values
-            <foreach collection="articleTagList" item="item" index="index" separator=",">
-                (#{item.articleId},#{item.tagId})
-            </foreach>
-    </insert>
 </mapper>

@@ -9,6 +9,7 @@ import com.yeliheng.blogsystem.service.ITagService;
 import com.yeliheng.blogsystem.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -62,17 +63,6 @@ public class TagServiceImpl implements ITagService {
     @Override
     public List<Tag> getTags() {
         return tagMapper.selectAll();
-    }
-
-    /**
-     * 设置文章标签列表
-     *
-     * @param articleTagList 文章标签实体
-     */
-    @Override
-    public void setArticleTags(List<AritcleTag> articleTagList) {
-        int rows = tagMapper.setArticleTags(articleTagList);
-        if(rows <= 0) throw new GeneralException("设置标签失败");
     }
 
 

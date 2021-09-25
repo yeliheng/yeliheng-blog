@@ -39,12 +39,4 @@ public class TagController {
     public CommonResponse<List<Tag>> getCategories(){
         return CommonResponse.success(tagService.getTags());
     }
-
-    @PostMapping("/set")
-    public CommonResponse<Object> setArticleTags(@RequestBody List<AritcleTag> aritcleTag){
-        if(aritcleTag.isEmpty())
-            throw new RequestFormatException("请求格式有误");
-        tagService.setArticleTags(aritcleTag);
-        return CommonResponse.success();
-    }
 }

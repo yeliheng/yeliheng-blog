@@ -2,7 +2,6 @@ package com.yeliheng.blogsystem.entity;
 
 public class AritcleTag {
 
-
     private Long articleId;
 
     private Long tagId;
