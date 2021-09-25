@@ -1,4 +1,4 @@
-package com.yeliheng.blogsystem.controller.auth;
+package com.yeliheng.blogsystem.controller;
 
 import com.yeliheng.blogsystem.common.CommonResponse;
 import com.yeliheng.blogsystem.service.ILoginService;

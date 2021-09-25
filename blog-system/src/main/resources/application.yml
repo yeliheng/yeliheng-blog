@@ -35,3 +35,6 @@ token:
   expireTime: 1440
   # 令牌密钥
   secret: yeliheng123
+# 系统设置
+blogsystem:
+  allow-register: false

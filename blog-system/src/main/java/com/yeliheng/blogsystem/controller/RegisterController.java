@@ -1,11 +1,13 @@
-package com.yeliheng.blogsystem.controller.auth;
+package com.yeliheng.blogsystem.controller;
 
 import com.yeliheng.blogsystem.common.CommonResponse;
 import com.yeliheng.blogsystem.entity.RegisterUser;
+import com.yeliheng.blogsystem.exception.NotPermittedException;
 import com.yeliheng.blogsystem.exception.RequestFormatException;
 import com.yeliheng.blogsystem.service.IRegisterService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,8 +21,12 @@ public class RegisterController {
     @Autowired
     private IRegisterService registerService;
 
+    @Value("${blogsystem.allow-register}")
+    private boolean allowRegister;
+
     @PostMapping("register")
     public CommonResponse<Object> register(@Valid RegisterUser registerUser){
+        if(!allowRegister) throw new NotPermittedException("暂未开放用户注册");
         if(!registerUser.getPassword().equals(registerUser.getPassword_confirm()))
             throw new RequestFormatException("两次输入的密码不一致");
         registerService.register(registerUser);
