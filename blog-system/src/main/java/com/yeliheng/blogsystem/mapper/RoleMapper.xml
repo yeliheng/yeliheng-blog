@@ -1,6 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="$namespace$">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yeliheng.blogsystem.mapper.RoleMapper">
+    <insert id="addRole" parameterType="Role" useGeneratedKeys="true" keyProperty="id">
+        insert into role(
+        <if test="roleChar != null and roleName != ''">role_char,</if>
+        <if test="roleName != null and roleName != ''">role_name,</if>
+        created_at,
+        updated_at
+        )values (
+        <if test="roleChar != null and roleChar != ''">#{roleChar},</if>
+        <if test="roleName != null and roleName != ''">#{roleName},</if>
+        sysdate(),
+        sysdate()
+        )
+    </insert>
+
+    <update id="updateRole" parameterType="Role">
+        update role
+        <set>
+            <if test="roleChar != null and roleChar != ''">role_char = #{roleChar},</if>
+            <if test="roleName != null and roleName != ''">role_name = #{roleName},</if>
+            updated_at = sysdate()
+        </set>
+        where id = #{id}
+    </update>
 </mapper>

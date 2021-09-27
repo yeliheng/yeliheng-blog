@@ -2,6 +2,8 @@ package com.yeliheng.blogsystem.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.data.annotation.Id;
+
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -16,6 +18,7 @@ public class User implements Serializable {
 
     private String username;
 
+    @NotBlank
     private String password;
 
     private String nickname;
@@ -23,6 +26,8 @@ public class User implements Serializable {
     private String phone;
 
     private Boolean locked;
+
+    private Long[] roles;
 
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
@@ -91,6 +96,14 @@ public class User implements Serializable {
 
     public void setLocked(Boolean locked) {
         this.locked = locked;
+    }
+
+    public Long[] getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Long[] roles) {
+        this.roles = roles;
     }
 
     public LocalDateTime getCreatedAt() {

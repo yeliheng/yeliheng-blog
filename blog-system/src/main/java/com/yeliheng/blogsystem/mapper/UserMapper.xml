@@ -35,4 +35,18 @@
             sysdate()
         )
     </insert>
+
+    <update id="updateUser" parameterType="User">
+        update user
+        <set>
+            <if test="username != null and username != ''">username = #{username},</if>
+            <if test="password != null and password != ''">password = #{password},</if>
+            updated_at = sysdate()
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="checkUsernameUnique" resultType="Long">
+        select id from user where username = #{username}
+    </select>
 </mapper>

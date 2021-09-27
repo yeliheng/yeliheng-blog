@@ -3,6 +3,7 @@ package com.yeliheng.blogsystem.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -12,8 +13,10 @@ public class Role implements Serializable {
     @Id
     private Long id;
 
+    @NotBlank
     private String roleChar;
 
+    @NotBlank
     private String roleName;
 
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
