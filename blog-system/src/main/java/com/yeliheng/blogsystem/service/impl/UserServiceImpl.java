@@ -48,7 +48,7 @@ public class UserServiceImpl implements IUserService {
      */
     public Boolean checkUsernameUnique(String username) {
         Long userId = userMapper.checkUsernameUnique(username);
-        return StringUtils.isNull(userId) ? true : false;
+        return StringUtils.isNull(userId);
     }
 
     /**
