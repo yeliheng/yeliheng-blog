@@ -3,6 +3,7 @@ package com.yeliheng.blogsystem.service.impl;
 import com.yeliheng.blogsystem.entity.LoginUser;
 import com.yeliheng.blogsystem.entity.User;
 import com.yeliheng.blogsystem.exception.UnauthorizedException;
+import com.yeliheng.blogsystem.service.IPermissionService;
 import com.yeliheng.blogsystem.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,6 +15,10 @@ import org.springframework.stereotype.Service;
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private IUserService userService;
+
+    @Autowired
+    private IPermissionService permissionService;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UnauthorizedException {
         User user = userService.selectUserByUserName(username);
@@ -26,6 +31,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     public UserDetails createLoginUser(User user){
-        return new LoginUser(user.getId(),user);
+        return new LoginUser(user,permissionService.getMenuPermission(user));
     }
 }

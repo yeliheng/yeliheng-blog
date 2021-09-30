@@ -5,6 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Set;
 
 public class LoginUser implements UserDetails {
 
@@ -12,9 +13,11 @@ public class LoginUser implements UserDetails {
 
     private User user;
 
-    public LoginUser(Long userId, User user) {
-        this.userId = userId;
+    private Set<String> permissions;
+
+    public LoginUser(User user,Set<String> permissions) {
         this.user = user;
+        this.permissions = permissions;
     }
 
     @Override

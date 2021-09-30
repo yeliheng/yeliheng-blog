@@ -3,7 +3,6 @@ package com.yeliheng.blogsystem.service.impl;
 import com.yeliheng.blogsystem.entity.Category;
 import com.yeliheng.blogsystem.exception.GeneralException;
 import com.yeliheng.blogsystem.exception.InternalServerException;
-import com.yeliheng.blogsystem.mapper.ArticleMapper;
 import com.yeliheng.blogsystem.mapper.CategoryMapper;
 import com.yeliheng.blogsystem.service.ICategoryService;
 import com.yeliheng.blogsystem.utils.UserUtils;

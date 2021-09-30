@@ -44,4 +44,12 @@
         </set>
         where id = #{id}
     </update>
+
+    <select id="getMenuPermissionByUserId" parameterType="Long" resultType="String">
+        select distinct m.permission from menu m
+            left join role_menu rm on m.id = rm.menu_id
+            left join user_role ur on rm.role_id = ur.role_id
+            left join role r on r.id = ur.role_id
+        where r.status = '1' and ur.user_id = #{userId}
+    </select>
 </mapper>

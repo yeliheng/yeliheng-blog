@@ -3,6 +3,7 @@ package com.yeliheng.blogsystem.service;
 import com.yeliheng.blogsystem.entity.Menu;
 
 import java.util.List;
+import java.util.Set;
 
 public interface IMenuService {
 
@@ -34,5 +35,13 @@ public interface IMenuService {
      * @return 菜单列表
      */
     List<Menu> getMenus();
+
+    /**
+     *
+     * 通过用户id查询菜单权限
+     * @param userId 用户Id
+     * @return 权限集合
+     */
+    Set<String> getMenuPermissionByUserId(Long userId);
 
 }
