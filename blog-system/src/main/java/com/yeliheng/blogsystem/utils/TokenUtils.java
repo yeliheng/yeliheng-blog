@@ -1,25 +1,20 @@
 package com.yeliheng.blogsystem.utils;
 
 import com.yeliheng.blogsystem.entity.LoginUser;
-import com.yeliheng.blogsystem.service.IUserService;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
-
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class TokenUtils {
     private static final Logger logger = LoggerFactory.getLogger(TokenUtils.class);
+
+    @Autowired
+    private RedisUtils redisUtils;
 
     //过期时间
     @Value("${token.expireTime}")
@@ -35,8 +30,9 @@ public class TokenUtils {
 
     private static final Long MILLIS_MINUTE_TEN = 20 * 60 * 1000L;
 
-    public String createToken(LoginUser user) {
-        return Jwts.builder().setSubject(String.format("%s", user.getUsername()))
+    public String createToken(LoginUser loginUser) {
+        setLoginUser(loginUser);
+        return Jwts.builder().setSubject(String.format("%s", loginUser.getUsername()))
                 .setExpiration(new Date(System.currentTimeMillis() + expireTime * MILLIS_MINUTE))
                 .signWith(SignatureAlgorithm.HS512, secret).compressWith(CompressionCodecs.GZIP).compact();
     }
@@ -59,15 +55,26 @@ public class TokenUtils {
         return false;
     }
 
-    private  Claims getClaims(String token) {
-        return Jwts.parser()
+    private Claims getClaims(String token) {
+        Claims claims = Jwts.parser()
                 .setSigningKey(secret)
                 .parseClaimsJws(token)
                 .getBody();
+        return claims;
     }
 
     public String getUsername(String token){
        return getClaims(token).getSubject();
     }
+
+    public void setLoginUser(LoginUser loginUser){
+        redisUtils.setCacheObject(loginUser.getUser().getId().toString(),loginUser);
+    }
+
+
+    public LoginUser getLoginUser(Long userId){
+        return redisUtils.getCacheObject(userId.toString());
+    }
+
 
 }

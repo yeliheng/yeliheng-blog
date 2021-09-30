@@ -1,6 +1,7 @@
 package com.yeliheng.blogsystem.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.Id;
 
 import javax.validation.constraints.NotBlank;
@@ -75,7 +76,7 @@ public class User implements Serializable {
         this.username = username;
     }
 
-
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
