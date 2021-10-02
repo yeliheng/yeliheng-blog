@@ -5,6 +5,16 @@ import com.yeliheng.blogsystem.entity.User;
 import java.util.Set;
 
 public interface IPermissionService {
+
+
+    /**
+     *
+     * 获取用户的角色权限
+     * @param user 用户实体
+     * @return 角色权限集合
+     */
+    Set<String> getRolesByUser(User user);
+
     /**
      *
      * 获取菜单数据权限

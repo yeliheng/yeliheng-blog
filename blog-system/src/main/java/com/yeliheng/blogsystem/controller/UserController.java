@@ -46,8 +46,13 @@ public class UserController {
         Map<String,Object> map = new HashMap<>();
 
         LoginUser loginUser = redisUtils.getCacheObject(userUtils.getLoginUserId().toString());
+        //获取角色
+        Set<String> roles = permissionService.getRolesByUser(loginUser.getUser());
+        //获取角色权限
         Set<String> permissions = permissionService.getMenuPermission(loginUser.getUser());
+
         map.put("user",loginUser);
+        map.put("role",roles);
         map.put("permissions",permissions);
 
         return CommonResponse.success(map);

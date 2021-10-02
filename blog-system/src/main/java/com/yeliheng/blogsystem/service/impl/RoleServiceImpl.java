@@ -5,10 +5,14 @@ import com.yeliheng.blogsystem.exception.GeneralException;
 import com.yeliheng.blogsystem.exception.InternalServerException;
 import com.yeliheng.blogsystem.mapper.RoleMapper;
 import com.yeliheng.blogsystem.service.IRoleService;
+import com.yeliheng.blogsystem.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class RoleServiceImpl implements IRoleService {
@@ -66,8 +70,15 @@ public class RoleServiceImpl implements IRoleService {
      * @return 角色列表
      */
     @Override
-    public List<Role> getRoleByUserId(Long userId) {
-        return null;
+    public Set<String> getRolesByUserId(Long userId) {
+        List<Role> roleList = roleMapper.getRolesByUserId(userId);
+        Set<String> roleSet = new HashSet<>();
+        for (Role role : roleList){
+            if(StringUtils.isNotNull(role)){
+                roleSet.addAll(Arrays.asList(role.getRoleChar().trim().split(",")));
+            }
+        }
+        return roleSet;
     }
 
     /**

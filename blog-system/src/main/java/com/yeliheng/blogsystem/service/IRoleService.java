@@ -3,6 +3,7 @@ package com.yeliheng.blogsystem.service;
 import com.yeliheng.blogsystem.entity.Role;
 
 import java.util.List;
+import java.util.Set;
 
 public interface IRoleService {
     /**
@@ -40,7 +41,7 @@ public interface IRoleService {
      * @param userId 用户Id
      * @return 角色列表
      */
-    List<Role> getRoleByUserId(Long userId);
+    Set<String> getRolesByUserId(Long userId);
 
     /**
      *
