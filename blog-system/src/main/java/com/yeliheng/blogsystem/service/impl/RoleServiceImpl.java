@@ -1,18 +1,18 @@
 package com.yeliheng.blogsystem.service.impl;
 
 import com.yeliheng.blogsystem.entity.Role;
+import com.yeliheng.blogsystem.entity.RoleMenu;
 import com.yeliheng.blogsystem.exception.GeneralException;
 import com.yeliheng.blogsystem.exception.InternalServerException;
 import com.yeliheng.blogsystem.mapper.RoleMapper;
+import com.yeliheng.blogsystem.mapper.RoleMenuMapper;
 import com.yeliheng.blogsystem.service.IRoleService;
 import com.yeliheng.blogsystem.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class RoleServiceImpl implements IRoleService {
@@ -20,15 +20,20 @@ public class RoleServiceImpl implements IRoleService {
     @Autowired
     private RoleMapper roleMapper;
 
+    @Autowired
+    private RoleMenuMapper roleMenuMapper;
+
     /**
      * 新增角色
      *
      * @param role 角色实体
      */
+    @Transactional
     @Override
     public void addRole(Role role) {
         int rows = roleMapper.addRole(role);
         if(rows <= 0) throw new InternalServerException("添加失败，未知错误");
+        insertRoleMenu(role); //关联角色与菜单
     }
 
     /**
@@ -79,6 +84,24 @@ public class RoleServiceImpl implements IRoleService {
             }
         }
         return roleSet;
+    }
+
+    public void insertRoleMenu(Role role) {
+        int rows = 1;
+        Long[] menuIds = role.getMenuIds();
+        if (StringUtils.isNotNull(menuIds)) {
+            List<RoleMenu> list = new ArrayList<>();
+            for (Long menuId : role.getMenuIds()) {
+                RoleMenu roleMenu = new RoleMenu();
+                roleMenu.setRoleId(role.getId());
+                roleMenu.setMenuId(menuId);
+                list.add(roleMenu);
+            }
+            if (list.size() > 0) {
+                rows = roleMenuMapper.batchRoleMenu(list);
+                if (rows < 0) throw new InternalServerException("关联角色失败，未知错误");
+            }
+        }
     }
 
     /**

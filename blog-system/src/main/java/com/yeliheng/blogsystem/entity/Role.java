@@ -19,6 +19,8 @@ public class Role implements Serializable {
     @NotBlank
     private String roleName;
 
+    private Long[] menuIds;
+
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
 
@@ -47,6 +49,14 @@ public class Role implements Serializable {
 
     public void setRoleName(String roleName) {
         this.roleName = roleName;
+    }
+
+    public Long[] getMenuIds() {
+        return menuIds;
+    }
+
+    public void setMenuIds(Long[] menuIds) {
+        this.menuIds = menuIds;
     }
 
     public LocalDateTime getCreatedAt() {
