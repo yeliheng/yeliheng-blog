@@ -37,4 +37,12 @@
         <include refid="selectRoleVo" />
         where ur.user_id = #{userId}
     </select>
+
+    <select id="checkRoleNameUnique" resultType="Long">
+        select id from role where role_name = #{roleName}
+    </select>
+
+    <select id="checkRoleCharUnique" resultType="Long">
+        select id from role where role_char = #{roleChar}
+    </select>
 </mapper>

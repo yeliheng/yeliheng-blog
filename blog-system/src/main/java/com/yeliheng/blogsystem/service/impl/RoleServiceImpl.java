@@ -31,6 +31,10 @@ public class RoleServiceImpl implements IRoleService {
     @Transactional
     @Override
     public void addRole(Role role) {
+        if(!checkRoleNameUnique(role.getRoleName()))
+            throw new GeneralException("角色名称已存在");
+        if(!checkRoleCharUnique(role.getRoleChar()))
+            throw new GeneralException("角色标识符已存在");
         int rows = roleMapper.addRole(role);
         if(rows <= 0) throw new InternalServerException("添加失败，未知错误");
         insertRoleMenu(role); //关联角色与菜单
@@ -87,7 +91,6 @@ public class RoleServiceImpl implements IRoleService {
     }
 
     public void insertRoleMenu(Role role) {
-        int rows = 1;
         Long[] menuIds = role.getMenuIds();
         if (StringUtils.isNotNull(menuIds)) {
             List<RoleMenu> list = new ArrayList<>();
@@ -98,8 +101,8 @@ public class RoleServiceImpl implements IRoleService {
                 list.add(roleMenu);
             }
             if (list.size() > 0) {
-                rows = roleMenuMapper.batchRoleMenu(list);
-                if (rows < 0) throw new InternalServerException("关联角色失败，未知错误");
+                int rows = roleMenuMapper.batchRoleMenu(list);
+                if (rows <= 0) throw new InternalServerException("关联角色失败，未知错误");
             }
         }
     }
@@ -107,22 +110,24 @@ public class RoleServiceImpl implements IRoleService {
     /**
      * 检查角色名称是否唯一
      *
-     * @param role 角色实体
+     * @param roleName 角色名称
      * @return 角色名称
      */
     @Override
-    public String checkRoleNameUnique(Role role) {
-        return null;
+    public Boolean checkRoleNameUnique(String roleName) {
+        Long roleId = roleMapper.checkRoleNameUnique(roleName);
+        return StringUtils.isNull(roleId);
     }
 
     /**
      * 检查角色标识符是否唯一
      *
-     * @param role 角色实体
+     * @param roleChar 角色标识
      * @return 角色名称
      */
     @Override
-    public String checkRoleCharUnique(Role role) {
-        return null;
+    public Boolean checkRoleCharUnique(String roleChar) {
+        Long roleId = roleMapper.checkRoleCharUnique(roleChar);
+        return StringUtils.isNull(roleId);
     }
 }

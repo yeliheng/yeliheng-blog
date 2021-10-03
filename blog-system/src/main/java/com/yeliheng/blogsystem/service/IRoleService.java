@@ -46,16 +46,16 @@ public interface IRoleService {
     /**
      *
      * 检查角色名称是否唯一
-     * @param role 角色实体
+     * @param roleName 角色名称
      * @return 角色名称
      */
-    String checkRoleNameUnique(Role role);
+    Boolean checkRoleNameUnique(String roleName);
 
     /**
      *
      * 检查角色标识符是否唯一
-     * @param role 角色实体
+     * @param roleChar 角色标识
      * @return 角色名称
      */
-    String checkRoleCharUnique(Role role);
+    Boolean checkRoleCharUnique(String roleChar);
 }
