@@ -8,5 +8,9 @@
     <foreach item="item" index="index" collection="roleMenuList" separator=",">
         (#{item.roleId},#{item.menuId},sysdate(),sysdate())
     </foreach>
-</insert>
+    </insert>
+
+    <delete id="deleteRoleMenuByRoleId" parameterType="Long">
+        delete from role_menu where role_id = #{roleId}
+    </delete>
 </mapper>

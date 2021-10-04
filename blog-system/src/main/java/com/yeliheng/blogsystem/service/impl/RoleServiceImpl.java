@@ -56,9 +56,14 @@ public class RoleServiceImpl implements IRoleService {
      *
      * @param role 角色实体
      */
+    @Transactional
     @Override
     public void updateRole(Role role) {
         int rows = roleMapper.updateRole(role);
+        //删除关联
+        deleteRoleMenuByRoleId(role);
+        //重新关联
+        insertRoleMenu(role);
         if(rows <= 0) throw new GeneralException("更新失败，可能角色不存在");
     }
 
@@ -90,6 +95,11 @@ public class RoleServiceImpl implements IRoleService {
         return roleSet;
     }
 
+    /**
+     *
+     * 关联角色菜单
+     * @param role 角色实体
+     */
     public void insertRoleMenu(Role role) {
         Long[] menuIds = role.getMenuIds();
         if (StringUtils.isNotNull(menuIds)) {
@@ -105,6 +115,15 @@ public class RoleServiceImpl implements IRoleService {
                 if (rows <= 0) throw new InternalServerException("关联角色失败，未知错误");
             }
         }
+    }
+
+    /**
+     *
+     * 解除角色与菜单的绑定 通过角色Id
+     * @param role 角色实体
+     */
+    public void deleteRoleMenuByRoleId(Role role){
+        roleMenuMapper.deleteRoleMenuByRoleId(role.getId());
     }
 
     /**
