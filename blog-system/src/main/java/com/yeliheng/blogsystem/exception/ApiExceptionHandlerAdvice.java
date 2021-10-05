@@ -4,6 +4,7 @@ import com.yeliheng.blogsystem.dto.ErrorDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -13,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolv
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
+
 
 @RestControllerAdvice
 public class ApiExceptionHandlerAdvice{
@@ -27,6 +29,11 @@ public class ApiExceptionHandlerAdvice{
             errorDTO.setMessage(apiException.getErrMsg());
             errorDTO.setHttpCode(apiException.getHttpCode());
             errorDTO.setDetail(apiException.getDetail());
+        }else if(exception instanceof AccessDeniedException){
+            errorDTO.setErrCode("ACCESS_DENIED");
+            errorDTO.setMessage("无权限访问");
+            errorDTO.setHttpCode(403);
+            errorDTO.setDetail("您没有访问权限");
         }else if (exception instanceof NoHandlerFoundException) {
             errorDTO.setErrCode("ENTITY_NOT_FOUND");
             errorDTO.setMessage("404 Not Found");

@@ -6,6 +6,7 @@ import com.yeliheng.blogsystem.mapper.UserMapper;
 import com.yeliheng.blogsystem.utils.UserUtils;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -17,6 +18,7 @@ public class TestController {
     private UserMapper userMapper;
     @Autowired
     private UserUtils userUtils;
+    @PreAuthorize("@perm.hasPerm('aa:bb:cc')")
     @ResponseBody
     @PostMapping("test")
     public CommonResponse<Object> test() {
