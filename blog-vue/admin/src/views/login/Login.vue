@@ -3,15 +3,26 @@
       <div class="login-card">
           <div class="login-title">管理员登录</div>
           <!-- 登录表单 -->
-          <el-form :model="form" ref="form" :rules="rules" label-width="80px" :inline="false" size="normal">
-            <el-form-item label="">
-              <el-input></el-input>
+          <el-form 
+            :model="loginForm" 
+            ref="ruleForm"
+            class="login-form"
+            >
+            <el-form-item prop="username">
+              <el-input
+                v-model="loginForm.username"
+                placeholder="用户名"
+                @keyup.enter="login"
+              ></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary">立即创建</el-button>
-              <el-button>取消</el-button>
+              <el-input type="password"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="onSubmit">登录</el-button>
             </el-form-item>
           </el-form>
+          
           
         
           
@@ -26,5 +37,5 @@ export default {
 </script>
 
 <style>
-
+    
 </style>
