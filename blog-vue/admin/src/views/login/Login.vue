@@ -1,8 +1,12 @@
 <template>
+
+  <div class="login-header">
+      <span class="header-title">YNetwork-后台管理系统</span>
+  </div>
   <div class="login-container">
       <div class="login-card">
         <div class="title-container">
-          <span class="login-title">管理员登录</span>
+          <span class="card-title">管理员登录</span>
         </div>
           <!-- 登录表单 -->
           <el-form class="login-form">
@@ -37,17 +41,41 @@ export default {
 <style lang="scss" scoped>
 
     $radius-value: 16px;
+    
+    .login-header{
+      top: 0;
+      width: 100%;
+      height: 6rem;
+      
+      background: rgba($color: #fff, $alpha: 0.2);
+      display: flex;
+      align-items: center;
+      > .header-title{   
+        color: rgb(233, 233, 233);
+        line-height: 3.86rem;
+        font-weight: 400;
+        font-size: 2rem;
+        font-family: Source Han Sans CN;
+        margin-left: 6%;
+      }
+      
+    }
 
     .login-container{
-      position: absolute;
+      
       border-radius: $radius-value;
+      padding-top: 13rem;
+      padding-left: 15rem;
     }
 
     .login-card{
+      opacity: 0.8;
+      display: flex;
+      flex-direction: column;
       width: 22.8rem;
       height: 28.5rem;
       background: #fff;
-      //border-radius: $radius-value;
+      border-radius: $radius-value;
     }
 
     .title-container{
@@ -57,13 +85,14 @@ export default {
       justify-content: center;
       width: 100%;
       height: 4.28rem;
-      > .login-title{
+      > .card-title{
         z-index: 2;
         background: #fff;
         font-size: 16px;
         font-weight: bold;
     }
-    }
+    
+  }
     
     .login-form{
       margin: {
@@ -73,9 +102,9 @@ export default {
     }
 
     .login-btn{
-      width: 17.7rem;
+      width: 100%;
       height: 3rem;
-      margin-left: 11px;
+      margin-top: 1rem;
     }
 
     .login-options{
@@ -88,4 +117,27 @@ export default {
     a{
       color: #409EFF;
     }
+
+    .background{
+
+      -webkit-box-flex: 1;
+      -ms-flex: 1;
+      flex: 1;
+      margin-left: auto;
+      margin-right: 6rem;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: 100% 0;
+      margin-bottom: 5rem;
+      min-height: 50rem;
+      max-height: calc(100vh - 13rem);
+      background-image: url(../../assets/images/login-background.svg);
+    }
+@media screen and (max-width: 480px){
+    .login-container {
+        width: 100vw;
+        padding-top: 6rem;
+        padding-left: 2rem;
+    }
+}
 </style>

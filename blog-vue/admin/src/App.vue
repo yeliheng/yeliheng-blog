@@ -7,8 +7,32 @@
 </template>
 
 <style lang="scss">
+
+  * {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
   html {
+    background-image: url(./assets/images/login-background.jpg);
+    background-repeat: no-repeat;
+    background-size: auto;
+    height: 100%;
     font-size: 14px;
-    background: #F7F8FC;
+    font-family: Avenir, Helvetica, Arial, sans-serif, 'Microsoft YaHei';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
+  
+  body{
+     // background: #F7F8FC;
+      
+  }
+
+  @media screen and (min-width: 1450px) {
+    html {
+        font-size: 75%;
+    }
+}
 </style>
