@@ -92,11 +92,4 @@ export default {
       color: #409EFF;
     }
 
-@media screen and (max-width: 480px){
-    .login-container {
-        width: 100vw;
-        padding-top: 6rem;
-        padding-left: 2rem;
-    }
-}
 </style>

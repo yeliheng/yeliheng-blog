@@ -25,9 +25,9 @@ export default {
             position: absolute;
             height: 100%;
             background-color: #f5f9fc;
-            left: 0;
+            left: 10rem;
             .background{
-                width: 520px;
+                width: 800px;
                 height: 100%;
                 background-image: url("../assets/images/login-background.svg");
                 background-repeat: no-repeat;
@@ -36,6 +36,33 @@ export default {
         }
     }
     .login-container{
-        
+        position: absolute;
+        overflow: auto;
+        display: flex;
+        right: 8rem;
+        top: 10rem;
     }
+
+
+@media screen and (max-width: 480px){
+    .page-container{
+
+        .background-container{
+            .background{
+                position: absolute;
+                width: 200px;
+            }
+        }
+    }
+    .login-container {
+        position: absolute;
+        left: 0;
+        right: 0;
+        overflow: auto;
+        display: flex;
+        justify-content: center;
+        padding-top: 2rem;        
+    }
+
+}
 </style>

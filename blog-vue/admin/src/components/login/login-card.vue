@@ -35,7 +35,7 @@ export default {
 
 
     .login-card{
-      opacity: 0.8;
+      opacity: 0.95;
       display: flex;
       flex-direction: column;
       width: 22.8rem;
