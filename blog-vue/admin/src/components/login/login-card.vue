@@ -1,6 +1,5 @@
 <template>
 
-  <div class="login-container">
       <div class="login-card">
         <div class="title-container">
           <span class="card-title">管理员登录</span>
@@ -22,7 +21,6 @@
             </el-form-item>
           </el-form>  
       </div>
-  </div>
 </template>
 
 <script>
@@ -35,12 +33,6 @@ export default {
 
     $radius-value: 16px;
 
-    .login-container{
-      
-      border-radius: $radius-value;
-      padding-top: 13rem;
-      padding-left: 15rem;
-    }
 
     .login-card{
       opacity: 0.8;

@@ -11,14 +11,10 @@
   * {
     padding: 0;
     margin: 0;
-    box-sizing: border-box;
+    //box-sizing: border-box;
 }
 
   html {
-    background-image: url(./assets/images/login-background.jpg);
-    background-repeat: no-repeat;
-    background-size: auto;
-    height: 100%;
     font-size: 14px;
     font-family: Avenir, Helvetica, Arial, sans-serif, 'Microsoft YaHei';
     -webkit-font-smoothing: antialiased;
@@ -26,7 +22,7 @@
   }
   
   body{
-     // background: #F7F8FC;
+      background: #F7F8FC;
       
   }
 
