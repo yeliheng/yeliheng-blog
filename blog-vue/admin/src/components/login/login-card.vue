@@ -2,30 +2,56 @@
 
       <div class="login-card">
         <div class="title-container">
-          <span class="card-title">管理员登录</span>
+          <span class="card-title">YNetwork 管理系统登录</span>
         </div>
           <!-- 登录表单 -->
-          <el-form class="login-form">
+          <el-form class="login-form" ref="loginForm" :model="loginForm" :rules="loginRules">
             <el-form-item prop="username">
-              <el-input placeholder="用户名" @keyup.enter="login"></el-input>
+              <el-input placeholder="用户名" @keyup.enter="loginHandler" v-model="loginForm.username" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item>
-              <el-input type="password" placeholder="密码"></el-input>
+              <el-input type="password" placeholder="密码" autocomplete="off" v-model="loginForm.password" @keyup.enter="loginHandler"></el-input>
             </el-form-item>
             <div class="login-options">
-              <el-checkbox label="记住密码"></el-checkbox>
+              <el-checkbox label="记住密码" v-model="loginForm.rememberMe"></el-checkbox>
               <a href="" class="forgot-password">忘记密码?</a>
             </div>
             <el-form-item>
-              <el-button type="primary" class="login-btn">登录</el-button>
+              <el-button type="primary" class="login-btn" @click="loginHandler">登录</el-button>
             </el-form-item>
           </el-form>  
       </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+/*export default {
+    data(){
+      return{
+        loginForm: {
+          rememberMe: false
+        },
+        loginRules: {
+          username: [
+            { required: true, trigger: "blur", message: "请输入用户名"}
+          ],
+          password: [
+            { required: true, trigger: "blur", message: "请输入密码" }
+          ]
+        }
+      };
+    },
+}*/
 
+</script>
+<script lang="ts">
+export default {
+  setup() {
+    const loginForm: any = {
+      username: '',
+      password: '',
+      rememberMe: false
+    }
+  },
 }
 </script>
 
