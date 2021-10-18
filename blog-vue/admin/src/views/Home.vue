@@ -65,4 +65,16 @@ export default {
     }
 
 }
+
+@media screen and (min-width: 1800px){
+    .login-container{    
+        position: absolute;
+        overflow: auto;
+        display: flex;
+        right: 35rem;
+        top: 20rem;
+    }
+
+}
+
 </style>

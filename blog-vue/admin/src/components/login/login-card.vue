@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts">
-/*export default {
+export default {
     data(){
       return{
         loginForm: {
@@ -40,20 +40,10 @@
         }
       };
     },
-}*/
+}
 
 </script>
-<script lang="ts">
-export default {
-  setup() {
-    const loginForm: any = {
-      username: '',
-      password: '',
-      rememberMe: false
-    }
-  },
-}
-</script>
+
 
 <style lang="scss" scoped>
 
