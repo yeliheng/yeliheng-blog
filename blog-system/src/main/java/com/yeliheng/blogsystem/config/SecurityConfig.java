@@ -38,6 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     //@Autowired
     //private LogoutSuccessHandlerImpl logoutSuccessHandler;
 
+
     /**
      * token认证过滤器
      */
@@ -48,8 +49,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      *
      * 跨域过滤器
      */
-/*    @Autowired
-    private CorsFilter corsFilter;*/
+    @Autowired
+    private CorsFilter corsFilter;
 
     /**
      * 解决 无法直接注入 AuthenticationManager
@@ -104,7 +105,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .headers().frameOptions().disable();
         httpSecurity.addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
         // 添加CORS filter
-       // httpSecurity.addFilterBefore(corsFilter, JwtAuthenticationTokenFilter.class);
+        httpSecurity.addFilterBefore(corsFilter, JwtAuthenticationTokenFilter.class);
         //httpSecurity.addFilterBefore(corsFilter, LogoutFilter.class);
     }
 
