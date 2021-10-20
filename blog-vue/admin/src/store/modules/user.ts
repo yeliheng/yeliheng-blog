@@ -16,8 +16,9 @@ const actions = {
         const password = userInfo.password;
         return new Promise<void>((resolve,reject) => {
             login(username,password).then((res: any) => {
-                setToken(res.token);
-                commit('SET_TOKEN',res.token);
+                console.log(res);
+               // setToken(res.token);
+                //commit('SET_TOKEN',res.token);
                 resolve();
             }).catch(error => {
                 reject(error);

@@ -9,5 +9,5 @@ export function login(username,password){
         url: '/login',
         method: 'post',
         data: data
-    })
+    });
 }

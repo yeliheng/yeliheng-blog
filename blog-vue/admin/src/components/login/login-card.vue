@@ -32,7 +32,7 @@ import { useStore } from "vuex";
 
 export default {
   setup() {
-    const router = useRouter();
+    const router = useRouter();let loading = true;
     
     const store = useStore();
 
@@ -61,10 +61,12 @@ export default {
     };
 
     const loginHandler = () => {
+      
         login.value.validate((valid:any) => {
           if(valid){
+            loading = true;
             store.dispatch("Login",loginForm).then(() => {
-                console.log("登录");
+                //console.log("登录");
             });
           } else{
             return false;

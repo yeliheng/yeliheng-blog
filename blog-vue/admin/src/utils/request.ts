@@ -39,41 +39,45 @@ service.interceptors.request.use(config => {
     console.log(error);
     Promise.reject(error);
 });
-
 //响应拦截器
-service.interceptors.response.use(res=> {
-    const response: AxiosResponse<any,any> = res;
-    const code = response.data.httpCode || 200;
-    const msg = errorCode[code]|| response.data.message || errorCode['default'];
-    if(code === 500){
-      ElMessage({
-        message: msg,
-        type: 'error'
-      });
-      return Promise.reject(new Error(msg));
-    }else if(code != 200){
-      ElNotification({
-        title: msg,
-        type: 'error'
-      });
-      return Promise.reject('error');
+service.interceptors.response.use((res: any)=> {
+    if(res.status == 200){
+      return res.data || {};
     }else{
-      return res.data;
+      Promise.reject();
     }
+
 },
 error => {
-  console.log('error: '+ error);
-  let { message } = error;
-  if (message == "Network Error") {
-    message = "连接服务器失败!";
+  const status = error.response.status;
+  if(!status)
+  showErrorMessage("请求失败，请检查网络连接");
+  //console.log(error.response);
+  switch(status) {
+    case 401:
+      showErrorMessage("用户名或密码错误");
+    break;
+    case 500: 
+      showErrorMessage("服务器内部错误");
+      break;
+    case 400:
+      showErrorMessage("输入的数据不合法");
+      break;
+    case 403:
+      showErrorMessage("权限不足");
+      break;
+    case 404: 
+      showErrorMessage("访问的资源不存在");
   }
+}
+);
+
+function showErrorMessage(message: string ){
   ElMessage({
     message: message,
     type: 'error',
     duration: 5 * 1000
   });
-  return Promise.reject(error);
 }
-)
 
 export default service;
