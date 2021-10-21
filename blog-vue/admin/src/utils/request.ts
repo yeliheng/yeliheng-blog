@@ -49,10 +49,14 @@ service.interceptors.response.use((res: any)=> {
 
 },
 error => {
-  const status = error.response.status;
-  if(!status)
-  showErrorMessage("请求失败，请检查网络连接");
+
+  if(error.message === "Network Error"){
+    showErrorMessage("服务器开小差了...");
+    return;
+  }
+
   //console.log(error.response);
+  const status = error.response.status;
   switch(status) {
     case 401:
       showErrorMessage("用户名或密码错误");

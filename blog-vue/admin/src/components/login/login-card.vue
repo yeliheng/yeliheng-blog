@@ -17,7 +17,7 @@
               <a href="" class="forgot-password">忘记密码?</a>
             </div>
             <el-form-item>
-              <el-button type="primary" class="login-btn" @click="loginHandler">登录</el-button>
+              <el-button type="primary" class="login-btn" :loading="loading" @click="loginHandler">登录</el-button>
             </el-form-item>
           </el-form>  
       </div>
@@ -32,7 +32,9 @@ import { useStore } from "vuex";
 
 export default {
   setup() {
-    const router = useRouter();let loading = true;
+    const router = useRouter();
+
+    let loading = ref(false);
     
     const store = useStore();
 
@@ -61,14 +63,16 @@ export default {
     };
 
     const loginHandler = () => {
-      
+        loading.value = true;
         login.value.validate((valid:any) => {
           if(valid){
-            loading = true;
+            loading.value = true;
             store.dispatch("Login",loginForm).then(() => {
+              loading.value = false;
                 //console.log("登录");
             });
           } else{
+            loading.value = false;
             return false;
           }
         });
@@ -78,7 +82,8 @@ export default {
         loginForm,
         loginRules,
         login,
-        loginHandler
+        loginHandler,
+        loading,
       } 
   },
 
