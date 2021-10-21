@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import javax.validation.constraints.NotBlank;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @Api(tags = "登录")
@@ -24,6 +26,8 @@ public class LoginController {
     @PostMapping("/login")
     public CommonResponse<Object> login(@RequestBody @Validated LoginBody loginBody){
         String token = loginService.login(loginBody.getUsername(),loginBody.getPassword());
-        return CommonResponse.success(token);
+        Map<String,String> resultMap = new HashMap<>();
+        resultMap.put("token",token);
+        return CommonResponse.success(resultMap);
     }
 }
