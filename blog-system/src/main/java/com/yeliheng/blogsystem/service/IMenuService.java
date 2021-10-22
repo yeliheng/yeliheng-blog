@@ -44,4 +44,12 @@ public interface IMenuService {
      */
     Set<String> getMenuPermissionByUserId(Long userId);
 
+    /**
+     *
+     * 通过用户id获取菜单列表
+     * @param userId
+     * @return
+     */
+    List<Menu> getMenusByUserId(Long userId);
+
 }

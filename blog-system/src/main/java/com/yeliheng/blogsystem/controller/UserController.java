@@ -2,7 +2,9 @@ package com.yeliheng.blogsystem.controller;
 
 import com.yeliheng.blogsystem.common.CommonResponse;
 import com.yeliheng.blogsystem.entity.LoginUser;
+import com.yeliheng.blogsystem.entity.Menu;
 import com.yeliheng.blogsystem.entity.User;
+import com.yeliheng.blogsystem.service.IMenuService;
 import com.yeliheng.blogsystem.service.IPermissionService;
 import com.yeliheng.blogsystem.service.IUserService;
 import com.yeliheng.blogsystem.utils.RedisUtils;
@@ -12,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -26,6 +29,8 @@ public class UserController {
     private UserUtils userUtils;
     @Autowired
     private IPermissionService permissionService;
+    @Autowired
+    private IMenuService menuService;
 
 
     @PostMapping
@@ -56,5 +61,11 @@ public class UserController {
         map.put("permissions",permissions);
 
         return CommonResponse.success(map);
+    }
+
+    @GetMapping("/routers")
+    public CommonResponse<Object> getRouters(){
+       List<Menu> menuList = menuService.getMenusByUserId(userUtils.getLoginUserId());
+        return CommonResponse.success(menuList);
     }
 }

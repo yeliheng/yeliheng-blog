@@ -52,4 +52,23 @@
             left join role r on r.id = ur.role_id
         where r.status = '1' and ur.user_id = #{userId}
     </select>
+
+    <select id="getMenusByUserId" parameterType="Long" resultType="Menu">
+        select distinct m.id, m.parent_id, m.menu_name, m.order_num, m.url, m.component, m.visible, ifnull(m.permission,'') as permission, m.icon, m.created_at, m.updated_at
+        from menu m
+            left join role_menu rm on m.id = rm.menu_id
+            left join user_role ur on rm.role_id = ur.role_id
+            left join role r on ur.role_id = r.id
+            left join user u on ur.user_id = u.id
+        where u.id = #{userId} and m.visible = 1 and r.status = 1
+        order by m.parent_id, m.order_num
+
+    </select>
+
+    <select id="getMenus" resultType="Menu">
+        select distinct m.id, m.parent_id, m.menu_name, m.order_num, m.url, m.component, m.visible,
+                            ifnull(m.permission,'') as permission, m.icon, m.created_at, m.updated_at
+            from menu m where m.visible = 1 order by m.parent_id, m.order_num
+    </select>
+
 </mapper>
