@@ -1,6 +1,7 @@
 package com.yeliheng.blogsystem.service.impl;
 
 import com.yeliheng.blogsystem.entity.Menu;
+import com.yeliheng.blogsystem.entity.Router;
 import com.yeliheng.blogsystem.exception.GeneralException;
 import com.yeliheng.blogsystem.exception.InternalServerException;
 import com.yeliheng.blogsystem.mapper.MenuMapper;
@@ -98,14 +99,13 @@ public class MenuServiceImpl implements IMenuService {
         }else {
             menuList = menuMapper.getMenusByUserId(userId);
         }
-        //TODO: 构建前端所需的菜单树
         return getChildPerms(menuList,0);
     }
 
     public List<Menu> getChildPerms(List<Menu> list,int parentId){
         List<Menu> treeList = new ArrayList<>();
         for (Iterator<Menu> iterator = list.iterator(); iterator.hasNext();){
-            Menu t = (Menu) iterator.next();
+            Menu t = iterator.next();
             if(t.getParentId() == parentId){
                 recursionFn(list,t);
                 treeList.add(t);
@@ -139,11 +139,11 @@ public class MenuServiceImpl implements IMenuService {
      */
     private List<Menu> getChildList(List<Menu> list, Menu t)
     {
-        List<Menu> tlist = new ArrayList<Menu>();
+        List<Menu> tlist = new ArrayList<>();
         Iterator<Menu> it = list.iterator();
         while (it.hasNext())
         {
-            Menu n = (Menu) it.next();
+            Menu n = it.next();
             if (n.getParentId().longValue() == t.getId().longValue())
             {
                 tlist.add(n);
@@ -157,7 +157,26 @@ public class MenuServiceImpl implements IMenuService {
      */
     private boolean hasChild(List<Menu> list, Menu t)
     {
-        return getChildList(list, t).size() > 0 ? true : false;
+        return getChildList(list, t).size() > 0;
+    }
+
+
+    public List<Router> buildMenus(List<Menu> menuList){
+        List<Router> routerList = new LinkedList<>();
+        for(Menu menu : menuList){
+            Router router = new Router();
+            router.setName(menu.getMenuName());
+            router.setUrl(menu.getUrl());
+            router.setComponent(menu.getComponent());
+            router.setPermission(menu.getPermission());
+            List<Menu> childMenus = menu.getChildren();
+            if(!childMenus.isEmpty()){
+                router.setChildren(buildMenus(childMenus));
+            }
+
+            routerList.add(router);
+        }
+        return routerList;
     }
 
 }

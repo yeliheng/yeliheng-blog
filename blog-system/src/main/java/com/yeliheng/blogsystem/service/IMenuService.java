@@ -1,6 +1,7 @@
 package com.yeliheng.blogsystem.service;
 
 import com.yeliheng.blogsystem.entity.Menu;
+import com.yeliheng.blogsystem.entity.Router;
 
 import java.util.List;
 import java.util.Set;
@@ -47,9 +48,16 @@ public interface IMenuService {
     /**
      *
      * 通过用户id获取菜单列表
-     * @param userId
-     * @return
+     * @param userId 用户id
+     * @return 菜单列表
      */
     List<Menu> getMenusByUserId(Long userId);
+
+    /**
+     * 构建前端所需的路由列表
+     * @param menuList 菜单列表
+     * @return 路由列表
+     */
+    List<Router> buildMenus(List<Menu> menuList);
 
 }

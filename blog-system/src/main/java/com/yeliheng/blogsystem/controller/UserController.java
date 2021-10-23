@@ -65,7 +65,7 @@ public class UserController {
 
     @GetMapping("/routers")
     public CommonResponse<Object> getRouters(){
-       List<Menu> menuList = menuService.getMenusByUserId(userUtils.getLoginUserId());
-        return CommonResponse.success(menuList);
+        List<Menu> menuList = menuService.getMenusByUserId(userUtils.getLoginUserId());
+        return CommonResponse.success(menuService.buildMenus(menuList));
     }
 }
