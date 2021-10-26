@@ -13,11 +13,14 @@
               <el-input type="password" placeholder="密码" autocomplete="off" v-model="loginForm.password" @keyup.enter="loginHandler"></el-input>
             </el-form-item>
             <div class="login-options">
-              <el-checkbox label="记住密码" v-model="loginForm.rememberMe"></el-checkbox>
+              <el-checkbox label="记住我" v-model="loginForm.rememberMe"></el-checkbox>
               <a href="" class="forgot-password">忘记密码?</a>
             </div>
             <el-form-item>
-              <el-button type="primary" class="login-btn" :loading="loading" @click="loginHandler">登录</el-button>
+              <el-button type="primary" class="login-btn" :loading="loading" @click="loginHandler">
+                 <span v-if="!loading">登录</span>
+                 <span v-else>登录中...</span>
+              </el-button>
             </el-form-item>
           </el-form>  
       </div>
@@ -63,19 +66,18 @@ export default {
     };
 
     const loginHandler = () => {
-        loading.value = true;
+
         login.value.validate((valid:any) => {
           if(valid){
             loading.value = true;
             store.dispatch("Login",loginForm).then(() => {
               loading.value = false;
-                //console.log("登录");
+            }).catch(() => {
+              loading.value = false;
             });
-          } else{
-            loading.value = false;
-            return false;
           }
         });
+        
       };
 
      return{

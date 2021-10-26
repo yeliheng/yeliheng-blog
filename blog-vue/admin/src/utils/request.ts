@@ -12,7 +12,7 @@ const service = axios.create({
 
 //request拦截器
 service.interceptors.request.use(config => {
-    config.headers!['Autorization'] = 'Bearer ' + getToken();
+    config.headers!['Authorization'] = 'Bearer ' + getToken();
     if(config.method === 'get' && config.params){
         let url = config.url + '?';
         for (const propName of Object.keys(config.params)) {

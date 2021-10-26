@@ -1,17 +1,26 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import Home from '../views/Home.vue'
+import Login from '../views/login/Login.vue';
+import Home from '../views/Home.vue';
 
-const routes: Array<RouteRecordRaw> = [
+export const constantRoutes: Array<RouteRecordRaw> = [
   {
-    path: '/',
-    name: 'Home',
+    path: '/login',
+    component: Login
+  },
+  {
+    path: '/home',
     component: Home
+  },
+  {
+    path: '',
+    redirect: '/home'
   }
+  
 ]
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes
+  routes: constantRoutes
 })
 
 export default router

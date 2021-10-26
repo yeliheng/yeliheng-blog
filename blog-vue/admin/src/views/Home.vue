@@ -1,80 +1,172 @@
 <template>
-    <div class="page-container">
-        <div class="background-container">
-            <div class="background"></div>
-        </div>
-        <div class="login-container">
-            <login-card></login-card>
-        </div>
-    </div>
-    
+  <el-container style="height: 100%; border: 1px solid #eee">
+    <el-aside
+      width="200px"
+      style="background-color: rgb(238, 241, 246)"
+    >
+      <el-menu :default-openeds="['1', '3']">
+        <el-sub-menu index="1">
+          <template
+            #title
+          >
+            <i class="el-icon-message" />Navigator One
+          </template>
+          <el-menu-item-group>
+            <template #title>
+              Group 1
+            </template>
+            <el-menu-item index="1-1">
+              Option 1
+            </el-menu-item>
+            <el-menu-item index="1-2">
+              Option 2
+            </el-menu-item>
+          </el-menu-item-group>
+          <el-menu-item-group title="Group 2">
+            <el-menu-item index="1-3">
+              Option 3
+            </el-menu-item>
+          </el-menu-item-group>
+          <el-sub-menu index="1-4">
+            <template #title>
+              Option4
+            </template>
+            <el-menu-item index="1-4-1">
+              Option 4-1
+            </el-menu-item>
+          </el-sub-menu>
+        </el-sub-menu>
+        <el-sub-menu index="2">
+          <template #title>
+            <i class="el-icon-menu" />Navigator Two
+          </template>
+          <el-menu-item-group>
+            <template #title>
+              Group 1
+            </template>
+            <el-menu-item index="2-1">
+              Option 1
+            </el-menu-item>
+            <el-menu-item index="2-2">
+              Option 2
+            </el-menu-item>
+          </el-menu-item-group>
+          <el-menu-item-group title="Group 2">
+            <el-menu-item index="2-3">
+              Option 3
+            </el-menu-item>
+          </el-menu-item-group>
+          <el-sub-menu index="2-4">
+            <template #title>
+              Option 4
+            </template>
+            <el-menu-item index="2-4-1">
+              Option 4-1
+            </el-menu-item>
+          </el-sub-menu>
+        </el-sub-menu>
+        <el-sub-menu index="3">
+          <template
+            #title
+          >
+            <i class="el-icon-setting" />Navigator Three
+          </template>
+          <el-menu-item-group>
+            <template #title>
+              Group 1
+            </template>
+            <el-menu-item index="3-1">
+              Option 1
+            </el-menu-item>
+            <el-menu-item index="3-2">
+              Option 2
+            </el-menu-item>
+          </el-menu-item-group>
+          <el-menu-item-group title="Group 2">
+            <el-menu-item index="3-3">
+              Option 3
+            </el-menu-item>
+          </el-menu-item-group>
+          <el-sub-menu index="3-4">
+            <template #title>
+              Option 4
+            </template>
+            <el-menu-item index="3-4-1">
+              Option 4-1
+            </el-menu-item>
+          </el-sub-menu>
+        </el-sub-menu>
+      </el-menu>
+    </el-aside>
 
+    <el-container>
+      <el-header style="text-align: right; font-size: 12px">
+        <el-dropdown>
+          <i
+            class="el-icon-setting"
+            style="margin-right: 15px"
+          />
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item>View</el-dropdown-item>
+              <el-dropdown-item>Add</el-dropdown-item>
+              <el-dropdown-item>Delete</el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
+        <span>Tom</span>
+      </el-header>
+
+      <el-main>
+        <el-table :data="tableData">
+          <el-table-column
+            prop="date"
+            label="Date"
+            width="140"
+          />
+          <el-table-column
+            prop="name"
+            label="Name"
+            width="120"
+          />
+          <el-table-column
+            prop="address"
+            label="Address"
+          />
+        </el-table>
+      </el-main>
+    </el-container>
+  </el-container>
 </template>
 
-<script>
-import loginCard from '@/components/login/login-card.vue';
-export default {
-  components: { loginCard },
+<script lang="ts">
+import { defineComponent, ref } from 'vue';
 
-}
+export default defineComponent({
+  setup () {
+    const item = {
+      date: '2016-05-02',
+      name: 'Tom',
+      address: 'No. 189, Grove St, Los Angeles'
+    };
+
+    const tableData = ref(Array(20).fill(item));
+
+    return {
+      tableData
+    };
+  }
+});
 </script>
 
-<style lang="scss" scoped>
-    .page-container{
-        .background-container{
-            position: absolute;
-            height: 100%;
-            background-color: #f5f9fc;
-            left: 10rem;
-            .background{
-                width: 800px;
-                height: 100%;
-                background-image: url("../assets/images/login-background.svg");
-                background-repeat: no-repeat;
-                background-position: 0 center;
-            }
-        }
-    }
-    .login-container{
-        position: absolute;
-        overflow: auto;
-        display: flex;
-        right: 8rem;
-        top: 10rem;
-    }
-
-
-@media screen and (max-width: 480px){
-    .page-container{
-
-        .background-container{
-            .background{
-                position: absolute;
-                width: 200px;
-            }
-        }
-    }
-    .login-container {
-        position: absolute;
-        left: 0;
-        right: 0;
-        overflow: auto;
-        display: flex;
-        justify-content: center;
-        padding-top: 2rem;        
-    }
-
+<style>
+.el-header {
+  background-color: #b3c0d1;
+  color: var(--el-text-color-primary);
+  line-height: 60px;
 }
 
-@media screen and (min-width: 1800px){
-    .login-container{    
-        position: absolute;
-        overflow: auto;
-        display: flex;
-        right: 35rem;
-        top: 20rem;
-    }
-
+.el-aside {
+  color: var(--el-text-color-primary);
 }
-
 </style>

@@ -11,3 +11,10 @@ export function login(username,password){
         data: data
     });
 }
+
+export function getInfo() {
+    return request({
+        url: '/users/info',
+        method: 'get',
+    });
+}
