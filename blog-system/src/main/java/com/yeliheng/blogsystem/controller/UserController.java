@@ -57,7 +57,7 @@ public class UserController {
         Set<String> permissions = permissionService.getMenuPermission(loginUser.getUser());
 
         map.put("user",loginUser);
-        map.put("role",roles);
+        map.put("roles",roles);
         map.put("permissions",permissions);
 
         return CommonResponse.success(map);
