@@ -11,8 +11,8 @@ const whiteList = ['/login']
 
 router.beforeEach((to,from) =>{
     NProgress.start();
-    console.log(getToken());
     if(getToken()){
+        //存在Token
        if(to.path === '/login'){
             NProgress.done();
             return{
@@ -29,12 +29,12 @@ router.beforeEach((to,from) =>{
                     return;
                 })
             }).catch(error => {
-                store.dispatch('LogOut').then(() => {
+                store.dispatch('Logout').then(() => {
                     ElMessage({
                         type: 'error',
-                        message: error
+                        message: "用户凭据已过期，请重新登录!",
                     });
-                    return ({ path: '/' });
+                    router.push('/login');
                 });
             });
 
@@ -43,7 +43,7 @@ router.beforeEach((to,from) =>{
            }
        }
     }else{
-        console.log("不存在Token");
+        //不存在Token
         if (whiteList.indexOf(to.path) !== -1) {
             return;
         }else{

@@ -1,4 +1,4 @@
-import { getInfo, login } from "@/api/login";
+import { getInfo, login, logout } from "@/api/login";
 import { getToken,setToken,removeToken } from "@/utils/auth";
 
 const state = {
@@ -42,14 +42,27 @@ const actions = {
         })
     },
 
-    //获取用户信息
-    GetUserInfo({commit, state}){
+    //登出
+    Logout({commit}){
+        return new Promise<void>((resolve, reject) => {
+            logout().then((res:any) => {
+                commit('SET_TOKEN','');
+                commit('SET_ROLES',[]);
+                commit('SET_PERMISSIONS','');
+                removeToken();
+                resolve();
+            }).catch(error => {
+                reject(error);
+            });
+        });
+    },
 
+    //获取用户信息
+    GetUserInfo({commit}){
         return new Promise((resolve, reject) => {
             getInfo().then((res:any) => {
                 const user = res.data.user;
                 if(res.data.roles && res.data.roles.length > 0){
-                    console.log('commit');
                     commit('SET_ROLES',res.data.roles);
                     commit('SET_PERMISSIONS',res.data.permissions);
                 }else{

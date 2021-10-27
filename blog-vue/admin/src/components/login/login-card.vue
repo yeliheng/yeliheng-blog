@@ -71,7 +71,7 @@ export default {
           if(valid){
             loading.value = true;
             store.dispatch("Login",loginForm).then(() => {
-              loading.value = false;
+              router.push({path: '/'});
             }).catch(() => {
               loading.value = false;
             });
