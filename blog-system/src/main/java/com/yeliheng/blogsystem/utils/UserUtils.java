@@ -13,10 +13,12 @@ public class UserUtils {
 
     @Autowired
     private IUserService userService;
+    @Autowired
+    private TokenUtils tokenUtils;
 
     public Long getLoginUserId(){
         String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        logger.info(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+
         return userService.selectUidByUsername(username);
 
     }

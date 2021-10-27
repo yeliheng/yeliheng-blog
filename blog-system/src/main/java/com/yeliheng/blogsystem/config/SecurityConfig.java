@@ -2,6 +2,7 @@ package com.yeliheng.blogsystem.config;
 
 import com.yeliheng.blogsystem.filter.JwtAuthenticationTokenFilter;
 import com.yeliheng.blogsystem.security.handle.AuthenticationEntryPointImpl;
+import com.yeliheng.blogsystem.security.handle.LogoutSuccessHandlerImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -35,8 +36,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     /**
      * 退出处理类
      */
-    //@Autowired
-    //private LogoutSuccessHandlerImpl logoutSuccessHandler;
+    @Autowired
+    private LogoutSuccessHandlerImpl logoutSuccessHandler;
 
 
     /**
@@ -103,10 +104,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .headers().frameOptions().disable();
+        //JWT filter
         httpSecurity.addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
         // 添加CORS filter
         httpSecurity.addFilterBefore(corsFilter, JwtAuthenticationTokenFilter.class);
-        //httpSecurity.addFilterBefore(corsFilter, LogoutFilter.class);
+        httpSecurity.addFilterBefore(corsFilter, LogoutFilter.class);
+        //Logout filter
+        httpSecurity.logout().logoutUrl("/logout").logoutSuccessHandler(logoutSuccessHandler);
     }
 
     @Bean
