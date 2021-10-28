@@ -1,5 +1,6 @@
 package com.yeliheng.blogsystem.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.yeliheng.blogsystem.common.CommonResponse;
 import com.yeliheng.blogsystem.entity.LoginUser;
 import com.yeliheng.blogsystem.entity.Menu;
@@ -53,13 +54,14 @@ public class UserController {
         Map<String,Object> map = new HashMap<>();
 
         LoginUser loginUser = redisUtils.getCacheObject(userUtils.getLoginUserId().toString());
-        if(StringUtils.isNull(loginUser)) throw new UnauthorizedException("用户凭据已过期!");
+        if(StringUtils.isNull(loginUser)) throw new UnauthorizedException("用户凭据已过期");
         //获取角色
         Set<String> roles = permissionService.getRolesByUser(loginUser.getUser());
         //获取角色权限
         Set<String> permissions = permissionService.getMenuPermission(loginUser.getUser());
 
-        map.put("user",loginUser);
+
+        map.put("user",loginUser.getUser());
         map.put("roles",roles);
         map.put("permissions",permissions);
 
