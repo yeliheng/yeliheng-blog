@@ -22,7 +22,7 @@ public class Menu {
 
     private Integer orderNum;
 
-    private String url;
+    private String path;
 
     private String component;
 
@@ -82,12 +82,12 @@ public class Menu {
         this.orderNum = orderNum;
     }
 
-    public String getUrl() {
-        return url;
+    public String getPath() {
+        return path;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setPath(String path) {
+        this.path = path;
     }
 
     public String getComponent() {
