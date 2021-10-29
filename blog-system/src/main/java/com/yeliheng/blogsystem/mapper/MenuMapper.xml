@@ -6,7 +6,7 @@
     <insert id="addMenu" parameterType="Menu" useGeneratedKeys="true" keyProperty="id">
         insert into menu(
         <if test="userId != null and userId != ''">user_id,</if>
-        <if test="parentId != null and parentId != ''">paren_id,</if>
+        <if test="parentId != null and parentId != ''">parent_id,</if>
         <if test="menuName != null and menuName != ''">menu_name,</if>
         <if test="orderNum != null and orderNum != ''">order_num,</if>
         <if test="url != null and url != ''">url,</if>
@@ -33,7 +33,7 @@
         update menu
         <set>
             <if test="userId != null and userId != ''">user_id = #{userId},</if>
-            <if test="parentId != null and parentId != ''">paren_id = #{parentId},</if>
+            <if test="parentId != null and parentId != ''">parent_id = #{parentId},</if>
             <if test="menuName != null and menuName != ''">menu_name = #{menuName},</if>
             <if test="orderNum != null and orderNum != ''">order_num = #{orderNum},</if>
             <if test="url != null and url != ''">url = #{url},</if>
