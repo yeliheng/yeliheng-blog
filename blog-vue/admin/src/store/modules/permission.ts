@@ -1,5 +1,5 @@
 import { getRouters } from "@/api/menu";
-import { constantRoutes } from "@/router";
+import router, { constantRoutes } from "@/router";
 
    const state = {
         routes: [],
@@ -22,17 +22,34 @@ import { constantRoutes } from "@/router";
         GenerateRoutes({ commit }) {
             return new Promise(resolve => {
                 getRouters().then(res => {
-                    //console.log(res);
-                    const routers = JSON.parse(JSON.stringify(res.data));
-                    console.log(routers);
+                    const routerList:any = res.data;
+                    routerList.forEach((item) => {
+                        //添加父菜单路由
+                        router.addRoute(item);
+                        if(item.children && item.children.length > 0) {
+                            item.children.forEach(route => {
+                                //添加子菜单路由
+                                router.addRoute(route);
+                                route.component = loadView(route.component);
+                            });
+                        }
+                    });
+                    commit("SET_ROUTES",routerList);
+                    
                 });
             })
         }
     };
 
+
     const getters = {
         
     };
+
+export const loadView = view => {
+    // 路由懒加载
+    return resolve => require([`@/views${view}`], resolve);
+};  
 
 export default {
     namespace: true,

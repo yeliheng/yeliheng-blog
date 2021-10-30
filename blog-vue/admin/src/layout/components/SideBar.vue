@@ -6,36 +6,39 @@
             class="side-bar-menu"
             @open="handleOpen"
             @close="handleClose"
-            
+            router
         >
-        <el-sub-menu index="1">
-          <template #title>
-            <i class="el-icon-location"></i>
-            <span>测试菜单1</span>
-          </template>
-            <el-menu-item index="1-1">测试子菜单1</el-menu-item>
-            <el-menu-item index="1-2">测试子菜单2</el-menu-item>
-        </el-sub-menu>
-        <el-menu-item index="2">
-          <i class="el-icon-menu"></i>
-          <span>测试菜单2</span>
-        </el-menu-item>
-        <el-menu-item index="3" disabled>
-          <i class="el-icon-document"></i>
-          <span>测试菜单3</span>
-        </el-menu-item>
-        <el-menu-item index="4">
-          <i class="el-icon-setting"></i>
-          <span>测试菜单4</span>
-        </el-menu-item>
+            <template v-for="route of this.$store.state.permission.addRoutes">
+                <!-- 二级菜单标题 -->
+                <template v-if="route.name && route.children && !route.hidden">
+                    <el-sub-menu :key="route.path" :index="route.path">
+                        <template #title>
+                            <span> {{ route.name }}</span>
+                        </template>
+                        <template v-for="(item, index) of route.children">
+                            <el-menu-item v-if="!item.hidden" :key="index" :index="item.path">
+                                <span>{{ item.name }}</span>
+                            </el-menu-item>
+                        </template>
+                    </el-sub-menu>
+                </template>
+                <!-- 一级菜单 -->
+                <template v-else-if="!route.hidden">
+                    <el-menu-item :index="route.path" :key="route.path">
+                         <span> {{ route.name }}</span>
+                    </el-menu-item>
+                </template>
+            </template>
       </el-menu>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import store from '@/store';
 
 export default defineComponent({
   setup() {
+      console.log(store);
     const handleOpen = (key, keyPath) => {
       console.log(key, keyPath)
     }
