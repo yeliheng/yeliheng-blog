@@ -1,7 +1,6 @@
 import { getRouters } from "@/api/menu";
 import Layout from '@/layout/index.vue';
 import router, { constantRoutes } from "@/router";
-
    const state = {
         routes: [],
         addRoutes: [],
@@ -24,6 +23,7 @@ import router, { constantRoutes } from "@/router";
             return new Promise(resolve => {
                 getRouters().then(res => {
                     const routerList:any = res.data;
+                    commit("SET_ROUTES",routerList);
                     routerList.forEach((item) => {
                         //添加父菜单路由
                         if(item.icon != null){
@@ -31,19 +31,19 @@ import router, { constantRoutes } from "@/router";
                         }
                         if (item.component == "Layout") {
                             item.component = Layout;
-                          }
-                        router.addRoute(item);
+                        }
                         if(item.children && item.children.length > 0) {
                             item.children.forEach(route => {
                                 //添加子菜单路由
-                                route.icon = "fa " + route.icon + " fa-fw";
-                                router.addRoute(route);
+                                route.icon = "fa " + route.icon + " fa-fw";                            
                                 route.component = loadView(route.component);
+                            
                             });
+                            
                         }
+                        router.addRoute(item);
                     });
-                    commit("SET_ROUTES",routerList);
-                    
+
                 });
             })
         }
@@ -54,10 +54,9 @@ import router, { constantRoutes } from "@/router";
         
     };
 
-export const loadView = view => {
-    // 路由懒加载
-    return resolve => require([`@/views${view}`], resolve);
-};  
+export const loadView = (view: string) => { // 路由懒加载
+    return import(`@/views/${view}`);
+}  
 
 export default {
     namespace: true,

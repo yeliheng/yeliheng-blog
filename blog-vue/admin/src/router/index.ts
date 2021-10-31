@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import Login from '../views/login/Login.vue';
+import Login from '@/views/login/Login.vue';
 import Home from '../views/Home.vue';
 import Layout from '@/layout/index.vue';
 import NotFound from '../views/error/404.vue';
@@ -27,7 +27,7 @@ export const constantRoutes: Array<RouteRecordRaw> = [
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes: constantRoutes
+  routes: constantRoutes,
 })
 
 export default router

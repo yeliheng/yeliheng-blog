@@ -11,13 +11,10 @@
               <Header />
             </el-header>
             <el-main>
-                <!-- Main content -->
-
-                <router-view v-slot="{ Component }">
-                    <transition name="fade" mode="out-in">
-                        <component :is="Component" />
-                    </transition>
-                </router-view>
+            <!-- Main content -->
+            <transition name="fade-transform" mode="out-in">
+                <router-view/>
+            </transition>
             </el-main>
             
       </el-container>
