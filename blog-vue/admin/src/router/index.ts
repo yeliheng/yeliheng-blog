@@ -18,10 +18,6 @@ export const constantRoutes: Array<RouteRecordRaw> = [
     redirect: '/home'
   },
   {
-    path: '/dashboard',
-    component: Home
-  },
-  {
     path: '/:catchAll(.*)',
     name: "404",
     component: NotFound,

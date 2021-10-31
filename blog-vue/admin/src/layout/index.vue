@@ -4,7 +4,7 @@
        <!-- Aside content -->
           <SideBar />
       </el-aside>
-      <el-container :class="main-container">
+      <el-container class="main-container">
           <!-- 导航栏 -->
             <el-header class="nav-header">
               <!-- Header content -->
@@ -12,7 +12,12 @@
             </el-header>
             <el-main>
                 <!-- Main content -->
-                <Home />
+
+                <router-view v-slot="{ Component }">
+                    <transition name="fade" mode="out-in">
+                        <component :is="Component" />
+                    </transition>
+                </router-view>
             </el-main>
             
       </el-container>
@@ -23,12 +28,10 @@
 <script>
 import SideBar from './components/SideBar';
 import Header from './components/Header';
-import Home from '../views/Home';
 export default {
     components: {
         SideBar,
         Header,
-        Home,
     }
 }
 </script>

@@ -1,4 +1,5 @@
 import { getRouters } from "@/api/menu";
+import Layout from '@/layout/index.vue';
 import router, { constantRoutes } from "@/router";
 
    const state = {
@@ -28,6 +29,9 @@ import router, { constantRoutes } from "@/router";
                         if(item.icon != null){
                             item.icon = "fa " + item.icon + " fa-fw";
                         }
+                        if (item.component == "Layout") {
+                            item.component = Layout;
+                          }
                         router.addRoute(item);
                         if(item.children && item.children.length > 0) {
                             item.children.forEach(route => {
