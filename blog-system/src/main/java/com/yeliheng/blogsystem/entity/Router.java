@@ -13,6 +13,8 @@ public class Router {
 
     private String component;
 
+    private String icon;
+
     private String permission;
 
     private List<Router> children;
@@ -39,6 +41,14 @@ public class Router {
 
     public void setComponent(String component) {
         this.component = component;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 
     public String getPermission() {
