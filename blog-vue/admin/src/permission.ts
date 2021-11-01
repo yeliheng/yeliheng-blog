@@ -8,25 +8,25 @@ import { ElMessage } from "element-plus";
 NProgress.configure({showSpinner: false});
 
 const whiteList = ['/login']
-
-router.beforeEach((to,from) =>{
+router.beforeEach((to,from, next) =>{
     NProgress.start();
     if(getToken()){
         //存在Token
        if(to.path === '/login'){
             NProgress.done();
-            return{
+            next({
                 path: '/'
-            };
+            });
 
        }else{
+
            if(store.getters.roles.length === 0){ 
             //获取用户信息
             store.dispatch('GetUserInfo').then(() => {
                 //获取路由信息
                 store.dispatch('GenerateRoutes').then(routes => {
-                    router.addRoute(routes);
-                    return;
+                    router.addRoute(routes);             
+                    next({...to,replace:true});
                 })
             }).catch(error => {
                 store.dispatch('Logout').then(() => {
@@ -39,7 +39,7 @@ router.beforeEach((to,from) =>{
             });
 
            } else {
-                return;
+                next();
            }
        }
     }else{
@@ -48,9 +48,9 @@ router.beforeEach((to,from) =>{
             return;
         }else{
             NProgress.done();
-            return{
+            next({
                 path: '/login'
-            };
+            });
         }
     }
 });

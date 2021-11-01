@@ -42,7 +42,6 @@ import store from '@/store';
 
 export default defineComponent({
   setup() {
-      console.log(store);
     const handleOpen = (key, keyPath) => {
       console.log(key, keyPath)
     } 

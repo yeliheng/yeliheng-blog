@@ -1,5 +1,6 @@
 import { getRouters } from "@/api/menu";
 import Layout from '@/layout/index.vue';
+import NotFound from '@/views/error/404.vue';
 import router, { constantRoutes } from "@/router";
    const state = {
         routes: [],
@@ -23,7 +24,7 @@ import router, { constantRoutes } from "@/router";
             return new Promise(resolve => {
                 getRouters().then(res => {
                     const routerList:any = res.data;
-                    commit("SET_ROUTES",routerList);
+
                     routerList.forEach((item) => {
                         //添加父菜单路由
                         if(item.icon != null){
@@ -41,9 +42,15 @@ import router, { constantRoutes } from "@/router";
                             });
                             
                         }
+                        router.addRoute({
+                            path: '/:catchAll(.*)',
+                            name: "404",
+                            component: NotFound,
+                          });
                         router.addRoute(item);
                     });
-
+                    commit("SET_ROUTES",routerList);
+                    resolve(routerList);
                 });
             })
         }
