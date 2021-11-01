@@ -31,7 +31,6 @@ const actions = {
         const password = userInfo.password;
         return new Promise<void>((resolve,reject) => {
             login(username,password).then((res: any) => {
-                console.log(res);
                 const token:string = res.data.token;
                 setToken(token);
                 commit('SET_TOKEN',token);

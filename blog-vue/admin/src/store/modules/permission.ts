@@ -26,6 +26,7 @@ import router, { constantRoutes } from "@/router";
                     const routerList:any = res.data;
 
                     routerList.forEach((item) => {
+                        
                         //添加父菜单路由
                         if(item.icon != null){
                             item.icon = "fa " + item.icon + " fa-fw";
@@ -33,22 +34,27 @@ import router, { constantRoutes } from "@/router";
                         if (item.component == "Layout") {
                             item.component = Layout;
                         }
+                        
                         if(item.children && item.children.length > 0) {
                             item.children.forEach(route => {
                                 //添加子菜单路由
                                 route.icon = "fa " + route.icon + " fa-fw";                            
                                 route.component = loadView(route.component);
-                            
+                                
                             });
                             
                         }
-                        router.addRoute({
-                            path: '/:catchAll(.*)',
-                            name: "404",
-                            component: NotFound,
-                          });
+
+
+                        
                         router.addRoute(item);
                     });
+                    router.addRoute({
+                        path: '/:catchAll(.*)',
+                        name: "404",
+                        component: NotFound,
+                      });
+                      
                     commit("SET_ROUTES",routerList);
                     resolve(routerList);
                 });

@@ -10,12 +10,15 @@ export const constantRoutes: Array<RouteRecordRaw> = [
     component: Login
   },
   {
-    path: '/home',
-    component: Layout
-  },
-  {
     path: '',
-    redirect: '/home'
+    component: Layout,
+    redirect: 'dashboard',
+    children: [
+      {
+        path: 'dashboard',
+        component: (resolve) => import('@/views/Home.vue'),
+      }
+    ]
   },
   
 ];
