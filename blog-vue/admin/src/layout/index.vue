@@ -12,9 +12,9 @@
             </el-header>
             <el-main>
             <!-- Main content -->
-            <transition name="fade-transform" mode="out-in">
+
                 <router-view/>
-            </transition>
+
             </el-main>
             
       </el-container>

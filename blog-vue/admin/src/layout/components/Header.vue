@@ -1,6 +1,6 @@
 <template>
     <div class="header">
-        <div class="collapse-btn" @click="onCollapse">
+        <div class="collapse-btn" @click="toggleSidebar">
             <i v-if="!collapse" class="el-icon-s-fold"></i>
             <i v-else class="el-icon-s-unfold"></i>
         </div>
@@ -28,11 +28,28 @@
 </template>
 
 <script>
+import {onMounted,computed} from 'vue';
+import { useStore } from 'vuex';
 export default {
+    setup(){
+        const store = useStore();
 
+        const toggleSidebar = () => {
+            store.dispatch('toggleSidebar');
+        }
+
+        
+        const collapse = computed(() => 
+            store.state.app.sidebarCollapse
+        );
+
+        return {
+            toggleSidebar,
+            collapse,
+        }
+    }
 }
 </script>
-
 <style lang="scss" scoped>
     .header{
         position: relative;
@@ -43,6 +60,10 @@ export default {
             margin-right: 0.5rem;
             top: 0.6rem;
             left: 0rem;
+            :hover{
+                cursor: pointer;
+                color: #666666;
+            }
         }
         .welcome{
             position: absolute;

@@ -1,13 +1,15 @@
 <template>
-        <div class="logo-container">
-            <span>YNetwork-后台管理</span>
-        </div>
+
         <el-menu
             class="side-bar-menu"
             @open="handleOpen"
             @close="handleClose"
+            :collapse="collapse"
             router
         >
+            <div class="logo-container">
+                <span>YNetwork-后台管理</span>
+            </div>
             <template v-for="route of this.$store.state.permission.addRoutes">
                 <!-- 二级菜单标题 -->
                 <template v-if="route.name && route.children && !route.hidden">
@@ -37,40 +39,53 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import store from '@/store';
+import { defineComponent,computed } from 'vue'
+import { useStore } from 'vuex';
 
 export default defineComponent({
   setup() {
+      const store = useStore();
     const handleOpen = (key, keyPath) => {
       console.log(key, keyPath)
     } 
     const handleClose = (key, keyPath) => {
       console.log(key, keyPath)
     }
+
+    const collapse = computed(() => 
+        store.state.app.sidebarCollapse
+    );
+    
     return {
       handleOpen,
       handleClose,
+      collapse,
     }
   },
 })
 </script>
 
 <style lang="scss" scoped>
-.logo-container{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.14rem;
-    font-family: Source Han Sans CN;
-    font-weight: bold;
-    color: #666666;
-    opacity: 1;
-    width: 17.14rem;
-    height: 6.86rem;
-}  
-.side-bar-menu{
+
+.side-bar-menu:not(.el-menu--collapse) {
     width: 17.14rem; 
+    .logo-container{  
+        opacity: 1;
+    }
+}
+.logo-container{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.14rem;
+        font-family: Source Han Sans CN;
+        font-weight: bold;
+        color: #666666;
+        opacity: 0;
+        height: 6.86rem;
+        white-space: nowrap;
+    }  
+.side-bar-menu{
     border: 0px;
     i{
         margin-bottom: 0.21rem;
@@ -79,6 +94,7 @@ export default defineComponent({
     }
     
 }
+
 .menu-title{
     color: #666666;
     font-weight: bold;
