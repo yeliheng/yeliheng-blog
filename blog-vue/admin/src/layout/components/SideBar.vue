@@ -1,7 +1,7 @@
 <template>
-
         <el-menu
             class="side-bar-menu"
+            :class="{mobile: isMobile,close: sidebarClosed,}"
             @open="handleOpen"
             @close="handleClose"
             :collapse="collapse"
@@ -36,6 +36,7 @@
                 </template>
             </template>
       </el-menu>
+
 </template>
 
 <script lang="ts">
@@ -55,12 +56,29 @@ export default defineComponent({
     const collapse = computed(() => 
         store.state.app.sidebarCollapse
     );
+    const isMobile = computed(() => 
+        store.state.app.isMobile
+    );
+ 
+    const sidebarClosed = computed(() => store.state.app.sidebarClosed);
 
     let clientWidth:any = ref(document.body.clientWidth);
+    if(clientWidth.value < 650 && !isMobile.value){
+        //手机
+        store.dispatch('toggleMobile');
+    }else if(clientWidth.value > 650 && isMobile.value){
+        //电脑
+        store.dispatch('toggleMobile');
+    }
 
     watch(clientWidth,(newVal:number,oldVal:number) => {
-        if(newVal < 950 && collapse.value === false){
-            store.dispatch('toggleSidebar',true);
+
+        if(newVal < 650 && !isMobile.value){
+            //手机
+            store.dispatch('toggleMobile');
+        }else if(newVal > 650 && isMobile.value){
+            //电脑
+            store.dispatch('toggleMobile');
         }
     });
 
@@ -75,6 +93,8 @@ export default defineComponent({
       handleOpen,
       handleClose,
       collapse,
+      isMobile,
+      sidebarClosed,
     }
   },
 })
@@ -108,6 +128,26 @@ export default defineComponent({
         color: #666666;
     }
     
+}
+.mobile{
+    overflow: auto;
+    z-index: 9999;
+    height: 100%;
+    position: fixed;
+    border: 0px;
+    transition: opacity 0.5s;
+    opacity: 1;
+    i{
+        margin-bottom: 0.21rem;
+        margin-right: 0.8rem;
+        color: #666666;
+    }
+}
+
+.close{
+    transition: all 0.5s;
+    opacity: 0;
+    visibility: collapse;
 }
 
 .menu-title{

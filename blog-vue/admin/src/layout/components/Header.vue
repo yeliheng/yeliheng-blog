@@ -35,8 +35,15 @@ export default {
     setup(){
         const store = useStore();
 
+        const isMobile = computed(() => store.state.app.isMobile);
+
         const toggleSidebar = () => {
-            store.dispatch('toggleSidebar');
+            if(isMobile.value){
+                store.dispatch('openSidebar');
+            }else{
+                store.dispatch('toggleSidebar');
+            }
+            
         }
 
         

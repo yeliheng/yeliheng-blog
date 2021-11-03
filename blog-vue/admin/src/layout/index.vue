@@ -10,7 +10,7 @@
               <!-- Header content -->
               <Header />
             </el-header>
-            <el-main>
+            <el-main @click="closeSidebar">
             <!-- Main content -->
 
                 <router-view/>
@@ -25,7 +25,30 @@
 <script>
 import SideBar from './components/SideBar';
 import Header from './components/Header';
+import { useStore } from 'vuex';
+import {computed} from 'vue';
 export default {
+    setup(){
+    const store = useStore();
+    const closeSidebar = (() => {
+        if(isMobile.value && !sidebarClosed.value){
+            store.dispatch('closeSidebar');
+        }
+    });
+
+    const isMobile = computed(() => 
+        store.state.app.isMobile
+    );
+ 
+    const sidebarClosed = computed(
+        () => store.state.app.sidebarClosed
+    );
+
+    return{
+        closeSidebar,
+    }
+
+    },
     components: {
         SideBar,
         Header,
