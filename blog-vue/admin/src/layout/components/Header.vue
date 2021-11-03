@@ -8,13 +8,14 @@
             欢迎 👏🏻
         </div>
         <div class="header-right">
+
+        <el-dropdown class="user-name" trigger="click" @command="handleCommand">
             <div class="user-avater">
                 <img src="../../assets/images/avater.jpg"/>
-            </div> 
-        <el-dropdown class="user-name" trigger="click" @command="handleCommand">
-            <span class="el-dropdown-link">
-                {{username}}
                 <i class="el-icon-caret-bottom"></i>
+            </div> 
+            <span class="el-dropdown-link">
+                {{username}}        
             </span>
             <template #dropdown>
                 <el-dropdown-menu>
@@ -42,6 +43,7 @@ export default {
         const collapse = computed(() => 
             store.state.app.sidebarCollapse
         );
+
 
         return {
             toggleSidebar,
@@ -79,6 +81,9 @@ export default {
             justify-content: center;
             align-items: center;
             .user-avater{
+                :hover{
+                    cursor: pointer;
+                }
                 img{
                     margin-top: 0.35rem;
                     margin-right: 0.25rem;
@@ -88,5 +93,7 @@ export default {
                 }   
             }
         }
+        
+
     }
 </style>

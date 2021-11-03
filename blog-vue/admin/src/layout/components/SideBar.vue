@@ -39,12 +39,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent,computed } from 'vue'
+import { defineComponent,computed,watch,onMounted,ref } from 'vue'
 import { useStore } from 'vuex';
 
 export default defineComponent({
   setup() {
-      const store = useStore();
+    const store = useStore();
     const handleOpen = (key, keyPath) => {
       console.log(key, keyPath)
     } 
@@ -55,6 +55,21 @@ export default defineComponent({
     const collapse = computed(() => 
         store.state.app.sidebarCollapse
     );
+
+    let clientWidth:any = ref(document.body.clientWidth);
+
+    watch(clientWidth,(newVal:number,oldVal:number) => {
+        if(newVal < 950 && collapse.value === false){
+            store.dispatch('toggleSidebar',true);
+        }
+    });
+
+    onMounted(() => {
+        
+        window.onresize = () => {
+            clientWidth.value = document.body.clientWidth;
+        }
+    })
     
     return {
       handleOpen,

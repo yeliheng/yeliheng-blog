@@ -66,7 +66,6 @@ import router, { constantRoutes } from "@/router";
     const getters = {
         
     };
-
 export const loadView = (view: string) => { // 路由懒加载
     return import(`@/views/${view}`);
 }  
