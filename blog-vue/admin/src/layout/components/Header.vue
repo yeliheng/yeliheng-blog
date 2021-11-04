@@ -29,11 +29,17 @@
 </template>
 
 <script>
-import {onMounted,computed} from 'vue';
+import { onMounted,computed } from 'vue';
 import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
+import Cookies from 'js-cookie';
+import { logout } from '@/api/login';
 export default {
     setup(){
         const store = useStore();
+
+        const router = useRouter();
+    
 
         const isMobile = computed(() => store.state.app.isMobile);
 
@@ -51,10 +57,21 @@ export default {
             store.state.app.sidebarCollapse
         );
 
+        const handleCommand = (command) => {
+            if(command == "logout"){
+               logout().then(() => {
+                   store.dispatch('Logout').then(() => {
+                       router.push('/login');
+                   });
+               });
+            }
+        }
+
 
         return {
             toggleSidebar,
             collapse,
+            handleCommand,
         }
     }
 }
