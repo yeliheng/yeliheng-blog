@@ -1,5 +1,5 @@
 <template>
-
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
       <div class="login-card">
         <div class="title-container">
           <span class="card-title">YNetwork 管理系统登录</span>
