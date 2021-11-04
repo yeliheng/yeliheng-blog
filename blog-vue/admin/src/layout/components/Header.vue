@@ -59,11 +59,11 @@ export default {
 
         const handleCommand = (command) => {
             if(command == "logout"){
-               logout().then(() => {
-                   store.dispatch('Logout').then(() => {
-                       router.push('/login');
-                   });
-               });
+                store.dispatch('Logout').then(() => {
+                    router.push('/login');
+                }).catch(() => {
+                    Promise.reject();
+                });
             }
         }
 
