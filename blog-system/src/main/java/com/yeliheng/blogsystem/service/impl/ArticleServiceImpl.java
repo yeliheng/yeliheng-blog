@@ -104,7 +104,7 @@ public class ArticleServiceImpl implements IArticleService {
     @Override
     public Article getArticleById(Long articleId) {
         Article article = articleMapper.selectByPrimaryKey(articleId);
-        if(article == null || article.getVisible() != 1)
+        if(article == null || !article.getVisible().equals("1"))
             throw new NotFoundException("文章不存在");
         return article;
     }

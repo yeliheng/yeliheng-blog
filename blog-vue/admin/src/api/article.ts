@@ -1,16 +1,12 @@
 import request from '@/utils/request';
+import { IArticle } from '@/interface/IArticle';
 
-export function addArticle(title:string, content:string, tagIds: number[]){
-    const data = {
-        title,
-        content,
-        tagIds,
-    };
+export function addArticle(article: IArticle){
 
     return request({
         url: '/articles',
         method: 'post',
-        data: data
+        data: article
     });
 }
 
