@@ -14,9 +14,6 @@
                 <img src="../../assets/images/avater.jpg"/>
                 <i class="el-icon-caret-bottom"></i>
             </div> 
-            <span class="el-dropdown-link">
-                {{username}}        
-            </span>
             <template #dropdown>
                 <el-dropdown-menu>
                     <el-dropdown-item command="user">个人中心</el-dropdown-item>

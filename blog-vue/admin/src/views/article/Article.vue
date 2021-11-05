@@ -1,7 +1,7 @@
 <template>
     <div class="article-container">
         <div class="article-btn">
-            <el-button class="publish-btn" type="primary" size="default">保存并发布</el-button>
+            <el-button class="publish-btn" type="primary">保存并发布</el-button>
         </div>
         <div class="article-header">
             <div class="line"></div>
@@ -10,32 +10,32 @@
 
 
         <div class="article-content">
-            <el-input class="title" placeholder="请输入标题" size="normal"></el-input>
-            <v-md-editor v-model="text" placeholder="正文" height="400px"></v-md-editor>
+            <el-input class="title" placeholder="请输入标题"></el-input>
+            <v-md-editor placeholder="正文" height="400px"></v-md-editor>
         </div>
         <div class="article-footer">
             <div class="category">
                 <span>分类:</span>
-                    <el-select class="category-select" v-model="value" clearable placeholder="选择一个分类">
+                    <el-select class="category-select" v-model="categories.categoryName" clearable placeholder="选择一个分类">
                         <el-option
-                        v-for="item in options"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value"
+                        v-for="item in categories"
+                        :key="item.id"
+                        :label="item.categoryName"
+                        :value="item.id"
                         >
                         </el-option>
                     </el-select> 
             </div>
             <div class="tag">
                 <span>标签:</span>
-                <el-select class="tag-select" v-model="tag" multiple placeholder="选择标签">
-                        <el-option
-                        v-for="item in optionsMultiple"
-                        :key="item.tag"
-                        :label="item.label"
-                        :value="item.tag"
-                        >
-                        </el-option>
+                <el-select class="tag-select" v-model="tags.tagName" multiple placeholder="选择标签">
+                    <el-option
+                        v-for="item in tags"
+                        :key="item.id"
+                        :label="item.tagName"
+                        :value="item.id"
+                    >
+                    </el-option>
                 </el-select> 
             </div>
             
@@ -45,57 +45,25 @@
 
 <script>
 import { ref } from 'vue';
+import { getCategories,getTags } from '@/api/article';
 export default {
 setup() {
+    let categories = ref([]);
+    let tags = ref([]);
+    getCategories().then((data) => {
+        categories.value = data.data;
+    });
+    
+    getTags().then((data) => {
+        tags.value = data.data;
+    });
+
     return {
-      options: ref([
-        {
-          value: 'Option1',
-          label: '原创',
-        },
-        {
-          value: 'Option2',
-          label: '编程开发',
-        },
-        {
-          value: 'Option3',
-          label: 'Java',
-        },
-        {
-          value: 'Option4',
-          label: 'VR',
-        },
-        {
-          value: 'Option5',
-          label: 'Unity',
-        },
-      ]),
-      optionsMultiple: ref([
-        {
-          tag: 'Option1',
-          label: '原创',
-        },
-        {
-          tag: 'Option2',
-          label: '编程开发',
-        },
-        {
-          tag: 'Option3',
-          label: 'Java',
-        },
-        {
-          tag: 'Option4',
-          label: 'VR',
-        },
-        {
-          tag: 'Option5',
-          label: 'Unity',
-        },
-      ]),
-      value: ref(''),
-      tag: ref(''),
+        categories,
+        tags,
     }
-  },
+      
+    }
 }
 </script>
 
