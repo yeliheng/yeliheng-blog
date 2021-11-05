@@ -9,7 +9,7 @@ import java.util.Set;
 
 public class LoginUser implements UserDetails {
 
-    private Long userId;
+    //private Long userId;
 
     private User user;
 
@@ -85,13 +85,13 @@ public class LoginUser implements UserDetails {
     }
 
 
-    public Long getUserId() {
+/*    public Long getUserId() {
         return userId;
     }
 
     public void setUserId(Long userId) {
         this.userId = userId;
-    }
+    }*/
 
     public User getUser() {
         return user;

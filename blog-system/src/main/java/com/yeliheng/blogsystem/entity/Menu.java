@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Menu {
 
@@ -20,7 +22,9 @@ public class Menu {
 
     private Integer orderNum;
 
-    private String url;
+    private String path;
+
+    private String component;
 
     private Integer visible;
 
@@ -33,6 +37,10 @@ public class Menu {
 
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updatedAt;
+
+
+    /** 子菜单 */
+    private List<Menu> children = new ArrayList<Menu>();
 
     public Long getId() {
         return id;
@@ -74,12 +82,20 @@ public class Menu {
         this.orderNum = orderNum;
     }
 
-    public String getUrl() {
-        return url;
+    public String getPath() {
+        return path;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public String getComponent() {
+        return component;
+    }
+
+    public void setComponent(String component) {
+        this.component = component;
     }
 
     public Integer getVisible() {
@@ -120,5 +136,13 @@ public class Menu {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public List<Menu> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<Menu> children) {
+        this.children = children;
     }
 }

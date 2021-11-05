@@ -2,6 +2,7 @@ package com.yeliheng.blogsystem.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
 
 import javax.validation.constraints.NotBlank;
@@ -46,19 +47,7 @@ public class User implements Serializable {
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updatedAt;
 
-    public User(){}
 
-    public User(User user){
-        this.user = user;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 
     public Long getId() {
         return id;
@@ -75,7 +64,9 @@ public class User implements Serializable {
     public void setUsername(String username) {
         this.username = username;
     }
-
+    
+    @JsonIgnore
+    @JsonProperty
     public String getPassword() {
         return password;
     }

@@ -1,6 +1,7 @@
 package com.yeliheng.blogsystem.service.impl;
 
 import com.yeliheng.blogsystem.entity.Menu;
+import com.yeliheng.blogsystem.entity.Router;
 import com.yeliheng.blogsystem.exception.GeneralException;
 import com.yeliheng.blogsystem.exception.InternalServerException;
 import com.yeliheng.blogsystem.mapper.MenuMapper;
@@ -11,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.util.StringUtil;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class MenuServiceImpl implements IMenuService {
@@ -86,4 +84,100 @@ public class MenuServiceImpl implements IMenuService {
         }
         return permsSet;
     }
+
+    /**
+     * 通过用户id获取菜单列表
+     *
+     * @param userId
+     * @return
+     */
+    @Override
+    public List<Menu> getMenusByUserId(Long userId) {
+        List<Menu> menuList = null;
+        if(userId == 1){
+            menuList = menuMapper.getMenus();
+        }else {
+            menuList = menuMapper.getMenusByUserId(userId);
+        }
+        return getChildPerms(menuList,0);
+    }
+
+    public List<Menu> getChildPerms(List<Menu> list,int parentId){
+        List<Menu> treeList = new ArrayList<>();
+        for (Iterator<Menu> iterator = list.iterator(); iterator.hasNext();){
+            Menu t = iterator.next();
+            if(t.getParentId() == parentId){
+                recursionFn(list,t);
+                treeList.add(t);
+            }
+        }
+        return treeList;
+    }
+
+    /**
+     * 递归列表
+     *
+     * @param list
+     * @param t
+     */
+    private void recursionFn(List<Menu> list, Menu t)
+    {
+        // 得到子节点列表
+        List<Menu> childList = getChildList(list, t);
+        t.setChildren(childList);
+        for (Menu tChild : childList)
+        {
+            if (hasChild(list, tChild))
+            {
+                recursionFn(list, tChild);
+            }
+        }
+    }
+
+    /**
+     * 得到子节点列表
+     */
+    private List<Menu> getChildList(List<Menu> list, Menu t)
+    {
+        List<Menu> tlist = new ArrayList<>();
+        Iterator<Menu> it = list.iterator();
+        while (it.hasNext())
+        {
+            Menu n = it.next();
+            if (n.getParentId().longValue() == t.getId().longValue())
+            {
+                tlist.add(n);
+            }
+        }
+        return tlist;
+    }
+
+    /**
+     * 判断是否有子节点
+     */
+    private boolean hasChild(List<Menu> list, Menu t)
+    {
+        return getChildList(list, t).size() > 0;
+    }
+
+
+    public List<Router> buildMenus(List<Menu> menuList){
+        List<Router> routerList = new LinkedList<>();
+        for(Menu menu : menuList){
+            Router router = new Router();
+            router.setName(menu.getMenuName());
+            router.setPath(menu.getPath());
+            router.setComponent(menu.getComponent());
+            router.setIcon(menu.getIcon());
+            router.setPermission(menu.getPermission());
+            List<Menu> childMenus = menu.getChildren();
+            if(!childMenus.isEmpty()){
+                router.setChildren(buildMenus(childMenus));
+            }
+
+            routerList.add(router);
+        }
+        return routerList;
+    }
+
 }

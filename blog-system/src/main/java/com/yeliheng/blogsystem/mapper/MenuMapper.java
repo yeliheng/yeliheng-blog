@@ -12,4 +12,8 @@ public interface MenuMapper extends Mapper<Menu> {
     int updateMenu(Menu menu);
 
     List<String> getMenuPermissionByUserId(Long userId);
+
+    List<Menu> getMenusByUserId(Long userId);
+
+    List<Menu> getMenus();
 }

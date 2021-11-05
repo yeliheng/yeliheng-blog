@@ -26,7 +26,7 @@ public class Article {
 
     private String url;
 
-    private Integer visible;
+    private String visible;
 
     private Long[] tagIds;
 
@@ -93,11 +93,11 @@ public class Article {
         this.url = url;
     }
 
-    public Integer getVisible() {
+    public String getVisible() {
         return visible;
     }
 
-    public void setVisible(Integer visible) {
+    public void setVisible(String visible) {
         this.visible = visible;
     }
 
