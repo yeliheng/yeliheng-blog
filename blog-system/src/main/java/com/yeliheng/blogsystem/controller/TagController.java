@@ -36,7 +36,10 @@ public class TagController {
     }
 
     @GetMapping()
-    public CommonResponse<List<Tag>> getCategories(){
-        return CommonResponse.success(tagService.getTags());
+    public CommonResponse<Object> getTags(@RequestParam(value = "page",required = false) Integer page,
+                                             @RequestParam(value = "pageSize",required = false) Integer pageSize){
+        if(StringUtils.isNull(page) || StringUtils.isNull(pageSize))
+            return CommonResponse.success(tagService.getTags());
+        else return CommonResponse.success(tagService.getTagsPaged(page,pageSize));
     }
 }

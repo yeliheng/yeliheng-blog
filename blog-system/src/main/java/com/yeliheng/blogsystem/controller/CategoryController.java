@@ -1,8 +1,10 @@
 package com.yeliheng.blogsystem.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.yeliheng.blogsystem.common.CommonResponse;
 import com.yeliheng.blogsystem.entity.Category;
 import com.yeliheng.blogsystem.service.ICategoryService;
+import com.yeliheng.blogsystem.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +37,11 @@ public class CategoryController {
     }
 
     @GetMapping()
-    public CommonResponse<List<Category>> getCategories(){
-        return CommonResponse.success(categoryService.getCategories());
+    public CommonResponse<Object> getCategories(@RequestParam(value = "page",required = false) Integer page,
+                                                @RequestParam(value = "pageSize",required = false) Integer pageSize){
+        if(StringUtils.isNull(page) || StringUtils.isNull(pageSize))
+             return CommonResponse.success(categoryService.getCategories());
+        else return CommonResponse.success(categoryService.getCategoriesPaged(page,pageSize));
     }
+
 }

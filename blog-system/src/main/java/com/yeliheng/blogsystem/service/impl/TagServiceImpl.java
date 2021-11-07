@@ -1,5 +1,7 @@
 package com.yeliheng.blogsystem.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.yeliheng.blogsystem.entity.AritcleTag;
 import com.yeliheng.blogsystem.entity.Tag;
 import com.yeliheng.blogsystem.exception.GeneralException;
@@ -63,6 +65,20 @@ public class TagServiceImpl implements ITagService {
     @Override
     public List<Tag> getTags() {
         return tagMapper.selectAll();
+    }
+
+    /**
+     * 获取分页后的标签
+     *
+     * @param page     第几页
+     * @param pageSize 每页显示多少
+     * @return 标签列表带分页
+     */
+    @Override
+    public PageInfo<Tag> getTagsPaged(Integer page, Integer pageSize) {
+        PageHelper.startPage(page,pageSize);
+        List<Tag> tagList = tagMapper.selectAll();
+        return new PageInfo<>(tagList);
     }
 
 

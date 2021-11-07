@@ -59,10 +59,12 @@ public class ArticleController {
      * 获取所有文章
      * @param page 当前页
      * @param pageSize 一页多少
-     * @return
+     * @return 文章列表
      */
     @GetMapping()
-    public CommonResponse<Object> getArticles(@RequestParam("page") Integer page,@RequestParam("pageSize") Integer pageSize){
+    public CommonResponse<Object> getArticles(
+            @RequestParam(value = "page",defaultValue = "1") Integer page,
+            @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize){
         return CommonResponse.success(articleService.getArticles(page,pageSize));
     }
 
@@ -77,7 +79,8 @@ public class ArticleController {
     @GetMapping("/category")
     public CommonResponse<Object> getArticlesByCategoryId(
             @RequestParam("categoryId") Long categoryId,
-            @RequestParam("page") Integer page,@RequestParam("pageSize") Integer pageSize){
+            @RequestParam(value = "page",defaultValue = "1") Integer page,
+            @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize){
         return CommonResponse.success(articleService.getArticlesByCategory(categoryId,page,pageSize));
     }
 

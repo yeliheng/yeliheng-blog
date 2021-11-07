@@ -1,5 +1,6 @@
 package com.yeliheng.blogsystem.service;
 
+import com.github.pagehelper.PageInfo;
 import com.yeliheng.blogsystem.entity.Category;
 
 import java.util.List;
@@ -34,6 +35,16 @@ public interface ICategoryService {
      * @return 分类实体列表
      */
     List<Category> getCategories();
+
+    /**
+     *
+     * 获取所有分类(分页)
+     * @param page 第几页
+     * @param pageSize 每页显示多少
+     * @return 分类列表带分页
+     */
+    PageInfo<Category> getCategoriesPaged(Integer page, Integer pageSize);
+
 
 
 }

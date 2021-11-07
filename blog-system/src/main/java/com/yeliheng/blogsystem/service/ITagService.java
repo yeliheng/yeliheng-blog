@@ -1,5 +1,6 @@
 package com.yeliheng.blogsystem.service;
 
+import com.github.pagehelper.PageInfo;
 import com.yeliheng.blogsystem.entity.AritcleTag;
 import com.yeliheng.blogsystem.entity.Tag;
 
@@ -34,5 +35,15 @@ public interface ITagService {
      * @return 标签列表
      */
     List<Tag> getTags();
+
+
+    /**
+     *
+     * 获取分页后的标签
+     * @param page 第几页
+     * @param pageSize 每页显示多少
+     * @return 标签列表带分页
+     */
+    PageInfo<Tag> getTagsPaged(Integer page,Integer pageSize);
 
 }
