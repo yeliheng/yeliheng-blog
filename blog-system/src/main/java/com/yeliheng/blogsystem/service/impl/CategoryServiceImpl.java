@@ -63,8 +63,8 @@ public class CategoryServiceImpl implements ICategoryService {
      * @return 分类实体列表
      */
     @Override
-    public List<Category> getCategories() {
-        return categoryMapper.selectAll();
+    public List<Category> getCategories(Category category) {
+        return categoryMapper.selectCategoryList(category);
     }
 
     /**
@@ -75,9 +75,9 @@ public class CategoryServiceImpl implements ICategoryService {
      * @return 分类列表带分页
      */
     @Override
-    public PageInfo<Category> getCategoriesPaged(Integer page, Integer pageSize) {
+    public PageInfo<Category> getCategoriesPaged(Integer page, Integer pageSize,Category category) {
         PageHelper.startPage(page,pageSize);
-        List<Category> categoryList = categoryMapper.selectAll();
+        List<Category> categoryList = categoryMapper.selectCategoryList(category);
         return new PageInfo<>(categoryList);
     }
 

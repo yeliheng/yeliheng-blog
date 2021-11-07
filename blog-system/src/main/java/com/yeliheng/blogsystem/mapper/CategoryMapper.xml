@@ -25,7 +25,15 @@
         </set>
         where id = #{id}
     </update>
+
     <select id="checkIfExistArticle" parameterType="Long" resultType="int">
         select count(1) from article where category_id = #{category_id}
+    </select>
+
+    <select id="selectCategoryList" parameterType="Category" resultType="Category">
+        select * from category
+        <if test="categoryName != null and categoryName != ''">
+            where category_name like concat('%', #{categoryName}, '%')
+        </if>
     </select>
 </mapper>

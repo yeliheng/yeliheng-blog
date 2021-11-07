@@ -34,7 +34,7 @@ public interface ICategoryService {
      * 获取所有分类
      * @return 分类实体列表
      */
-    List<Category> getCategories();
+    List<Category> getCategories(Category category);
 
     /**
      *
@@ -43,7 +43,7 @@ public interface ICategoryService {
      * @param pageSize 每页显示多少
      * @return 分类列表带分页
      */
-    PageInfo<Category> getCategoriesPaged(Integer page, Integer pageSize);
+    PageInfo<Category> getCategoriesPaged(Integer page, Integer pageSize,Category category);
 
 
 

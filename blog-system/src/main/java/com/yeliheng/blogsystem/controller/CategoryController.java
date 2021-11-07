@@ -38,10 +38,10 @@ public class CategoryController {
 
     @GetMapping()
     public CommonResponse<Object> getCategories(@RequestParam(value = "page",required = false) Integer page,
-                                                @RequestParam(value = "pageSize",required = false) Integer pageSize){
+                                                @RequestParam(value = "pageSize",required = false) Integer pageSize,Category category){
         if(StringUtils.isNull(page) || StringUtils.isNull(pageSize))
-             return CommonResponse.success(categoryService.getCategories());
-        else return CommonResponse.success(categoryService.getCategoriesPaged(page,pageSize));
+             return CommonResponse.success(categoryService.getCategories(category));
+        else return CommonResponse.success(categoryService.getCategoriesPaged(page,pageSize,category));
     }
 
 }
