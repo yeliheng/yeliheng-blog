@@ -34,7 +34,7 @@ public interface ITagService {
      * 获取所有标签
      * @return 标签列表
      */
-    List<Tag> getTags();
+    List<Tag> getTags(Tag tag);
 
 
     /**
@@ -44,6 +44,6 @@ public interface ITagService {
      * @param pageSize 每页显示多少
      * @return 标签列表带分页
      */
-    PageInfo<Tag> getTagsPaged(Integer page,Integer pageSize);
+    PageInfo<Tag> getTagsPaged(Integer page,Integer pageSize,Tag tag);
 
 }

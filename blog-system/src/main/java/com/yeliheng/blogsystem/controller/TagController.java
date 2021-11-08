@@ -37,9 +37,9 @@ public class TagController {
 
     @GetMapping()
     public CommonResponse<Object> getTags(@RequestParam(value = "page",required = false) Integer page,
-                                             @RequestParam(value = "pageSize",required = false) Integer pageSize){
+                                             @RequestParam(value = "pageSize",required = false) Integer pageSize,Tag tag){
         if(StringUtils.isNull(page) || StringUtils.isNull(pageSize))
-            return CommonResponse.success(tagService.getTags());
-        else return CommonResponse.success(tagService.getTagsPaged(page,pageSize));
+            return CommonResponse.success(tagService.getTags(tag));
+        else return CommonResponse.success(tagService.getTagsPaged(page,pageSize,tag));
     }
 }

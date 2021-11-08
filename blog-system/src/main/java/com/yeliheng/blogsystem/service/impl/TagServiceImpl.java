@@ -63,8 +63,8 @@ public class TagServiceImpl implements ITagService {
      * @return 标签列表
      */
     @Override
-    public List<Tag> getTags() {
-        return tagMapper.selectAll();
+    public List<Tag> getTags(Tag tag) {
+        return tagMapper.selectTagList(tag);
     }
 
     /**
@@ -75,9 +75,9 @@ public class TagServiceImpl implements ITagService {
      * @return 标签列表带分页
      */
     @Override
-    public PageInfo<Tag> getTagsPaged(Integer page, Integer pageSize) {
+    public PageInfo<Tag> getTagsPaged(Integer page, Integer pageSize,Tag tag) {
         PageHelper.startPage(page,pageSize);
-        List<Tag> tagList = tagMapper.selectAll();
+        List<Tag> tagList = tagMapper.selectTagList(tag);
         return new PageInfo<>(tagList);
     }
 

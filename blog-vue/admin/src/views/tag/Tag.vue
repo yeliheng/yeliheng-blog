@@ -1,24 +1,24 @@
 <template>
-  <div class="category-container">
-    <div class="category-header">
+  <div class="tag-container">
+    <div class="tag-header">
       <div class="line"></div>
-      <span>分类管理</span>
+      <span>标签管理</span>
     </div>
-    <div class="category-body">
-      <div class="category-btns">
-         <el-button type="primary" @click="handleAddClick" style="margin-right:1rem">新增分类</el-button>
+    <div class="tag-body">
+      <div class="tag-btns">
+         <el-button type="primary" @click="handleAddClick" style="margin-right:1rem">新增标签</el-button>
          <el-input
           v-model="searchText"
           prefix-icon="el-icon-search"
-          placeholder="输入分类名"
+          placeholder="输入标签名"
           style="width:15rem;margin-start: auto;"
-          @keyup.enter="searchCategories"
+          @keyup.enter="searchTags"
         />
         <el-button
           type="primary"
           icon="el-icon-search"
           style="margin-left:1rem"
-          @click="searchCategories"
+          @click="searchTags"
         >
           搜索
         </el-button>
@@ -31,13 +31,13 @@
       
       >
         <el-table-column type="selection" width="55" />
-        <el-table-column property="id" label="分类编号" width="120" align="center" />
-        <el-table-column property="categoryName" label="分类名称" width="200" align="center"/>
+        <el-table-column property="id" label="标签编号" width="120" align="center" />
+        <el-table-column property="tagName" label="标签名称" width="200" align="center"/>
         <el-table-column property="createdAt" label="创建时间" align="center"/>
         <el-table-column label="操作" align="center">
           <template #default="scope">
             <el-button type="text" size="mini" icon="fa fa-edit" @click="handleEditClick(scope.row)">编辑</el-button>
-            <el-popconfirm title="确定删除该分类? " @confirm="handleDelCategory(scope.row.id)">
+            <el-popconfirm title="确定删除该标签? " @confirm="handleDelTag(scope.row.id)">
             <template #reference>
               <el-button type="text" size="mini" style="color: #ff8989;" icon="fa fa-trash">删除</el-button>
             </template>
@@ -46,7 +46,7 @@
         </el-table-column>
       </el-table>
     </div>
-    <div class="category-footer">
+    <div class="tag-footer">
        <!-- 分页 -->
       <el-pagination
         class="pagination-nav"
@@ -61,41 +61,41 @@
       >
       </el-pagination>
     </div>
-    <!-- 新增分类对话框 -->
+    <!-- 新增标签对话框 -->
     <el-dialog
-      title="新增分类"
+      title="新增标签"
       v-model="dialogFormVisible"
       width="25rem"
       >
-      <el-form :model="categoryForm">
-          <el-form-item label="分类名称" required>
-            <el-input v-model="categoryForm.categoryName"/>
+      <el-form :model="tagForm">
+          <el-form-item label="标签名称" required>
+            <el-input v-model="tagForm.tagName"/>
           </el-form-item>
       </el-form>
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取消</el-button>
-        <el-button type="primary" @click="handleAddCategory" :loading="btnLoading"
+        <el-button type="primary" @click="handleAddTag" :loading="btnLoading"
           >确认</el-button
         >
       </span>
     </template>
     </el-dialog>
-     <!-- 编辑分类对话框 -->
+     <!-- 编辑标签对话框 -->
     <el-dialog
-      title="编辑分类"
+      title="编辑标签"
       v-model="editDialogFormVisible"
       width="25rem"
       >
-      <el-form :model="categoryForm">
-          <el-form-item label="分类名称" required>
-            <el-input v-model="categoryForm.categoryName"/>
+      <el-form :model="tagForm">
+          <el-form-item label="标签名称" required>
+            <el-input v-model="tagForm.tagName"/>
           </el-form-item>
       </el-form>
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="editDialogFormVisible = false">取消</el-button>
-        <el-button type="primary" @click="handleEditCategory" :loading="btnLoading"
+        <el-button type="primary" @click="handleEditTag" :loading="btnLoading"
           >确认</el-button
         >
       </span>
@@ -106,7 +106,7 @@
 </template>
 
 <script lang="ts">
-import { addCategory, deleteCategory, getCategories, updateCategory } from '@/api/category';
+import { addTag, deleteTag, getTags, updateTag } from '@/api/tag';
 import { ref } from 'vue';
 import { useStore } from 'vuex';
 import { ElMessage } from 'element-plus';
@@ -127,8 +127,8 @@ export default {
       
       const btnLoading = ref(false);
 
-      const categoryForm = ref({
-          categoryName: '',
+      const tagForm = ref({
+          tagName: '',
           id: 0,
       });
 
@@ -140,7 +140,7 @@ export default {
 
       table.value.isMobile = store.state.app.isMobile;
       
-     getCategories({page: table.value.page,pageSize: table.value.pageSize}).then((res: any) => {
+     getTags({page: table.value.page,pageSize: table.value.pageSize}).then((res: any) => {
         table.value.total = res.data.total;
         table.value.data = res.data.list;
         table.value.loading = false;
@@ -149,7 +149,7 @@ export default {
     const handleSizeChange = (pageSize) => {
         table.value.loading = true;
         table.value.pageSize = pageSize;
-        getCategories({page: table.value.page,pageSize: table.value.pageSize}).then((res: any) => {
+        getTags({page: table.value.page,pageSize: table.value.pageSize}).then((res: any) => {
           table.value.total = res.data.total;
           table.value.data = res.data.list;
           table.value.loading = false;
@@ -159,7 +159,7 @@ export default {
     const handleCurrentChange = (page) => {
         table.value.loading = true;
         table.value.page = page;
-        getCategories({page: table.value.page,pageSize: table.value.pageSize}).then((res: any) => {
+        getTags({page: table.value.page,pageSize: table.value.pageSize}).then((res: any) => {
           table.value.total = res.data.total;
           table.value.data = res.data.list;
           table.value.loading = false;
@@ -167,37 +167,37 @@ export default {
     }
 
     const handleAddClick = () => {
-        categoryForm.value.categoryName = "";
+        tagForm.value.tagName = "";
         dialogFormVisible.value = true;
     }
 
     const handleEditClick = (row) => {
-        categoryForm.value.categoryName = row.categoryName;
-        categoryForm.value.id = row.id;
+        tagForm.value.tagName = row.tagName;
+        tagForm.value.id = row.id;
         editDialogFormVisible.value = true;
     }
 
-    const handleAddCategory = () => {
-      if(categoryForm.value.categoryName.trim() == ""){
+    const handleAddTag = () => {
+      if(tagForm.value.tagName.trim() == ""){
         ElMessage({
-          message: '分类名称不能为空!',
+          message: '标签名称不能为空!',
           type: 'error',
         });
         return;
       }else{
         dialogFormVisible.value = false;
         btnLoading.value = true;
-        addCategory(categoryForm.value.categoryName).then((res) => {
+        addTag(tagForm.value.tagName).then((res) => {
           btnLoading.value = false;
           if(res.data){
             table.value.loading = true;
-            getCategories({page: table.value.page,pageSize: table.value.pageSize}).then((res: any) => {
+            getTags({page: table.value.page,pageSize: table.value.pageSize}).then((res: any) => {
               table.value.total = res.data.total;
               table.value.data = res.data.list;
               table.value.loading = false;
             });
             ElMessage({
-              message: '添加分类成功!',
+              message: '添加标签成功!',
               type: 'success',
             });
 
@@ -208,42 +208,42 @@ export default {
     }
 
 
-    const handleEditCategory = () => {
-      if(categoryForm.value.categoryName.trim() == ""){
+    const handleEditTag = () => {
+      if(tagForm.value.tagName.trim() == ""){
         ElMessage({
-          message: '分类名称不能为空!',
+          message: '标签名称不能为空!',
           type: 'error',
         });
         return;
       }else{
         editDialogFormVisible.value = false;
         btnLoading.value = true;
-        updateCategory(categoryForm.value.id,categoryForm.value.categoryName).then((res) => {
+        updateTag(tagForm.value.id,tagForm.value.tagName).then((res) => {
           btnLoading.value = false;
           if(res.data){
             table.value.loading = true;
-            getCategories({page: table.value.page,pageSize: table.value.pageSize}).then((res: any) => {
+            getTags({page: table.value.page,pageSize: table.value.pageSize}).then((res: any) => {
               table.value.total = res.data.total;
               table.value.data = res.data.list;
               table.value.loading = false;
             });
             ElMessage({
-              message: '修改分类成功!',
+              message: '修改标签成功!',
               type: 'success',
             });
-            categoryForm.value.categoryName = "";
+
           }
           
         });
       }
     }
 
-    const handleDelCategory = (id) => {
-        deleteCategory(id).then((res) => {
+    const handleDelTag = (id) => {
+        deleteTag(id).then((res) => {
             if(res.data) {
               ElMessage.success("删除成功!");
               table.value.loading = true;
-              getCategories({page: table.value.page,pageSize: table.value.pageSize}).then((res: any) => {
+              getTags({page: table.value.page,pageSize: table.value.pageSize}).then((res: any) => {
                 table.value.total = res.data.total;
                 table.value.data = res.data.list;
                 table.value.loading = false;
@@ -253,11 +253,11 @@ export default {
         });
     }
 
-    const searchCategories = () => {
+    const searchTags = () => {
         if(searchText.value.trim() != ""){
           resetSearch = false;
           table.value.loading = true;
-          getCategories({page: table.value.page,pageSize: table.value.pageSize,categoryName: searchText.value}).then((res: any) => {
+          getTags({page: table.value.page,pageSize: table.value.pageSize,tagName: searchText.value}).then((res: any) => {
           table.value.total = res.data.total;
           table.value.data = res.data.list;
           table.value.loading = false;
@@ -265,7 +265,7 @@ export default {
 
         }else if(!resetSearch){
           table.value.loading = true;
-          getCategories({page: table.value.page,pageSize: table.value.pageSize,categoryName: searchText.value}).then((res: any) => {
+          getTags({page: table.value.page,pageSize: table.value.pageSize,tagName: searchText.value}).then((res: any) => {
             table.value.total = res.data.total;
             table.value.data = res.data.list;
             table.value.loading = false;
@@ -282,13 +282,13 @@ export default {
         handleAddClick,
         dialogFormVisible,
         editDialogFormVisible,
-        categoryForm,
-        handleAddCategory,
-        handleDelCategory,
-        handleEditCategory,
+        tagForm,
+        handleAddTag,
+        handleDelTag,
+        handleEditTag,
         btnLoading,
         handleEditClick,
-        searchCategories,
+        searchTags,
         searchText,
       }
     }
@@ -297,7 +297,7 @@ export default {
 
 <style lang="scss" scoped>
 
-.category-header{
+.tag-header{
     display: flex;
     margin-bottom: 1rem;
     >span{
@@ -311,7 +311,7 @@ export default {
     height: 2rem;
     background: #666666;
 }
-.category-footer{
+.tag-footer{
   display: flex;
   justify-content: flex-end;
   .pagination-nav{
@@ -319,7 +319,7 @@ export default {
   }
 }
 
-.category-btns{
+.tag-btns{
   display: flex;
   justify-content: flex-end;
   margin-bottom: 1rem;
