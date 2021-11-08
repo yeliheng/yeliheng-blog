@@ -23,3 +23,11 @@ export function getTags(){
         method: 'get',
     });
 }
+
+export function getArticles(params:any){
+    return request({
+        url: '/articles/list',
+        method: 'get',
+        params: params
+    });
+}

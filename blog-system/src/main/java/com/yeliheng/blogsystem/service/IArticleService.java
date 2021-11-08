@@ -39,6 +39,15 @@ public interface IArticleService {
     PageInfo<Article> getArticles(Integer page, Integer pageSize);
 
     /**
+     *  获取后台分页的文章
+     * @param page 第几页
+     * @param pageSize 每页显示多少
+     * @return 文章列表
+     *
+     *  */
+    PageInfo<Article> getArticlesBacked(Integer page, Integer pageSize,Article article);
+
+    /**
      * 通过Id获取文章
      * @param articleId 文章Id
      * @return 文章实体

@@ -70,6 +70,21 @@ public class ArticleController {
 
     /**
      *
+     * 获取后台所有文章
+     * @param page 当前页
+     * @param pageSize 一页多少
+     * @return 文章列表
+     */
+    @GetMapping("/list")
+    public CommonResponse<Object> getArticlesBacked(
+            @RequestParam(value = "page",defaultValue = "1") Integer page,
+            @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize,
+            Article article){
+        return CommonResponse.success(articleService.getArticlesBacked(page,pageSize,article));
+    }
+
+    /**
+     *
      * 根据分类获取文章
      * @param categoryId 分类Id
      * @param page 当前页

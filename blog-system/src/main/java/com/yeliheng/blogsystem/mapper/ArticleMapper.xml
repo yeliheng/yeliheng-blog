@@ -44,13 +44,28 @@
 
     <select id="getArticles" resultType="Article">
         select id,user_id,category_id,title,url,summary,visible,created_at,updated_at from article
+        where visible = 1
+    </select>
+
+    <select id="getArticlesBacked" parameterType="Article" resultType="Article">
+        select id,user_id,category_id,title,url,summary,visible,created_at,updated_at from article
+        <where>
+        <if test="title != null and title != ''">
+            and title like concat('%', #{title}, '%')
+        </if>
+        <if test="summary != null and summary != ''">
+            and summary like concat('%', #{summary}, '%')
+        </if>
+        <if test="visible != null and visible != ''">
+            and visible = #{visible}
+        </if>
+        <if test="categoryId != null and categoryId != ''">
+            and category_id = #{categoryId}
+        </if>
+        </where>
     </select>
 
     <select id="getArticlesByCategoryId" resultType="Article">
         select * from article where category_id = #{categoryId} and visible = 1
     </select>
-
-    <insert id="setTags" useGeneratedKeys="true" keyProperty="id">
-
-    </insert>
 </mapper>

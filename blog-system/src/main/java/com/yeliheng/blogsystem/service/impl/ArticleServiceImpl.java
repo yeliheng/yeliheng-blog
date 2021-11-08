@@ -96,6 +96,20 @@ public class ArticleServiceImpl implements IArticleService {
     }
 
     /**
+     * 获取后台分页的文章
+     *
+     * @param page     第几页
+     * @param pageSize 每页显示多少
+     * @return 文章列表
+     */
+    @Override
+    public PageInfo<Article> getArticlesBacked(Integer page, Integer pageSize,Article article) {
+        PageHelper.startPage(page,pageSize);
+        List<Article> articleList = articleMapper.getArticlesBacked(article);
+        return new PageInfo<>(articleList);
+    }
+
+    /**
      * 通过Id获取文章
      *
      * @param articleId 文章Id
