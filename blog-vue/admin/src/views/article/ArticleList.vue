@@ -34,10 +34,11 @@
                 <el-form-item>
                 <el-button type="primary" @click="searchArticles">搜索</el-button>
                 </el-form-item>
-                <router-link to="/articles/"><el-button type="primary">发布文章</el-button></router-link>
-                
+                <el-form-item>
+                    <router-link to="/articles/"><el-button type="primary">发布文章</el-button></router-link>    
+                </el-form-item>
             </el-form>
-
+                
             
             <el-table
             class="article-table"
@@ -50,7 +51,11 @@
                 <el-table-column property="title" label="标题" width="220" align="center"/>
                 <el-table-column property="createdAt" label="创建时间" width="150" align="center"/>
                 <el-table-column property="updatedAt" label="更新时间" width="150" align="center"/>
-                <el-table-column property="visible" label="是否公开" align="center" />
+                <el-table-column property="visible" label="是否公开" align="center">
+                    <template #default="scope">
+                    <el-tag :type="getVisibleDict(scope.row.visible).type"> {{getVisibleDict(scope.row.visible).label}} </el-tag>
+                    </template>
+                </el-table-column>
                 <el-table-column label="操作" align="center">
                 <template #default="scope">
                     <el-button type="text" size="mini" icon="fa fa-edit" @click="handleEditClick(scope.row)">编辑</el-button>
@@ -97,6 +102,30 @@ export default {
 
         const formSize = ref('large');
 
+        const getVisibleDict = (visible) => {
+            let label = '';
+            let type = '';
+            if(visible == 1){
+                label = '公开';
+                type = '';
+            }else{
+                label = '私密';
+                type = 'warning';
+            }
+            return {"label": label,"type": type};
+        };
+
+
+        const articleVisible = [
+            {
+                visible: 1,
+                label: '公开',
+            },
+            {
+                visible: 0,
+                label: '私密',
+            }
+        ];
         //适配移动端
         if(store.state.app.isMobile){
             formSize.value = 'mini';
@@ -121,17 +150,6 @@ export default {
         });
 
         const categories: any = ref([]);
-
-        const articleVisible = [
-            {
-                visible: 1,
-                label: '公开',
-            },
-            {
-                visible: 0,
-                label: '私密',
-            }
-        ];
 
         getCategories().then((res) => {
             categories.value = res.data;
@@ -189,6 +207,7 @@ export default {
             searchArticles,
             formSize,
             articleVisible,
+            getVisibleDict,
             };
         }
 }
@@ -224,8 +243,9 @@ export default {
 
 @media screen and (max-width: 480px){
     .article-table{
-        height: 30rem;
+        height: 28rem;
         overflow: auto;
     }
 }
+
 </style>
