@@ -34,11 +34,15 @@
                 <el-form-item>
                 <el-button type="primary" @click="searchArticles">搜索</el-button>
                 </el-form-item>
+                <router-link to="/articles/"><el-button type="primary">发布文章</el-button></router-link>
+                
             </el-form>
+
+            
             <el-table
+            class="article-table"
                 ref="multipleTable"
                 :data="table.data"
-                style="width: 100%; height: 400px;overflow: auto;"
                 v-loading="table.loading"
             >
                 <el-table-column type="selection" width="55" />
@@ -82,11 +86,14 @@
 import { ref } from 'vue';
 import { getArticles,getCategories } from '@/api/article';
 import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
 
 export default {    
     setup(){
 
         const store = useStore();
+        
+        const router = useRouter();
 
         const formSize = ref('large');
 
@@ -157,7 +164,6 @@ export default {
         }
 
         const searchArticles = () => {
-            console.log(searchParams.value);
             table.value.loading = true,
             getArticles({
                 page: table.value.page,
@@ -182,7 +188,7 @@ export default {
             categories,
             searchArticles,
             formSize,
-            articleVisible
+            articleVisible,
             };
         }
 }
@@ -209,5 +215,17 @@ export default {
   .pagination-nav{
     margin-top: 1rem;
   }
+}
+.article-table{
+    width: 100%;
+    height: 50rem;
+    overflow: auto;
+}
+
+@media screen and (max-width: 480px){
+    .article-table{
+        height: 30rem;
+        overflow: auto;
+    }
 }
 </style>

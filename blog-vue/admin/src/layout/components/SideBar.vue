@@ -20,7 +20,7 @@
                         </template>
                         <!-- 二级菜单选项 -->
                         <template v-for="(item, index) of route.children">
-                            <el-menu-item v-if="!item.hidden" :key="index" :index="item.path">
+                            <el-menu-item v-if="!item.hidden" :key="index" :index="item.path"  @click="handleMenuClick">
                                 <i :class="item.icon" />
                                 <span class="menu-item-title">{{ item.name }}</span>
                             </el-menu-item>
@@ -51,6 +51,12 @@ export default defineComponent({
     } 
     const handleClose = (key, keyPath) => {
       console.log(key, keyPath)
+    }
+
+    const handleMenuClick = () => {
+        if(isMobile.value){
+            store.state.app.sidebarClosed = true;
+        }
     }
 
     const collapse = computed(() => 
@@ -95,6 +101,7 @@ export default defineComponent({
       collapse,
       isMobile,
       sidebarClosed,
+      handleMenuClick,
     }
   },
 })
