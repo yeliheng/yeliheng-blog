@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModel;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @ApiModel(description = "文章")
 public class Article {
@@ -29,6 +30,11 @@ public class Article {
     private String visible;
 
     private Long[] tagIds;
+
+    private Category category;
+
+    private List<Tag> tags;
+
 
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
@@ -107,6 +113,22 @@ public class Article {
 
     public void setTagIds(Long[] tagIds) {
         this.tagIds = tagIds;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
     }
 
     public LocalDateTime getCreatedAt() {
