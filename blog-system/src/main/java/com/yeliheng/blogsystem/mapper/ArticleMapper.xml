@@ -81,7 +81,7 @@
 
     <select id="getArticles" resultMap="ArticleResult">
         <include refid="selectArticleVo" />
-        where visible = 1
+        where visible = 1 order by a.id
     </select>
 
     <select id="getArticlesBacked" parameterType="Article" resultMap="ArticleResult">
@@ -100,6 +100,7 @@
             and category_id = #{categoryId}
         </if>
         </where>
+        order by a.id
     </select>
 
     <select id="getArticlesByCategoryId" resultType="Article">
