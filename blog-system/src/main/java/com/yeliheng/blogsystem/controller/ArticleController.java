@@ -99,4 +99,11 @@ public class ArticleController {
         return CommonResponse.success(articleService.getArticlesByCategory(categoryId,page,pageSize));
     }
 
+    @DeleteMapping
+    public CommonResponse<Object> deleteArticle(@RequestParam("id") Long articleId){
+        //TODO: 软删除
+        articleService.deleteAritcle(articleId);
+        return CommonResponse.success();
+    }
+
 }

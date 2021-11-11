@@ -49,9 +49,28 @@
                 <el-table-column type="selection" width="55" />
                 <el-table-column property="id" label="文章编号" width="80" align="center" />
                 <el-table-column property="title" label="标题" width="220" align="center"/>
+                <el-table-column property="categoryName" label="分类" width="120" align="center">
+                    <template #default="scope">
+                        <span v-if="scope.row.category == null"> - </span>
+                        <el-tag v-else type="warning"> {{scope.row.category.categoryName}} </el-tag>
+                    </template>
+                </el-table-column>
+                <el-table-column property="tags" label="标签" width="170" align="center">
+                    <template #default="scope">
+                        <span v-if="scope.row.tags == ''"> - </span>
+                        <el-tag style="margin-left: 0.2rem"
+                        v-for="item in scope.row.tags"
+                        :key="item.id"
+                        :label="item.tagName"
+                        :value="item.id"                  
+                        >
+                        {{item.tagName}} 
+                        </el-tag>
+                    </template>
+                </el-table-column>
                 <el-table-column property="createdAt" label="创建时间" width="150" align="center"/>
                 <el-table-column property="updatedAt" label="更新时间" width="150" align="center"/>
-                <el-table-column property="visible" label="是否公开" align="center">
+                <el-table-column property="visible" label="状态" align="center">
                     <template #default="scope">
                     <el-tag :type="getVisibleDict(scope.row.visible).type"> {{getVisibleDict(scope.row.visible).label}} </el-tag>
                     </template>
@@ -89,9 +108,10 @@
 
 <script lang="ts">
 import { ref } from 'vue';
-import { getArticles,getCategories } from '@/api/article';
+import { deleteArticle, getArticles,getCategories } from '@/api/article';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
+import { ElMessage } from 'element-plus';
 
 export default {    
     setup(){
@@ -107,7 +127,7 @@ export default {
             let type = '';
             if(visible == 1){
                 label = '公开';
-                type = '';
+                type = 'success';
             }else{
                 label = '私密';
                 type = 'warning';
@@ -198,6 +218,14 @@ export default {
             });
         }
 
+        const handleDelete = (id) => {
+            deleteArticle(id).then((res) => {
+            if(res.data) {
+              ElMessage.success("删除成功!");
+              listArticles();
+            }
+        });
+        }
         return {
             table,
             handleSizeChange,
@@ -208,6 +236,7 @@ export default {
             formSize,
             articleVisible,
             getVisibleDict,
+            handleDelete,
             };
         }
 }

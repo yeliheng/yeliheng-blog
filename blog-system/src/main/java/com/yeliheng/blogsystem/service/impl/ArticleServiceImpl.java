@@ -60,7 +60,7 @@ public class ArticleServiceImpl implements IArticleService {
      */
     @Override
     public void deleteAritcle(Long articleId) {
-
+        articleMapper.deleteByPrimaryKey(articleId);
     }
 
     /**
