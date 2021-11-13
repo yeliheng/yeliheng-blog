@@ -45,4 +45,4 @@ token:
   header: Authorization
 # 系统设置
 blogsystem:
-  allow-register: false
+  allow-register: true

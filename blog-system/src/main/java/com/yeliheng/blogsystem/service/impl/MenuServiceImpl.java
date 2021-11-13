@@ -170,6 +170,7 @@ public class MenuServiceImpl implements IMenuService {
             router.setComponent(menu.getComponent());
             router.setIcon(menu.getIcon());
             router.setPermission(menu.getPermission());
+            router.setHidden(menu.getHidden());
             List<Menu> childMenus = menu.getChildren();
             if(!childMenus.isEmpty()){
                 router.setChildren(buildMenus(childMenus));
