@@ -7,13 +7,13 @@ import com.yeliheng.blogsystem.service.IArticleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
 @Api(tags = "文章模块")
 @RestController
-@RequestMapping("/articles")
 public class ArticleController {
     @Autowired
     private IArticleService articleService;
@@ -25,7 +25,8 @@ public class ArticleController {
      * @param article 文章实体
      * @return 请求结果
      */
-    @PostMapping()
+    @PreAuthorize("@perm.hasPerm('admin:articles:add')")
+    @PostMapping("/articles")
     public CommonResponse<Object> add(@Validated @RequestBody Article article){
         articleService.addArticle(article);
         return CommonResponse.success();
@@ -37,7 +38,8 @@ public class ArticleController {
      * @param article 文章实体
      * @return 请求结果
      */
-    @PutMapping()
+    @PreAuthorize("@perm.hasPerm('admin:articles:edit')")
+    @PutMapping("/articles")
     public CommonResponse<Object> update(@Validated @RequestBody Article article){
         articleService.updateArticle(article);
         return CommonResponse.success();
@@ -49,7 +51,7 @@ public class ArticleController {
      * @param articleId 文章Id
      * @return 文章实体
      */
-    @GetMapping("/{articleId}")
+    @GetMapping("/articles/{articleId}")
     public CommonResponse<Article> getArticleById(@PathVariable("articleId") Long articleId){
         return CommonResponse.success(articleService.getArticleById(articleId));
     }
@@ -61,7 +63,7 @@ public class ArticleController {
      * @param pageSize 一页多少
      * @return 文章列表
      */
-    @GetMapping()
+    @GetMapping("/articles")
     public CommonResponse<Object> getArticles(
             @RequestParam(value = "page",defaultValue = "1") Integer page,
             @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize){
@@ -75,7 +77,8 @@ public class ArticleController {
      * @param pageSize 一页多少
      * @return 文章列表
      */
-    @GetMapping("/list")
+    @GetMapping("/admin/articles/list")
+    @PreAuthorize("@perm.hasPerm('admin:articles:list')")
     public CommonResponse<Object> getArticlesBacked(
             @RequestParam(value = "page",defaultValue = "1") Integer page,
             @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize,
@@ -99,7 +102,8 @@ public class ArticleController {
         return CommonResponse.success(articleService.getArticlesByCategory(categoryId,page,pageSize));
     }
 
-    @DeleteMapping
+    @PreAuthorize("@perm.hasPerm('admin:articles:delete')")
+    @DeleteMapping("/articles")
     public CommonResponse<Object> deleteArticle(@RequestParam("id") Long articleId){
         //TODO: 软删除
         articleService.deleteAritcle(articleId);
