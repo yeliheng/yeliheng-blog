@@ -5,7 +5,7 @@ export function addTag(tagName: string){
         tagName
     }
     return request({
-        url: '/tags',
+        url: '/admin/tags',
         method: 'post',
         data: data,
     });
@@ -21,7 +21,7 @@ export function getTags(params:any){
 
 export function deleteTag(id:number){
     return request({
-        url: '/tags',
+        url: '/admin/tags',
         method: 'DELETE',
         params: {
             id: id,
@@ -35,7 +35,7 @@ export function updateTag(id: number,tagName: string){
         tagName,
     }
     return request({
-        url: '/tags',
+        url: '/admin/tags',
         method: 'put',
         data: data,
     });

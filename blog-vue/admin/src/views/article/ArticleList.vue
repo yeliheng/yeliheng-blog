@@ -108,7 +108,7 @@
 
 <script lang="ts">
 import { ref } from 'vue';
-import { deleteArticle, getArticles,getCategories } from '@/api/article';
+import { deleteArticle, getArticlesAdmin,getCategories } from '@/api/article';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
@@ -179,7 +179,7 @@ export default {
 
         const listArticles = () => {
             table.value.loading = true,
-            getArticles({
+            getArticlesAdmin({
                 page: table.value.page,
                 pageSize: table.value.pageSize,
             }).then((res: any) => {
@@ -203,7 +203,7 @@ export default {
 
         const searchArticles = () => {
             table.value.loading = true,
-            getArticles({
+            getArticlesAdmin({
                 page: table.value.page,
                 pageSize: table.value.pageSize,
                 title: searchParams.value.title,

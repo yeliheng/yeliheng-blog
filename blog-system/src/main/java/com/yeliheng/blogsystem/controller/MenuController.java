@@ -13,31 +13,30 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/menus")
 public class MenuController {
     @Autowired
     private IMenuService menuService;
 
-    @PostMapping
+    @PostMapping("/admin/menus")
     public CommonResponse<Object> add(@Validated @RequestBody Menu menu){
         menuService.addMenu(menu);
         return CommonResponse.success();
     }
 
-    @DeleteMapping
+    @DeleteMapping("/admin/menus")
     public CommonResponse<Object> delete(@RequestParam Long id){
         menuService.deleteMenuById(id);
         return CommonResponse.success();
     }
 
-    @PutMapping
+    @PutMapping("/admin/menus")
     public CommonResponse<Object> update(@RequestBody Menu menu){
         menuService.updateMenu(menu);
         return CommonResponse.success();
     }
 
-    @GetMapping
-    public CommonResponse<List<Menu>> getMenus(){
+    @GetMapping("/admin/menus")
+    public CommonResponse<List<Menu>> getUserMenus(){
         return CommonResponse.success(menuService.getMenus());
     }
 }

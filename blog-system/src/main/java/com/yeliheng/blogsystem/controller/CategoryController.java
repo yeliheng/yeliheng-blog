@@ -14,32 +14,31 @@ import javax.validation.constraints.Digits;
 import java.util.List;
 
 @RestController
-@RequestMapping("/categories")
 public class CategoryController {
     @Autowired
     private ICategoryService categoryService;
 
     @PreAuthorize("@perm.hasPerm('admin:categories:add')")
-    @PostMapping()
+    @PostMapping("/admin/categories")
     public CommonResponse<Object> add(@Validated @RequestBody Category category){
         categoryService.addCategory(category);
         return CommonResponse.success();
     }
     @PreAuthorize("@perm.hasPerm('admin:categories:delete')")
-    @DeleteMapping()
+    @DeleteMapping("/admin/categories")
     public CommonResponse<Object> delete(@RequestParam Long id){
         categoryService.deleteCategory(id);
         return CommonResponse.success();
     }
 
     @PreAuthorize("@perm.hasPerm('admin:categories:edit')")
-    @PutMapping()
+    @PutMapping("/admin/categories")
     public CommonResponse<Object> update(@RequestBody Category category){
         categoryService.updateCategory(category);
         return CommonResponse.success();
     }
 
-    @GetMapping()
+    @GetMapping("/categories")
     public CommonResponse<Object> getCategories(@RequestParam(value = "page",required = false) Integer page,
                                                 @RequestParam(value = "pageSize",required = false) Integer pageSize,Category category){
         if(StringUtils.isNull(page) || StringUtils.isNull(pageSize))

@@ -5,7 +5,7 @@ export function addCategory(categoryName: string){
         categoryName
     }
     return request({
-        url: '/categories',
+        url: '/admin/categories',
         method: 'post',
         data: data,
     });
@@ -21,7 +21,7 @@ export function getCategories(params:any){
 
 export function deleteCategory(id:number){
     return request({
-        url: '/categories',
+        url: '/admin/categories',
         method: 'DELETE',
         params: {
             id: id,
@@ -35,7 +35,7 @@ export function updateCategory(id: number,categoryName: string){
         categoryName,
     }
     return request({
-        url: '/categories',
+        url: '/admin/categories',
         method: 'put',
         data: data,
     });

@@ -26,7 +26,7 @@ public class ArticleController {
      * @return 请求结果
      */
     @PreAuthorize("@perm.hasPerm('admin:articles:add')")
-    @PostMapping("/articles")
+    @PostMapping("/admin/articles")
     public CommonResponse<Object> add(@Validated @RequestBody Article article){
         articleService.addArticle(article);
         return CommonResponse.success();
@@ -39,7 +39,7 @@ public class ArticleController {
      * @return 请求结果
      */
     @PreAuthorize("@perm.hasPerm('admin:articles:edit')")
-    @PutMapping("/articles")
+    @PutMapping("/admin/articles")
     public CommonResponse<Object> update(@Validated @RequestBody Article article){
         articleService.updateArticle(article);
         return CommonResponse.success();
@@ -103,7 +103,7 @@ public class ArticleController {
     }
 
     @PreAuthorize("@perm.hasPerm('admin:articles:delete')")
-    @DeleteMapping("/articles")
+    @DeleteMapping("/admin/articles")
     public CommonResponse<Object> deleteArticle(@RequestParam("id") Long articleId){
         //TODO: 软删除
         articleService.deleteAritcle(articleId);

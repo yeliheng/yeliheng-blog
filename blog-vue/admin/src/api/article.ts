@@ -4,7 +4,7 @@ import { IArticle } from '@/interface/IArticle';
 export function addArticle(article: IArticle){
 
     return request({
-        url: '/articles',
+        url: '/admin/articles',
         method: 'post',
         data: article
     });
@@ -24,9 +24,9 @@ export function getTags(){
     });
 }
 
-export function getArticles(params:any){
+export function getArticlesAdmin(params:any){
     return request({
-        url: '/articles/list',
+        url: '/admin/articles/list',
         method: 'get',
         params: params
     });
@@ -34,7 +34,7 @@ export function getArticles(params:any){
 
 export function deleteArticle(id:number){
     return request({
-        url: '/articles',
+        url: '/admin/articles',
         method: 'delete',
         params: {'id': id}
     });
