@@ -10,31 +10,30 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/roles")
 public class RoleController {
 
     @Autowired
     private IRoleService roleService;
 
-    @PostMapping()
+    @PostMapping("/admin/roles")
     public CommonResponse<Object> add(@Validated @RequestBody Role role){
         roleService.addRole(role);
         return CommonResponse.success();
     }
 
-    @DeleteMapping()
+    @DeleteMapping("/admin/roles")
     public CommonResponse<Object> delete(@RequestParam Long id){
         roleService.deleteRole(id);
         return CommonResponse.success();
     }
 
-    @PutMapping()
+    @PutMapping("/admin/roles")
     public CommonResponse<Object> update(@RequestBody Role role){
         roleService.updateRole(role);
         return CommonResponse.success();
     }
 
-    @GetMapping()
+    @GetMapping("/admin/roles")
     public CommonResponse<List<Role>> getRoles(){
         return CommonResponse.success(roleService.getRoles());
     }

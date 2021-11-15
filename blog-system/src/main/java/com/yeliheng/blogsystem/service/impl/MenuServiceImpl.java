@@ -163,7 +163,8 @@ public class MenuServiceImpl implements IMenuService {
 
     public List<Router> buildMenus(List<Menu> menuList){
         List<Router> routerList = new LinkedList<>();
-        for(Menu menu : menuList){
+
+        for(Menu menu : menuList) {
             Router router = new Router();
             router.setName(menu.getMenuName());
             router.setPath(menu.getPath());
@@ -172,7 +173,8 @@ public class MenuServiceImpl implements IMenuService {
             router.setPermission(menu.getPermission());
             router.setHidden(menu.getHidden());
             List<Menu> childMenus = menu.getChildren();
-            if(!childMenus.isEmpty()){
+
+            if (!childMenus.isEmpty()) {
                 router.setChildren(buildMenus(childMenus));
             }
 

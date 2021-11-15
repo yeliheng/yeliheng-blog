@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/admin/users")
 public class UserController {
     @Autowired
     private IUserService userService;
