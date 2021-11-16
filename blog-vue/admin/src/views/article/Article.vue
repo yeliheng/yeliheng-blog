@@ -13,13 +13,13 @@
         </div>
 
         <div class="article-content">
-            <el-input class="title" v-model="article.title" placeholder="请输入标题" ></el-input>
-            <v-md-editor v-model="article.content" placeholder="正文" height="400px"></v-md-editor>
+            <el-input class="title" v-model="article.title" placeholder="请输入标题" @blur="saveDraft()"></el-input>
+            <v-md-editor v-model="article.content" placeholder="正文" height="400px" @blur="saveDraft()"></v-md-editor>
         </div>
         <div class="article-footer">
             <div class="category">
                 <span>分类:</span>
-                    <el-select class="category-select" v-model="article.categoryId" clearable placeholder="选择一个分类">
+                    <el-select class="category-select" v-model="article.categoryId" clearable placeholder="选择一个分类" @blur="saveDraft()" @remove-tag="saveDraft()">
                         <el-option
                         v-for="item in categories"
                         :key="item.id"
@@ -31,7 +31,7 @@
             </div>
             <div class="tag">
                 <span>标签:</span>
-                <el-select class="tag-select" v-model="article.tagIds" multiple placeholder="选择标签">
+                <el-select class="tag-select" v-model="article.tagIds" multiple placeholder="选择标签" @blur="saveDraft()" @remove-tag="saveDraft()">
                     <el-option
                         v-for="item in tags"
                         :key="item.id"
@@ -61,6 +61,24 @@
       </span>
     </template>
   </el-dialog>
+
+  <el-dialog
+    v-model="existDraft"
+    width="20rem"
+    title="提示"
+    :close-on-click-modal="false"
+  >
+    <span>你有未保存的草稿文章，是否恢复？</span>
+    
+    <template #footer>
+      <span class="dialog-footer" style="display: flex; justify-content: center;">
+        <el-button @click="trashDraft()">取消</el-button>
+        <el-button type="primary" @click="revertDraft()"
+          >确定</el-button
+        >
+      </span>
+    </template>
+  </el-dialog>
 </template>
 
 <script lang="ts">
@@ -72,6 +90,7 @@ setup() {
     let categories: Ref = ref([]);
     let tags: Ref = ref([]);
     let dialogVisible = ref(false);
+    const existDraft = ref(false);
     let loading = ref(false);
     getCategories().then((data) => {
         categories.value = data.data;
@@ -89,6 +108,23 @@ setup() {
         content: "",
         visible: 1,
     })
+
+    //检查是否存在草稿
+    if(localStorage.getItem('draft')){
+        existDraft.value = true;
+    }else{
+        existDraft.value = false;
+    }
+
+    const revertDraft = () => {
+        article.value = JSON.parse(localStorage.getItem('draft'));
+        existDraft.value = false;
+    }
+
+    const trashDraft = () => {
+        localStorage.removeItem('draft');
+        existDraft.value = false;
+    }
 
     const publishArticle = () => {
         if(article.value.title.trim() == ""){
@@ -121,6 +157,13 @@ setup() {
             }  
         });
     }
+
+    const saveDraft = () => {
+        if(article.value.title != '' || article.value.content != '')
+            localStorage.setItem('draft',JSON.stringify(article.value));
+        if(article.value.title == '' && article.value.content == '')
+            localStorage.removeItem('draft');
+    }
     
 
     return {
@@ -131,6 +174,10 @@ setup() {
         loading,
         publishArticle,
         onConfirmClick,
+        saveDraft,
+        existDraft,
+        revertDraft,
+        trashDraft,
     }
       
     }
