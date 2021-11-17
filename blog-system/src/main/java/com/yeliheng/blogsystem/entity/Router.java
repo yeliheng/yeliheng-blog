@@ -17,6 +17,8 @@ public class Router {
 
     private String permission;
 
+    private Integer hidden;
+
     private List<Router> children;
 
     public String getName() {
@@ -57,6 +59,14 @@ public class Router {
 
     public void setPermission(String permission) {
         this.permission = permission;
+    }
+
+    public Integer getHidden() {
+        return hidden;
+    }
+
+    public void setHidden(Integer hidden) {
+        this.hidden = hidden;
     }
 
     public List<Router> getChildren() {

@@ -45,15 +45,15 @@ import router, { constantRoutes } from "@/router";
                             
                         }
 
-
-                        
                         router.addRoute(item);
                     });
+
                     router.addRoute({
                         path: '/:catchAll(.*)',
                         name: "404",
                         component: NotFound,
-                      });
+                    });
+                    console.log(routerList);
                       
                     commit("SET_ROUTES",routerList);
                     resolve(routerList);

@@ -26,7 +26,7 @@ public class Menu {
 
     private String component;
 
-    private Integer visible;
+    private Integer hidden;
 
     private String permission;
 
@@ -98,12 +98,12 @@ public class Menu {
         this.component = component;
     }
 
-    public Integer getVisible() {
-        return visible;
+    public Integer getHidden() {
+        return hidden;
     }
 
-    public void setVisible(Integer visible) {
-        this.visible = visible;
+    public void setHidden(Integer hidden) {
+        this.hidden = hidden;
     }
 
     public String getPermission() {

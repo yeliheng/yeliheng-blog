@@ -14,7 +14,7 @@ export function login(username,password){
 
 export function getInfo() {
     return request({
-        url: '/users/info',
+        url: '/admin/users/info',
         method: 'get',
     });
 }

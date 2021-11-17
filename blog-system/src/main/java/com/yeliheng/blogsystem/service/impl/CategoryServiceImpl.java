@@ -1,5 +1,7 @@
 package com.yeliheng.blogsystem.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.yeliheng.blogsystem.entity.Category;
 import com.yeliheng.blogsystem.exception.GeneralException;
 import com.yeliheng.blogsystem.exception.InternalServerException;
@@ -61,7 +63,22 @@ public class CategoryServiceImpl implements ICategoryService {
      * @return 分类实体列表
      */
     @Override
-    public List<Category> getCategories() {
-        return categoryMapper.selectAll();
+    public List<Category> getCategories(Category category) {
+        return categoryMapper.selectCategoryList(category);
     }
+
+    /**
+     * 获取所有分类(分页)
+     *
+     * @param page     第几页
+     * @param pageSize 每页显示多少
+     * @return 分类列表带分页
+     */
+    @Override
+    public PageInfo<Category> getCategoriesPaged(Integer page, Integer pageSize,Category category) {
+        PageHelper.startPage(page,pageSize);
+        List<Category> categoryList = categoryMapper.selectCategoryList(category);
+        return new PageInfo<>(categoryList);
+    }
+
 }

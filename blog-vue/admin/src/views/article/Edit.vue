@@ -4,22 +4,22 @@
         
         <div class="article-header">
             <div class="line"></div>
-            <span>发布文章</span>
+            <span>编辑文章</span>
             <div class="article-btn">
                     <span>设为私密</span>
                     <el-switch class="private-sw" v-model="article.visible" active-value="0" inactive-value="1"/>
-                <el-button class="publish-btn" type="primary" @click="publishArticle">保存并发布</el-button>
+                <el-button class="publish-btn" type="primary" @click="publishArticle">保存更改</el-button>
             </div>
         </div>
 
         <div class="article-content">
-            <el-input class="title" v-model="article.title" placeholder="请输入标题" @blur="saveDraft()"></el-input>
-            <v-md-editor v-model="article.content" placeholder="正文" height="400px" @blur="saveDraft()"></v-md-editor>
+            <el-input class="title" v-model="article.title" placeholder="请输入标题" ></el-input>
+            <v-md-editor v-model="article.content" placeholder="正文" height="400px" v-loading="loading"></v-md-editor>
         </div>
         <div class="article-footer">
             <div class="category">
                 <span>分类:</span>
-                    <el-select class="category-select" v-model="article.categoryId" clearable placeholder="选择一个分类" @blur="saveDraft()" @remove-tag="saveDraft()">
+                    <el-select class="category-select" v-model="article.categoryId" clearable placeholder="选择一个分类" >
                         <el-option
                         v-for="item in categories"
                         :key="item.id"
@@ -31,7 +31,7 @@
             </div>
             <div class="tag">
                 <span>标签:</span>
-                <el-select class="tag-select" v-model="article.tagIds" multiple placeholder="选择标签" @blur="saveDraft()" @remove-tag="saveDraft()">
+                <el-select class="tag-select" v-model="article.tagIds" multiple placeholder="选择标签">
                     <el-option
                         v-for="item in tags"
                         :key="item.id"
@@ -50,7 +50,7 @@
     width="20rem"
     title="提示"
   >
-    <span>是否发布该文章？</span>
+    <span>确认保存吗？</span>
     
     <template #footer>
       <span class="dialog-footer" style="display: flex; justify-content: center;">
@@ -62,36 +62,21 @@
     </template>
   </el-dialog>
 
-  <el-dialog
-    v-model="existDraft"
-    width="20rem"
-    title="提示"
-    :close-on-click-modal="false"
-  >
-    <span>你有未保存的草稿文章，是否恢复？</span>
-    
-    <template #footer>
-      <span class="dialog-footer" style="display: flex; justify-content: center;">
-        <el-button @click="trashDraft()">取消</el-button>
-        <el-button type="primary" @click="revertDraft()"
-          >确定</el-button
-        >
-      </span>
-    </template>
-  </el-dialog>
+
 </template>
 
 <script lang="ts">
 import { Ref, ref } from 'vue';
-import { addArticle, getCategories,getTags } from '@/api/article';
+import { addArticle, getArticleByIdBacked, getCategories,getTags, updateArticle } from '@/api/article';
 import { ElMessage } from 'element-plus';
+import { useRouter } from 'vue-router';
 export default {
 setup() {
+    const router = useRouter();
     let categories: Ref = ref([]);
     let tags: Ref = ref([]);
     let dialogVisible = ref(false);
-    const existDraft = ref(false);
-    let loading = ref(false);
+    const loading = ref(true);
     getCategories().then((data) => {
         categories.value = data.data;
     });
@@ -101,6 +86,7 @@ setup() {
     });
 
     const article = ref({
+        id: router.currentRoute.value.params.id,
         categoryId: null,
         tagIds: [],
         title: "",
@@ -109,22 +95,18 @@ setup() {
         visible: 1,
     })
 
-    //检查是否存在草稿
-    if(localStorage.getItem('draft')){
-        existDraft.value = true;
-    }else{
-        existDraft.value = false;
-    }
-
-    const revertDraft = () => {
-        article.value = JSON.parse(localStorage.getItem('draft'));
-        existDraft.value = false;
-    }
-
-    const trashDraft = () => {
-        localStorage.removeItem('draft');
-        existDraft.value = false;
-    }
+    //拉取文章信息
+    getArticleByIdBacked(router.currentRoute.value.params.id).then((data) => {
+        let articleData = ref();
+        articleData.value = data.data;
+        let tagIds = [];
+        articleData.value.tags.forEach(item => {
+            tagIds.push(item.id);
+        });
+        article.value = articleData.value;
+        article.value.tagIds = tagIds;
+        loading.value = false;
+    })
 
     const publishArticle = () => {
         if(article.value.title.trim() == ""){
@@ -147,22 +129,16 @@ setup() {
 
     const onConfirmClick = () => {
         loading.value = true;
-        addArticle(article.value).then((data: any) => {
+        updateArticle(article.value).then((data: any) => {
             dialogVisible.value = false;
+            loading.value = false;
             if(data){
                 ElMessage({
-                    message: "发布成功！",
+                    message: "文章保存成功!",
                     type: 'success',
                 });
             }  
         });
-    }
-
-    const saveDraft = () => {
-        if(article.value.title != '' || article.value.content != '')
-            localStorage.setItem('draft',JSON.stringify(article.value));
-        if(article.value.title == '' && article.value.content == '')
-            localStorage.removeItem('draft');
     }
     
 
@@ -174,10 +150,6 @@ setup() {
         loading,
         publishArticle,
         onConfirmClick,
-        saveDraft,
-        existDraft,
-        revertDraft,
-        trashDraft,
     }
       
     }

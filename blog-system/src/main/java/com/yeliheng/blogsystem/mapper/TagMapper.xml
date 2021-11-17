@@ -30,4 +30,11 @@
     <select id="checkIfExistArticle" parameterType="Long" resultType="int">
         select count(1) from article where tag_id = #{tagId}
     </select>
+
+    <select id="selectTagList" parameterType="Tag" resultType="Tag">
+        select * from tag
+        <if test="tagName != null and tagName != ''">
+            where tag_name like concat('%', #{tagName}, '%')
+        </if>
+    </select>
 </mapper>

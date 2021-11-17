@@ -7,36 +7,42 @@ import com.yeliheng.blogsystem.exception.RequestFormatException;
 import com.yeliheng.blogsystem.service.ITagService;
 import com.yeliheng.blogsystem.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/tags")
 public class TagController {
     @Autowired
     private ITagService tagService;
 
-    @PostMapping()
+    @PreAuthorize("@perm.hasPerm('admin:tags:add')")
+    @PostMapping("/admin/tags")
     public CommonResponse<Object> add(@Validated @RequestBody Tag tag){
         tagService.addTag(tag);
         return CommonResponse.success();
     }
 
-    @DeleteMapping()
+    @PreAuthorize("@perm.hasPerm('admin:tags:delete')")
+    @DeleteMapping("/admin/tags")
     public CommonResponse<Object> delete(@RequestParam Long id){
         tagService.deleteTag(id);
         return CommonResponse.success();
     }
 
-    @PutMapping()
+    @PreAuthorize("@perm.hasPerm('admin:tags:edit')")
+    @PutMapping("/admin/tags")
     public CommonResponse<Object> update(@RequestBody Tag tag){
         tagService.updateTag(tag);
         return CommonResponse.success();
     }
 
-    @GetMapping()
-    public CommonResponse<List<Tag>> getCategories(){
-        return CommonResponse.success(tagService.getTags());
+    @GetMapping("/tags")
+    public CommonResponse<Object> getTags(@RequestParam(value = "page",required = false) Integer page,
+                                             @RequestParam(value = "pageSize",required = false) Integer pageSize,Tag tag){
+        if(StringUtils.isNull(page) || StringUtils.isNull(pageSize))
+            return CommonResponse.success(tagService.getTags(tag));
+        else return CommonResponse.success(tagService.getTagsPaged(page,pageSize,tag));
     }
 }

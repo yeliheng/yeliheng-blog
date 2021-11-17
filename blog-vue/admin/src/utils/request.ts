@@ -72,6 +72,10 @@ error => {
       break;
     case 404: 
       showErrorMessage("访问的资源不存在");
+      break;
+    case 405:
+      showErrorMessage("请求方法不支持");
+      break;
   }
 }
 );
