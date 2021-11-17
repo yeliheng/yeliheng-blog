@@ -124,6 +124,17 @@ public class ArticleServiceImpl implements IArticleService {
     }
 
     /**
+     * 通过Id获取文章-后台
+     *
+     * @param articleId 文章Id
+     * @return 文章实体
+     */
+    @Override
+    public Article getArticleByIdBacked(Long articleId) {
+        return articleMapper.getArticleByIdBacked(articleId);
+    }
+
+    /**
      * 通过分类获取文章
      *
      * @param categoryId 分类Id

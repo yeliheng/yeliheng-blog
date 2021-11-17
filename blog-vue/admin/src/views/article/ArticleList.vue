@@ -77,7 +77,7 @@
                 </el-table-column>
                 <el-table-column label="操作" align="center">
                 <template #default="scope">
-                    <el-button type="text" size="mini" icon="fa fa-edit" @click="handleEditClick(scope.row)">编辑</el-button>
+                    <el-button type="text" size="mini" icon="fa fa-edit" @click="handleEditClick(scope.row.id)">编辑</el-button>
                     <el-popconfirm title="确定删除该文章? " @confirm="handleDelete(scope.row.id)">
                     <template #reference>
                     <el-button type="text" size="mini" style="color: #ff8989;" icon="fa fa-trash">删除</el-button>
@@ -224,7 +224,11 @@ export default {
               ElMessage.success("删除成功!");
               listArticles();
             }
-        });
+            });
+        }
+
+        const handleEditClick = (id) => {
+            router.push('/articles/' + id);
         }
         return {
             table,
@@ -237,6 +241,7 @@ export default {
             articleVisible,
             getVisibleDict,
             handleDelete,
+            handleEditClick
             };
         }
 }

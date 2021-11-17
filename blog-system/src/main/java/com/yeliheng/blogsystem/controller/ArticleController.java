@@ -58,6 +58,18 @@ public class ArticleController {
 
     /**
      *
+     * 根据Id获取具体文章内容-后台
+     * @param articleId 文章Id
+     * @return 文章实体
+     */
+    @PreAuthorize("@perm.hasPerm('admin:articles:list')")
+    @GetMapping("/admin/articles/{articleId}")
+    public CommonResponse<Article> getArticleByIdBacked(@PathVariable("articleId") Long articleId){
+        return CommonResponse.success(articleService.getArticleByIdBacked(articleId));
+    }
+
+    /**
+     *
      * 获取所有文章
      * @param page 当前页
      * @param pageSize 一页多少

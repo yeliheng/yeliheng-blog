@@ -55,6 +55,15 @@ public interface IArticleService {
      * */
     Article getArticleById(Long articleId);
 
+
+    /**
+     * 通过Id获取文章-后台
+     * @param articleId 文章Id
+     * @return 文章实体
+     *
+     * */
+    Article getArticleByIdBacked(Long articleId);
+
     /**
      *  通过分类获取文章
      * @param categoryId 分类Id
