@@ -47,3 +47,12 @@ export function getArticleByIdBacked(id:any) {
         method: 'get',
     });
 }
+
+//更新文章
+export function updateArticle(article) {
+    return request({
+        url: '/admin/articles',
+        method: 'put',
+        data: article
+    });
+}

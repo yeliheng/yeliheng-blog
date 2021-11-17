@@ -29,25 +29,6 @@
         <result property="tagName" column="tag_name"/>
     </resultMap>
 
-    <resultMap id="TagIdsResult" type="Tag">
-        <id property="id" column="tag_id" />
-    </resultMap>
-
-    <resultMap id="ArticleDetailBackedResult" type="Article">
-        <id property="id" column="id" />
-        <result property="userId" column="user_id" />
-        <result property="categoryId" column="category_id" />
-        <result property="title" column="title" />
-        <result property="summary" column="summary" />
-        <result property="content" column="content" />
-        <result property="url" column="url" />
-        <result property="visible" column="visible" />
-        <result property="createdAt" column="created_at" />
-        <result property="updatedAt" column="updated_at" />
-        <!-- 查询Ids -->
-        <collection property="tagIds" javaType="java.util.List" />
-    </resultMap>
-
     <sql id="selectArticleVo">
         select a.id, a.user_id, a.category_id, a.title, a.summary, a.url, a.visible, a.created_at, a.updated_at,
                c.id as category_id, c.category_name,
@@ -57,6 +38,17 @@
             left join article_tag atg on atg.article_id = a.id
             left join tag t on t.id = atg.tag_id
             left join category c on a.category_id = c.id
+    </sql>
+
+    <sql id="selectArticleDetailVo">
+        select a.id, a.user_id, a.category_id, a.title, a.summary, a.content, a.url, a.visible, a.created_at, a.updated_at,
+               c.id as category_id, c.category_name,
+               atg.id, atg.article_id, atg.tag_id,
+               t.id as tag_id, t.tag_name
+        from article a
+                 left join article_tag atg on atg.article_id = a.id
+                 left join tag t on t.id = atg.tag_id
+                 left join category c on a.category_id = c.id
     </sql>
 
     <insert id="addArticle" parameterType="Article" useGeneratedKeys="true" keyProperty="id">
@@ -122,9 +114,8 @@
         order by a.id
     </select>
 
-    <select id="getArticleByIdBacked" resultMap="ArticleDetailBackedResult">
-        select a.id, a.user_id, a.category_id, a.title, a.summary, a.content, a.url, a.visible, a.created_at, a.updated_at, atg.tag_id from article a
-            left join article_tag atg on atg.article_id = a.id
+    <select id="getArticleByIdBacked" resultMap="ArticleResult">
+        <include refid="selectArticleDetailVo" />
         where a.id = #{articleId}
     </select>
 

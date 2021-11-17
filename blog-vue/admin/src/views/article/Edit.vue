@@ -14,7 +14,7 @@
 
         <div class="article-content">
             <el-input class="title" v-model="article.title" placeholder="请输入标题" ></el-input>
-            <v-md-editor v-model="article.content" placeholder="正文" height="400px"></v-md-editor>
+            <v-md-editor v-model="article.content" placeholder="正文" height="400px" v-loading="loading"></v-md-editor>
         </div>
         <div class="article-footer">
             <div class="category">
@@ -50,7 +50,7 @@
     width="20rem"
     title="提示"
   >
-    <span>是否发布该文章？</span>
+    <span>确认保存吗？</span>
     
     <template #footer>
       <span class="dialog-footer" style="display: flex; justify-content: center;">
@@ -67,7 +67,7 @@
 
 <script lang="ts">
 import { Ref, ref } from 'vue';
-import { addArticle, getArticleByIdBacked, getCategories,getTags } from '@/api/article';
+import { addArticle, getArticleByIdBacked, getCategories,getTags, updateArticle } from '@/api/article';
 import { ElMessage } from 'element-plus';
 import { useRouter } from 'vue-router';
 export default {
@@ -76,7 +76,7 @@ setup() {
     let categories: Ref = ref([]);
     let tags: Ref = ref([]);
     let dialogVisible = ref(false);
-    let loading = ref(false);
+    const loading = ref(true);
     getCategories().then((data) => {
         categories.value = data.data;
     });
@@ -86,6 +86,7 @@ setup() {
     });
 
     const article = ref({
+        id: router.currentRoute.value.params.id,
         categoryId: null,
         tagIds: [],
         title: "",
@@ -94,13 +95,17 @@ setup() {
         visible: 1,
     })
 
-
     //拉取文章信息
     getArticleByIdBacked(router.currentRoute.value.params.id).then((data) => {
-        console.log(data.data);
         let articleData = ref();
         articleData.value = data.data;
+        let tagIds = [];
+        articleData.value.tags.forEach(item => {
+            tagIds.push(item.id);
+        });
         article.value = articleData.value;
+        article.value.tagIds = tagIds;
+        loading.value = false;
     })
 
     const publishArticle = () => {
@@ -124,11 +129,12 @@ setup() {
 
     const onConfirmClick = () => {
         loading.value = true;
-        addArticle(article.value).then((data: any) => {
+        updateArticle(article.value).then((data: any) => {
             dialogVisible.value = false;
+            loading.value = false;
             if(data){
                 ElMessage({
-                    message: "发布成功！",
+                    message: "文章保存成功!",
                     type: 'success',
                 });
             }  
