@@ -1,13 +1,13 @@
 <template>
-    <div class="article-list-container">
-        <div class="article-list-header">
+    <div class="user-list-container">
+        <div class="user-list-header">
             <div class="line"></div>
-            <span>文章管理</span>
+            <span>用户管理</span>
         </div>
-        <div class="article-list-body">
-            <el-form :inline="true" :model="searchParams" class="search-article" :size="formSize">
-                <el-form-item label="标题: ">
-                <el-input v-model="searchParams.title" placeholder="标题关键字"></el-input>
+        <div class="user-list-body">
+            <el-form :inline="true" :model="searchParams" class="search-user" :size="formSize">
+                <el-form-item label="用户名: ">
+                <el-input v-model="searchParams.title" placeholder="用户名关键字"></el-input>
                 </el-form-item>
                 <el-form-item label="分类:">
                     <el-select v-model="searchParams.categoryId" clearable placeholder="选择一个分类">
@@ -20,7 +20,7 @@
                         </el-option>
                     </el-select> 
                 </el-form-item>
-                <el-form-item label="可见性: ">
+                <el-form-item label="用户状态: ">
                     <el-select v-model="searchParams.visible" clearable>
                         <el-option
                         v-for="item in articleVisible"
@@ -34,28 +34,21 @@
                 <el-form-item>
                 <el-button type="primary" @click="searchArticles">搜索</el-button>
                 </el-form-item>
-                <el-form-item>
-                    <router-link to="/articles/"><el-button type="primary">发布文章</el-button></router-link>    
-                </el-form-item>
             </el-form>
                 
             
             <el-table
-            class="article-table"
+            class="user-table"
                 ref="multipleTable"
                 :data="table.data"
                 v-loading="table.loading"
             >
                 <el-table-column type="selection" width="55" />
-                <el-table-column property="id" label="文章编号" width="80" align="center" />
-                <el-table-column property="title" label="标题" width="220" align="center"/>
-                <el-table-column property="categoryName" label="分类" width="120" align="center">
-                    <template #default="scope">
-                        <span v-if="scope.row.category == null"> - </span>
-                        <el-tag v-else type="warning"> {{scope.row.category.categoryName}} </el-tag>
-                    </template>
-                </el-table-column>
-                <el-table-column property="tags" label="标签" width="170" align="center">
+                <el-table-column property="id" label="用户编号" width="80" align="center" />
+                <el-table-column property="title" label="用户名" width="220" align="center"/>
+                <el-table-column property="categoryName" label="手机号" width="120" align="center" />       
+                <el-table-column property="id" label="昵称" width="120" align="center" />
+                <el-table-column property="tags" label="用户角色" width="170" align="center">
                     <template #default="scope">
                         <span v-if="scope.row.tags == ''"> - </span>
                         <el-tag style="margin-left: 0.2rem"
@@ -77,8 +70,8 @@
                 </el-table-column>
                 <el-table-column label="操作" align="center" fixed="right">
                 <template #default="scope">
-                    <el-button type="text" size="mini" icon="fa fa-edit" @click="handleEditClick(scope.row.id)">编辑</el-button>
-                    <el-popconfirm title="确定删除该文章? " @confirm="handleDelete(scope.row.id)">
+                    <el-button type="text" size="mini" icon="fa fa-edit" @click="handleEditClick(scope.row.id)">修改</el-button>
+                    <el-popconfirm title="确定删除该用户? " @confirm="handleDelete(scope.row.id)">
                     <template #reference>
                     <el-button type="text" size="mini" style="color: #ff8989;" icon="fa fa-trash">删除</el-button>
                     </template>
@@ -88,7 +81,7 @@
             </el-table>
         </div>
 
-        <div class="article-list-footer">
+        <div class="user-list-footer">
             <!-- 分页 -->
             <el-pagination
                 class="pagination-nav"
@@ -184,7 +177,7 @@ export default {
                 pageSize: table.value.pageSize,
             }).then((res: any) => {
                 table.value.data = res.data.list;
-                table.value.total = res.data.size;
+                table.value.total = res.data.total;
                 table.value.loading = false;
             });
         }
@@ -213,7 +206,7 @@ export default {
 
             }).then((res: any) => {
                 table.value.data = res.data.list;
-                table.value.total = res.data.size;
+                table.value.total = res.data.total;
                 table.value.loading = false;
             });
         }
@@ -248,7 +241,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.article-list-header{
+.user-list-header{
     display: flex;
     margin-bottom: 1rem;
     >span{
@@ -262,21 +255,21 @@ export default {
     height: 2rem;
     background: #666666;
 }
-.article-list-footer{
+.user-list-footer{
   display: flex;
   justify-content: flex-end;
   .pagination-nav{
     margin-top: 1rem;
   }
 }
-.article-table{
+.user-table{
     width: 100%;
     height: 50rem;
     overflow: auto;
 }
 
 @media screen and (max-width: 480px){
-    .article-table{
+    .user-table{
         height: 28rem;
         overflow: auto;
     }

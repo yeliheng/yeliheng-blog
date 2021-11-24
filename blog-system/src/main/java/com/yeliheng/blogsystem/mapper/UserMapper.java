@@ -2,6 +2,8 @@ package com.yeliheng.blogsystem.mapper;
 
 import com.yeliheng.blogsystem.entity.User;
 
+import java.util.List;
+
 public interface UserMapper {
 
     User selectUserByUserName(String username);
@@ -13,5 +15,7 @@ public interface UserMapper {
     int updateUser(User user);
 
     Long selectUidByUsername(String username);
+
+    List<User> selectUserList();
 
 }

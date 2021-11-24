@@ -9,6 +9,7 @@ import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
 
 public class User implements Serializable {
 
@@ -30,6 +31,8 @@ public class User implements Serializable {
     private Boolean locked;
 
     private Long[] roles;
+
+    private List<Role> roleList;
 
     public boolean isAdmin()
     {
@@ -105,6 +108,14 @@ public class User implements Serializable {
 
     public void setRoles(Long[] roles) {
         this.roles = roles;
+    }
+
+    public List<Role> getRoleList() {
+        return roleList;
+    }
+
+    public void setRoleList(List<Role> roleList) {
+        this.roleList = roleList;
     }
 
     public LocalDateTime getCreatedAt() {

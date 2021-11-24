@@ -107,6 +107,18 @@ public class UserServiceImpl implements IUserService {
        return userMapper.selectUidByUsername(username);
     }
 
+    /**
+     * 获取用户列表
+     *
+     * @param page     第几页
+     * @param pageSize 一页多少
+     * @return 用户列表
+     */
+    @Override
+    public List<User> getUserList(Integer page, Integer pageSize) {
+        return userMapper.selectUserList();
+    }
+
 
     /**
      *

@@ -3,6 +3,8 @@ package com.yeliheng.blogsystem.service;
 import com.yeliheng.blogsystem.entity.RegisterUser;
 import com.yeliheng.blogsystem.entity.User;
 
+import java.util.List;
+
 public interface IUserService {
     /**
      * 通过用户名查询用户
@@ -41,5 +43,14 @@ public interface IUserService {
      * @return 用户id
      */
     public Long selectUidByUsername(String username);
+
+    /**
+     *
+     * 获取用户列表
+     * @param page 第几页
+     * @param pageSize 一页多少
+     * @return 用户列表
+     */
+    public List<User> getUserList(Integer page, Integer pageSize);
 
 }
