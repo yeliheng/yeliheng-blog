@@ -1,5 +1,7 @@
 package com.yeliheng.blogsystem.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.yeliheng.blogsystem.entity.User;
 import com.yeliheng.blogsystem.entity.UserRole;
 import com.yeliheng.blogsystem.exception.GeneralException;
@@ -8,6 +10,8 @@ import com.yeliheng.blogsystem.mapper.UserMapper;
 import com.yeliheng.blogsystem.mapper.UserRoleMapper;
 import com.yeliheng.blogsystem.service.IUserService;
 import com.yeliheng.blogsystem.utils.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,6 +26,8 @@ public class UserServiceImpl implements IUserService {
     private UserMapper userMapper;
     @Autowired
     private UserRoleMapper userRoleMapper;
+
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     //生成强哈希密码
     private String encryptPassword(String password){
@@ -86,6 +92,16 @@ public class UserServiceImpl implements IUserService {
     }
 
     /**
+     * 删除用户
+     *
+     * @param userId 用户id
+     */
+    @Override
+    public void deleteUser(Long userId) {
+
+    }
+
+    /**
      *
      * 用户注册
      * @param user 用户实体
@@ -115,8 +131,10 @@ public class UserServiceImpl implements IUserService {
      * @return 用户列表
      */
     @Override
-    public List<User> getUserList(Integer page, Integer pageSize) {
-        return userMapper.selectUserList();
+    public PageInfo<User> getUserList(Integer page, Integer pageSize,User user) {
+        PageHelper.startPage(page,pageSize);
+        List<User> userList = userMapper.selectUserList(user);
+        return new PageInfo<>(userList);
     }
 
 

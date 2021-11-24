@@ -7,32 +7,27 @@
         <div class="user-list-body">
             <el-form :inline="true" :model="searchParams" class="search-user" :size="formSize">
                 <el-form-item label="用户名: ">
-                <el-input v-model="searchParams.title" placeholder="用户名关键字"></el-input>
+                <el-input v-model="searchParams.username" placeholder="用户名关键字"></el-input>
                 </el-form-item>
-                <el-form-item label="分类:">
-                    <el-select v-model="searchParams.categoryId" clearable placeholder="选择一个分类">
-                        <el-option
-                        v-for="item in categories"
-                        :key="item.id"
-                        :label="item.categoryName"
-                        :value="item.id"
-                        >
-                        </el-option>
-                    </el-select> 
+                <el-form-item label="昵称: ">
+                    <el-input v-model="searchParams.nickname" placeholder="昵称关键字"></el-input>
+                </el-form-item>
+                <el-form-item label="手机号: ">
+                    <el-input v-model="searchParams.phone" placeholder="手机号"></el-input>
                 </el-form-item>
                 <el-form-item label="用户状态: ">
-                    <el-select v-model="searchParams.visible" clearable>
+                    <el-select v-model="searchParams.locked" clearable>
                         <el-option
-                        v-for="item in articleVisible"
-                        :key="item.visible"
+                        v-for="item in userLocked"
+                        :key="item.locked"
                         :label="item.label"
-                        :value="item.visible"
+                        :value="item.locked"
                         >
                         </el-option>
                     </el-select>  
                 </el-form-item>
                 <el-form-item>
-                <el-button type="primary" @click="searchArticles">搜索</el-button>
+                <el-button type="primary" @click="searchUsers">搜索</el-button>
                 </el-form-item>
             </el-form>
                 
@@ -45,27 +40,35 @@
             >
                 <el-table-column type="selection" width="55" />
                 <el-table-column property="id" label="用户编号" width="80" align="center" />
-                <el-table-column property="title" label="用户名" width="220" align="center"/>
-                <el-table-column property="categoryName" label="手机号" width="120" align="center" />       
-                <el-table-column property="id" label="昵称" width="120" align="center" />
-                <el-table-column property="tags" label="用户角色" width="170" align="center">
+                <el-table-column property="username" label="用户名" width="220" align="center"/>
+                <el-table-column property="nickname" label="昵称" width="120" align="center">
                     <template #default="scope">
-                        <span v-if="scope.row.tags == ''"> - </span>
+                        <span v-if="scope.row.nickname == null"> - </span>
+                    </template>
+                </el-table-column>
+                <el-table-column property="phone" label="手机号" width="120" align="center">
+                    <template #default="scope">
+                        <span v-if="scope.row.phone == null"> - </span>
+                    </template>
+                </el-table-column>    
+                <el-table-column property="roleList" label="用户角色" width="170" align="center">
+                    <template #default="scope">
+                        <span v-if="scope.row.roleList == ''"> - </span>
                         <el-tag style="margin-left: 0.2rem"
-                        v-for="item in scope.row.tags"
+                        v-for="item in scope.row.roleList"
                         :key="item.id"
-                        :label="item.tagName"
+                        :label="item.roleName"
                         :value="item.id"                  
                         >
-                        {{item.tagName}} 
+                        {{item.roleName}} 
                         </el-tag>
                     </template>
                 </el-table-column>
                 <el-table-column property="createdAt" label="创建时间" width="150" align="center"/>
                 <el-table-column property="updatedAt" label="更新时间" width="150" align="center"/>
-                <el-table-column property="visible" label="状态" align="center">
+                <el-table-column property="locked" label="状态" align="center">
                     <template #default="scope">
-                    <el-tag :type="getVisibleDict(scope.row.visible).type"> {{getVisibleDict(scope.row.visible).label}} </el-tag>
+                    <el-tag :type="getLockedDict(scope.row.locked).type"> {{getLockedDict(scope.row.locked).label}} </el-tag>
                     </template>
                 </el-table-column>
                 <el-table-column label="操作" align="center" fixed="right">
@@ -101,7 +104,7 @@
 
 <script lang="ts">
 import { ref } from 'vue';
-import { deleteArticle, getArticlesAdmin,getCategories } from '@/api/article';
+import { getUserList } from '@/api/user';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
@@ -115,28 +118,28 @@ export default {
 
         const formSize = ref('large');
 
-        const getVisibleDict = (visible) => {
+        const getLockedDict = (locked) => {
             let label = '';
             let type = '';
-            if(visible == 1){
-                label = '公开';
-                type = 'success';
-            }else{
-                label = '私密';
+            if(locked){
+                label = '锁定';
                 type = 'warning';
+            }else{
+                label = '正常';
+                type = 'success';
             }
             return {"label": label,"type": type};
         };
 
 
-        const articleVisible = [
+        const userLocked = [
             {
-                visible: 1,
-                label: '公开',
+                locked: true,
+                label: '锁定',
             },
             {
-                visible: 0,
-                label: '私密',
+                locked: false,
+                label: '正常',
             }
         ];
         //适配移动端
@@ -156,83 +159,80 @@ export default {
         });
 
         const searchParams: any = ref({
-            title: '',
-            summary: '', 
-            categoryId: null,
-            visible: null,  
+            username: '',
+            nickname: '', 
+            phone: '',
+            locked: '',
         });
 
-        const categories: any = ref([]);
-
-        getCategories().then((res) => {
-            categories.value = res.data;
-        });
 
         table.value.isMobile = store.state.app.isMobile;
 
-        const listArticles = () => {
+
+        //获取用户列表
+        const listUsers = () => {
             table.value.loading = true,
-            getArticlesAdmin({
+            getUserList({
                 page: table.value.page,
                 pageSize: table.value.pageSize,
             }).then((res: any) => {
+                console.log(res);
                 table.value.data = res.data.list;
-                table.value.total = res.data.total;
+                table.value.total = res.data.size;
                 table.value.loading = false;
             });
         }
 
-        listArticles();
+        listUsers();
 
         const handleSizeChange = (pageSize: number) => {
             table.value.pageSize = pageSize;
-            listArticles();
+            listUsers();
         }
 
         const handleCurrentChange = (page: number) => {
             table.value.page = page;
-            listArticles();
+            listUsers();
         }
 
-        const searchArticles = () => {
+        const searchUsers = () => {
             table.value.loading = true,
-            getArticlesAdmin({
+            getUserList({
                 page: table.value.page,
                 pageSize: table.value.pageSize,
-                title: searchParams.value.title,
-                summary: searchParams.value.summary,
-                categoryId: searchParams.value.categoryId,
-                visible: searchParams.value.visible,
+                username: searchParams.value.username,
+                nickname: searchParams.value.nickname,
+                phone: searchParams.value.phone,
+                locked: searchParams.value.locked,
 
             }).then((res: any) => {
                 table.value.data = res.data.list;
-                table.value.total = res.data.total;
+                table.value.total = res.data.size;
                 table.value.loading = false;
             });
         }
 
         const handleDelete = (id) => {
-            deleteArticle(id).then((res) => {
-            if(res.data) {
-              ElMessage.success("删除成功!");
-              listArticles();
-            }
-            });
+            // deleteArticle(id).then((res) => {
+            // if(res.data) {
+            //   ElMessage.success("删除成功!");
+            //   listArticles();
+            // }
+            // });
         }
 
         const handleEditClick = (id) => {
-            router.push('/articles/' + id);
+            router.push('/user/' + id);
         }
         return {
             table,
             handleSizeChange,
             handleCurrentChange,
             searchParams,
-            categories,
-            searchArticles,
+            searchUsers,
             formSize,
-            articleVisible,
-            getVisibleDict,
+            userLocked,
+            getLockedDict,
             handleDelete,
             handleEditClick
             };

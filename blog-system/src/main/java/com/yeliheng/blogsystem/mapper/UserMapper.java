@@ -16,6 +16,6 @@ public interface UserMapper {
 
     Long selectUidByUsername(String username);
 
-    List<User> selectUserList();
+    List<User> selectUserList(User user);
 
 }
