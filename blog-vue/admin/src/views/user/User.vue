@@ -1,4 +1,5 @@
 <template>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
     <div class="user-list-container">
         <div class="user-list-header">
             <div class="line"></div>
@@ -108,7 +109,7 @@
 
         
         <!-- 添加用户 -->
-        <el-dialog v-model="userFormVisible" title="添加用户"  :close-on-click-modal="false">
+        <el-dialog v-model="userFormVisible" title="添加用户" :close-on-click-modal="false" width="25rem">
             <el-form ref="validate" :model="userForm" label-position="left" :rules="formRules">
             <el-form-item label="用户名: " label-width="80px" prop="username" required>
                 <el-input autocomplete="off" v-model="userForm.username"></el-input>
@@ -145,7 +146,7 @@
         </el-dialog>
 
         <!-- 编辑用户 -->
-        <el-dialog v-model="userEditFormVisible" title="编辑用户"  :close-on-click-modal="false">
+        <el-dialog v-model="userEditFormVisible" title="编辑用户"  :close-on-click-modal="false" width="25rem">
             <el-form ref="validate" :model="userForm" label-position="left" :rules="editFormRules">
                 <el-form-item label="用户名: " label-width="80px" prop="username" required>
                     <el-input autocomplete="off" v-model="userForm.username"></el-input>
@@ -460,28 +461,28 @@ const validate = ref(null);
 </script>
 
 <style lang="scss" scoped>
-.user-list-header{
+.user-list-header {
     display: flex;
     margin-bottom: 1rem;
-    >span{
+    >span {
         font-size: 20px;
         margin-left: 0.5rem;
     }
 
 }
-.line{
+.line {
     width: 0.5rem;
     height: 2rem;
     background: #666666;
 }
-.user-list-footer{
+.user-list-footer {
   display: flex;
   justify-content: flex-end;
   .pagination-nav{
     margin-top: 1rem;
   }
 }
-.user-table{
+.user-table {
     width: 100%;
     height: 50rem;
     overflow: auto;
