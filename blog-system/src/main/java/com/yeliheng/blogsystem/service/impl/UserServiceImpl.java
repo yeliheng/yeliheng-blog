@@ -97,8 +97,15 @@ public class UserServiceImpl implements IUserService {
      * @param userId 用户id
      */
     @Override
+    @Transactional
     public void deleteUser(Long userId) {
-
+        User user = new User();
+        user.setId(userId);
+        checkUserCanBeDel(user);
+        deleteUserRole(user);
+        if(userMapper.deleteByPrimaryKey(userId) <= 0) {
+            throw new GeneralException("删除失败，用户可能不存在");
+        }
     }
 
     /**
@@ -159,8 +166,18 @@ public class UserServiceImpl implements IUserService {
         }
     }
 
-    public void deleteUserRole(User user){
+    public void deleteUserRole(User user) {
         userRoleMapper.deleteByUserId(user.getId());
+    }
+
+    /**
+     * 检查用户是否可被删除
+     * @param user 用户实体
+     */
+    public void checkUserCanBeDel(User user){
+        if(StringUtils.isNotNull(user.getId()) && user.isAdmin()){
+            throw new GeneralException("不允许操作超级管理员!");
+        }
     }
 
 }

@@ -1,16 +1,17 @@
 package com.yeliheng.blogsystem.mapper;
 
 import com.yeliheng.blogsystem.entity.User;
+import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
 
-public interface UserMapper {
+public interface UserMapper extends Mapper<User> {
 
     User selectUserByUserName(String username);
 
     Long checkUsernameUnique(String username);
 
-    Integer insertUser(User user);
+    int insertUser(User user);
 
     int updateUser(User user);
 

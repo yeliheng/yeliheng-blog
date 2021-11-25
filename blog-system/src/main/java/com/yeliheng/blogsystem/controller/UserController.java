@@ -54,8 +54,8 @@ public class UserController {
 
     @PreAuthorize("@perm.hasPerm('admin:users:delete')")
     @DeleteMapping
-    public CommonResponse<Object> delete() {
-
+    public CommonResponse<Object> delete(@RequestParam("id") Long id) {
+        userService.deleteUser(id);
         return CommonResponse.success();
     }
 
