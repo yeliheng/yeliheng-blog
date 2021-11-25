@@ -9,7 +9,7 @@
             <el-form-item prop="username">
               <el-input placeholder="用户名" @keyup.enter="loginHandler" v-model="loginForm.username" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item>
+            <el-form-item prop="password">
               <el-input type="password" placeholder="密码" autocomplete="off" v-model="loginForm.password" @keyup.enter="loginHandler"></el-input>
             </el-form-item>
             <div class="login-options">
@@ -54,6 +54,12 @@ export default {
           required: true,
           message: "请输入用户名",
           trigger: "blur",
+        },
+        {
+              min: 5,
+              max: 12,
+              message: '用户名长度不合法',
+              trigger: 'blur',
         }
       ],
       password: [
@@ -61,6 +67,12 @@ export default {
           required: true,
           message: "请输入密码",
           trigger: "blur",
+        },
+        {
+              min: 6,
+              max: 18,
+              message: '密码长度不合法',
+              trigger: 'blur',
         }
       ],
     };

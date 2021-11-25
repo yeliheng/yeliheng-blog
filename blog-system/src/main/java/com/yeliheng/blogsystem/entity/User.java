@@ -18,6 +18,7 @@ public class User implements Serializable {
     @Id
     private Long id;
 
+    @NotBlank
     private String username;
 
     @NotBlank

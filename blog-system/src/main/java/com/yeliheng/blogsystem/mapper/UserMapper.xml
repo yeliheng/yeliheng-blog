@@ -64,11 +64,17 @@
         insert into user(
             <if test="username != null and username != ''">username,</if>
             <if test="password != null and password != ''">password,</if>
+            <if test="nickname != null and nickname != ''">nickname,</if>
+            <if test="phone != null and phone != ''">phone,</if>
+            <if test="locked != null and locked != ''">locked,</if>
             created_at,
             updated_at
         )values (
             <if test="username != null and username != ''">#{username},</if>
             <if test="password != null and password != ''">#{password},</if>
+            <if test="nickname != null and nickname != ''">#{nickname},</if>
+            <if test="phone != null and phone != ''">#{phone},</if>
+            <if test="locked != null and locked != ''">#{locked},</if>
             sysdate(),
             sysdate()
         )
@@ -79,6 +85,9 @@
         <set>
             <if test="username != null and username != ''">username = #{username},</if>
             <if test="password != null and password != ''">password = #{password},</if>
+            <if test="nickname != null and nickname != ''">nickname = #{nickname},</if>
+            <if test="phone != null and phone != ''">phone = #{phone},</if>
+            <if test="locked != null and locked != ''">locked = #{locked},</if>
             updated_at = sysdate()
         </set>
         where id = #{id}

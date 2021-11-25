@@ -27,13 +27,16 @@
                     </el-select>  
                 </el-form-item>
                 <el-form-item>
-                <el-button type="primary" @click="searchUsers">搜索</el-button>
+                    <el-button type="primary" @click="searchUsers">搜索</el-button>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @click="userFormVisible = true">添加用户</el-button>
                 </el-form-item>
             </el-form>
                 
             
             <el-table
-            class="user-table"
+                class="user-table"
                 ref="multipleTable"
                 :data="table.data"
                 v-loading="table.loading"
@@ -44,11 +47,13 @@
                 <el-table-column property="nickname" label="昵称" width="120" align="center">
                     <template #default="scope">
                         <span v-if="scope.row.nickname == null"> - </span>
+                        {{scope.row.nickname}}
                     </template>
                 </el-table-column>
                 <el-table-column property="phone" label="手机号" width="120" align="center">
                     <template #default="scope">
                         <span v-if="scope.row.phone == null"> - </span>
+                        {{scope.row.phone}}
                     </template>
                 </el-table-column>    
                 <el-table-column property="roleList" label="用户角色" width="170" align="center">
@@ -74,7 +79,7 @@
                 </el-table-column>
                 <el-table-column label="操作" align="center" fixed="right">
                 <template #default="scope">
-                    <el-button type="text" size="mini" icon="fa fa-edit" @click="handleEditClick(scope.row.id)">修改</el-button>
+                    <el-button type="text" size="mini" icon="fa fa-edit" @click="handleEditClick(scope.row)">修改</el-button>
                     <el-popconfirm title="确定删除该用户? " @confirm="handleDelete(scope.row.id)">
                     <template #reference>
                     <el-button type="text" size="mini" style="color: #ff8989;" icon="fa fa-trash">删除</el-button>
@@ -100,24 +105,156 @@
             >
             </el-pagination>
         </div>
+
+        
+        <!-- 添加用户 -->
+        <el-dialog v-model="userFormVisible" title="添加用户"  :close-on-click-modal="false">
+            <el-form ref="validate" :model="userForm" label-position="left" :rules="formRules">
+            <el-form-item label="用户名: " label-width="80px" prop="username" required>
+                <el-input autocomplete="off" v-model="userForm.username"></el-input>
+            </el-form-item>
+            <el-form-item label="密码: " label-width="80px" prop="password" required>
+                <el-input show-password autocomplete="off" v-model="userForm.password"></el-input>
+            </el-form-item>
+            <el-form-item label="昵称: " label-width="80px">
+                <el-input autocomplete="off" v-model="userForm.nickname"></el-input>
+            </el-form-item>            
+            <el-form-item label="手机号: " label-width="80px">
+                <el-input autocomplete="off" v-model="userForm.phone"></el-input>
+            </el-form-item>
+            <el-form-item label="角色: " label-width="80px">
+                <el-select placeholder="请选择一个角色" v-model="userForm.roles" multiple>
+                    <el-option
+                        v-for="item in roles"
+                        :key="item.id"
+                        :label="item.roleName"
+                        :value="item.id"
+                        >
+                        </el-option>
+                </el-select>
+            </el-form-item>
+            </el-form>
+            <template #footer>
+            <span class="dialog-footer">
+                <el-button @click="userFormVisible = false">取消</el-button>
+                <el-button type="primary" @click="handleAddUser()" :loading="loading"
+                >确定</el-button
+                >
+            </span>
+            </template>
+        </el-dialog>
+
+        <!-- 编辑用户 -->
+        <el-dialog v-model="userEditFormVisible" title="编辑用户"  :close-on-click-modal="false">
+            <el-form ref="validate" :model="userForm" label-position="left" :rules="editFormRules">
+                <el-form-item label="用户名: " label-width="80px" prop="username" required>
+                    <el-input autocomplete="off" v-model="userForm.username"></el-input>
+                </el-form-item>
+                <el-form-item label="密码: " label-width="80px" prop="password">
+                    <el-input show-password placeholder="密码未更改" autocomplete="off" v-model="userForm.password"></el-input>
+                </el-form-item>
+                <el-form-item label="昵称: " label-width="80px">
+                    <el-input autocomplete="off" v-model="userForm.nickname"></el-input>
+                </el-form-item>            
+                <el-form-item label="手机号: " label-width="80px">
+                    <el-input autocomplete="off" v-model="userForm.phone"></el-input>
+                </el-form-item>
+                <el-form-item label="角色: " label-width="80px">
+                    <el-select placeholder="请选择一个角色" v-model="userForm.roles" multiple>
+                        <el-option
+                            v-for="item in roles"
+                            :key="item.id"
+                            :label="item.roleName"
+                            :value="item.id"
+                            >
+                            </el-option>
+                    </el-select>
+                </el-form-item>
+            </el-form>
+            <template #footer>
+            <span class="dialog-footer">
+                <el-button @click="userEditFormVisible = false">取消</el-button>
+                <el-button type="primary" @click="handleEditUser()" :loading="loading"
+                >确定</el-button
+                >
+            </span>
+            </template>
+        </el-dialog>
     </div>
 </template>
 
 <script lang="ts">
 import { ref } from 'vue';
-import { deleteUser, getUserList } from '@/api/user';
+import { deleteUser, getUserList, getRoles, addUser, updateUser } from '@/api/user';
 import { useStore } from 'vuex';
-import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
 
-export default {    
+export default {
     setup(){
+        const userFormVisible = ref(false);
+
+        const validate: any = ref(null);
+
+        const userEditFormVisible = ref(false);
+
+        const loading = ref(false);
 
         const store = useStore();
-        
-        const router = useRouter();
 
         const formSize = ref('large');
+
+        const formRules = {
+            username: [
+            {
+                required: true,
+                message: '请输入用户名',
+                trigger: 'blur',
+            },
+            {
+                min: 5,
+                max: 12,
+                message: '用户名长度必须在5-12个字符之间',
+                trigger: 'blur',
+            }
+            ],
+            password: [
+            {
+                required: true,
+                message: '请输入密码',
+                trigger: 'blur',
+            },
+            {
+                min: 6,
+                max: 18,
+                message: '密码长度必须在6-18个字符之间',
+                trigger: 'blur',
+            }
+            ],
+        };
+
+        const editFormRules = {
+            username: [
+            {
+                required: true,
+                message: '请输入用户名',
+                trigger: 'blur',
+            },
+            {
+                min: 5,
+                max: 12,
+                message: '用户名长度必须在5-12个字符之间',
+                trigger: 'blur',
+            }
+            ],
+            password: [
+            {
+                min: 6,
+                max: 18,
+                message: '密码长度必须在6-18个字符之间',
+                trigger: 'blur',
+            }
+            ],
+        }
 
         const getLockedDict = (locked) => {
             let label = '';
@@ -166,6 +303,15 @@ export default {
             locked: '',
         });
 
+        const userForm: any = ref({
+          id: null,
+          username: '',
+          password: '',
+          nickname: '',
+          phone: '',
+          roles: [],
+          locked: 0
+        });
 
         table.value.isMobile = store.state.app.isMobile;
 
@@ -177,7 +323,6 @@ export default {
                 page: table.value.page,
                 pageSize: table.value.pageSize,
             }).then((res: any) => {
-                console.log(res);
                 table.value.data = res.data.list;
                 table.value.total = res.data.size;
                 table.value.loading = false;
@@ -185,6 +330,13 @@ export default {
         }
 
         listUsers();
+
+        const roles = ref([]);
+
+        //获取角色列表
+        getRoles().then((res: any) => {
+            roles.value = res.data;
+        });
 
         const handleSizeChange = (pageSize: number) => {
             table.value.pageSize = pageSize;
@@ -224,9 +376,62 @@ export default {
             });
         }
 
-        const handleEditClick = (id) => {
-            router.push('/user/' + id);
+        const handleEditClick = (row) => {
+            console.log(row);
+            //获取角色id
+            let roleIds = [];
+            userForm.value = row;
+            row.roleList.forEach(item => {
+                roleIds.push(item.id);
+                userForm.value.roles = roleIds;
+            });
+            userEditFormVisible.value = true;
+
         }
+
+
+        const handleEditUser = () => {
+            validate.value.validate((valid) => {
+                if(valid){
+                    loading.value = true;
+                    updateUser(userForm.value).then((res: any) => {
+                        if(!res.errCode){
+                            ElMessage.success('更新用户成功!');
+                            userEditFormVisible.value = false;
+                            userForm.value = {};
+                            listUsers();
+                        }      
+                        loading.value = false;
+                    }).catch(() => {
+                        loading.value = false;
+                    });
+                }
+            });
+
+        }
+
+        const handleAddUser = () => {
+            validate.value.validate((valid) => {
+                if(valid) {
+                    loading.value = true;
+                    addUser(userForm.value).then((res: any) => {
+                        if(!res.errCode){
+                            ElMessage.success('新建用户成功!');
+                            userFormVisible.value = false;
+                            userForm.value = {};
+                            listUsers();
+                        }else{
+                            ElMessage.error(res.detail);
+                        }
+                        loading.value = false;
+                    }).catch(() => {
+                        loading.value = false;
+                    });
+                }
+            });
+        }
+
+        
         return {
             table,
             handleSizeChange,
@@ -237,10 +442,21 @@ export default {
             userLocked,
             getLockedDict,
             handleDelete,
-            handleEditClick
+            handleEditClick,
+            handleAddUser,
+            userFormVisible,
+            userForm,
+            roles,
+            loading,
+            formRules,
+            userEditFormVisible,
+            handleEditUser,
+            editFormRules,
+            validate,
             };
         }
 }
+const validate = ref(null);
 </script>
 
 <style lang="scss" scoped>
