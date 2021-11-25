@@ -53,7 +53,8 @@
                 </el-table-column>    
                 <el-table-column property="roleList" label="用户角色" width="170" align="center">
                     <template #default="scope">
-                        <span v-if="scope.row.roleList == ''"> - </span>
+                        <span v-if="scope.row.id == 1"> <el-tag type="success">超级管理员</el-tag></span>
+                        <span v-if="scope.row.roleList == '' && scope.row.id != 1"> - </span>
                         <el-tag style="margin-left: 0.2rem"
                         v-for="item in scope.row.roleList"
                         :key="item.id"
@@ -104,7 +105,7 @@
 
 <script lang="ts">
 import { ref } from 'vue';
-import { getUserList } from '@/api/user';
+import { deleteUser, getUserList } from '@/api/user';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
@@ -213,12 +214,14 @@ export default {
         }
 
         const handleDelete = (id) => {
-            // deleteArticle(id).then((res) => {
-            // if(res.data) {
-            //   ElMessage.success("删除成功!");
-            //   listArticles();
-            // }
-            // });
+            deleteUser(id).then((res: any) => {
+                if(!res.errCode) {
+                    ElMessage.success("删除成功!");
+                    listUsers();
+                }else{
+                    ElMessage.error(res.detail);
+                }
+            });
         }
 
         const handleEditClick = (id) => {

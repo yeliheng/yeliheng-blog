@@ -7,3 +7,11 @@ export function getUserList(params:any) {
         params: params
     });
 }
+
+export function deleteUser(id:number) {
+    return request({
+        url: '/admin/users',
+        method: 'delete',
+        params: {'id': id}
+    });
+}
