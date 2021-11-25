@@ -1,5 +1,6 @@
 import { getInfo, login, logout } from "@/api/login";
 import { getToken,setToken,removeToken } from "@/utils/auth";
+import { ElMessage } from "element-plus";
 
 const state = {
     token: getToken(),
@@ -31,6 +32,11 @@ const actions = {
         const password = userInfo.password;
         return new Promise<void>((resolve,reject) => {
             login(username,password).then((res: any) => {
+                if(res.errCode == 'GENERAL_EXCEPTION') {
+                    ElMessage.error(res.detail);
+                    reject();
+                    return;
+                }
                 const token:string = res.data.token;
                 setToken(token);
                 commit('SET_TOKEN',token);

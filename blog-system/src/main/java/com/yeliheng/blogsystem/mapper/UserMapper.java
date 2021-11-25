@@ -1,11 +1,10 @@
 package com.yeliheng.blogsystem.mapper;
 
 import com.yeliheng.blogsystem.entity.User;
-import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
 
-public interface UserMapper extends Mapper<User> {
+public interface UserMapper {
 
     User selectUserByUserName(String username);
 
@@ -19,4 +18,5 @@ public interface UserMapper extends Mapper<User> {
 
     List<User> selectUserList(User user);
 
+    int deleteUserById(Long id);
 }

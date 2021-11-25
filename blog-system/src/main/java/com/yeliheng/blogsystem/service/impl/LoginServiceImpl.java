@@ -1,6 +1,7 @@
 package com.yeliheng.blogsystem.service.impl;
 
 import com.yeliheng.blogsystem.entity.LoginUser;
+import com.yeliheng.blogsystem.exception.GeneralException;
 import com.yeliheng.blogsystem.exception.UnauthorizedException;
 import com.yeliheng.blogsystem.service.ILoginService;
 import com.yeliheng.blogsystem.utils.TokenUtils;
@@ -30,7 +31,7 @@ public class LoginServiceImpl implements ILoginService {
             authentication = authenticationManager
                     .authenticate(new UsernamePasswordAuthenticationToken(username,password));
         }catch (Exception e){
-            throw new UnauthorizedException("用户名或密码错误！");
+            throw new GeneralException("用户名或密码错误！");
         }
         LoginUser loginUser = (LoginUser) authentication.getPrincipal();
         //user.getUsername();

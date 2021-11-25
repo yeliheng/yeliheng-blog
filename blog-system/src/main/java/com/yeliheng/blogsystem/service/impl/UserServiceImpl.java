@@ -10,8 +10,6 @@ import com.yeliheng.blogsystem.mapper.UserMapper;
 import com.yeliheng.blogsystem.mapper.UserRoleMapper;
 import com.yeliheng.blogsystem.service.IUserService;
 import com.yeliheng.blogsystem.utils.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,8 +24,6 @@ public class UserServiceImpl implements IUserService {
     private UserMapper userMapper;
     @Autowired
     private UserRoleMapper userRoleMapper;
-
-    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     //生成强哈希密码
     private String encryptPassword(String password){
@@ -67,7 +63,7 @@ public class UserServiceImpl implements IUserService {
     public void insertUser(User user) {
         if(!checkUsernameUnique(user.getUsername())) throw new GeneralException("用户已存在!");
         user.setPassword(encryptPassword(user.getPassword()));
-        Integer rows = userMapper.insertUser(user);
+        int rows = userMapper.insertUser(user);
         if(rows <= 0) throw new InternalServerException("插入失败，未知错误");
         //添加角色关联
         insertUserRole(user);
@@ -103,7 +99,7 @@ public class UserServiceImpl implements IUserService {
         user.setId(userId);
         checkUserCanBeDel(user);
         deleteUserRole(user);
-        if(userMapper.deleteByPrimaryKey(userId) <= 0) {
+        if(userMapper.deleteUserById(userId) <= 0) {
             throw new GeneralException("删除失败，用户可能不存在");
         }
     }

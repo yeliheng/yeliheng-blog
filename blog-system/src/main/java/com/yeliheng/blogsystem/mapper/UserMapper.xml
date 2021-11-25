@@ -87,4 +87,8 @@
     <select id="checkUsernameUnique" resultType="Long">
         select id from user where username = #{username}
     </select>
+
+    <delete id="deleteUserById" parameterType="Long">
+        delete from user where id=#{id}
+    </delete>
 </mapper>

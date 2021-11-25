@@ -8,7 +8,6 @@ import org.springframework.data.annotation.Id;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.List;
 
 public class User implements Serializable {
