@@ -1,5 +1,6 @@
 package com.yeliheng.blogsystem.service.impl;
 
+import com.yeliheng.blogsystem.dto.MenuTreeDTO;
 import com.yeliheng.blogsystem.entity.Menu;
 import com.yeliheng.blogsystem.entity.Router;
 import com.yeliheng.blogsystem.exception.GeneralException;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.util.StringUtil;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class MenuServiceImpl implements IMenuService {
@@ -58,14 +60,40 @@ public class MenuServiceImpl implements IMenuService {
     }
 
     /**
-     * 获取所有菜单
-     *
-     * @return 菜单列表
+     * 获取前端选择所需的菜单树
+     * @return 菜单树形列表
      */
     @Override
-    public List<Menu> getMenus() {
-        return menuMapper.selectAll();
+    public List<MenuTreeDTO> getMenuTree() {
+        List<Menu> menuTree = buildMenuTree(menuMapper.selectAll());
+        return menuTree.stream().map(MenuTreeDTO::new).collect(Collectors.toList());
     }
+
+    /**
+     * 构建出前端所需的菜单树
+     *
+     * @param menuList 菜单列表
+     * @return 菜单树形列表
+     */
+    @Override
+    public List<Menu> buildMenuTree(List<Menu> menuList) {
+        List<Menu> resultList = new ArrayList<>();
+        List<Long> temp = new ArrayList<>();
+        for(Menu item : menuList) {
+            temp.add(item.getId());
+        }
+        for(Iterator<Menu> iterator = menuList.iterator();iterator.hasNext();) {
+            Menu menu = iterator.next();
+            if(!temp.contains(menu.getParentId())) {
+                recursionFn(menuList,menu);
+                resultList.add(menu);
+            }
+        }
+        if(resultList.isEmpty())
+            resultList = menuList;
+        return resultList;
+    }
+
 
     /**
      * 通过用户id查询菜单权限

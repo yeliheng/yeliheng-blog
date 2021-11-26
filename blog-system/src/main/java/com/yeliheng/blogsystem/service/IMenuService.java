@@ -1,5 +1,6 @@
 package com.yeliheng.blogsystem.service;
 
+import com.yeliheng.blogsystem.dto.MenuTreeDTO;
 import com.yeliheng.blogsystem.entity.Menu;
 import com.yeliheng.blogsystem.entity.Router;
 
@@ -32,10 +33,17 @@ public interface IMenuService {
 
     /**
      *
-     * 获取所有菜单
-     * @return 菜单列表
+     * 获取前端选择所需的菜单树
+     * @return 菜单树形列表
      */
-    List<Menu> getMenus();
+    List<MenuTreeDTO> getMenuTree();
+
+    /**
+     *
+     * 构建出前端所需的菜单树
+     * @return 菜单树形列表
+     */
+    List<Menu> buildMenuTree(List<Menu> menuList);
 
     /**
      *
