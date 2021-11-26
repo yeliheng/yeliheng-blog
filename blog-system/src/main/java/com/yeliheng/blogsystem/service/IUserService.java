@@ -1,7 +1,10 @@
 package com.yeliheng.blogsystem.service;
 
+import com.github.pagehelper.PageInfo;
 import com.yeliheng.blogsystem.entity.RegisterUser;
 import com.yeliheng.blogsystem.entity.User;
+
+import java.util.List;
 
 public interface IUserService {
     /**
@@ -27,6 +30,12 @@ public interface IUserService {
     public void updateUser(User user);
 
     /**
+     * 删除用户
+     * @param userId 用户id
+     */
+    public void deleteUser(Long userId);
+
+    /**
      *
      * 用户注册
      * @param user 用户实体
@@ -41,5 +50,14 @@ public interface IUserService {
      * @return 用户id
      */
     public Long selectUidByUsername(String username);
+
+    /**
+     *
+     * 获取用户列表
+     * @param page 第几页
+     * @param pageSize 一页多少
+     * @return 用户列表
+     */
+    public PageInfo<User> getUserList(Integer page, Integer pageSize,User user);
 
 }

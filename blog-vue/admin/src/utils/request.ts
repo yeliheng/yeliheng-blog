@@ -58,9 +58,6 @@ error => {
   //console.log(error.response);
   const status = error.response.status;
   switch(status) {
-    case 401:
-      showErrorMessage("用户名或密码错误");
-    break;
     case 500: 
       showErrorMessage("服务器内部错误");
       break;

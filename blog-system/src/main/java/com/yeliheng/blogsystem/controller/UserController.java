@@ -13,6 +13,7 @@ import com.yeliheng.blogsystem.utils.RedisUtils;
 import com.yeliheng.blogsystem.utils.StringUtils;
 import com.yeliheng.blogsystem.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,18 +37,37 @@ public class UserController {
     private IMenuService menuService;
 
 
+
+    @PreAuthorize("@perm.hasPerm('admin:users:add')")
     @PostMapping
-    public CommonResponse<Object> add(@Validated @RequestBody User user){
+    public CommonResponse<Object> add(@Validated @RequestBody User user) {
         userService.insertUser(user);
         return CommonResponse.success();
     }
 
+    @PreAuthorize("@perm.hasPerm('admin:users:edit')")
     @PutMapping
-    public CommonResponse<Object> update(@RequestBody User user){
+    public CommonResponse<Object> update(@RequestBody User user) {
         userService.updateUser(user);
         return CommonResponse.success();
     }
 
+    @PreAuthorize("@perm.hasPerm('admin:users:delete')")
+    @DeleteMapping
+    public CommonResponse<Object> delete(@RequestParam("id") Long id) {
+        userService.deleteUser(id);
+        return CommonResponse.success();
+    }
+
+    @PreAuthorize("@perm.hasPerm('admin:users:list')")
+    @GetMapping()
+    public CommonResponse<Object> getUserList(
+            @RequestParam(value = "page",defaultValue = "1") Integer page,
+            @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize,
+            User user
+            ){
+        return CommonResponse.success(userService.getUserList(page,pageSize,user));
+    }
 
     @GetMapping("/info")
     public CommonResponse<Object> getUserInfo(){

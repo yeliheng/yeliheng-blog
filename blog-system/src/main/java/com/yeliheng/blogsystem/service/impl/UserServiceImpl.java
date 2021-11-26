@@ -1,5 +1,7 @@
 package com.yeliheng.blogsystem.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.yeliheng.blogsystem.entity.User;
 import com.yeliheng.blogsystem.entity.UserRole;
 import com.yeliheng.blogsystem.exception.GeneralException;
@@ -61,7 +63,7 @@ public class UserServiceImpl implements IUserService {
     public void insertUser(User user) {
         if(!checkUsernameUnique(user.getUsername())) throw new GeneralException("用户已存在!");
         user.setPassword(encryptPassword(user.getPassword()));
-        Integer rows = userMapper.insertUser(user);
+        int rows = userMapper.insertUser(user);
         if(rows <= 0) throw new InternalServerException("插入失败，未知错误");
         //添加角色关联
         insertUserRole(user);
@@ -86,6 +88,23 @@ public class UserServiceImpl implements IUserService {
     }
 
     /**
+     * 删除用户
+     *
+     * @param userId 用户id
+     */
+    @Override
+    @Transactional
+    public void deleteUser(Long userId) {
+        User user = new User();
+        user.setId(userId);
+        checkUserCanBeDel(user);
+        deleteUserRole(user);
+        if(userMapper.deleteUserById(userId) <= 0) {
+            throw new GeneralException("删除失败，用户可能不存在");
+        }
+    }
+
+    /**
      *
      * 用户注册
      * @param user 用户实体
@@ -105,6 +124,20 @@ public class UserServiceImpl implements IUserService {
     @Override
     public Long selectUidByUsername(String username) {
        return userMapper.selectUidByUsername(username);
+    }
+
+    /**
+     * 获取用户列表
+     *
+     * @param page     第几页
+     * @param pageSize 一页多少
+     * @return 用户列表
+     */
+    @Override
+    public PageInfo<User> getUserList(Integer page, Integer pageSize,User user) {
+        PageHelper.startPage(page,pageSize);
+        List<User> userList = userMapper.selectUserList(user);
+        return new PageInfo<>(userList);
     }
 
 
@@ -129,8 +162,18 @@ public class UserServiceImpl implements IUserService {
         }
     }
 
-    public void deleteUserRole(User user){
+    public void deleteUserRole(User user) {
         userRoleMapper.deleteByUserId(user.getId());
+    }
+
+    /**
+     * 检查用户是否可被删除
+     * @param user 用户实体
+     */
+    public void checkUserCanBeDel(User user){
+        if(StringUtils.isNotNull(user.getId()) && user.isAdmin()){
+            throw new GeneralException("不允许操作超级管理员!");
+        }
     }
 
 }
