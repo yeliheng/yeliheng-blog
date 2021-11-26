@@ -16,4 +16,6 @@ public interface RoleMapper extends Mapper<Role> {
     Long checkRoleNameUnique(String roleName);
 
     Long checkRoleCharUnique(String roleChar);
+
+    List<Role> getRoleList(Role role);
 }

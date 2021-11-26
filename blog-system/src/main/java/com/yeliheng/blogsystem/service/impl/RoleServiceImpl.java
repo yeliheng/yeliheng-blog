@@ -1,5 +1,7 @@
 package com.yeliheng.blogsystem.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.yeliheng.blogsystem.entity.Role;
 import com.yeliheng.blogsystem.entity.RoleMenu;
 import com.yeliheng.blogsystem.exception.GeneralException;
@@ -76,6 +78,22 @@ public class RoleServiceImpl implements IRoleService {
     public List<Role> getRoles() {
         return roleMapper.selectAll();
     }
+
+    /**
+     * 获取分页的角色列表
+     *
+     * @param page     当前页
+     * @param pageSize 一页多少
+     * @param role     角色实体
+     * @return 角色带分页信息
+     */
+    @Override
+    public PageInfo<Role> getRolesPaged(Integer page, Integer pageSize, Role role) {
+        PageHelper.startPage(page,pageSize);
+        List<Role> roleList = roleMapper.getRoleList(role);
+        return new PageInfo<>(roleList);
+    }
+
 
     /**
      * 通过用户Id获取角色

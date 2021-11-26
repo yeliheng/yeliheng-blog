@@ -1,5 +1,6 @@
 package com.yeliheng.blogsystem.service;
 
+import com.github.pagehelper.PageInfo;
 import com.yeliheng.blogsystem.entity.Role;
 
 import java.util.List;
@@ -34,6 +35,17 @@ public interface IRoleService {
      * @return 角色列表
      */
     List<Role> getRoles();
+
+
+    /**
+     *
+     * 获取分页的角色列表
+     * @param page 当前页
+     * @param pageSize 一页多少
+     * @param role 角色实体
+     * @return 角色带分页信息
+     */
+    PageInfo<Role> getRolesPaged(Integer page, Integer pageSize, Role role);
 
     /**
      *

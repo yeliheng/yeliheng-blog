@@ -1,8 +1,8 @@
 import request from '@/utils/request';
 
-export function getUserList(params:any) {
+export function getRoleList(params:any) {
     return request({
-        url: '/admin/users',
+        url: '/admin/roles',
         method: 'get',
         params: params
     });
@@ -23,11 +23,11 @@ export function getRoles() {
     });
 }
 
-export function addUser(userData) {
+export function addRole(roleData) {
     return request({
-        url: '/admin/users',
+        url: '/admin/roles',
         method: 'post',
-        data: userData,
+        data: roleData,
     });
 }
 
