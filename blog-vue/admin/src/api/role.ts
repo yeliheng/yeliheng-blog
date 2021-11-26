@@ -8,9 +8,9 @@ export function getRoleList(params:any) {
     });
 }
 
-export function deleteUser(id:number) {
+export function deleteRole(id:number) {
     return request({
-        url: '/admin/users',
+        url: '/admin/roles',
         method: 'delete',
         params: {'id': id}
     });
@@ -31,10 +31,17 @@ export function addRole(roleData) {
     });
 }
 
-export function updateUser(userData) {
+export function updateRole(roleData) {
     return request({
-        url: '/admin/users',
+        url: '/admin/roles',
         method: 'put',
-        data: userData,
+        data: roleData,
     });
+}
+
+export function getSelectMenuTree() { 
+    return request({
+        url: '/admin/menus/tree',
+        method: 'get',
+    })
 }

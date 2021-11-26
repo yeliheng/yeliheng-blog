@@ -16,7 +16,7 @@
                 <el-form-item label="角色状态: ">
                     <el-select v-model="searchParams.locked" clearable>
                         <el-option
-                        v-for="item in userLocked"
+                        v-for="item in roleLocked"
                         :key="item.locked"
                         :label="item.label"
                         :value="item.locked"
@@ -28,7 +28,7 @@
                     <el-button type="primary" @click="searchRoles">搜索</el-button>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" @click="roleFormVisible = true">新增角色</el-button>
+                    <el-button type="primary" @click="roleFormVisible = true;dialogTitle = '添加角色';">新增角色</el-button>
                 </el-form-item>
             </el-form>
                 
@@ -51,7 +51,7 @@
                 <el-table-column property="createdAt" label="创建时间" width="150" align="center"/>
                 <el-table-column property="updatedAt" label="更新时间" width="150" align="center"/>
 
-                <el-table-column label="操作" align="center" fixed="right">
+                <el-table-column label="操作" align="center">
                 <template #default="scope">
                     <el-button type="text" size="mini" icon="fa fa-edit" @click="handleEditClick(scope.row)">修改</el-button>
                     <el-popconfirm title="确定删除该角色? " @confirm="handleDelete(scope.row.id)">
@@ -81,63 +81,32 @@
         </div>
 
         
-        <!-- 添加角色 -->
-        <el-dialog v-model="roleFormVisible" title="添加角色" :close-on-click-modal="false" width="25rem">
+        <!-- 添加或修改角色 -->
+        <el-dialog v-model="roleFormVisible" :title="dialogTitle" :close-on-click-modal="false" width="25rem">
             <el-form ref="validate" :model="roleForm" label-position="left" :rules="formRules">
-            <el-form-item label="角色名称: " label-width="100px" prop="roleName" required>
-                <el-input autocomplete="off" v-model="roleForm.roleName"></el-input>
-            </el-form-item>
-            <el-form-item label="角色字符: " label-width="100px" prop="roleChar" required>
-                <el-input autocomplete="off" v-model="roleForm.roleChar"></el-input>
-            </el-form-item>            
-            <el-form-item label="锁定角色: " label-width="100px">
-                <el-switch v-model="roleForm.locked"/>
-            </el-form-item>
+                <el-form-item label="角色名称: " label-width="100px" prop="roleName" required>
+                    <el-input autocomplete="off" v-model="roleForm.roleName"></el-input>
+                </el-form-item>
+                <el-form-item label="角色字符: " label-width="100px" prop="roleChar" required>
+                    <el-input autocomplete="off" v-model="roleForm.roleChar"></el-input>
+                </el-form-item>   
+                <el-form-item label="角色权限: " label-width="100px">
+                    <el-tree
+                        :data="menuOptions"
+                        show-checkbox
+                        ref="menuIds"
+                        node-key="id"
+                        empty-text="菜单加载中"
+                    ></el-tree>
+                </el-form-item>          
+                <el-form-item label="锁定角色: " label-width="100px">
+                    <el-switch v-model="roleForm.locked"/>
+                </el-form-item>
             </el-form>
             <template #footer>
             <span class="dialog-footer">
                 <el-button @click="roleFormVisible = false">取消</el-button>
-                <el-button type="primary" @click="handleAddUser()" :loading="loading"
-                >确定</el-button
-                >
-            </span>
-            </template>
-        </el-dialog>
-
-        <!-- 编辑角色 -->
-        <el-dialog v-model="userEditFormVisible" title="编辑角色"  :close-on-click-modal="false" width="25rem">
-            <el-form ref="validate" :model="userForm" label-position="left">
-                <el-form-item label="角色名: " label-width="80px"  required>
-                    <el-input autocomplete="off" v-model="userForm.username"></el-input>
-                </el-form-item>
-                <el-form-item label="密码: " label-width="80px" >
-                    <el-input show-password placeholder="密码未更改" autocomplete="off" v-model="userForm.password"></el-input>
-                </el-form-item>
-                <el-form-item label="昵称: " label-width="80px">
-                    <el-input autocomplete="off" v-model="userForm.nickname"></el-input>
-                </el-form-item>            
-                <el-form-item label="手机号: " label-width="80px">
-                    <el-input autocomplete="off" v-model="userForm.phone"></el-input>
-                </el-form-item>
-                <el-form-item label="角色: " label-width="80px">
-                    <el-select placeholder="请选择一个角色" v-model="userForm.roles" multiple>
-                        <el-option
-                            v-for="item in roles"
-                            :key="item.id"
-                            :label="item.roleName"
-                            :value="item.id"
-                            >
-                            </el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="锁定角色: " label-width="80px">
-                    <el-switch v-model="userForm.locked"/>
-                </el-form-item>
-            </el-form>
-            <template #footer>
-            <span class="dialog-footer">
-                <el-button @click="userEditFormVisible = false">取消</el-button>
-                <el-button type="primary" @click="handleEditUser()" :loading="loading"
+                <el-button type="primary" @click="submitForm()" :loading="loading"
                 >确定</el-button
                 >
             </span>
@@ -148,7 +117,7 @@
 
 <script lang="ts">
 import { ref } from 'vue';
-import { deleteUser, getRoleList, getRoles, addRole, updateUser } from '@/api/role';
+import { deleteRole, getRoleList, getRoles, addRole, getSelectMenuTree, updateRole } from '@/api/role';
 import { useStore } from 'vuex';
 import { ElMessage } from 'element-plus';
 
@@ -158,13 +127,13 @@ export default {
 
         const validate: any = ref(null);
 
-        const roleEditFormVisible = ref(false);
-
         const loading = ref(false);
 
         const store = useStore();
 
         const formSize = ref('large');
+
+        const dialogTitle = ref('');
 
         const formRules = {
             roleName: [
@@ -198,7 +167,7 @@ export default {
         };
 
 
-        const userLocked = [
+        const roleLocked = [
             {
                 locked: true,
                 label: '锁定',
@@ -234,8 +203,13 @@ export default {
           id: 0,
           roleName: '',
           roleChar: '',
+          menuIds: [],
           locked: 0,
         });
+
+        const menuOptions = ref();
+
+        const menuIds: any = ref([]);
 
         table.value.isMobile = store.state.app.isMobile;
 
@@ -252,6 +226,11 @@ export default {
                 table.value.loading = false;
             });
         }
+
+        //获取菜单树
+        getSelectMenuTree().then((res) => {
+            menuOptions.value = res.data;
+        });
 
         listRoles();
 
@@ -283,7 +262,7 @@ export default {
         }
 
         const handleDelete = (id) => {
-            deleteUser(id).then((res: any) => {
+            deleteRole(id).then((res: any) => {
                 if(!res.errCode) {
                     ElMessage.success("删除成功!");
                     listRoles();
@@ -294,41 +273,33 @@ export default {
         }
 
         const handleEditClick = (row) => {
-            console.log(row);
-            //获取角色id
-            let roleIds = [];
+            dialogTitle.value = '修改角色';
             roleForm.value = row;
-            row.roleList.forEach(item => {
-                roleIds.push(item.id);
-                roleForm.value.roles = roleIds;
-            });
-            roleEditFormVisible.value = true;
+            roleFormVisible.value = true;
 
         }
 
-
-        const handleEditUser = () => {
-            validate.value.validate((valid) => {
-                if(valid){
-                    loading.value = true;
-                    updateUser(roleForm.value).then((res: any) => {
-                        if(!res.errCode){
-                            ElMessage.success('更新角色成功!');
-                            roleEditFormVisible.value = false;
-                            roleForm.value = {};
-                            listRoles();
-                        }      
-                        loading.value = false;
-                    }).catch(() => {
-                        loading.value = false;
-                    });
-                }
-            });
-
-        }
-
-        const handleAddUser = () => {
-            validate.value.validate((valid) => {
+        const submitForm = () => {
+            roleForm.value.menuIds = menuIds.value.getCheckedKeys();
+            if(roleForm.value.id) {
+                loading.value = true;
+                updateRole(roleForm.value).then((res: any) => {
+                    if(!res.errCode){
+                        ElMessage.success('更新角色成功!');
+                        roleFormVisible.value = false;
+                        roleForm.value = {};
+                        menuIds.value.setCheckedKeys([]);
+                        listRoles();
+                    }else{
+                        ElMessage.error(res.detail);
+                    }
+                    loading.value = false;
+                }).catch(() => {
+                    loading.value = false;
+                });
+            }else{
+                roleForm.value.menuIds = menuIds.value.getCheckedKeys();
+                validate.value.validate((valid) => {
                 if(valid) {
                     loading.value = true;
                     addRole(roleForm.value).then((res: any) => {
@@ -336,6 +307,7 @@ export default {
                             ElMessage.success('新建角色成功!');
                             roleFormVisible.value = false;
                             roleForm.value = {};
+                            menuIds.value.setCheckedKeys([]);
                             listRoles();
                         }else{
                             ElMessage.error(res.detail);
@@ -346,6 +318,8 @@ export default {
                     });
                 }
             });
+            }
+            
         }
 
         
@@ -356,23 +330,23 @@ export default {
             searchParams,
             searchRoles,
             formSize,
-            userLocked,
+            roleLocked,
             getLockedDict,
             handleDelete,
             handleEditClick,
-            handleAddUser,
+            submitForm,
             roleFormVisible,
             roleForm,
             roles,
             loading,
             formRules,
-            roleEditFormVisible,
-            handleEditUser,
             validate,
+            menuOptions,
+            menuIds,
+            dialogTitle,
             };
         }
 }
-const validate = ref(null);
 </script>
 
 <style lang="scss" scoped>

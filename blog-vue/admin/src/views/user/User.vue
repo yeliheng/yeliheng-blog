@@ -78,7 +78,7 @@
                     <el-tag :type="getLockedDict(scope.row.locked).type"> {{getLockedDict(scope.row.locked).label}} </el-tag>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作" align="center" fixed="right">
+                <el-table-column label="操作" align="center" >
                 <template #default="scope">
                     <el-button type="text" size="mini" icon="fa fa-edit" @click="handleEditClick(scope.row)">修改</el-button>
                     <el-popconfirm title="确定删除该用户? " @confirm="handleDelete(scope.row.id)">

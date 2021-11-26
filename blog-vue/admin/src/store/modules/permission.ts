@@ -53,7 +53,6 @@ import router, { constantRoutes } from "@/router";
                         name: "404",
                         component: NotFound,
                     });
-                    console.log(routerList);
                       
                     commit("SET_ROUTES",routerList);
                     resolve(routerList);

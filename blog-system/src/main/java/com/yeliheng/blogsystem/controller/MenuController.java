@@ -47,4 +47,6 @@ public class MenuController {
     public CommonResponse<Object> getMenuTree() {
             return CommonResponse.success(menuService.getMenuTree());
     }
+
+
 }
