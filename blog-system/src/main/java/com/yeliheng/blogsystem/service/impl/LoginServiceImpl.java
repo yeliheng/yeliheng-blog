@@ -34,7 +34,9 @@ public class LoginServiceImpl implements ILoginService {
             throw new GeneralException("用户名或密码错误！");
         }
         LoginUser loginUser = (LoginUser) authentication.getPrincipal();
-        //user.getUsername();
+        if(!loginUser.getUser().isAdmin() && loginUser.getUser().getLocked()) {
+            throw new GeneralException("用户已锁定，请联系管理员");
+        }
 
         return tokenUtils.createToken(loginUser);
     }

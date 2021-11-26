@@ -134,6 +134,9 @@
                         </el-option>
                 </el-select>
             </el-form-item>
+            <el-form-item label="锁定用户: " label-width="80px">
+                <el-switch v-model="userForm.locked"/>
+            </el-form-item>
             </el-form>
             <template #footer>
             <span class="dialog-footer">
@@ -170,6 +173,9 @@
                             >
                             </el-option>
                     </el-select>
+                </el-form-item>
+                <el-form-item label="锁定用户: " label-width="80px">
+                    <el-switch v-model="userForm.locked"/>
                 </el-form-item>
             </el-form>
             <template #footer>
