@@ -58,9 +58,13 @@ public class ArticleServiceImpl implements IArticleService {
      *
      * @param articleId 文章Id
      */
+    @Transactional
     @Override
     public void deleteAritcle(Long articleId) {
-        articleMapper.deleteByPrimaryKey(articleId);
+        if(articleMapper.deleteByPrimaryKey(articleId) <= 0)
+            throw new GeneralException("删除失败，文章可能不存在");
+        //删除文章与标签关联
+        deleteArticleAllTags(articleId);
     }
 
     /**
@@ -76,7 +80,7 @@ public class ArticleServiceImpl implements IArticleService {
         int rows = articleMapper.updateArticle(article);
         if(rows <= 0) throw new GeneralException("更新失败，文章可能不存在");
         //删除该文章的所有标签
-        deleteArticleAllTags(article);
+        deleteArticleAllTags(article.getId());
         //插入标签
         insertArticleTag(article);
     }
@@ -184,10 +188,10 @@ public class ArticleServiceImpl implements IArticleService {
     /**
      *
      * 删除某篇文章的所有标签
-     * @param article 文章实体
+     * @param articleId 文章Id
      */
-    public void deleteArticleAllTags(Article article){
-        articleTagMapper.deleteArticleAllTags(article.getId());
+    public void deleteArticleAllTags(Long articleId){
+        articleTagMapper.deleteArticleAllTags(articleId);
     }
 
 }
