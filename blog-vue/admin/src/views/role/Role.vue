@@ -105,7 +105,7 @@
             </el-form>
             <template #footer>
             <span class="dialog-footer">
-                <el-button @click="roleFormVisible = false;menuIds.setCheckedKeys([]);">取消</el-button>
+                <el-button @click="onCancel()">取消</el-button>
                 <el-button type="primary" @click="submitForm()" :loading="loading"
                 >确定</el-button
                 >
@@ -272,7 +272,9 @@ export default {
             });
         }
 
+
         const handleEditClick = (row) => {
+            const formData = JSON.parse(JSON.stringify(row)); //消除row的响应性
             dialogTitle.value = '修改角色';
             getMenuIdsByRoleId(row.id).then((res: any) => {
                 if(!res.errCode) {
@@ -281,9 +283,15 @@ export default {
                     ElMessage.error(res.detail);
                 }
             });
-            roleForm.value = row;
+            roleForm.value = formData;
             roleFormVisible.value = true;
 
+        }
+
+
+        const onCancel = () => {
+            roleFormVisible.value = false;
+            menuIds.value.setCheckedKeys([]);
         }
 
         const submitForm = () => {
@@ -351,6 +359,7 @@ export default {
             menuOptions,
             menuIds,
             dialogTitle,
+            onCancel,
             };
         }
 }

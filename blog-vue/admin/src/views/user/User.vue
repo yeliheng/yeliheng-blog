@@ -384,10 +384,10 @@ export default {
         }
 
         const handleEditClick = (row) => {
-            console.log(row);
+            const formData = JSON.parse(JSON.stringify(row)); //消除row的响应性
             //获取角色id
             let roleIds = [];
-            userForm.value = row;
+            userForm.value = formData;
             row.roleList.forEach(item => {
                 roleIds.push(item.id);
                 userForm.value.roles = roleIds;
