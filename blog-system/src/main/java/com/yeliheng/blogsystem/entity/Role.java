@@ -19,6 +19,8 @@ public class Role implements Serializable {
     @NotBlank
     private String roleName;
 
+    private Boolean locked;
+
     private Long[] menuIds;
 
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
@@ -49,6 +51,14 @@ public class Role implements Serializable {
 
     public void setRoleName(String roleName) {
         this.roleName = roleName;
+    }
+
+    public Boolean getLocked() {
+        return locked;
+    }
+
+    public void setLocked(Boolean locked) {
+        this.locked = locked;
     }
 
     public Long[] getMenuIds() {

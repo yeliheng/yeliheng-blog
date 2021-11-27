@@ -3,6 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yeliheng.blogsystem.mapper.RoleMapper">
+
     <sql id="selectRoleVo">
         select distinct r.id, r.role_char, r.role_name, r.created_at, r.updated_at
         from role r
@@ -13,11 +14,13 @@
         insert into role(
         <if test="roleChar != null and roleName != ''">role_char,</if>
         <if test="roleName != null and roleName != ''">role_name,</if>
+        <if test="locked != null">locked,</if>
         created_at,
         updated_at
         )values (
         <if test="roleChar != null and roleChar != ''">#{roleChar},</if>
         <if test="roleName != null and roleName != ''">#{roleName},</if>
+        <if test="locked != null">#{locked},</if>
         sysdate(),
         sysdate()
         )
@@ -28,10 +31,27 @@
         <set>
             <if test="roleChar != null and roleChar != ''">role_char = #{roleChar},</if>
             <if test="roleName != null and roleName != ''">role_name = #{roleName},</if>
+            <if test="locked != null">locked = #{locked},</if>
             updated_at = sysdate()
         </set>
         where id = #{id}
     </update>
+
+    <select id="getRoleList" parameterType="Role" resultType="Role">
+        select * from role
+        <where>
+            <if test="roleName != null and roleName != ''">
+                and role_name like concat('%', #{roleName}, '%')
+            </if>
+            <if test="roleChar != null and roleChar != ''">
+                and role_char like concat('%', #{roleChar}, '%')
+            </if>
+            <if test="locked != null">
+                and locked = #{locked}
+            </if>
+        </where>
+        order by id
+    </select>
 
     <select id="getRolesByUserId" parameterType="Long" resultType="Role">
         <include refid="selectRoleVo" />

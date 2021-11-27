@@ -1,4 +1,3 @@
-import user from '@/store/modules/user';
 import request from '@/utils/request';
 
 export function getUserList(params:any) {

@@ -16,4 +16,6 @@ public interface MenuMapper extends Mapper<Menu> {
     List<Menu> getMenusByUserId(Long userId);
 
     List<Menu> getMenus();
+
+    List<Long> getMenuIdsByRoleId(Long roleId);
 }
