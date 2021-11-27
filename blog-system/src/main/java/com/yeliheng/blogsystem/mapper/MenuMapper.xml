@@ -65,6 +65,10 @@
 
     </select>
 
+    <select id="getMenuIdsByRoleId" parameterType="Long" resultType="Long">
+        select menu_id from role_menu where role_id=#{roleId}
+    </select>
+
     <select id="getMenus" resultType="Menu">
         select distinct m.id, m.parent_id, m.menu_name, m.order_num, m.path, m.component, m.hidden,
                             ifnull(m.permission,'') as permission, m.icon, m.created_at, m.updated_at

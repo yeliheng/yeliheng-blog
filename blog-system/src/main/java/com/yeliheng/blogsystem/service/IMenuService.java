@@ -68,4 +68,6 @@ public interface IMenuService {
      */
     List<Router> buildMenus(List<Menu> menuList);
 
+    List<Long> getMenuIdsByRoleId(Long roleId);
+
 }

@@ -105,7 +105,7 @@
             </el-form>
             <template #footer>
             <span class="dialog-footer">
-                <el-button @click="roleFormVisible = false">取消</el-button>
+                <el-button @click="roleFormVisible = false;menuIds.setCheckedKeys([]);">取消</el-button>
                 <el-button type="primary" @click="submitForm()" :loading="loading"
                 >确定</el-button
                 >
@@ -117,7 +117,7 @@
 
 <script lang="ts">
 import { ref } from 'vue';
-import { deleteRole, getRoleList, getRoles, addRole, getSelectMenuTree, updateRole } from '@/api/role';
+import { deleteRole, getRoleList, getRoles, addRole, getSelectMenuTree, updateRole, getMenuIdsByRoleId } from '@/api/role';
 import { useStore } from 'vuex';
 import { ElMessage } from 'element-plus';
 
@@ -274,6 +274,13 @@ export default {
 
         const handleEditClick = (row) => {
             dialogTitle.value = '修改角色';
+            getMenuIdsByRoleId(row.id).then((res: any) => {
+                if(!res.errCode) {
+                    menuIds.value.setCheckedKeys(res.data);
+                }else {
+                    ElMessage.error(res.detail);
+                }
+            });
             roleForm.value = row;
             roleFormVisible.value = true;
 

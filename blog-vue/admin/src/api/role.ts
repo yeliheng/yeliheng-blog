@@ -43,5 +43,13 @@ export function getSelectMenuTree() {
     return request({
         url: '/admin/menus/tree',
         method: 'get',
-    })
+    });
+}
+
+export function getMenuIdsByRoleId(id) {
+    return request({
+        url: '/admin/menus/getByRoleId',
+        method: 'get',
+        params: {'id': id}
+    });
 }

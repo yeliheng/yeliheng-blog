@@ -211,4 +211,9 @@ public class MenuServiceImpl implements IMenuService {
         return routerList;
     }
 
+    @Override
+    public List<Long> getMenuIdsByRoleId(Long roleId) {
+        return menuMapper.getMenuIdsByRoleId(roleId);
+    }
+
 }
