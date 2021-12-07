@@ -39,7 +39,27 @@
         </div>
     </div>
     <div class="sidebar">
-        <div class="my-info"></div>
+        <div class="my-info">
+            <div class="avatar"></div>
+            <span>Yeliheng</span>
+            <div class="art-info">
+              <div class="article-count">
+                <span>文章</span>
+                <span>12</span>
+              </div>
+              <div class="category-count">
+                <span>分类</span>
+                <span>5</span>
+              </div>
+              <div class="tag-count">
+                <span>标签</span>
+                <span>20</span>
+              </div>
+            </div>
+            <span class="iconfont icon-github"></span>
+            <span class="iconfont icon-github"></span>
+            <span class="iconfont icon-github"></span>
+        </div>
         <div class="site-info"></div>
     </div>
     <div class="content"></div>
