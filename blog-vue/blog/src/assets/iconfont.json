@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "1073505",
+      "name": "目录",
+      "font_class": "mulu",
+      "unicode": "e660",
+      "unicode_decimal": 58976
+    },
+    {
       "icon_id": "677578",
       "name": "关于我们",
       "font_class": "guanyuwomen",
@@ -76,13 +83,6 @@
       "unicode_decimal": 58880
     },
     {
-      "icon_id": "6570224",
-      "name": "目录",
-      "font_class": "mulu",
-      "unicode": "e61a",
-      "unicode_decimal": 58906
-    },
-    {
       "icon_id": "6609925",
       "name": "浏览次数",
       "font_class": "liulancishu",
@@ -123,13 +123,6 @@
       "font_class": "guidang",
       "unicode": "e694",
       "unicode_decimal": 59028
-    },
-    {
-      "icon_id": "11006265",
-      "name": "目录",
-      "font_class": "mulu1",
-      "unicode": "e619",
-      "unicode_decimal": 58905
     },
     {
       "icon_id": "11488253",

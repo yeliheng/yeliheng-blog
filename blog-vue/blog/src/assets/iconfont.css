@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 2903695 */
-  src: url('iconfont.woff2?t=1638346338749') format('woff2'),
-       url('iconfont.woff?t=1638346338749') format('woff'),
-       url('iconfont.ttf?t=1638346338749') format('truetype');
+  src: url('iconfont.woff2?t=1638867122715') format('woff2'),
+       url('iconfont.woff?t=1638867122715') format('woff'),
+       url('iconfont.ttf?t=1638867122715') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,10 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-mulu:before {
+  content: "\e660";
 }
 
 .icon-guanyuwomen:before {
@@ -53,10 +57,6 @@
   content: "\e600";
 }
 
-.icon-mulu:before {
-  content: "\e61a";
-}
-
 .icon-liulancishu:before {
   content: "\eb42";
 }
@@ -79,10 +79,6 @@
 
 .icon-guidang:before {
   content: "\e694";
-}
-
-.icon-mulu1:before {
-  content: "\e619";
 }
 
 .icon-email-fill:before {
