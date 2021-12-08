@@ -37,8 +37,8 @@
             </div>
         </div>
     </div>
-
-    <!-- 侧边栏(PC) -->
+    <div class="body-container">
+<!-- 侧边栏(PC) -->
     <div class="sidebar">
       <!-- 作者信息 -->
         <div class="my-info">
@@ -88,7 +88,62 @@
     </div>
     
     <!-- 内容区 -->
-    <div class="content"></div>
+    <div class="content">
+      <div class="article-container">
+        <div class="article-title">Git工具-重写历史:如何在提交后修改Commit的内容?</div>
+        <div class="article-info">
+          <div class="pub-time info"><span class="iconfont icon-rili" style="margin-right: 0.5rem;"></span>发表于2021-02-06</div>
+          <div class="words info"><span class="iconfont icon-zishu" style="margin-right: 0.5rem;"></span>字数统计: 4,016</div>
+          <div class="read-time info"><span class="iconfont icon-shizhong" style="margin-right: 0.5rem;"></span>阅读时长(分钟) ≈ 16</div>
+        </div>
+        <div class="summary"> 时间机器，重写历史</div>
+        <div class="read-btn-container">
+          <span class="read-btn">阅读全文</span>
+        </div>
+        <div class="split-line"></div>
+      </div>
+      <div class="article-container">
+        <div class="article-title">Git工具-重写历史:如何在提交后修改Commit的内容?</div>
+        <div class="article-info">
+          <div class="pub-time info"><span class="iconfont icon-rili" style="margin-right: 0.5rem;"></span>发表于2021-02-06</div>
+          <div class="words info"><span class="iconfont icon-zishu" style="margin-right: 0.5rem;"></span>字数统计: 4,016</div>
+          <div class="read-time info"><span class="iconfont icon-shizhong" style="margin-right: 0.5rem;"></span>阅读时长(分钟) ≈ 16</div>
+        </div>
+        <div class="summary"> 时间机器，重写历史</div>
+        <div class="read-btn-container">
+          <span class="read-btn">阅读全文</span>
+        </div>
+        <div class="split-line"></div>
+      </div>
+      <div class="article-container">
+        <div class="article-title">Git工具-重写历史:如何在提交后修改Commit的内容?</div>
+        <div class="article-info">
+          <div class="pub-time info"><span class="iconfont icon-rili" style="margin-right: 0.5rem;"></span>发表于2021-02-06</div>
+          <div class="words info"><span class="iconfont icon-zishu" style="margin-right: 0.5rem;"></span>字数统计: 4,016</div>
+          <div class="read-time info"><span class="iconfont icon-shizhong" style="margin-right: 0.5rem;"></span>阅读时长(分钟) ≈ 16</div>
+        </div>
+        <div class="summary"> 时间机器，重写历史</div>
+        <div class="read-btn-container">
+          <span class="read-btn">阅读全文</span>
+        </div>
+        <div class="split-line"></div>
+      </div>
+      <div class="article-container">
+        <div class="article-title">Git工具-重写历史:如何在提交后修改Commit的内容?</div>
+        <div class="article-info">
+          <div class="pub-time info"><span class="iconfont icon-rili" style="margin-right: 0.5rem;"></span>发表于2021-02-06</div>
+          <div class="words info"><span class="iconfont icon-zishu" style="margin-right: 0.5rem;"></span>字数统计: 4,016</div>
+          <div class="read-time info"><span class="iconfont icon-shizhong" style="margin-right: 0.5rem;"></span>阅读时长(分钟) ≈ 16</div>
+        </div>
+        <div class="summary"> 时间机器，重写历史</div>
+        <div class="read-btn-container">
+          <span class="read-btn">阅读全文</span>
+        </div>
+        <div class="split-line"></div>
+      </div>
+    </div>
+  </div>
+    
 </div>
 
 </template>
@@ -127,8 +182,6 @@ export default {
       margin-top: 0.5rem;
     }
 }
-
-   
 
 iframe{
   border: 0;
@@ -171,10 +224,11 @@ iframe{
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 18rem;
+  width: 22rem;
   margin: {
     top: 0.5rem;
-    left: 0.5rem
+    left: 0.5rem;
+    right: 0.5rem;
   };
   // 我的信息
   .my-info{
@@ -198,6 +252,7 @@ iframe{
     .art-info{
       display: flex;
       font-size: 1.2rem;
+      color: #9e9e9e;
       .line{
         background: #353535;
         margin-top: 2rem;
@@ -217,6 +272,7 @@ iframe{
       }
     }
     .contract-container{
+      color: #9e9e9e;
       display: flex;        
       flex-direction: row;
       justify-content: center;
@@ -240,10 +296,11 @@ iframe{
       display: block;
       margin: 1.2rem;
       text-align: center;
+      color: #9e9e9e;
     }
     .site-state{
       text-align: center;
-    
+      color: #9e9e9e;
     }
   }
 }
@@ -253,6 +310,82 @@ iframe{
   .button-container-mobile{
     display: none;
   }
+}
+
+.body-container{
+  display: flex;
+}
+
+.content{
+  background: #121212;
+  min-height: 20rem;
+  width: 100%;
+  margin: {
+    top: 0.5rem;
+    right: 0.5rem;
+  };
+  .article-container{
+    margin: 2rem;
+    text-align: center;
+    .article-title{
+      font-size: 1.5rem;
+    }
+    .article-info{
+      display: flex;
+      justify-content: center;
+      .info{
+          color: #9e9e9e;
+          font-size: 0.8rem;
+          margin-left: 1.2rem;
+          margin-top: 0.2rem;
+      }
+    }
+
+    .summary{
+      text-align: start;
+      margin: {
+        left: 2rem;
+        top: 2rem;
+      }
+      min-height: 4rem;
+    }
+
+    .read-btn-container{
+      
+      margin: auto;
+      width: 8rem;
+      height: 2.2rem;
+      border: 0.13rem solid #D0D0D0;
+      :hover{
+        cursor: pointer;
+        background: #d0d0d0;
+        color: #121212
+      }
+      .read-btn{
+        transition: all 0.5s;
+        display: flex;
+        width:100%;
+        height:100%;
+        justify-content: center;
+        align-items:center;
+      }
+    }
+
+    .split-line{
+      margin: {
+        top: 3rem;
+        bottom: 3rem;
+        left: auto;
+        right: auto;
+      }
+      height: 1px;
+      width: 5rem;
+      background: #6f6f6f;
+      
+    }
+
+  }
+  
 }
 
 /* 移动端 */
