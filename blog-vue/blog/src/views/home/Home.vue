@@ -37,7 +37,7 @@
             </div>
         </div>
     </div>
-    <div class="body-container">
+  <div class="body-container">
 <!-- 侧边栏(PC) -->
     <div class="sidebar">
       <!-- 作者信息 -->
@@ -102,45 +102,6 @@
         </div>
         <div class="split-line"></div>
       </div>
-      <div class="article-container">
-        <div class="article-title">Git工具-重写历史:如何在提交后修改Commit的内容?</div>
-        <div class="article-info">
-          <div class="pub-time info"><span class="iconfont icon-rili" style="margin-right: 0.5rem;"></span>发表于2021-02-06</div>
-          <div class="words info"><span class="iconfont icon-zishu" style="margin-right: 0.5rem;"></span>字数统计: 4,016</div>
-          <div class="read-time info"><span class="iconfont icon-shizhong" style="margin-right: 0.5rem;"></span>阅读时长(分钟) ≈ 16</div>
-        </div>
-        <div class="summary"> 时间机器，重写历史</div>
-        <div class="read-btn-container">
-          <span class="read-btn">阅读全文</span>
-        </div>
-        <div class="split-line"></div>
-      </div>
-      <div class="article-container">
-        <div class="article-title">Git工具-重写历史:如何在提交后修改Commit的内容?</div>
-        <div class="article-info">
-          <div class="pub-time info"><span class="iconfont icon-rili" style="margin-right: 0.5rem;"></span>发表于2021-02-06</div>
-          <div class="words info"><span class="iconfont icon-zishu" style="margin-right: 0.5rem;"></span>字数统计: 4,016</div>
-          <div class="read-time info"><span class="iconfont icon-shizhong" style="margin-right: 0.5rem;"></span>阅读时长(分钟) ≈ 16</div>
-        </div>
-        <div class="summary"> 时间机器，重写历史</div>
-        <div class="read-btn-container">
-          <span class="read-btn">阅读全文</span>
-        </div>
-        <div class="split-line"></div>
-      </div>
-      <div class="article-container">
-        <div class="article-title">Git工具-重写历史:如何在提交后修改Commit的内容?</div>
-        <div class="article-info">
-          <div class="pub-time info"><span class="iconfont icon-rili" style="margin-right: 0.5rem;"></span>发表于2021-02-06</div>
-          <div class="words info"><span class="iconfont icon-zishu" style="margin-right: 0.5rem;"></span>字数统计: 4,016</div>
-          <div class="read-time info"><span class="iconfont icon-shizhong" style="margin-right: 0.5rem;"></span>阅读时长(分钟) ≈ 16</div>
-        </div>
-        <div class="summary"> 时间机器，重写历史</div>
-        <div class="read-btn-container">
-          <span class="read-btn">阅读全文</span>
-        </div>
-        <div class="split-line"></div>
-      </div>
     </div>
   </div>
     
@@ -183,6 +144,8 @@ export default {
     }
 }
 
+
+
 iframe{
   border: 0;
   height: 20rem;
@@ -219,11 +182,10 @@ iframe{
 
 // 侧边栏
 .sidebar{
-  animation: bottom-top-anim 1s ease 1.5s forwards;
+  animation: bottom-top-anim 1s ease 0.5s forwards;
   opacity: 0;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   width: 22rem;
   margin: {
     top: 0.5rem;
@@ -314,18 +276,26 @@ iframe{
 
 .body-container{
   display: flex;
+  justify-content: center;
 }
 
 .content{
+  opacity: 0;
+  animation: bottom-top-anim 1s ease 1s forwards;
   background: #121212;
-  min-height: 20rem;
-  width: 100%;
+  min-height: 60rem;
+  width: 90rem;
   margin: {
     top: 0.5rem;
     right: 0.5rem;
   };
   .article-container{
-    margin: 2rem;
+    padding: {
+      top: 3rem;
+      bottom: 3rem;
+      left: 1.5rem;
+      right: 1.5rem;
+    }
     text-align: center;
     .article-title{
       font-size: 1.5rem;
@@ -415,6 +385,11 @@ iframe{
 
   .sidebar{
     display: none;
+  }
+  .content{
+    width: 100%;
+    margin: 0;
+    margin-top: 0.5rem;
   }
 }
 .header-button{
