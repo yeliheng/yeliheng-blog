@@ -5,15 +5,17 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint --fix"
   },
   "dependencies": {
+    "axios": "^0.24.0",
     "core-js": "^3.6.5",
+    "element-plus": "^1.1.0-beta.20",
     "vue": "^3.0.0",
     "vue-class-component": "^8.0.0-0",
+    "vue-infinite-loading": "^2.4.5",
     "vue-router": "^4.0.0-0",
-    "vuex": "^4.0.0-0",
-    "element-plus": "^1.1.0-beta.20"
+    "vuex": "^4.0.0-0"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.18.0",

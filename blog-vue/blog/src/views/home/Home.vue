@@ -89,8 +89,11 @@
     
     <!-- 内容区 -->
     <div class="content">
-      <div class="article-container">
-        <div class="article-title">Git工具-重写历史:如何在提交后修改Commit的内容?</div>
+      <div class="article-container"
+        v-for="article in articleList"
+        :key="article.id"
+      >
+        <div class="article-title">{{ article.title}}</div>
         <div class="article-info">
           <div class="pub-time info"><span class="iconfont icon-rili" style="margin-right: 0.5rem;"></span>发表于2021-02-06</div>
           <div class="words info"><span class="iconfont icon-zishu" style="margin-right: 0.5rem;"></span>字数统计: 4,016</div>
@@ -109,21 +112,54 @@
 
 </template>
 
-<script>
+<script lang="ts">
 import '../../assets/iconfont.css';
+import { getArticleList } from '../../api/index';
+
+import { ref } from 'vue';
 export default {
+  setup(){
+    let pages = 100;
+    let page = 0;
+    const pageSize = 3;
+    const articleList = ref([]);
+    const loading = ref(false);
+
+
+    const loadArticle = () => {
+      if(!loading.value){
+        page ++;
+        if(page <= pages) {
+          loading.value = true;
+          getArticleList({"page": page,"pageSize": pageSize}).then((res: any) => {
+            pages = res.data.pages;
+            res.data.list.forEach(item => {
+              articleList.value.push(item);
+            });
+            loading.value = false;
+          });
+        }
+      }
+
+
+    }
+  
+
+    return {
+      loadArticle,
+      articleList,
+    }
+  }
 
 }
 </script>
 
 <style lang="scss" scoped>
-
 @keyframes button-anim
 {
     0%   {margin-top: 2rem;opacity: 0;}
     100% {margin-top: 7rem;opacity: 1;}
 }
-
 @keyframes change-opcity{
     0% {
       opacity: 0;
@@ -132,7 +168,6 @@ export default {
       opacity: 1;
     }
 }
-
 @keyframes bottom-top-anim{
     0% {
       opacity: 0;
@@ -143,9 +178,6 @@ export default {
       margin-top: 0.5rem;
     }
 }
-
-
-
 iframe{
   border: 0;
   height: 20rem;
@@ -177,9 +209,7 @@ iframe{
       font-size: 1.3rem;
     }
   }
-
 }
-
 // 侧边栏
 .sidebar{
   animation: bottom-top-anim 1s ease 0.5s forwards;
@@ -247,13 +277,11 @@ iframe{
       }
     }
   }
-
   // 站点信息
   .site-info{
     height: 15rem;
     margin-top: 0.5rem;
-    background: #121212;
-    
+    background: #121212; 
     .announcement{
       display: block;
       margin: 1.2rem;
@@ -266,24 +294,21 @@ iframe{
     }
   }
 }
-
 .header-mobile{
   opacity: 0;
   .button-container-mobile{
     display: none;
   }
 }
-
 .body-container{
   display: flex;
   justify-content: center;
+  height: 100%;
 }
-
 .content{
   opacity: 0;
   animation: bottom-top-anim 1s ease 1s forwards;
   background: #121212;
-  min-height: 60rem;
   width: 90rem;
   margin: {
     top: 0.5rem;
@@ -310,7 +335,6 @@ iframe{
           margin-top: 0.2rem;
       }
     }
-
     .summary{
       text-align: start;
       margin: {
@@ -319,9 +343,7 @@ iframe{
       }
       min-height: 4rem;
     }
-
-    .read-btn-container{
-      
+    .read-btn-container{     
       margin: auto;
       width: 8rem;
       height: 2.2rem;
@@ -340,7 +362,6 @@ iframe{
         align-items:center;
       }
     }
-
     .split-line{
       margin: {
         top: 3rem;
@@ -350,19 +371,12 @@ iframe{
       }
       height: 1px;
       width: 5rem;
-      background: #6f6f6f;
-      
+      background: #6f6f6f; 
     }
-
   }
-  
 }
-
 /* 移动端 */
 @media screen and (max-width: 600px){
-
-
-
   .button-container{
     visibility: collapse;
   }
@@ -398,7 +412,4 @@ iframe{
     cursor: pointer;
   }
 }
-
-
-
 </style>
