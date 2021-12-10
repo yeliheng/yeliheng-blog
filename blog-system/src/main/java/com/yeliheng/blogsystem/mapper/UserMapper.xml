@@ -46,7 +46,7 @@
             and phone = #{phone}
         </if>
         <if test="locked != null">
-            and locked = #{locked}
+            and u.locked = #{locked}
         </if>
         </where>
         order by u.id

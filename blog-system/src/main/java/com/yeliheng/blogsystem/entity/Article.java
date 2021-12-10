@@ -29,6 +29,10 @@ public class Article {
 
     private String visible;
 
+    private int words;
+
+    private int readingTime;
+
     private Long[] tagIds;
 
     private Category category;
@@ -105,6 +109,22 @@ public class Article {
 
     public void setVisible(String visible) {
         this.visible = visible;
+    }
+
+    public int getWords() {
+        return words;
+    }
+
+    public void setWords(int words) {
+        this.words = words;
+    }
+
+    public int getReadingTime() {
+        return readingTime;
+    }
+
+    public void setReadingTime(int readingTime) {
+        this.readingTime = readingTime;
     }
 
     public Long[] getTagIds() {

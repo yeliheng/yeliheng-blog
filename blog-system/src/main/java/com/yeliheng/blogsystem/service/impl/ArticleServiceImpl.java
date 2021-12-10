@@ -13,6 +13,7 @@ import com.yeliheng.blogsystem.mapper.CategoryMapper;
 import com.yeliheng.blogsystem.service.IArticleService;
 import com.yeliheng.blogsystem.utils.StringUtils;
 import com.yeliheng.blogsystem.utils.UserUtils;
+import com.yeliheng.blogsystem.utils.WordUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,9 @@ public class ArticleServiceImpl implements IArticleService {
     @Transactional
     public void addArticle(Article article) {
         article.setUserId(userUtils.getLoginUserId());
+        int wordCount = WordUtils.wordCount(article.getContent());
+        article.setWords(wordCount);
+        article.setReadingTime(WordUtils.calReadingTimeByWords(wordCount));
         if(StringUtils.isNotNull(article.getCategoryId()))
             if(!categoryMapper.existsWithPrimaryKey(article.getCategoryId()))
                 throw new GeneralException("分类不存在，请修改后重新发布！");
@@ -74,6 +78,9 @@ public class ArticleServiceImpl implements IArticleService {
      */
     @Override
     public void updateArticle(Article article) {
+        int wordCount = WordUtils.wordCount(article.getContent());
+        article.setWords(wordCount);
+        article.setReadingTime(WordUtils.calReadingTimeByWords(wordCount));
         if(StringUtils.isNotNull(article.getCategoryId()))
             if(!categoryMapper.existsWithPrimaryKey(article.getCategoryId()))
                 throw new GeneralException("分类不存在，请修改后重新发布！");

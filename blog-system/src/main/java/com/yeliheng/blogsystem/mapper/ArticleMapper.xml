@@ -13,6 +13,8 @@
         <result property="content" column="content" />
         <result property="url" column="url" />
         <result property="visible" column="visible" />
+        <result property="words" column="words" />
+        <result property="readingTime" column="reading_time" />
         <result property="createdAt" column="created_at" />
         <result property="updatedAt" column="updated_at" />
         <association property="category" column="category_id" javaType="Category" resultMap="CategoryResult" />
@@ -30,7 +32,7 @@
     </resultMap>
 
     <sql id="selectArticleVo">
-        select a.id, a.user_id, a.category_id, a.title, a.summary, a.url, a.visible, a.created_at, a.updated_at,
+        select a.id, a.user_id, a.category_id, a.title, a.summary, a.url, a.visible,a.words, a.reading_time, a.created_at, a.updated_at,
                c.id as category_id, c.category_name,
                atg.id, atg.article_id, atg.tag_id,
                t.id as tag_id, t.tag_name
@@ -60,6 +62,8 @@
         <if test="content != null and content != ''">content,</if>
         <if test="url != null and url != ''">url,</if>
         <if test="visible != null and visible != ''">visible,</if>
+        <if test="words != null and words != ''">words,</if>
+        <if test="readingTime != null and readingTime != ''">reading_time,</if>
         created_at,
         updated_at
         )values (
@@ -70,6 +74,8 @@
         <if test="content != null and content != ''">#{content},</if>
         <if test="url != null and url != ''">#{url},</if>
         <if test="visible != null and visible != ''">#{visible},</if>
+        <if test="words != null and words != ''">#{words},</if>
+        <if test="readingTime != null and readingTime != ''">#{readingTime},</if>
         sysdate(),
         sysdate()
         )
@@ -85,6 +91,8 @@
             <if test="content != null and content != ''">content = #{content},</if>
             <if test="visible != null and visible != ''">visible = #{visible},</if>
             <if test="url != null and url != ''">url = #{url},</if>
+            <if test="words != null and words != ''">words = #{words},</if>
+            <if test="readingTime != null and readingTime != ''">reading_time = #{readingTime},</if>
             updated_at = sysdate()
         </set>
         where id = #{id}
