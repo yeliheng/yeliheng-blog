@@ -88,18 +88,31 @@
     </div>
     
     <!-- 内容区 -->
-    <div class="content">
+    <div class="content"
+      v-infinite-scroll="loadArticle"
+    >
       <div class="article-container"
         v-for="article in articleList"
         :key="article.id"
       >
         <div class="article-title">{{ article.title}}</div>
         <div class="article-info">
-          <div class="pub-time info"><span class="iconfont icon-rili" style="margin-right: 0.5rem;"></span>发表于2021-02-06</div>
-          <div class="words info"><span class="iconfont icon-zishu" style="margin-right: 0.5rem;"></span>字数统计: 4,016</div>
-          <div class="read-time info"><span class="iconfont icon-shizhong" style="margin-right: 0.5rem;"></span>阅读时长(分钟) ≈ 16</div>
+          <div class="pub-time info"><span class="iconfont icon-rili" style="margin-right: 0.5rem;"></span>
+          <span class="info-text">发表于 </span>
+          {{article.createdAt}}
+          </div>
+          <div class="words info">
+            <span class="iconfont icon-zishu" style="margin-right: 0.5rem;"></span>
+            <span class="info-text">字数统计: </span>
+            {{article.words}}
+            </div>
+          <div class="read-time info"><span class="iconfont icon-shizhong" style="margin-right: 0.5rem;"></span>
+          <span class="info-text">阅读时长(分钟) ≈  </span>{{article.readingTime}}</div>
         </div>
-        <div class="summary"> 时间机器，重写历史</div>
+        <div class="summary">
+            <span v-if="article.summary == null"> 暂无简介 </span>
+           {{article.summary}}
+          </div>
         <div class="read-btn-container">
           <span class="read-btn">阅读全文</span>
         </div>
@@ -119,12 +132,19 @@ import { getArticleList } from '../../api/index';
 import { ref } from 'vue';
 export default {
   setup(){
-    let pages = 100;
-    let page = 0;
-    const pageSize = 3;
+    let pages = 0;
+    let page = 1;
+    const pageSize = 8;
     const articleList = ref([]);
     const loading = ref(false);
-
+    loading.value = true;
+    getArticleList({"page": page,"pageSize": pageSize}).then((res: any) => {
+      pages = res.data.pages;
+      res.data.list.forEach(item => {
+        articleList.value.push(item);
+      });
+      loading.value = false;
+    });
 
     const loadArticle = () => {
       if(!loading.value){
@@ -374,6 +394,10 @@ iframe{
       background: #6f6f6f; 
     }
   }
+
+}
+.info-text{
+  display: inline;
 }
 /* 移动端 */
 @media screen and (max-width: 600px){
@@ -404,6 +428,9 @@ iframe{
     width: 100%;
     margin: 0;
     margin-top: 0.5rem;
+  }
+  .info-text{
+    display: none;
   }
 }
 .header-button{
