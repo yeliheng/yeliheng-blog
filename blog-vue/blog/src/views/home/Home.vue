@@ -95,7 +95,7 @@
         v-for="article in articleList"
         :key="article.id"
       >
-        <div class="article-title">{{ article.title}}</div>
+        <a class="article-title" href="#">{{ article.title}}</a>
         <div class="article-info">
           <div class="pub-time info"><span class="iconfont icon-rili" style="margin-right: 0.5rem;"></span>
           <span class="info-text">发表于 </span>
@@ -136,8 +136,7 @@ export default {
     let page = 1;
     const pageSize = 8;
     const articleList = ref([]);
-    const loading = ref(false);
-    loading.value = true;
+    const loading = ref(true);
     getArticleList({"page": page,"pageSize": pageSize}).then((res: any) => {
       pages = res.data.pages;
       res.data.list.forEach(item => {
@@ -168,6 +167,7 @@ export default {
     return {
       loadArticle,
       articleList,
+      loading,
     }
   }
 
@@ -344,6 +344,8 @@ iframe{
     text-align: center;
     .article-title{
       font-size: 1.5rem;
+      text-decoration: none;
+      color: #d0d0d0;
     }
     .article-info{
       display: flex;
