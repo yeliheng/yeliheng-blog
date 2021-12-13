@@ -13,28 +13,28 @@
         <iframe src="fontmesh/index.html"></iframe>
         
          <div class="button-container">
-            <div class="index-button header-button">
+            <a class="index-button header-button" href="/">
                 <span class="iconfont icon-shouye"></span>
                 <span>首页</span>
-            </div>
-            <div class="about-button header-button">
+            </a>
+            <a class="about-button header-button" href="#">
                 <span class="iconfont icon-wo"></span>
                 <span>关于</span>
-            </div>
-            <div class="category-button header-button">
+            </a>
+            <a class="category-button header-button" href="#">
                 <span class="iconfont icon-fenlei"></span>
                 <span>分类</span>
-            </div>
+            </a>
 
-            <div class="tag-button header-button">
-                <span class="iconfont icon-24gf-tags"></span>
+            <a class="tag-button header-button">
+                <span class="iconfont icon-24gf-tags" href="#"></span>
                 <span>标签</span>
-            </div>
+            </a>
 
-            <div class="category-button header-button">
+            <a class="category-button header-button" href="#">
                 <span class="iconfont icon-youqinglianjie"></span>
                 <span>友情链接</span>
-            </div>
+            </a>
         </div>
     </div>
   <div class="body-container">
@@ -61,9 +61,9 @@
               </div>
             </div>
             <div class="contract-container">
-              <span class="iconfont icon-github"></span>
-              <span class="iconfont icon-Discord"></span>
-              <span class="iconfont icon-email-fill"></span>
+              <a class="iconfont icon-github" href="https://github.com/yeliheng" target="_blank"></a>
+              <a class="iconfont icon-Discord" href="#" target="_blank"></a>
+              <a class="iconfont icon-email-fill" href="mailto://yeliheng00@gmail.com" target="_blank"></a>
             </div>
             
         </div>
@@ -229,6 +229,10 @@ iframe{
       margin-right: 0.4rem;
       font-size: 1.3rem;
     }
+    a{
+      color: #fff;
+      text-decoration: none;
+    }
   }
 }
 
@@ -296,6 +300,8 @@ iframe{
         margin-right: 0.9rem;
         margin-bottom: 3rem;
         font-size: 2rem;
+        color: #9e9e9e;
+        text-decoration: none;
       }
     }
   }
@@ -456,8 +462,5 @@ iframe{
 }
 .header-button{
   margin-left: 1.1rem;
-  :hover{
-    cursor: pointer;
-  }
 }
 </style>
