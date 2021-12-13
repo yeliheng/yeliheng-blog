@@ -88,9 +88,7 @@
     </div>
     
     <!-- 内容区 -->
-    <div class="content"
-      v-infinite-scroll="loadArticle"
-    >
+    <div class="content">
       <div class="article-container"
         v-for="article in articleList"
         :key="article.id"
@@ -118,9 +116,19 @@
         </div>
         <div class="split-line"></div>
       </div>
-    </div>
-  </div>
+      <div class="pagination">
+        <v-pagination
+          v-model="page"
+          :pages="pageCount"
+          :range-size="1"
+          active-color="#d0d0d0"
+          @update:modelValue="loadArticle"
+        />
+      </div>
     
+    </div>
+    
+  </div>
 </div>
 
 </template>
@@ -132,42 +140,27 @@ import { getArticleList } from '../../api/index';
 import { ref } from 'vue';
 export default {
   setup(){
-    let pages = 0;
-    let page = 1;
-    const pageSize = 10;
+    const pageCount = ref();
+    const page = ref(1);
+    const pageSize = 5;
     const articleList = ref([]);
-    const loading = ref(true);
-    getArticleList({"page": page,"pageSize": pageSize}).then((res: any) => {
-      pages = res.data.pages;
-      res.data.list.forEach(item => {
-        articleList.value.push(item);
-      });
-      loading.value = false;
+    getArticleList({"page": page.value,"pageSize": pageSize}).then((res: any) => {
+      pageCount.value = res.data.pages;
+      articleList.value = res.data.list;
     });
 
     const loadArticle = () => {
-      if(!loading.value){
-        page ++;
-        if(page <= pages) {
-          loading.value = true;
-          getArticleList({"page": page,"pageSize": pageSize}).then((res: any) => {
-            pages = res.data.pages;
-            res.data.list.forEach(item => {
-              articleList.value.push(item);
-            });
-            loading.value = false;
-          });
-        }
-      }
-
-
+          getArticleList({"page": page.value,"pageSize": pageSize}).then((res: any) => {
+            articleList.value = res.data.list;
+      });
     }
   
 
     return {
       loadArticle,
       articleList,
-      loading,
+      pageCount,
+      page,
     }
   }
 
@@ -235,6 +228,7 @@ iframe{
     }
   }
 }
+
 
 // 侧边栏
 .sidebar{
@@ -307,6 +301,8 @@ iframe{
   }
   // 站点信息
   .site-info{
+    position: sticky;
+    top: 0.5rem;
     height: 15rem;
     margin-top: 0.5rem;
     background: #121212; 
@@ -321,6 +317,7 @@ iframe{
       color: #9e9e9e;
     }
   }
+
 }
 .header-mobile{
   opacity: 0;
@@ -370,7 +367,10 @@ iframe{
         transition-duration: 0.2s;
         transition-timing-function: ease-in-out;
         transition-delay: 0s;
+
+
 }
+
     }
     .article-info{
       display: flex;
@@ -426,6 +426,29 @@ iframe{
 .info-text{
   display: inline;
 }
+.pagination{
+  display: flex;
+  justify-content: center;
+
+}
+
+::v-deep{
+  .Page{
+  color: #d0d0d0;
+  }
+  .Page-active{
+    color: #121212;
+  }
+  .Control{
+    fill: #353535;
+  }
+  .Control-active{
+    fill: #9e9e9e;
+  }
+} 
+
+
+
 /* 移动端 */
 @media screen and (max-width: 600px){
   .button-container{

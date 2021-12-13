@@ -1,5 +1,4 @@
 import axios from "axios";
-import { ElMessage, ElNotification } from "element-plus";
 
 const requestHeaders: HeadersInit = new Headers();
 requestHeaders.set('Content-Type','application/json;charset=utf-8');
@@ -75,11 +74,7 @@ error => {
 );
 
 function showErrorMessage(message: string ){
-  ElMessage({
-    message: message,
-    type: 'error',
-    duration: 5 * 1000
-  });
+  console.log(message);
 }
 
 export default service;
