@@ -88,7 +88,8 @@
     </div>
     
     <!-- 内容区 -->
-    <div class="content">
+    <div class="content" 
+        ref="articleWrap">
       <div class="article-container"
         v-for="article in articleList"
         :key="article.id"
@@ -137,19 +138,27 @@
 import '../../assets/iconfont.css';
 import { getArticleList } from '../../api/index';
 
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 export default {
   setup(){
+    
     const pageCount = ref();
     const page = ref(1);
     const pageSize = 5;
     const articleList = ref([]);
+    const articleWrap = ref(null);
+    onMounted(() => {
+      articleWrap
+    });
+    //TODO: 内容加载动画
+    
     getArticleList({"page": page.value,"pageSize": pageSize}).then((res: any) => {
       pageCount.value = res.data.pages;
       articleList.value = res.data.list;
     });
 
     const loadArticle = () => {
+        
           getArticleList({"page": page.value,"pageSize": pageSize}).then((res: any) => {
             articleList.value = res.data.list;
       });
@@ -161,6 +170,7 @@ export default {
       articleList,
       pageCount,
       page,
+      articleWrap,
     }
   }
 
@@ -331,6 +341,7 @@ iframe{
   height: 100%;
 }
 .content{
+  transition: all 0.5s;
   opacity: 0;
   animation: bottom-top-anim 1s ease 1s forwards;
   background: #121212;
@@ -429,28 +440,26 @@ iframe{
 .pagination{
   display: flex;
   justify-content: center;
-
+  margin-bottom: 2rem !important;
 }
 
-::v-deep{
-  .Page{
+:deep(.Page){
   color: #d0d0d0;
   }
-  .Page-active{
+  :deep(.Page-active){
     color: #121212;
   }
-  .Control{
+  :deep(.Control){
     fill: #353535;
   }
-  .Control-active{
+  :deep(.Control-active){
     fill: #9e9e9e;
-  }
-} 
+  } 
 
 
 
 /* 移动端 */
-@media screen and (max-width: 600px){
+@media screen and (max-width: 900px){
   .button-container{
     visibility: collapse;
   }

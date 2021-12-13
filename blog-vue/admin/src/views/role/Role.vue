@@ -221,7 +221,7 @@ export default {
                 pageSize: table.value.pageSize,
             }).then((res: any) => {
                 table.value.data = res.data.list;
-                table.value.total = res.data.size;
+                table.value.total = res.data.total;
                 table.value.loading = false;
             });
         }
@@ -255,7 +255,7 @@ export default {
                 locked: searchParams.value.locked,
             }).then((res: any) => {
                 table.value.data = res.data.list;
-                table.value.total = res.data.size;
+                table.value.total = res.data.total;
                 table.value.loading = false;
             });
         }
