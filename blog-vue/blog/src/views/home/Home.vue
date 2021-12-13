@@ -134,7 +134,7 @@ export default {
   setup(){
     let pages = 0;
     let page = 1;
-    const pageSize = 8;
+    const pageSize = 10;
     const articleList = ref([]);
     const loading = ref(true);
     getArticleList({"page": page,"pageSize": pageSize}).then((res: any) => {
@@ -215,6 +215,7 @@ iframe{
     position: absolute;
     left: 4rem;
   }
+  
   .button-container{
     color: #fff;
     animation: button-anim 1.5s ease 1.5s forwards;
@@ -230,6 +231,7 @@ iframe{
     }
   }
 }
+
 // 侧边栏
 .sidebar{
   animation: bottom-top-anim 1s ease 0.5s forwards;
@@ -346,6 +348,23 @@ iframe{
       font-size: 1.5rem;
       text-decoration: none;
       color: #d0d0d0;
+      &:hover{
+        &::after{
+          transform: scaleX(1);
+        }
+      }
+      &::after{
+        content: "";
+        height: 1px;
+        width: 100%;
+        background-color: #fff;
+        display: flex;
+        visibility: visible;
+        transform: scaleX(0);
+        transition-duration: 0.2s;
+        transition-timing-function: ease-in-out;
+        transition-delay: 0s;
+}
     }
     .article-info{
       display: flex;
