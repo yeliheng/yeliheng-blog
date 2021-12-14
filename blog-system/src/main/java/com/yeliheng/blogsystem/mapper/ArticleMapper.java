@@ -19,4 +19,6 @@ public interface ArticleMapper extends Mapper<Article> {
 
     Article getArticleByIdBacked(Long articleId);
 
+    Article getArticleById(Long articleId);
+
 }

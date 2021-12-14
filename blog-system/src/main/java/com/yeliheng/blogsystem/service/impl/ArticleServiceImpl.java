@@ -128,8 +128,8 @@ public class ArticleServiceImpl implements IArticleService {
      */
     @Override
     public Article getArticleById(Long articleId) {
-        Article article = articleMapper.selectByPrimaryKey(articleId);
-        if(article == null || !article.getVisible().equals("1"))
+        Article article = articleMapper.getArticleById(articleId);
+        if(article == null)
             throw new NotFoundException("文章不存在");
         return article;
     }

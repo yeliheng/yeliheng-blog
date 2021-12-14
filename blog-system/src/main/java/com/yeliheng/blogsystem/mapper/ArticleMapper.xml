@@ -43,7 +43,7 @@
     </sql>
 
     <sql id="selectArticleDetailVo">
-        select a.id, a.user_id, a.category_id, a.title, a.summary, a.content, a.url, a.visible, a.created_at, a.updated_at,
+        select a.id, a.user_id, a.category_id, a.title, a.summary, a.content, a.url, a.visible, a.words, a.reading_time, a.created_at, a.updated_at,
                c.id as category_id, c.category_name,
                atg.id, atg.article_id, atg.tag_id,
                t.id as tag_id, t.tag_name
@@ -120,6 +120,11 @@
         </if>
         </where>
         order by a.id
+    </select>
+
+    <select id="getArticleById" resultMap="ArticleResult">
+        <include refid="selectArticleDetailVo" />
+        where a.id = #{articleId} and visible = 1
     </select>
 
     <select id="getArticleByIdBacked" resultMap="ArticleResult">
