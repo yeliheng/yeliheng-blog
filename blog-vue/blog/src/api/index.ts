@@ -10,3 +10,12 @@ import request from '@/utils/request';
         params: params
     });
 }
+
+
+//通过Id获取文章
+export function getArticleById(id:any) {
+    return request({
+        url: '/articles/' + id,
+        method: 'get',
+    });
+}

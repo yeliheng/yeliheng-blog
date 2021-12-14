@@ -57,56 +57,63 @@
         ref="articleWrap"> 
 
       <div class="article-container">
-        <div class="article-title">我的开源项目-MetalDetector For Android已上线</div>
+        <div class="article-title">{{article.title}}</div>
         <div class="article-info">
           <div class="pub-time info"><span class="iconfont icon-rili" style="margin-right: 0.5rem;"></span>
           <span class="info-text">发表于 </span>
-          abc
+          {{article.createdAt}}
           </div>
           <div class="words info">
             <span class="iconfont icon-zishu" style="margin-right: 0.5rem;"></span>
             <span class="info-text">字数统计: </span>
-            111
+            {{article.words}}
             </div>
           <div class="read-time info"><span class="iconfont icon-shizhong" style="margin-right: 0.5rem;"></span>
-          <span class="info-text">阅读时长(分钟) ≈  </span>111</div>
+          <span class="info-text">阅读时长(分钟) ≈  </span>{{article.readingTime}}</div>
+          
         </div>
-        <div class="article-content">
-          <span></span>
-        </div>
+        <markdown :source="article.content" style="text-align: start;margin-top: 3rem;" class="markdown-body"/>
 
       </div>
 
     </div>
     
   </div>
+            
+
 </div>
+
 
 </template>
 
 <script lang="ts">
 import '../../assets/iconfont.css';
-import { getArticleList } from '../../api/index';
-
+import { getArticleById} from '../../api/index';
+import { useRouter } from 'vue-router';
 import { ref, onMounted } from 'vue';
 export default {
   setup(){
-    
+    const router = useRouter();
     const pageCount = ref();
     const page = ref(1);
     const pageSize = 5;
-
+    const article = ref({
+      'title': '',
+      'content': '',
+      'word': 0,
+      'readingTime': 0,
+      'createdAt': ''
+    });
     //TODO: 内容加载动画
-    
-    getArticleList({"page": page.value,"pageSize": pageSize}).then((res: any) => {
-      pageCount.value = res.data.pages;
-
+    getArticleById(router.currentRoute.value.params.id).then((res: any) => {
+      article.value = res.data;
     });
   
 
     return {
       pageCount,
       page,
+      article,
     }
   }
 
@@ -114,6 +121,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.article-content{
+  text-align: start;
+}
 .loading-bar{
   transition: all 0.5s;
   opacity: 0;
@@ -148,8 +158,7 @@ export default {
 
 // 侧边栏
 .sidebar{
-  animation: bottom-top-anim 1s ease 0.5s forwards;
-  opacity: 0;
+  opacity: 1;
   display: flex;
   flex-direction: column;
   width: 22rem;
@@ -249,7 +258,7 @@ export default {
 .content{
   transition: all 0.5s;
   opacity: 0;
-  animation: bottom-top-anim 1s ease 1s forwards;
+  animation: bottom-top-anim 1s ease 0.5s forwards;
   background: #121212;
   width: 90rem;
   margin: {
@@ -265,8 +274,9 @@ export default {
     }
     text-align: center;
     .article-title{
-      font-size: 1.5rem;
+      font-size: 2rem;
       color: #d0d0d0;
+      font-weight: bold;
     }
     .article-info{
       display: flex;

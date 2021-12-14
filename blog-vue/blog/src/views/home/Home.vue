@@ -115,7 +115,7 @@
            {{article.summary}}
           </div>
         <div class="read-btn-container">
-          <span class="read-btn">阅读全文</span>
+          <span class="read-btn" @click="readArticle(article.id)">阅读全文</span>
         </div>
         <div class="split-line"></div>
       </div>
@@ -143,11 +143,11 @@
 <script lang="ts">
 import '../../assets/iconfont.css';
 import { getArticleList } from '../../api/index';
-
+import {useRouter} from 'vue-router';
 import { ref, onMounted } from 'vue';
 export default {
   setup(){
-    
+    const router = useRouter();
     const pageCount = ref();
     const page = ref(1);
     const pageSize = 5;
@@ -171,6 +171,12 @@ export default {
             scrollTo(0,0);
       });
     }
+
+    const readArticle = (id) =>{ 
+      router.push({
+        path: '/articles/' + id, 
+      });
+    }
   
 
     return {
@@ -179,6 +185,7 @@ export default {
       pageCount,
       page,
       loadingBar,
+      readArticle
     }
   }
 
