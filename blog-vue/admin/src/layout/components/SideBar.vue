@@ -2,8 +2,6 @@
         <el-menu
             class="side-bar-menu"
             :class="{mobile: isMobile,close: sidebarClosed,}"
-            @open="handleOpen"
-            @close="handleClose"
             :collapse="collapse"
             router
         >
@@ -46,12 +44,6 @@ import { useStore } from 'vuex';
 export default defineComponent({
   setup() {
     const store = useStore();
-    const handleOpen = (key, keyPath) => {
-      console.log(key, keyPath)
-    } 
-    const handleClose = (key, keyPath) => {
-      console.log(key, keyPath)
-    }
 
     const handleMenuClick = () => {
         if(isMobile.value){
@@ -96,8 +88,6 @@ export default defineComponent({
     })
     
     return {
-      handleOpen,
-      handleClose,
       collapse,
       isMobile,
       sidebarClosed,

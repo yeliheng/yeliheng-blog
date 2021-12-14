@@ -8,6 +8,7 @@ import com.yeliheng.blogsystem.exception.GeneralException;
 import com.yeliheng.blogsystem.exception.InternalServerException;
 import com.yeliheng.blogsystem.mapper.RoleMapper;
 import com.yeliheng.blogsystem.mapper.RoleMenuMapper;
+import com.yeliheng.blogsystem.mapper.UserRoleMapper;
 import com.yeliheng.blogsystem.service.IRoleService;
 import com.yeliheng.blogsystem.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,9 @@ public class RoleServiceImpl implements IRoleService {
 
     @Autowired
     private RoleMenuMapper roleMenuMapper;
+
+    @Autowired
+    private UserRoleMapper userRoleMapper;
 
     /**
      * 新增角色
@@ -43,14 +47,28 @@ public class RoleServiceImpl implements IRoleService {
     }
 
     /**
+     * 检查角色是否存在用户
+     * @param roleId 角色Id
+     */
+    private void checkRoleUsed(Long roleId) {
+
+    }
+
+    /**
      * 删除角色
      *
      * @param roleId 角色Id
      */
+    @Transactional
     @Override
     public void deleteRole(Long roleId) {
+        if(userRoleMapper.checkRoleUser(roleId) > 0) {
+            throw new GeneralException("删除失败，请解除所有用户与该角色的绑定");
+        }
         int rows = roleMapper.deleteByPrimaryKey(roleId);
         if(rows <= 0) throw new GeneralException("删除失败，角色可能不存在");
+        //删除关联
+        deleteRoleMenuByRoleId(roleId);
     }
 
     /**
@@ -63,7 +81,7 @@ public class RoleServiceImpl implements IRoleService {
     public void updateRole(Role role) {
         int rows = roleMapper.updateRole(role);
         //删除关联
-        deleteRoleMenuByRoleId(role);
+        deleteRoleMenuByRoleId(role.getId());
         //重新关联
         insertRoleMenu(role);
         if(rows <= 0) throw new GeneralException("更新失败，可能角色不存在");
@@ -138,10 +156,10 @@ public class RoleServiceImpl implements IRoleService {
     /**
      *
      * 解除角色与菜单的绑定 通过角色Id
-     * @param role 角色实体
+     * @param roleId 角色Id
      */
-    public void deleteRoleMenuByRoleId(Role role){
-        roleMenuMapper.deleteRoleMenuByRoleId(role.getId());
+    public void deleteRoleMenuByRoleId(Long roleId){
+        roleMenuMapper.deleteRoleMenuByRoleId(roleId);
     }
 
     /**

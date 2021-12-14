@@ -28,7 +28,7 @@
                     <el-button type="primary" @click="searchRoles">搜索</el-button>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" @click="roleFormVisible = true;dialogTitle = '添加角色';">新增角色</el-button>
+                    <el-button type="primary" @click="roleFormVisible = true;dialogTitle = '添加角色';roleForm = {};">新增角色</el-button>
                 </el-form-item>
             </el-form>
                 
@@ -97,6 +97,7 @@
                         ref="menuIds"
                         node-key="id"
                         empty-text="菜单加载中"
+                        v-loading="loading"
                     ></el-tree>
                 </el-form-item>          
                 <el-form-item label="锁定角色: " label-width="100px">
@@ -140,14 +141,12 @@ export default {
             {
                 required: true,
                 message: '请输入角色名',
-                trigger: 'blur',
             }
             ],
             roleChar: [
             {
                 required: true,
                 message: '请输入角色字符',
-                trigger: 'blur',
             }
             ],
         };
@@ -157,10 +156,10 @@ export default {
             let label = '';
             let type = '';
             if(locked){
-                label = '锁定';
+                label = '禁用';
                 type = 'warning';
             }else{
-                label = '正常';
+                label = '启用';
                 type = 'success';
             }
             return {"label": label,"type": type};
@@ -170,11 +169,11 @@ export default {
         const roleLocked = [
             {
                 locked: true,
-                label: '锁定',
+                label: '禁用',
             },
             {
                 locked: false,
-                label: '正常',
+                label: '启用',
             }
         ];
         //适配移动端
@@ -222,7 +221,7 @@ export default {
                 pageSize: table.value.pageSize,
             }).then((res: any) => {
                 table.value.data = res.data.list;
-                table.value.total = res.data.size;
+                table.value.total = res.data.total;
                 table.value.loading = false;
             });
         }
@@ -256,7 +255,7 @@ export default {
                 locked: searchParams.value.locked,
             }).then((res: any) => {
                 table.value.data = res.data.list;
-                table.value.total = res.data.size;
+                table.value.total = res.data.total;
                 table.value.loading = false;
             });
         }
@@ -276,11 +275,14 @@ export default {
         const handleEditClick = (row) => {
             const formData = JSON.parse(JSON.stringify(row)); //消除row的响应性
             dialogTitle.value = '修改角色';
+            loading.value = true;
             getMenuIdsByRoleId(row.id).then((res: any) => {
                 if(!res.errCode) {
                     menuIds.value.setCheckedKeys(res.data);
+                    loading.value = false;
                 }else {
                     ElMessage.error(res.detail);
+                    loading.value = false;
                 }
             });
             roleForm.value = formData;

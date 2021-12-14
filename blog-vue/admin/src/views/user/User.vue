@@ -331,7 +331,7 @@ export default {
                 pageSize: table.value.pageSize,
             }).then((res: any) => {
                 table.value.data = res.data.list;
-                table.value.total = res.data.size;
+                table.value.total = res.data.total;
                 table.value.loading = false;
             });
         }
@@ -367,7 +367,7 @@ export default {
 
             }).then((res: any) => {
                 table.value.data = res.data.list;
-                table.value.total = res.data.size;
+                table.value.total = res.data.total;
                 table.value.loading = false;
             });
         }

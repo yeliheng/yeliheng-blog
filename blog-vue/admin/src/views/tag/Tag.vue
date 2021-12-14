@@ -239,8 +239,8 @@ export default {
     }
 
     const handleDelTag = (id) => {
-        deleteTag(id).then((res) => {
-            if(res.data) {
+        deleteTag(id).then((res: any) => {
+            if(!res.errCode) {
               ElMessage.success("删除成功!");
               table.value.loading = true;
               getTags({page: table.value.page,pageSize: table.value.pageSize}).then((res: any) => {
@@ -248,6 +248,8 @@ export default {
                 table.value.data = res.data.list;
                 table.value.loading = false;
               });
+            }else{
+              ElMessage.error(res.detail);
             }
 
         });

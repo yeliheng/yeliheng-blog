@@ -13,4 +13,8 @@
     <delete id="deleteByUserId" parameterType="Long">
         delete from user_role where user_id = #{userId}
     </delete>
+
+    <select id="checkRoleUser" resultType="int">
+        select count(1) from user_role where role_id = #{roleId}
+    </select>
 </mapper>

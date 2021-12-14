@@ -1,27 +1,25 @@
 {
-  "name": "blog-vue",
+  "name": "blog",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint --fix"
   },
   "dependencies": {
-    "@kangc/v-md-editor": "^2.3.12",
-    "@types/js-cookie": "^3.0.0",
-    "@types/nprogress": "^0.2.0",
-    "axios": "^0.23.0",
-    "babel-plugin-prismjs": "^2.1.0",
+    "@hennge/vue3-pagination": "^1.0.17",
+    "axios": "^0.24.0",
     "core-js": "^3.6.5",
-    "echarts": "^5.2.2",
-    "element-plus": "^1.1.0-beta.20",
-    "font-awesome": "^4.7.0",
-    "js-cookie": "^3.0.1",
-    "nprogress": "^0.2.0",
+    "github-markdown-css": "^5.1.0",
+    "highlight.js": "^11.3.1",
     "vue": "^3.0.0",
     "vue-class-component": "^8.0.0-0",
+    "vue-infinite-loading": "^2.4.5",
+    "vue-loading-spinner": "^1.0.11",
     "vue-router": "^4.0.0-0",
+    "vue-scroll-up": "^2.0.0",
+    "vue3-markdown-it": "^1.0.9",
     "vuex": "^4.0.0-0"
   },
   "devDependencies": {
