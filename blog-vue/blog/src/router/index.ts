@@ -6,6 +6,10 @@ export const constantRoutes: Array<RouteRecordRaw> = [
     path: '/',
     component: (resolve) => import('@/views/home/Home.vue'),
   },
+  {
+    path: '/articles/:id',
+    component: (resolve) => import('@/views/article/Article.vue'),
+  }
   
 ];
 

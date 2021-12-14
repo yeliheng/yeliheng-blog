@@ -1,6 +1,6 @@
 <template>
   <div><router-link to="/"></router-link></div>
-  <router-view/>
+  <router-view></router-view>
 </template>
 
 <script>
@@ -9,3 +9,6 @@ export default {
 
 }
 </script>
+<style scoped>
+
+</style>

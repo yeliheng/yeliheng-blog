@@ -5,6 +5,7 @@ import store from './store';
 import VPagination from "@hennge/vue3-pagination";
 import "@hennge/vue3-pagination/dist/vue3-pagination.css";
 import VueScrollUp from 'vue-scroll-up';
+import {ThreeDots} from 'vue-loading-spinner';
 
 
 const app = Vue.createApp(App);
@@ -13,4 +14,5 @@ app.use(store);
 app.use(router);
 app.component('v-pagination',VPagination);
 app.component('v-scroll-up',VueScrollUp);
+app.component('v-loading',ThreeDots);
 app.mount('#app');
