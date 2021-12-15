@@ -375,7 +375,7 @@ iframe{
 .content{
   transition: all 0.5s;
   opacity: 0;
-  animation: bottom-top-anim 1s ease 1s forwards;
+  animation: bottom-top-anim 0.8s ease 0.5s forwards;
   background: #121212;
   width: 90rem;
   margin: {
