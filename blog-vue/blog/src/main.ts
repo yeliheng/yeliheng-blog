@@ -8,7 +8,7 @@ import VueScrollUp from 'vue-scroll-up';
 import {ThreeDots} from 'vue-loading-spinner';
 import Markdown from 'vue3-markdown-it';
 import 'highlight.js/styles/monokai.css';
-import 'github-markdown-css';
+import 'github-markdown-css/github-markdown-dark.css';
 
 
 const app = Vue.createApp(App);

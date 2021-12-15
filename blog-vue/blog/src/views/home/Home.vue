@@ -96,7 +96,7 @@
         v-for="article in articleList"
         :key="article.id"
       >
-        <a class="article-title" :href="'/articles/' + article.id">{{ article.title }}</a>
+        <div class="article-title" @click="readArticle(article.id)">{{ article.title }}</div>
         <div class="article-info">
           <div class="pub-time info"><span class="iconfont icon-rili" style="margin-right: 0.5rem;"></span>
           <span class="info-text">发表于 </span>
@@ -382,9 +382,9 @@ iframe{
     text-align: center;
     .article-title{
       font-size: 1.5rem;
-      text-decoration: none;
       color: #d0d0d0;
       &:hover{
+        cursor: pointer;
         &::after{
           transform: scaleX(1);
         }

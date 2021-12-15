@@ -1,5 +1,8 @@
 <template>
 <div class="home-container">
+  <div class="loading-bar" ref="loadingBar">
+        <v-loading class="loading-bar"></v-loading>
+  </div>
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
   <div class="body-container">
     
@@ -51,7 +54,7 @@
 
         </div>
     </div>
-    
+
     <!-- 内容区 -->
     <div class="content" 
         ref="articleWrap"> 
@@ -69,21 +72,13 @@
             {{article.words}}
             </div>
           <div class="read-time info"><span class="iconfont icon-shizhong" style="margin-right: 0.5rem;"></span>
-          <span class="info-text">阅读时长(分钟) ≈  </span>{{article.readingTime}}</div>
-          
+          <span class="info-text">阅读时长(分钟) ≈  </span>{{article.readingTime}}</div>    
         </div>
-        <markdown :source="article.content" style="text-align: start;margin-top: 3rem;" class="markdown-body"/>
-
+        <markdown :source="article.content" style="text-align: start;margin-top: 3rem;background-color: #121212;" class="markdown-body"/>
       </div>
-
-    </div>
-    
+    </div> 
   </div>
-            
-
 </div>
-
-
 </template>
 
 <script lang="ts">
@@ -104,16 +99,27 @@ export default {
       'readingTime': 0,
       'createdAt': ''
     });
+    const articleWrap = ref();
+    const loadingBar = ref();
+    onMounted(() => {
+      articleWrap;
+      loadingBar;
+    });
     //TODO: 内容加载动画
     getArticleById(router.currentRoute.value.params.id).then((res: any) => {
       article.value = res.data;
+      articleWrap.value.style.opacity = "1";
+      loadingBar.value.style.opacity = "0";
     });
+    
   
 
     return {
       pageCount,
       page,
       article,
+      articleWrap,
+      loadingBar,
     }
   }
 
@@ -124,40 +130,12 @@ export default {
 .article-content{
   text-align: start;
 }
-.loading-bar{
-  transition: all 0.5s;
-  opacity: 0;
-  display: flex;
-  justify-content: center;
-  margin-bottom: 2rem;
-}
-@keyframes button-anim
-{
-    0%   {margin-top: 2rem;opacity: 0;}
-    100% {margin-top: 7rem;opacity: 1;}
-}
-@keyframes change-opcity{
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
-}
-@keyframes bottom-top-anim{
-    0% {
-      opacity: 0;
-      margin-top: 10rem;
-    }
-    100% {
-      opacity: 1;
-      margin-top: 0.5rem;
-    }
-}
+
 
 
 // 侧边栏
 .sidebar{
+  transition: all 1s;
   opacity: 1;
   display: flex;
   flex-direction: column;
@@ -255,10 +233,20 @@ export default {
   justify-content: center;
   height: 100%;
 }
-.content{
+.loading-bar{
   transition: all 0.5s;
+  opacity: 1;
+  position: absolute;
+  top: 0;             
+  bottom: 0;           
+  left: 0;        
+  right: 0;
+  margin: auto; 
+}
+.content{
+  transition: all 1s;
   opacity: 0;
-  animation: bottom-top-anim 1s ease 0.5s forwards;
+ // animation: bottom-top-anim 1s ease forwards;
   background: #121212;
   width: 90rem;
   margin: {
