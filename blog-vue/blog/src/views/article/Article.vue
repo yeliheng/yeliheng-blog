@@ -36,23 +36,11 @@
             
         </div>
         <!-- 文章目录 -->
-        <div class="site-info" ref="articleMenu">
-            <span style="font-size: 1.3rem; font-weight: bold; display: flex; justify-content: center;margin-top: 1.3rem;">站点公告</span>
-            <span class="announcement">这是Yeliheng的个人博客,我会在这里分享我计算机学习生涯中的笔记、总结、技术干货...</span>
-            <div class="site-state">
-              <div>
-                <span class="iconfont icon-zhinanzhen"></span>
-                <span> 本站建立于2018年11月19日</span>
-              </div>
-              <div>
-                <span class="iconfont icon-wo"></span> 
-                <span> ©2022 Yeliheng 版权所有</span>
-              </div>
-                
-                <span>转载请注明出处!</span>
-            </div>
-
+        <div class="article-menu-container">
+          <span style="font-size: 1.3rem; font-weight: bold; display: flex; justify-content: center;margin-top: 1.3rem;">文章目录</span>
+          <div class="article-menu toc" ref="articleMenu"></div>
         </div>
+
     </div>
 
     <!-- 内容区 -->
@@ -74,7 +62,11 @@
           <div class="read-time info"><span class="iconfont icon-shizhong" style="margin-right: 0.5rem;"></span>
           <span class="info-text">阅读时长(分钟) ≈  </span>{{article.readingTime}}</div>    
         </div>
-        <markdown :source="article.content" style="text-align: start;margin-top: 3rem;background-color: #121212;" class="markdown-body"/>
+        <markdown 
+        class="markdown-body"
+        style="text-align: start;margin-top: 3rem;background-color: #121212;" 
+        :source="article.content"
+        />
       </div>
     </div> 
   </div>
@@ -86,6 +78,7 @@ import '../../assets/iconfont.css';
 import { getArticleById} from '../../api/index';
 import { useRouter } from 'vue-router';
 import { ref, onMounted } from 'vue';
+import tocbot from 'tocbot';
 export default {
   setup(){
     const router = useRouter();
@@ -113,8 +106,23 @@ export default {
       articleWrap.value.style.opacity = "1";
       loadingBar.value.style.opacity = "0";
       articleMenu.value.style.position = "sticky";
+      setTimeout(() => {
+        tocbot.init({
+          tocSelector: '.article-menu',
+          contentSelector: '.markdown-body',
+          headingSelector: 'h1, h2, h3',
+          hasInnerContainers: true,
+          scrollSmoothDuration: 100,
+        });
+      if(articleWrap.value.scrollHeight < window.innerHeight){
+        articleWrap.value.style.height = window.innerHeight + 'px';
+      }
+      });
+      
+
     });
     
+
   
 
     return {
@@ -123,7 +131,7 @@ export default {
       article,
       articleWrap,
       articleMenu,
-      loadingBar,
+      loadingBar
     }
   }
 
@@ -136,10 +144,17 @@ export default {
       background-color: #d4d3d3;
     }
 }
+:deep(.is-active-link){
+  &::before{
+    background-color: #bb46ff;
+  }
+}
+:deep(.toc-link){
+  color: #9e9e9e;
+}
 .article-content{
   text-align: start;
 }
-
 
 
 // 侧边栏
@@ -212,22 +227,12 @@ export default {
     }
   }
   // 站点信息
-  .site-info{
+  .article-menu-container{
     position: initial;
     top: 0.5rem;
-    height: 15rem;
+    padding-bottom: 2rem;
     margin-top: 0.5rem;
     background: #121212; 
-    .announcement{
-      display: block;
-      margin: 1.2rem;
-      text-align: center;
-      color: #9e9e9e;
-    }
-    .site-state{
-      text-align: center;
-      color: #9e9e9e;
-    }
   }
 
 }
