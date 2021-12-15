@@ -9,6 +9,7 @@ import Markdown from 'vue3-markdown-it';
 import 'highlight.js/styles/monokai.css';
 import 'github-markdown-css/github-markdown-dark.css';
 import 'tocbot/src/scss/tocbot.scss';
+import MyProfile from '@/components/MyProfile.vue';
 
 
 const app = Vue.createApp(App);
@@ -18,4 +19,5 @@ app.use(router);
 app.component('markdown',Markdown);
 app.component('v-pagination',VPagination);
 app.component('v-loading',RotateSquare2);
+app.component('my-profile',MyProfile);
 app.mount('#app');

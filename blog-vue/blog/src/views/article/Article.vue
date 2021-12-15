@@ -8,37 +8,12 @@
     
 <!-- 侧边栏(PC) -->
     <div class="sidebar" >
-      <!-- 作者信息 -->
-        <div class="my-info">
-            <div class="avatar"></div>
-            <span class="name">Yeliheng</span>
-            <div class="art-info">
-              <div class="article-count count">
-                <span>文章</span>
-                <span>12</span>
-              </div>
-              <div class="line"></div>
-              <div class="category-count count">
-                <span>分类</span>
-                <span>5</span>
-              </div>
-              <div class="line"></div>
-              <div class="tag-count count">
-                <span>标签</span>
-                <span>20</span>
-              </div>
-            </div>
-            <div class="contract-container">
-              <a class="iconfont icon-github" href="https://github.com/yeliheng" target="_blank"></a>
-              <a class="iconfont icon-Discord" href="#" target="_blank"></a>
-              <a class="iconfont icon-email-fill" href="mailto://yeliheng00@gmail.com" target="_blank"></a>
-            </div>
-            
-        </div>
+        <!-- 作者信息 -->
+        <my-profile></my-profile>
         <!-- 文章目录 -->
-        <div class="article-menu-container">
+        <div class="article-menu-container" ref="articleMenu">
           <span style="font-size: 1.3rem; font-weight: bold; display: flex; justify-content: center;margin-top: 1.3rem;">文章目录</span>
-          <div class="article-menu toc" ref="articleMenu"></div>
+          <div class="article-menu toc"></div>
         </div>
 
     </div>
@@ -105,6 +80,7 @@ export default {
       article.value = res.data;
       articleWrap.value.style.opacity = "1";
       loadingBar.value.style.opacity = "0";
+      loadingBar.value.style.visibility = 'collapse';
       articleMenu.value.style.position = "sticky";
       setTimeout(() => {
         tocbot.init({
@@ -169,63 +145,7 @@ export default {
     left: 0.5rem;
     right: 0.5rem;
   };
-  // 我的信息
-  .my-info{
-    background: #121212;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    .avatar{
-      margin-top: 1rem;
-      width: 7rem;
-      height: 7rem;
-      border-radius: 50%;
-      background-image: url("../../assets/images/avater.jpg");
-      background-repeat: round;
-    }
-    .name{
-      margin-top: 1rem;
-      font-size: 1.5rem;
-      font-weight: bold;
-    }
-    .art-info{
-      display: flex;
-      font-size: 1.2rem;
-      color: #9e9e9e;
-      .line{
-        background: #353535;
-        margin-top: 2rem;
-        height: 3.5rem;
-        width: 0.05rem;
-      }
-      .count{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        margin: {
-          left: 1rem;
-          right: 1rem;
-          top: 1.5rem;
-        };
-      }
-    }
-    .contract-container{
-      color: #9e9e9e;
-      display: flex;        
-      flex-direction: row;
-      justify-content: center;
-      margin-top: 1.5rem;
-      .iconfont{
-        margin-left: 0.9rem;
-        margin-right: 0.9rem;
-        margin-bottom: 3rem;
-        font-size: 2rem;
-        color: #9e9e9e;
-        text-decoration: none;
-      }
-    }
-  }
+  
   // 站点信息
   .article-menu-container{
     position: initial;
@@ -233,6 +153,11 @@ export default {
     padding-bottom: 2rem;
     margin-top: 0.5rem;
     background: #121212; 
+  }
+  .article-menu{
+    display: flex;
+    justify-content: center;
+
   }
 
 }
@@ -243,6 +168,7 @@ export default {
   }
 }
 .body-container{
+
   display: flex;
   justify-content: center;
   height: 100%;
@@ -260,7 +186,6 @@ export default {
   height: 100%;
 }
 .content{
-  z-index: 9999;
   transition: all 1s;
   opacity: 0;
  // animation: bottom-top-anim 1s ease forwards;
