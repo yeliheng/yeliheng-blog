@@ -223,6 +223,11 @@ export default {
       margin-top: 0.5rem;
     }
 }
+:deep(.spinner){
+    &::after{
+      background-color: #d4d3d3;
+    }
+}
 iframe{
   border: 0;
   height: 20rem;
@@ -331,6 +336,11 @@ iframe{
       }
     }
   }
+  :deep(.spinner){
+    &::after{
+      background-color: #d4d3d3;
+    }
+}
   // 站点信息
   .site-info{
     position: sticky;

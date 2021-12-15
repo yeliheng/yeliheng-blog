@@ -1,13 +1,13 @@
 <template>
 <div class="home-container">
-  <div class="loading-bar" ref="loadingBar">
-        <v-loading class="loading-bar"></v-loading>
+  <div class="loading-bar" ref="loadingBar" >
+    <v-loading class="loading-bar"></v-loading>
   </div>
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
   <div class="body-container">
     
 <!-- 侧边栏(PC) -->
-    <div class="sidebar">
+    <div class="sidebar" >
       <!-- 作者信息 -->
         <div class="my-info">
             <div class="avatar"></div>
@@ -36,7 +36,7 @@
             
         </div>
         <!-- 文章目录 -->
-        <div class="site-info">
+        <div class="site-info" ref="articleMenu">
             <span style="font-size: 1.3rem; font-weight: bold; display: flex; justify-content: center;margin-top: 1.3rem;">站点公告</span>
             <span class="announcement">这是Yeliheng的个人博客,我会在这里分享我计算机学习生涯中的笔记、总结、技术干货...</span>
             <div class="site-state">
@@ -101,15 +101,18 @@ export default {
     });
     const articleWrap = ref();
     const loadingBar = ref();
+    const articleMenu = ref();
     onMounted(() => {
       articleWrap;
       loadingBar;
+      articleMenu;
     });
     //TODO: 内容加载动画
     getArticleById(router.currentRoute.value.params.id).then((res: any) => {
       article.value = res.data;
       articleWrap.value.style.opacity = "1";
       loadingBar.value.style.opacity = "0";
+      articleMenu.value.style.position = "sticky";
     });
     
   
@@ -119,6 +122,7 @@ export default {
       page,
       article,
       articleWrap,
+      articleMenu,
       loadingBar,
     }
   }
@@ -127,6 +131,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+:deep(.spinner){
+    &::after{
+      background-color: #d4d3d3;
+    }
+}
 .article-content{
   text-align: start;
 }
@@ -135,7 +144,7 @@ export default {
 
 // 侧边栏
 .sidebar{
-  transition: all 1s;
+ // transition: all 1s;
   opacity: 1;
   display: flex;
   flex-direction: column;
@@ -204,7 +213,7 @@ export default {
   }
   // 站点信息
   .site-info{
-    position: sticky;
+    position: initial;
     top: 0.5rem;
     height: 15rem;
     margin-top: 0.5rem;
@@ -234,6 +243,7 @@ export default {
   height: 100%;
 }
 .loading-bar{
+  background-color: #272727;
   transition: all 0.5s;
   opacity: 1;
   position: absolute;
@@ -241,9 +251,11 @@ export default {
   bottom: 0;           
   left: 0;        
   right: 0;
-  margin: auto; 
+  margin: auto;
+  height: 100%;
 }
 .content{
+  z-index: 9999;
   transition: all 1s;
   opacity: 0;
  // animation: bottom-top-anim 1s ease forwards;
