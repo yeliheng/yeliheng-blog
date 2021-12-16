@@ -88,14 +88,15 @@ export default {
           contentSelector: '.markdown-body',
           headingSelector: 'h1, h2, h3',
           hasInnerContainers: true,
-          scrollSmoothDuration: 100,
+         scrollSmoothDuration: 100,
+          onClick(e){
+            e.preventDefault();
+          }
         });
       if(articleWrap.value.scrollHeight < window.innerHeight){
         articleWrap.value.style.height = window.innerHeight + 'px';
       }
       });
-      
-
     });
     
 
