@@ -1,6 +1,6 @@
 package com.yeliheng.blogsystem.mapper;
 
-import com.yeliheng.blogsystem.entity.Menu;
+import com.yeliheng.blogsystem.domain.Menu;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;

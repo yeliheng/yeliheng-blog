@@ -1,6 +1,7 @@
 package com.yeliheng.blogsystem.service.impl;
 
-import com.yeliheng.blogsystem.entity.User;
+
+import com.yeliheng.blogsystem.domain.User;
 import com.yeliheng.blogsystem.service.IMenuService;
 import com.yeliheng.blogsystem.service.IPermissionService;
 import com.yeliheng.blogsystem.service.IRoleService;

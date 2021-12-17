@@ -1,8 +1,9 @@
 package com.yeliheng.blogsystem.service.impl;
 
-import com.yeliheng.blogsystem.entity.RegisterUser;
-import com.yeliheng.blogsystem.entity.User;
-import com.yeliheng.blogsystem.exception.UnexpectedException;
+
+import com.yeliheng.blogcommon.exception.UnexpectedException;
+import com.yeliheng.blogsystem.domain.RegisterUser;
+import com.yeliheng.blogsystem.domain.User;
 import com.yeliheng.blogsystem.service.IRegisterService;
 import com.yeliheng.blogsystem.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;

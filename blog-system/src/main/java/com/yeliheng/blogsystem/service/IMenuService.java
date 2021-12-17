@@ -1,8 +1,8 @@
 package com.yeliheng.blogsystem.service;
 
+import com.yeliheng.blogsystem.domain.Menu;
+import com.yeliheng.blogsystem.domain.Router;
 import com.yeliheng.blogsystem.dto.MenuTreeDTO;
-import com.yeliheng.blogsystem.entity.Menu;
-import com.yeliheng.blogsystem.entity.Router;
 
 import java.util.List;
 import java.util.Set;

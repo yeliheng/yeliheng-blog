@@ -1,6 +1,6 @@
 package com.yeliheng.blogsystem.service;
 
-import com.yeliheng.blogsystem.entity.RegisterUser;
+import com.yeliheng.blogsystem.domain.RegisterUser;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public interface IRegisterService {

@@ -1,57 +1,23 @@
 <template>
 <div class="home-container">
+  <div class="loading-bar" ref="loadingBar" >
+    <v-loading class="loading-bar"></v-loading>
+  </div>
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
   <div class="body-container">
     
 <!-- 侧边栏(PC) -->
-    <div class="sidebar">
-      <!-- 作者信息 -->
-        <div class="my-info">
-            <div class="avatar"></div>
-            <span class="name">Yeliheng</span>
-            <div class="art-info">
-              <div class="article-count count">
-                <span>文章</span>
-                <span>12</span>
-              </div>
-              <div class="line"></div>
-              <div class="category-count count">
-                <span>分类</span>
-                <span>5</span>
-              </div>
-              <div class="line"></div>
-              <div class="tag-count count">
-                <span>标签</span>
-                <span>20</span>
-              </div>
-            </div>
-            <div class="contract-container">
-              <a class="iconfont icon-github" href="https://github.com/yeliheng" target="_blank"></a>
-              <a class="iconfont icon-Discord" href="#" target="_blank"></a>
-              <a class="iconfont icon-email-fill" href="mailto://yeliheng00@gmail.com" target="_blank"></a>
-            </div>
-            
-        </div>
+    <div class="sidebar" >
+        <!-- 作者信息 -->
+        <my-profile></my-profile>
         <!-- 文章目录 -->
-        <div class="site-info">
-            <span style="font-size: 1.3rem; font-weight: bold; display: flex; justify-content: center;margin-top: 1.3rem;">站点公告</span>
-            <span class="announcement">这是Yeliheng的个人博客,我会在这里分享我计算机学习生涯中的笔记、总结、技术干货...</span>
-            <div class="site-state">
-              <div>
-                <span class="iconfont icon-zhinanzhen"></span>
-                <span> 本站建立于2018年11月19日</span>
-              </div>
-              <div>
-                <span class="iconfont icon-wo"></span> 
-                <span> ©2022 Yeliheng 版权所有</span>
-              </div>
-                
-                <span>转载请注明出处!</span>
-            </div>
-
+        <div class="article-menu-container" ref="articleMenu">
+          <span style="font-size: 1.3rem; font-weight: bold; display: flex; justify-content: center;margin-top: 1.3rem;">文章目录</span>
+          <div class="article-menu toc"></div>
         </div>
+
     </div>
-    
+
     <!-- 内容区 -->
     <div class="content" 
         ref="articleWrap"> 
@@ -69,21 +35,17 @@
             {{article.words}}
             </div>
           <div class="read-time info"><span class="iconfont icon-shizhong" style="margin-right: 0.5rem;"></span>
-          <span class="info-text">阅读时长(分钟) ≈  </span>{{article.readingTime}}</div>
-          
+          <span class="info-text">阅读时长(分钟) ≈  </span>{{article.readingTime}}</div>    
         </div>
-        <markdown :source="article.content" style="text-align: start;margin-top: 3rem;" class="markdown-body"/>
-
+        <markdown 
+        class="markdown-body"
+        style="text-align: start;margin-top: 3rem;background-color: #121212;" 
+        :source="article.content"
+        />
       </div>
-
-    </div>
-    
+    </div> 
   </div>
-            
-
 </div>
-
-
 </template>
 
 <script lang="ts">
@@ -91,6 +53,7 @@ import '../../assets/iconfont.css';
 import { getArticleById} from '../../api/index';
 import { useRouter } from 'vue-router';
 import { ref, onMounted } from 'vue';
+import tocbot from 'tocbot';
 export default {
   setup(){
     const router = useRouter();
@@ -104,16 +67,48 @@ export default {
       'readingTime': 0,
       'createdAt': ''
     });
+    const articleWrap = ref();
+    const loadingBar = ref();
+    const articleMenu = ref();
+    onMounted(() => {
+      articleWrap;
+      loadingBar;
+      articleMenu;
+    });
     //TODO: 内容加载动画
     getArticleById(router.currentRoute.value.params.id).then((res: any) => {
       article.value = res.data;
+      articleWrap.value.style.opacity = "1";
+      loadingBar.value.style.opacity = "0";
+      loadingBar.value.style.visibility = 'collapse';
+      articleMenu.value.style.position = "sticky";
+      setTimeout(() => {
+        tocbot.init({
+          tocSelector: '.article-menu',
+          contentSelector: '.markdown-body',
+          headingSelector: 'h1, h2, h3',
+          hasInnerContainers: true,
+         scrollSmoothDuration: 100,
+          onClick(e){
+            e.preventDefault();
+          }
+        });
+      if(articleWrap.value.scrollHeight < window.innerHeight){
+        articleWrap.value.style.height = window.innerHeight + 'px';
+      }
+      });
     });
+    
+
   
 
     return {
       pageCount,
       page,
       article,
+      articleWrap,
+      articleMenu,
+      loadingBar
     }
   }
 
@@ -121,43 +116,27 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+:deep(.spinner){
+    &::after{
+      background-color: #d4d3d3;
+    }
+}
+:deep(.is-active-link){
+  &::before{
+    background-color: #bb46ff;
+  }
+}
+:deep(.toc-link){
+  color: #9e9e9e;
+}
 .article-content{
   text-align: start;
-}
-.loading-bar{
-  transition: all 0.5s;
-  opacity: 0;
-  display: flex;
-  justify-content: center;
-  margin-bottom: 2rem;
-}
-@keyframes button-anim
-{
-    0%   {margin-top: 2rem;opacity: 0;}
-    100% {margin-top: 7rem;opacity: 1;}
-}
-@keyframes change-opcity{
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
-}
-@keyframes bottom-top-anim{
-    0% {
-      opacity: 0;
-      margin-top: 10rem;
-    }
-    100% {
-      opacity: 1;
-      margin-top: 0.5rem;
-    }
 }
 
 
 // 侧边栏
 .sidebar{
+ // transition: all 1s;
   opacity: 1;
   display: flex;
   flex-direction: column;
@@ -167,80 +146,19 @@ export default {
     left: 0.5rem;
     right: 0.5rem;
   };
-  // 我的信息
-  .my-info{
-    background: #121212;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    .avatar{
-      margin-top: 1rem;
-      width: 7rem;
-      height: 7rem;
-      border-radius: 50%;
-      background-image: url("../../assets/images/avater.jpg");
-      background-repeat: round;
-    }
-    .name{
-      margin-top: 1rem;
-      font-size: 1.5rem;
-      font-weight: bold;
-    }
-    .art-info{
-      display: flex;
-      font-size: 1.2rem;
-      color: #9e9e9e;
-      .line{
-        background: #353535;
-        margin-top: 2rem;
-        height: 3.5rem;
-        width: 0.05rem;
-      }
-      .count{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        margin: {
-          left: 1rem;
-          right: 1rem;
-          top: 1.5rem;
-        };
-      }
-    }
-    .contract-container{
-      color: #9e9e9e;
-      display: flex;        
-      flex-direction: row;
-      justify-content: center;
-      margin-top: 1.5rem;
-      .iconfont{
-        margin-left: 0.9rem;
-        margin-right: 0.9rem;
-        margin-bottom: 3rem;
-        font-size: 2rem;
-        color: #9e9e9e;
-        text-decoration: none;
-      }
-    }
-  }
+  
   // 站点信息
-  .site-info{
-    position: sticky;
+  .article-menu-container{
+    position: initial;
     top: 0.5rem;
-    height: 15rem;
+    padding-bottom: 2rem;
     margin-top: 0.5rem;
     background: #121212; 
-    .announcement{
-      display: block;
-      margin: 1.2rem;
-      text-align: center;
-      color: #9e9e9e;
-    }
-    .site-state{
-      text-align: center;
-      color: #9e9e9e;
-    }
+  }
+  .article-menu{
+    display: flex;
+    justify-content: center;
+
   }
 
 }
@@ -251,14 +169,27 @@ export default {
   }
 }
 .body-container{
+
   display: flex;
   justify-content: center;
   height: 100%;
 }
-.content{
+.loading-bar{
+  background-color: #272727;
   transition: all 0.5s;
+  opacity: 1;
+  position: absolute;
+  top: 0;             
+  bottom: 0;           
+  left: 0;        
+  right: 0;
+  margin: auto;
+  height: 100%;
+}
+.content{
+  transition: all 1s;
   opacity: 0;
-  animation: bottom-top-anim 1s ease 0.5s forwards;
+ // animation: bottom-top-anim 1s ease forwards;
   background: #121212;
   width: 90rem;
   margin: {

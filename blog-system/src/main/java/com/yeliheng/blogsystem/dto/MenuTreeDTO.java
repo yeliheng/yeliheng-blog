@@ -1,7 +1,7 @@
 package com.yeliheng.blogsystem.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.yeliheng.blogsystem.entity.Menu;
+import com.yeliheng.blogsystem.domain.Menu;
 
 import java.util.List;
 import java.util.stream.Collectors;

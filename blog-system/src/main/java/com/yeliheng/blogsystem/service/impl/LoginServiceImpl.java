@@ -1,8 +1,7 @@
 package com.yeliheng.blogsystem.service.impl;
 
-import com.yeliheng.blogsystem.entity.LoginUser;
-import com.yeliheng.blogsystem.exception.GeneralException;
-import com.yeliheng.blogsystem.exception.UnauthorizedException;
+import com.yeliheng.blogcommon.exception.GeneralException;
+import com.yeliheng.blogsystem.domain.LoginUser;
 import com.yeliheng.blogsystem.service.ILoginService;
 import com.yeliheng.blogsystem.utils.TokenUtils;
 import org.slf4j.Logger;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 @Service

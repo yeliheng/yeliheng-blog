@@ -1,8 +1,8 @@
 package com.yeliheng.blogsystem.service.impl;
 
-import com.yeliheng.blogsystem.entity.LoginUser;
-import com.yeliheng.blogsystem.entity.User;
-import com.yeliheng.blogsystem.exception.UnauthorizedException;
+import com.yeliheng.blogcommon.exception.UnauthorizedException;
+import com.yeliheng.blogsystem.domain.LoginUser;
+import com.yeliheng.blogsystem.domain.User;
 import com.yeliheng.blogsystem.service.IPermissionService;
 import com.yeliheng.blogsystem.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;

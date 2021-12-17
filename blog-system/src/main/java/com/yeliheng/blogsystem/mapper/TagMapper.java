@@ -1,7 +1,6 @@
 package com.yeliheng.blogsystem.mapper;
 
-import com.yeliheng.blogsystem.entity.AritcleTag;
-import com.yeliheng.blogsystem.entity.Tag;
+import com.yeliheng.blogsystem.domain.Tag;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;

@@ -2,16 +2,14 @@ package com.yeliheng.blogsystem.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.yeliheng.blogsystem.entity.AritcleTag;
-import com.yeliheng.blogsystem.entity.Tag;
-import com.yeliheng.blogsystem.exception.GeneralException;
-import com.yeliheng.blogsystem.exception.InternalServerException;
+import com.yeliheng.blogcommon.exception.GeneralException;
+import com.yeliheng.blogcommon.exception.InternalServerException;
+import com.yeliheng.blogsystem.domain.Tag;
 import com.yeliheng.blogsystem.mapper.TagMapper;
 import com.yeliheng.blogsystem.service.ITagService;
 import com.yeliheng.blogsystem.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
 package com.yeliheng.blogsystem.mapper;
 
-import com.yeliheng.blogsystem.entity.AritcleTag;
+import com.yeliheng.blogsystem.domain.AritcleTag;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
 package com.yeliheng.blogsystem.mapper;
 
-import com.yeliheng.blogsystem.entity.Article;
+import com.yeliheng.blogsystem.domain.Article;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
@@ -18,5 +18,7 @@ public interface ArticleMapper extends Mapper<Article> {
     List<Article> getArticlesBacked(Article article);
 
     Article getArticleByIdBacked(Long articleId);
+
+    Article getArticleById(Long articleId);
 
 }

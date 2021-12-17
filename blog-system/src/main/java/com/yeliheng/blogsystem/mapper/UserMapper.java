@@ -1,6 +1,6 @@
 package com.yeliheng.blogsystem.mapper;
 
-import com.yeliheng.blogsystem.entity.User;
+import com.yeliheng.blogsystem.domain.User;
 
 import java.util.List;
 

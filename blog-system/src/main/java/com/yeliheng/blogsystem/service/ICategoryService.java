@@ -1,7 +1,7 @@
 package com.yeliheng.blogsystem.service;
 
 import com.github.pagehelper.PageInfo;
-import com.yeliheng.blogsystem.entity.Category;
+import com.yeliheng.blogsystem.domain.Category;
 
 import java.util.List;
 

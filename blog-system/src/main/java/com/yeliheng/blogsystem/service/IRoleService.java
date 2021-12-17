@@ -1,7 +1,7 @@
 package com.yeliheng.blogsystem.service;
 
 import com.github.pagehelper.PageInfo;
-import com.yeliheng.blogsystem.entity.Role;
+import com.yeliheng.blogsystem.domain.Role;
 
 import java.util.List;
 import java.util.Set;

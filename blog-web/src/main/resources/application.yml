@@ -1,0 +1,48 @@
+spring:
+    profiles:
+      active: dev
+    mvc:
+      throw-exception-if-no-handler-found: true
+    web:
+      resources:
+        add-mappings: false
+    # Redis 配置
+    redis:
+      host: localhost
+      port: 6379
+      database: 0
+
+server:
+  error:
+    whitelabel:
+      enabled: false
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+    #打印Sql
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  type-aliases-package: com.yeliheng.blogsystem.domain
+  mapper-locations: classpath*:mapper/**/*Mapper.xml
+# 通用Mapper
+mapper:
+  mappers:
+    - tk.mybatis.mapper.common.Mapper
+  not-empty: false
+  identity: MYSQL
+# 分页插件
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+# token 配置
+token:
+  # 令牌有效期(默认30分钟)
+  expireTime: 1440
+  # 令牌密钥
+  secret: yeliheng123
+  # 令牌请求头
+  header: Authorization
+# 系统设置
+blogsystem:
+  allow-register: true

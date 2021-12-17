@@ -5,10 +5,16 @@ export const constantRoutes: Array<RouteRecordRaw> = [
   {
     path: '/',
     component: (resolve) => import('@/views/home/Home.vue'),
+    meta: {
+      keepAlive: true
+    }
   },
   {
     path: '/articles/:id',
     component: (resolve) => import('@/views/article/Article.vue'),
+    meta: {
+      keepAlive: false
+    }
   }
   
 ];

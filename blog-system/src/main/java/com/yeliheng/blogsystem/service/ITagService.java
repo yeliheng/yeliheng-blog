@@ -1,8 +1,7 @@
 package com.yeliheng.blogsystem.service;
 
 import com.github.pagehelper.PageInfo;
-import com.yeliheng.blogsystem.entity.AritcleTag;
-import com.yeliheng.blogsystem.entity.Tag;
+import com.yeliheng.blogsystem.domain.Tag;
 
 import java.util.List;
 

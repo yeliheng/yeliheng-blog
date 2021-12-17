@@ -2,18 +2,18 @@ package com.yeliheng.blogsystem.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.yeliheng.blogsystem.entity.AritcleTag;
-import com.yeliheng.blogsystem.entity.Article;
-import com.yeliheng.blogsystem.exception.GeneralException;
-import com.yeliheng.blogsystem.exception.InternalServerException;
-import com.yeliheng.blogsystem.exception.NotFoundException;
+import com.yeliheng.blogcommon.exception.GeneralException;
+import com.yeliheng.blogcommon.exception.InternalServerException;
+import com.yeliheng.blogcommon.exception.NotFoundException;
+import com.yeliheng.blogcommon.utils.StringUtils;
+import com.yeliheng.blogcommon.utils.WordUtils;
+import com.yeliheng.blogsystem.domain.AritcleTag;
+import com.yeliheng.blogsystem.domain.Article;
 import com.yeliheng.blogsystem.mapper.ArticleMapper;
 import com.yeliheng.blogsystem.mapper.ArticleTagMapper;
 import com.yeliheng.blogsystem.mapper.CategoryMapper;
 import com.yeliheng.blogsystem.service.IArticleService;
-import com.yeliheng.blogsystem.utils.StringUtils;
 import com.yeliheng.blogsystem.utils.UserUtils;
-import com.yeliheng.blogsystem.utils.WordUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -128,8 +128,8 @@ public class ArticleServiceImpl implements IArticleService {
      */
     @Override
     public Article getArticleById(Long articleId) {
-        Article article = articleMapper.selectByPrimaryKey(articleId);
-        if(article == null || !article.getVisible().equals("1"))
+        Article article = articleMapper.getArticleById(articleId);
+        if(article == null)
             throw new NotFoundException("文章不存在");
         return article;
     }

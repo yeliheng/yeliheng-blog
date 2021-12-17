@@ -1,6 +1,6 @@
 package com.yeliheng.blogsystem.mapper;
 
-import com.yeliheng.blogsystem.entity.Role;
+import com.yeliheng.blogsystem.domain.Role;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;

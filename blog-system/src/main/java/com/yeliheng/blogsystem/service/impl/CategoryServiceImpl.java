@@ -2,9 +2,9 @@ package com.yeliheng.blogsystem.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.yeliheng.blogsystem.entity.Category;
-import com.yeliheng.blogsystem.exception.GeneralException;
-import com.yeliheng.blogsystem.exception.InternalServerException;
+import com.yeliheng.blogcommon.exception.GeneralException;
+import com.yeliheng.blogcommon.exception.InternalServerException;
+import com.yeliheng.blogsystem.domain.Category;
 import com.yeliheng.blogsystem.mapper.CategoryMapper;
 import com.yeliheng.blogsystem.service.ICategoryService;
 import com.yeliheng.blogsystem.utils.UserUtils;

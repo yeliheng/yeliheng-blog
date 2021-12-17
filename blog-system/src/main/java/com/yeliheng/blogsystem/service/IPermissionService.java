@@ -1,6 +1,6 @@
 package com.yeliheng.blogsystem.service;
 
-import com.yeliheng.blogsystem.entity.User;
+import com.yeliheng.blogsystem.domain.User;
 
 import java.util.Set;
 

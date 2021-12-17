@@ -1,17 +1,18 @@
 package com.yeliheng.blogsystem.service.impl;
 
+import com.yeliheng.blogcommon.exception.GeneralException;
+import com.yeliheng.blogcommon.exception.InternalServerException;
+import com.yeliheng.blogcommon.utils.StringUtils;
+import com.yeliheng.blogsystem.domain.Menu;
+import com.yeliheng.blogsystem.domain.Router;
 import com.yeliheng.blogsystem.dto.MenuTreeDTO;
-import com.yeliheng.blogsystem.entity.Menu;
-import com.yeliheng.blogsystem.entity.Router;
-import com.yeliheng.blogsystem.exception.GeneralException;
-import com.yeliheng.blogsystem.exception.InternalServerException;
+
 import com.yeliheng.blogsystem.mapper.MenuMapper;
 import com.yeliheng.blogsystem.service.IMenuService;
-import com.yeliheng.blogsystem.utils.StringUtils;
+
 import com.yeliheng.blogsystem.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tk.mybatis.mapper.util.StringUtil;
 
 import java.util.*;
 import java.util.stream.Collectors;

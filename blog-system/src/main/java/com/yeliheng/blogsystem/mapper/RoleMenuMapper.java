@@ -1,6 +1,6 @@
 package com.yeliheng.blogsystem.mapper;
 
-import com.yeliheng.blogsystem.entity.RoleMenu;
+import com.yeliheng.blogsystem.domain.RoleMenu;
 
 import java.util.List;
 
