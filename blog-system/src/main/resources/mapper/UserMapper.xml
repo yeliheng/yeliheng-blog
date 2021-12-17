@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yeliheng.blogsystem.mapper.UserMapper">
+    <resultMap id="UserResultMap" type="com.yeliheng.blogsystem.domain.User">
+        <id column="id" property="id" />
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="nickname" property="nickname"/>
+        <result column="phone" property="phone"/>
+        <result column="locked" property="locked"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="updated_at" property="updatedAt"/>
+        <collection property="roleList" javaType="java.util.List" resultMap="RoleResult" />
+    </resultMap>
+
+    <resultMap id="RoleResult" type="Role">
+        <id property="id" column="role_id" />
+        <result property="roleChar" column="role_char"/>
+        <result property="roleName" column="role_name"/>
+    </resultMap>
+
+    <sql id="selectUserVo">
+        select u.id, u.username, u.nickname, u.phone, u.locked, u.created_at, u.updated_at,
+               r.id as role_id, r.role_char, r.role_name,
+               ur.user_id, ur.role_id
+        from user u
+        left join user_role ur on u.id = ur.user_id
+        left join role r on r.id = ur.role_id
+    </sql>
+
+    <select id="selectUserList" resultMap="UserResultMap">
+        <include refid="selectUserVo"></include>
+        <where>
+        <if test="id != null and id != 0">
+            AND u.id = #{id}
+        </if>
+        <if test="username != null and username != ''">
+            and username like concat('%', #{username}, '%')
+        </if>
+        <if test="nickname != null and nickname != ''">
+            and nickname like concat('%', #{nickname}, '%')
+        </if>
+        <if test="phone != null and phone != ''">
+            and phone = #{phone}
+        </if>
+        <if test="locked != null">
+            and u.locked = #{locked}
+        </if>
+        </where>
+        order by u.id
+    </select>
+
+    <select id="selectUserByUserName" resultType="User">
+        select * from user where username=#{username}
+    </select>
+
+    <select id="selectUidByUsername" resultType="Long">
+        select id from user where username=#{username}
+    </select>
+
+    <insert id="insertUser" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+        insert into user(
+            <if test="username != null and username != ''">username,</if>
+            <if test="password != null and password != ''">password,</if>
+            <if test="nickname != null and nickname != ''">nickname,</if>
+            <if test="phone != null and phone != ''">phone,</if>
+            <if test="locked != null">locked,</if>
+            created_at,
+            updated_at
+        )values (
+            <if test="username != null and username != ''">#{username},</if>
+            <if test="password != null and password != ''">#{password},</if>
+            <if test="nickname != null and nickname != ''">#{nickname},</if>
+            <if test="phone != null and phone != ''">#{phone},</if>
+            <if test="locked != null">#{locked},</if>
+            sysdate(),
+            sysdate()
+        )
+    </insert>
+
+    <update id="updateUser" parameterType="User">
+        update user
+        <set>
+            <if test="username != null and username != ''">username = #{username},</if>
+            <if test="password != null and password != ''">password = #{password},</if>
+            <if test="nickname != null and nickname != ''">nickname = #{nickname},</if>
+            <if test="phone != null and phone != ''">phone = #{phone},</if>
+            <if test="locked != null">locked = #{locked},</if>
+            updated_at = sysdate()
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="checkUsernameUnique" resultType="Long">
+        select id from user where username = #{username}
+    </select>
+
+    <delete id="deleteUserById" parameterType="Long">
+        delete from user where id=#{id}
+    </delete>
+</mapper>

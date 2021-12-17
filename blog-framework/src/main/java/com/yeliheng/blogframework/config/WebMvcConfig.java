@@ -14,6 +14,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     /**
      * 跨域配置
      */
+
     @Bean
     public CorsFilter corsFilter()
     {
@@ -30,4 +31,5 @@ public class WebMvcConfig implements WebMvcConfigurer {
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
+
 }

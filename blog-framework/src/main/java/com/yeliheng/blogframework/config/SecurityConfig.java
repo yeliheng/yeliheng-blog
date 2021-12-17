@@ -1,6 +1,6 @@
 package com.yeliheng.blogframework.config;
 
-import com.yeliheng.blogsystem.filter.JwtAuthenticationTokenFilter;
+import com.yeliheng.blogframework.security.filter.JwtAuthenticationTokenFilter;
 import com.yeliheng.blogframework.security.handle.AuthenticationEntryPointImpl;
 import com.yeliheng.blogframework.security.handle.LogoutSuccessHandlerImpl;
 import org.springframework.beans.factory.annotation.Autowired;

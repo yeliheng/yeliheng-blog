@@ -33,6 +33,12 @@
             <artifactId>blog-system</artifactId>
         </dependency>
 
+        <!-- 系统框架 -->
+        <dependency>
+            <groupId>com.yeliheng</groupId>
+            <artifactId>blog-framework</artifactId>
+        </dependency>
+
 
     </dependencies>
 

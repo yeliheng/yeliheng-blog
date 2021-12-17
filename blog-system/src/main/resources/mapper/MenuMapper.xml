@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yeliheng.blogsystem.mapper.MenuMapper">
+    <insert id="addMenu" parameterType="Menu" useGeneratedKeys="true" keyProperty="id">
+        insert into menu(
+        <if test="userId != null and userId != ''">user_id,</if>
+        <if test="parentId != null and parentId != ''">parent_id,</if>
+        <if test="menuName != null and menuName != ''">menu_name,</if>
+        <if test="orderNum != null and orderNum != ''">order_num,</if>
+        <if test="path != null and path != ''">path,</if>
+        <if test="hidden != null and hidden != ''">hidden,</if>
+        <if test="permission != null and permission != ''">permission,</if>
+        <if test="icon != null and icon != ''">icon,</if>
+        created_at,
+        updated_at
+        )values (
+        <if test="userId != null and userId != ''">#{userId},</if>
+        <if test="parentId != null and parentId != ''">#{parentId},</if>
+        <if test="menuName != null and menuName != ''">#{menuName},</if>
+        <if test="orderNum != null and orderNum != ''">#{orderNum},</if>
+        <if test="path != null and path != ''">#{path},</if>
+        <if test="hidden != null and hidden != ''">#{hidden},</if>
+        <if test="permission != null and permission != ''">#{permission},</if>
+        <if test="icon != null and icon != ''">#{icon},</if>
+        sysdate(),
+        sysdate()
+        )
+    </insert>
+
+    <update id="updateMenu" parameterType="Menu">
+        update menu
+        <set>
+            <if test="userId != null and userId != ''">user_id = #{userId},</if>
+            <if test="parentId != null and parentId != ''">parent_id = #{parentId},</if>
+            <if test="menuName != null and menuName != ''">menu_name = #{menuName},</if>
+            <if test="orderNum != null and orderNum != ''">order_num = #{orderNum},</if>
+            <if test="path != null and path != ''">path = #{path},</if>
+            <if test="hidden != null and hidden != ''">hidden = #{hidden},</if>
+            <if test="permission != null and permission != ''">permission = #{permission},</if>
+            <if test="icon != null and icon != ''">icon = #{icon},</if>
+            updated_at = sysdate()
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="getMenuPermissionByUserId" parameterType="Long" resultType="String">
+        select distinct m.permission from menu m
+            left join role_menu rm on m.id = rm.menu_id
+            left join user_role ur on rm.role_id = ur.role_id
+            left join role r on r.id = ur.role_id
+        where r.locked = '0' and ur.user_id = #{userId}
+    </select>
+
+    <select id="getMenusByUserId" parameterType="Long" resultType="Menu">
+        select distinct m.id, m.parent_id, m.menu_name, m.order_num, m.path, m.component, m.hidden, ifnull(m.permission,'') as permission, m.icon, m.created_at, m.updated_at
+        from menu m
+            left join role_menu rm on m.id = rm.menu_id
+            left join user_role ur on rm.role_id = ur.role_id
+            left join role r on ur.role_id = r.id
+            left join user u on ur.user_id = u.id
+        where u.id = #{userId} and r.locked = 0
+        order by m.parent_id, m.order_num
+
+    </select>
+
+    <select id="getMenuIdsByRoleId" parameterType="Long" resultType="Long">
+        select menu_id from role_menu where role_id=#{roleId}
+    </select>
+
+    <select id="getMenus" resultType="Menu">
+        select distinct m.id, m.parent_id, m.menu_name, m.order_num, m.path, m.component, m.hidden,
+                            ifnull(m.permission,'') as permission, m.icon, m.created_at, m.updated_at
+            from menu m order by m.parent_id, m.order_num
+    </select>
+
+</mapper>

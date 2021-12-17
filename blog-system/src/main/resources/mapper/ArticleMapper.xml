@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yeliheng.blogsystem.mapper.ArticleMapper">
+
+    <resultMap id="ArticleResult" type="Article">
+        <id property="id" column="id" />
+        <result property="userId" column="user_id" />
+        <result property="categoryId" column="category_id" />
+        <result property="title" column="title" />
+        <result property="summary" column="summary" />
+        <result property="content" column="content" />
+        <result property="url" column="url" />
+        <result property="visible" column="visible" />
+        <result property="words" column="words" />
+        <result property="readingTime" column="reading_time" />
+        <result property="createdAt" column="created_at" />
+        <result property="updatedAt" column="updated_at" />
+        <association property="category" column="category_id" javaType="Category" resultMap="CategoryResult" />
+        <collection property="tags" javaType="java.util.List" resultMap="TagResult" />
+    </resultMap>
+
+    <resultMap id="CategoryResult" type="Category">
+        <id property="id" column="category_id" />
+        <result property="categoryName" column="category_name" />
+    </resultMap>
+
+    <resultMap id="TagResult" type="Tag">
+        <id property="id" column="tag_id" />
+        <result property="tagName" column="tag_name"/>
+    </resultMap>
+
+    <sql id="selectArticleVo">
+        select a.id, a.user_id, a.category_id, a.title, a.summary, a.url, a.visible,a.words, a.reading_time, a.created_at, a.updated_at,
+               c.id as category_id, c.category_name,
+               atg.id, atg.article_id, atg.tag_id,
+               t.id as tag_id, t.tag_name
+        from article a
+            left join article_tag atg on atg.article_id = a.id
+            left join tag t on t.id = atg.tag_id
+            left join category c on a.category_id = c.id
+    </sql>
+
+    <sql id="selectArticleDetailVo">
+        select a.id, a.user_id, a.category_id, a.title, a.summary, a.content, a.url, a.visible, a.words, a.reading_time, a.created_at, a.updated_at,
+               c.id as category_id, c.category_name,
+               atg.id, atg.article_id, atg.tag_id,
+               t.id as tag_id, t.tag_name
+        from article a
+                 left join article_tag atg on atg.article_id = a.id
+                 left join tag t on t.id = atg.tag_id
+                 left join category c on a.category_id = c.id
+    </sql>
+
+    <insert id="addArticle" parameterType="Article" useGeneratedKeys="true" keyProperty="id">
+        insert into article(
+        <if test="userId != null and userId != ''">user_id,</if>
+        <if test="categoryId != null and categoryId != ''">category_id,</if>
+        <if test="title != null and title != ''">title,</if>
+        <if test="summary != null and summary != ''">summary,</if>
+        <if test="content != null and content != ''">content,</if>
+        <if test="url != null and url != ''">url,</if>
+        <if test="visible != null and visible != ''">visible,</if>
+        <if test="words != null and words != ''">words,</if>
+        <if test="readingTime != null and readingTime != ''">reading_time,</if>
+        created_at,
+        updated_at
+        )values (
+        <if test="userId != null and userId != ''">#{userId},</if>
+        <if test="categoryId != null and categoryId != ''">#{categoryId},</if>
+        <if test="title != null and title != ''">#{title},</if>
+        <if test="summary != null and summary != ''">#{summary},</if>
+        <if test="content != null and content != ''">#{content},</if>
+        <if test="url != null and url != ''">#{url},</if>
+        <if test="visible != null and visible != ''">#{visible},</if>
+        <if test="words != null and words != ''">#{words},</if>
+        <if test="readingTime != null and readingTime != ''">#{readingTime},</if>
+        sysdate(),
+        sysdate()
+        )
+    </insert>
+
+    <update id="updateArticle" parameterType="Article">
+        update article
+        <set>
+            <if test="userId != null and userId != ''">user_id = #{userId},</if>
+            category_id = #{categoryId},
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="summary != null and summary != ''">summary = #{summary},</if>
+            <if test="content != null and content != ''">content = #{content},</if>
+            <if test="visible != null and visible != ''">visible = #{visible},</if>
+            <if test="url != null and url != ''">url = #{url},</if>
+            <if test="words != null and words != ''">words = #{words},</if>
+            <if test="readingTime != null and readingTime != ''">reading_time = #{readingTime},</if>
+            updated_at = sysdate()
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="getArticles" resultMap="ArticleResult">
+        <include refid="selectArticleVo" />
+        where visible = 1 order by a.id
+    </select>
+
+    <select id="getArticlesBacked" parameterType="Article" resultMap="ArticleResult">
+        <include refid="selectArticleVo" />
+        <where>
+        <if test="title != null and title != ''">
+            and title like concat('%', #{title}, '%')
+        </if>
+        <if test="summary != null and summary != ''">
+            and summary like concat('%', #{summary}, '%')
+        </if>
+        <if test="visible != null and visible != ''">
+            and visible = #{visible}
+        </if>
+        <if test="categoryId != null and categoryId != ''">
+            and category_id = #{categoryId}
+        </if>
+        </where>
+        order by a.id
+    </select>
+
+    <select id="getArticleById" resultMap="ArticleResult">
+        <include refid="selectArticleDetailVo" />
+        where a.id = #{articleId} and visible = 1
+    </select>
+
+    <select id="getArticleByIdBacked" resultMap="ArticleResult">
+        <include refid="selectArticleDetailVo" />
+        where a.id = #{articleId}
+    </select>
+
+    <select id="getArticlesByCategoryId" resultType="Article">
+        select * from article where category_id = #{categoryId} and visible = 1
+    </select>
+</mapper>
