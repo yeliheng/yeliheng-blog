@@ -1,10 +1,8 @@
 package com.yeliheng.blogsystem.domain;
 
-import com.sun.istack.internal.NotNull;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 
 public class RegisterUser {
     @ApiModelProperty("用户名")
