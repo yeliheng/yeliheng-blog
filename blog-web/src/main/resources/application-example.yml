@@ -3,12 +3,12 @@ spring:
     url: jdbc:mysql://address:port/yeliheng_blog?charset=utf8mb4&useSSL=false&serverTimezone=Asia/Shanghai
     username:
     password:
-  mvc:
-    throw-exception-if-no-handler-found: true
-  web:
-    resources:
-      add-mappings: false
-server:
-  error:
-    whitelabel:
-      enabled: false
+  # Redis 配置
+  redis:
+    host: localhost
+    port: 6379
+    database: 0
+mybatis:
+  configuration:
+    #打印Sql
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

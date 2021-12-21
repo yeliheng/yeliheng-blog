@@ -6,12 +6,6 @@ spring:
     web:
       resources:
         add-mappings: false
-    # Redis 配置
-    redis:
-      host: localhost
-      port: 6379
-      database: 0
-
 server:
   error:
     whitelabel:
@@ -19,8 +13,6 @@ server:
 mybatis:
   configuration:
     map-underscore-to-camel-case: true
-    #打印Sql
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   type-aliases-package: com.yeliheng.blogsystem.domain
   mapper-locations: classpath*:mapper/**/*Mapper.xml
 # 通用Mapper
@@ -45,4 +37,4 @@ token:
   header: Authorization
 # 系统设置
 blogsystem:
-  allow-register: true
+  allow-register: false
