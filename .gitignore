@@ -48,4 +48,6 @@ temp/
 ### Custom ###
 application-dev.yml
 application-prod.yml
+application-test.yml
+docker-compose.yml
 dump.rdb
