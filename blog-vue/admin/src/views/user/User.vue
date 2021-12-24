@@ -402,11 +402,13 @@ export default {
                 if(valid){
                     loading.value = true;
                     updateUser(userForm.value).then((res: any) => {
-                        if(!res.errCode){
+                        if(!res.errCode) {
                             ElMessage.success('更新用户成功!');
                             userEditFormVisible.value = false;
                             userForm.value = {};
                             listUsers();
+                        } else {
+                            ElMessage.error(res.detail);
                         }      
                         loading.value = false;
                     }).catch(() => {

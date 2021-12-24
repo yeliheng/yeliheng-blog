@@ -29,6 +29,8 @@ public class Article {
 
     private int words;
 
+    private int views;
+
     private int readingTime;
 
     private Long[] tagIds;
@@ -115,6 +117,14 @@ public class Article {
 
     public void setWords(int words) {
         this.words = words;
+    }
+
+    public int getViews() {
+        return views;
+    }
+
+    public void setViews(int views) {
+        this.views = views;
     }
 
     public int getReadingTime() {

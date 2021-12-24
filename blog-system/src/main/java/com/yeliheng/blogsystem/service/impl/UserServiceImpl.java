@@ -61,6 +61,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     @Transactional
     public void insertUser(User user) {
+        checkUserCanBeOperate(user);
         if(!checkUsernameUnique(user.getUsername())) throw new GeneralException("用户已存在!");
         user.setPassword(encryptPassword(user.getPassword()));
         int rows = userMapper.insertUser(user);
@@ -77,6 +78,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     @Transactional
     public void updateUser(User user) {
+        checkUserCanBeOperate(user);
         if(StringUtils.isNotNull(user.getPassword()))
             user.setPassword(encryptPassword(user.getPassword()));
         int rows = userMapper.updateUser(user);
@@ -97,7 +99,7 @@ public class UserServiceImpl implements IUserService {
     public void deleteUser(Long userId) {
         User user = new User();
         user.setId(userId);
-        checkUserCanBeDel(user);
+        checkUserCanBeOperate(user);
         deleteUserRole(user);
         if(userMapper.deleteUserById(userId) <= 0) {
             throw new GeneralException("删除失败，用户可能不存在");
@@ -167,10 +169,10 @@ public class UserServiceImpl implements IUserService {
     }
 
     /**
-     * 检查用户是否可被删除
+     * 检查用户是否可操作
      * @param user 用户实体
      */
-    public void checkUserCanBeDel(User user){
+    public void checkUserCanBeOperate(User user){
         if(StringUtils.isNotNull(user.getId()) && user.isAdmin()){
             throw new GeneralException("不允许操作超级管理员!");
         }

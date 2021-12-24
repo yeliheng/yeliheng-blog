@@ -14,6 +14,7 @@
         <result property="url" column="url" />
         <result property="visible" column="visible" />
         <result property="words" column="words" />
+        <result property="views" column="views" />
         <result property="readingTime" column="reading_time" />
         <result property="createdAt" column="created_at" />
         <result property="updatedAt" column="updated_at" />
@@ -32,7 +33,7 @@
     </resultMap>
 
     <sql id="selectArticleVo">
-        select a.id, a.user_id, a.category_id, a.title, a.summary, a.url, a.visible,a.words, a.reading_time, a.created_at, a.updated_at,
+        select a.id, a.user_id, a.category_id, a.title, a.summary, a.url, a.visible, a.words, a.views, a.reading_time, a.created_at, a.updated_at,
                c.id as category_id, c.category_name,
                atg.id, atg.article_id, atg.tag_id,
                t.id as tag_id, t.tag_name
@@ -43,7 +44,7 @@
     </sql>
 
     <sql id="selectArticleDetailVo">
-        select a.id, a.user_id, a.category_id, a.title, a.summary, a.content, a.url, a.visible, a.words, a.reading_time, a.created_at, a.updated_at,
+        select a.id, a.user_id, a.category_id, a.title, a.summary, a.content, a.url, a.visible, a.words, a.views, a.reading_time, a.created_at, a.updated_at,
                c.id as category_id, c.category_name,
                atg.id, atg.article_id, atg.tag_id,
                t.id as tag_id, t.tag_name
@@ -135,4 +136,12 @@
     <select id="getArticlesByCategoryId" resultType="Article">
         select * from article where category_id = #{categoryId} and visible = 1
     </select>
+
+    <update id="increaseViewsByArticleId" parameterType="Long">
+        update article
+        <set>
+            views = views + 1
+        </set>
+        where id = #{articleId}
+    </update>
 </mapper>

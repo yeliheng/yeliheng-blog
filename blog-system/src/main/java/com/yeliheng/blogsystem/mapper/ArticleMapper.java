@@ -11,6 +11,8 @@ public interface ArticleMapper extends Mapper<Article> {
 
     int updateArticle(Article article);
 
+    int increaseViewsByArticleId(Long articleId);
+
     List<Article> getArticles();
 
     List<Article> getArticlesByCategoryId(Long categoryId);
