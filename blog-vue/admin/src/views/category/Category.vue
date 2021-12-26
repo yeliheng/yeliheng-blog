@@ -33,6 +33,7 @@
         <el-table-column type="selection" width="55" />
         <el-table-column property="id" label="分类编号" width="120" align="center" />
         <el-table-column property="categoryName" label="分类名称" width="200" align="center"/>
+        <el-table-column property="articleCount" label="文章数" width="120" align="center"/>
         <el-table-column property="createdAt" label="创建时间" align="center"/>
         <el-table-column label="操作" align="center">
           <template #default="scope">

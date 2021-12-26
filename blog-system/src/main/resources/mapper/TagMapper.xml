@@ -32,7 +32,10 @@
     </select>
 
     <select id="selectTagList" parameterType="Tag" resultType="Tag">
-        select * from tag
+        select t.id, t.tag_name, count(atg.id) as article_count, t.created_at, t.updated_at
+        from tag t
+        left join (select id, article_id, tag_id from article_tag) atg on t.id = atg.tag_id
+        group by t.id
         <if test="tagName != null and tagName != ''">
             where tag_name like concat('%', #{tagName}, '%')
         </if>

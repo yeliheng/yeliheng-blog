@@ -11,7 +11,7 @@ public interface CategoryMapper extends Mapper<Category> {
 
     public int updateCategory(Category category);
 
-    public int checkIfExistArticle(Long categoryId);
+    public int countArticles(Long categoryId);
 
     public List<Category> selectCategoryList(Category category);
 }

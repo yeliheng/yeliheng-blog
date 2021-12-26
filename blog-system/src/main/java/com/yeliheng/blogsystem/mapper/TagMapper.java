@@ -17,4 +17,6 @@ public interface TagMapper extends Mapper<Tag> {
 
     List<Tag> selectTagList(Tag tag);
 
+    int countArticles(Long tagId);
+
 }

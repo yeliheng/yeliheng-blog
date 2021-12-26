@@ -1,5 +1,5 @@
 <template>
-<meta name="viewport" content="width=device-width, initial-scale=1, role-scalable=0" />
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
     <div class="role-list-container">
         <div class="role-list-header">
             <div class="line"></div>
@@ -231,7 +231,6 @@ export default {
         //获取菜单树
         getSelectMenuTree().then((res: any) => {
             menuOptions.value = res.data;
-            console.log(res.data);
             res.data.forEach(item => {
                 menuParentIds.push(item.id); //构建父菜单
             });

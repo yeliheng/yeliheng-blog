@@ -35,7 +35,9 @@
             {{article.words}}
             </div>
           <div class="read-time info"><span class="iconfont icon-shizhong" style="margin-right: 0.5rem;"></span>
-          <span class="info-text">阅读时长(分钟) ≈  </span>{{article.readingTime}}</div>    
+          <span class="info-text">阅读时长(分钟) ≈  </span>{{article.readingTime}}</div>
+          <div class="views info"><span class="iconfont icon-liulancishu" style="margin-right: 0.5rem;"></span>
+          <span class="info-text">浏览次数: </span>{{article.views}}</div>    
         </div>
         <markdown 
         class="markdown-body"
@@ -77,6 +79,7 @@ export default {
     });
     //TODO: 内容加载动画
     getArticleById(router.currentRoute.value.params.id).then((res: any) => {
+      document.title = res.data.title + ' - Yeliheng的技术小站';
       article.value = res.data;
       articleWrap.value.style.opacity = "1";
       loadingBar.value.style.opacity = "0";
@@ -88,7 +91,8 @@ export default {
           contentSelector: '.markdown-body',
           headingSelector: 'h1, h2, h3',
           hasInnerContainers: true,
-         scrollSmoothDuration: 100,
+          scrollSmoothDuration: 100,
+          scrollSmooth: true,
           onClick(e){
             e.preventDefault();
           }
@@ -237,6 +241,13 @@ export default {
     width: 100%;
     margin: 0;
     margin-top: 0.5rem;
+    .article-container{
+      .article-info{
+        .info{
+          margin-left: 0.6rem;
+        }
+      }
+    }
   }
   .info-text{
     display: none;

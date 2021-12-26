@@ -19,3 +19,19 @@ export function getArticleById(id:any) {
         method: 'get',
     });
 }
+
+//获取分类列表
+export function getCategoryList() {
+    return request({
+        url: '/categories',
+        method: 'get',
+    });
+}
+
+//获取标签列表
+export function getTagList() {
+    return request({
+        url: '/tags',
+        method: 'get',
+    });
+}

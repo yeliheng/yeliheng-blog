@@ -1,7 +1,7 @@
 import Cookies from "js-cookie";
 
 const state = {
-    sidebarCollapse: Cookies.get('sidebarStatus') ? !!+Cookies.get('sidebarStatus') : true,
+    sidebarCollapse: Cookies.get('sidebarStatus') ? !!+Cookies.get('sidebarStatus') : false,
     isMobile :Cookies.get('isMobile') ?!!+Cookies.get('isMobile') : false,
     sidebarClosed: Cookies.get('sidebarClosed') ? !!+Cookies.get('sidebarClosed') : false,
 }

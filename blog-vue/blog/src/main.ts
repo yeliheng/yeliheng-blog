@@ -11,6 +11,12 @@ import 'github-markdown-css/github-markdown-dark.css';
 import 'tocbot/src/scss/tocbot.scss';
 import MyProfile from '@/components/MyProfile.vue';
 
+router.beforeEach((to, from) => {
+    if(to.meta.title) {
+        document.title = to.meta.title as string;
+    }
+    return;
+});
 
 const app = Vue.createApp(App);
 
