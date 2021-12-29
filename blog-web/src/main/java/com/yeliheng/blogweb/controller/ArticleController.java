@@ -106,7 +106,7 @@ public class ArticleController {
      * @param pageSize 一页多少
      * @return
      */
-    @GetMapping("/category")
+    @GetMapping("/articles/category")
     public CommonResponse<Object> getArticlesByCategoryId(
             @RequestParam("categoryId") Long categoryId,
             @RequestParam(value = "page",defaultValue = "1") Integer page,

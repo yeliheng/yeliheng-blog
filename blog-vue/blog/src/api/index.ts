@@ -35,3 +35,12 @@ export function getTagList() {
         method: 'get',
     });
 }
+
+//根据分类id获取文章
+export function getArticleListByCategoryId(params:any) {
+    return request({
+        url: '/articles/category',
+        method: 'get',
+        params: params
+    });
+}

@@ -133,8 +133,9 @@
         where a.id = #{articleId}
     </select>
 
-    <select id="getArticlesByCategoryId" resultType="Article">
-        select * from article where category_id = #{categoryId} and visible = 1
+    <select id="getArticlesByCategoryId" resultMap="ArticleResult" parameterType="Long">
+        <include refid="selectArticleVo" />
+        where category_id = #{categoryId} and visible = 1
     </select>
 
     <update id="increaseViewsByArticleId" parameterType="Long">

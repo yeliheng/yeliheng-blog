@@ -3,7 +3,7 @@
         <router-link class="category-card" 
             v-for="category in categoryList"
             :key="category.id"
-            :to="'/category/' + category.id"
+            :to="'/categories/' + category.id"
         >
 
                 <span class="categoryText"><span class="iconfont icon-fenlei"></span> {{category.categoryName}}</span>

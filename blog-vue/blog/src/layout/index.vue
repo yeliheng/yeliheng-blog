@@ -10,8 +10,7 @@
   <!-- 头部(PC) -->
     <div class="header">
         <!-- TODO: 后台获取站点信息 -->
-        <iframe src="fontmesh/index.html"></iframe>
-        
+        <iframe src="/fontmesh/index.html"></iframe>
          <div class="button-container">
             <router-link class="index-button header-button" to="/">
                 <span class="iconfont icon-shouye"></span>

@@ -18,24 +18,31 @@ export const constantRoutes: Array<RouteRecordRaw> = [
           title: 'Yeliheng的技术小站 - 首页',
           keepAlive: true
         },
-    },
-    {
-      path: '/categories',
-      component: (resolve) => import('@/views/category/Category.vue'),
-      meta: {
-        title: '分类 - Yeliheng的技术小站',
-        keepAlive: true
+      },
+      {
+        path: '/categories',
+        component: (resolve) => import('@/views/category/Category.vue'),
+        meta: {
+          title: '分类 - Yeliheng的技术小站',
+          keepAlive: true
+        }
+      },
+      {
+        path: '/categories/:id',
+        component: (resolve) => import('@/views/category/CategoryArticle.vue'),
+        meta: {
+          keepAlive: false
+        }
+      },
+      {
+        path: '/tags',
+        component: (resolve) => import('@/views/tag/Tag.vue'),
+        meta: {
+          title: '标签 - Yeliheng的技术小站',
+          keepAlive: true
+        }
       }
-    },
-    {
-      path: '/tags',
-      component: (resolve) => import('@/views/tag/Tag.vue'),
-      meta: {
-        title: '标签 - Yeliheng的技术小站',
-        keepAlive: true
-      }
-    }
-  ]
+    ]
   },
   {
     path: '/articles/:id',

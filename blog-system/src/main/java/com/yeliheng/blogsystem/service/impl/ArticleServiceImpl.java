@@ -47,9 +47,9 @@ public class ArticleServiceImpl implements IArticleService {
         int wordCount = WordUtils.wordCount(article.getContent());
         article.setWords(wordCount);
         article.setReadingTime(WordUtils.calReadingTimeByWords(wordCount));
-        if(StringUtils.isNotNull(article.getCategoryId()))
+/*        if(StringUtils.isNotNull(article.getCategoryId()))
             if(!categoryMapper.existsWithPrimaryKey(article.getCategoryId()))
-                throw new GeneralException("分类不存在，请修改后重新发布！");
+                throw new GeneralException("分类不存在，请修改后重新发布！");*/
 
         boolean result = articleMapper.addArticle(article);
         if(!result) throw new InternalServerException("发布文章失败，未知错误");
@@ -81,9 +81,9 @@ public class ArticleServiceImpl implements IArticleService {
         int wordCount = WordUtils.wordCount(article.getContent());
         article.setWords(wordCount);
         article.setReadingTime(WordUtils.calReadingTimeByWords(wordCount));
-        if(StringUtils.isNotNull(article.getCategoryId()))
+/*        if(StringUtils.isNotNull(article.getCategoryId()))
             if(!categoryMapper.existsWithPrimaryKey(article.getCategoryId()))
-                throw new GeneralException("分类不存在，请修改后重新发布！");
+                throw new GeneralException("分类不存在，请修改后重新发布！");*/
         int rows = articleMapper.updateArticle(article);
         if(rows <= 0) throw new GeneralException("更新失败，文章可能不存在");
         //删除该文章的所有标签
