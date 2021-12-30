@@ -53,7 +53,7 @@ export const constantRoutes: Array<RouteRecordRaw> = [
     ]
   },
   {
-    path: '/articles/:id',
+    path: '/p/:url',
     component: (resolve) => import('@/views/article/Article.vue'),
     meta: {
       keepAlive: false

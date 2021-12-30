@@ -14,6 +14,7 @@ import com.yeliheng.blogsystem.mapper.ArticleTagMapper;
 import com.yeliheng.blogsystem.mapper.CategoryMapper;
 import com.yeliheng.blogsystem.service.IArticleService;
 import com.yeliheng.blogsystem.utils.UserUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,8 @@ import java.util.List;
 @Service
 public class ArticleServiceImpl implements IArticleService {
     private static final Logger logger = LoggerFactory.getLogger(ArticleServiceImpl.class);
+
+    private static final int ARTICLE_URL_LENGTH = 7;
     @Autowired
     private ArticleMapper articleMapper;
     @Autowired
@@ -47,9 +50,10 @@ public class ArticleServiceImpl implements IArticleService {
         int wordCount = WordUtils.wordCount(article.getContent());
         article.setWords(wordCount);
         article.setReadingTime(WordUtils.calReadingTimeByWords(wordCount));
-/*        if(StringUtils.isNotNull(article.getCategoryId()))
-            if(!categoryMapper.existsWithPrimaryKey(article.getCategoryId()))
-                throw new GeneralException("分类不存在，请修改后重新发布！");*/
+        article.setUrl(generateUrl());
+        if(StringUtils.isNotNull(article.getCategoryId()))
+            if(categoryMapper.existsById(article.getCategoryId()) <= 0)
+                throw new GeneralException("分类不存在，请修改后重新发布！");
 
         boolean result = articleMapper.addArticle(article);
         if(!result) throw new InternalServerException("发布文章失败，未知错误");
@@ -65,7 +69,7 @@ public class ArticleServiceImpl implements IArticleService {
     @Transactional
     @Override
     public void deleteAritcle(Long articleId) {
-        if(articleMapper.deleteByPrimaryKey(articleId) <= 0)
+        if(articleMapper.deleteArticleById(articleId) <= 0)
             throw new GeneralException("删除失败，文章可能不存在");
         //删除文章与标签关联
         deleteArticleAllTags(articleId);
@@ -76,14 +80,15 @@ public class ArticleServiceImpl implements IArticleService {
      *
      * @param article   文章实体
      */
+    @Transactional
     @Override
     public void updateArticle(Article article) {
         int wordCount = WordUtils.wordCount(article.getContent());
         article.setWords(wordCount);
         article.setReadingTime(WordUtils.calReadingTimeByWords(wordCount));
-/*        if(StringUtils.isNotNull(article.getCategoryId()))
-            if(!categoryMapper.existsWithPrimaryKey(article.getCategoryId()))
-                throw new GeneralException("分类不存在，请修改后重新发布！");*/
+        if(StringUtils.isNotNull(article.getCategoryId()))
+            if(categoryMapper.existsById(article.getCategoryId()) <= 0)
+                throw new GeneralException("分类不存在，请修改后重新发布！");
         int rows = articleMapper.updateArticle(article);
         if(rows <= 0) throw new GeneralException("更新失败，文章可能不存在");
         //删除该文章的所有标签
@@ -136,6 +141,21 @@ public class ArticleServiceImpl implements IArticleService {
     }
 
     /**
+     * 通过Url获取文章
+     *
+     * @param articleUrl 文章持久化Url
+     * @return 文章实体
+     */
+    @Override
+    public Article getArticleByUrl(String articleUrl) {
+        Article article = articleMapper.getArticleByUrl(articleUrl);
+        if(article == null)
+            throw new NotFoundException("文章不存在");
+        articleMapper.increaseViewsByArticleId(article.getId());
+        return article;
+    }
+
+    /**
      * 通过Id获取文章-后台
      *
      * @param articleId 文章Id
@@ -162,15 +182,15 @@ public class ArticleServiceImpl implements IArticleService {
     /**
      * 通过标签获取文章
      *
-     * @param categoryId
-     * @param page
-     * @param pageSize
+     * @param tagId 标签Id
+     * @param page 第几页
+     * @param pageSize 每页显示多少
      * @return 文章列表
      */
     @Override
-    public PageInfo<Article> getArticlesByTag(Long categoryId, Integer page, Integer pageSize) {
+    public PageInfo<Article> getArticlesByTag(Long tagId, Integer page, Integer pageSize) {
         PageHelper.startPage(page,pageSize);
-        List<Article> articleList = articleMapper.getArticlesByTagId(categoryId);
+        List<Article> articleList = articleMapper.getArticlesByTagId(tagId);
         return new PageInfo<>(articleList);
     }
 
@@ -205,6 +225,10 @@ public class ArticleServiceImpl implements IArticleService {
      */
     public void deleteArticleAllTags(Long articleId){
         articleTagMapper.deleteArticleAllTags(articleId);
+    }
+
+    private String generateUrl() {
+       return RandomStringUtils.random(ARTICLE_URL_LENGTH, "0123456789abcdef");
     }
 
 }

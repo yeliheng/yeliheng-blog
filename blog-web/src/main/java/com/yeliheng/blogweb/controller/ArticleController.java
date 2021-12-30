@@ -51,9 +51,20 @@ public class ArticleController {
      * @param articleId 文章Id
      * @return 文章实体
      */
-    @GetMapping("/articles/{articleId}")
+/*    @GetMapping("/articles/{articleId}")
     public CommonResponse<Article> getArticleById(@PathVariable("articleId") Long articleId){
         return CommonResponse.success(articleService.getArticleById(articleId));
+    }*/
+
+    /**
+     *
+     * 根据url获取具体文章内容
+     * @param url url
+     * @return 文章实体
+     */
+    @GetMapping("/articles/{url}")
+    public CommonResponse<Article> getArticleByUrl(@PathVariable("url") String url){
+        return CommonResponse.success(articleService.getArticleByUrl(url));
     }
 
     /**

@@ -65,4 +65,8 @@
     <select id="checkRoleCharUnique" resultType="Long">
         select id from role where role_char = #{roleChar}
     </select>
+
+    <delete id="deleteById" parameterType="Long">
+        delete from role where id = #{roleId}
+    </delete>
 </mapper>

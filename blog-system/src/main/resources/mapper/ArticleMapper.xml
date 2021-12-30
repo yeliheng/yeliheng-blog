@@ -41,7 +41,7 @@
 
     <resultMap id="CategoryResult" type="Category">
         <id property="id" column="category_id" />
-        <result property="categoryName" column="category_name" />
+        <result property="categoryName" column="category_name"/>
     </resultMap>
 
     <resultMap id="TagResult" type="Tag">
@@ -145,6 +145,11 @@
         where a.id = #{articleId} and visible = 1
     </select>
 
+    <select id="getArticleByUrl" resultMap="ArticleResult">
+        <include refid="selectArticleDetailVo" />
+        where a.url = #{url} and visible = 1
+    </select>
+
     <select id="getArticleByIdBacked" resultMap="ArticleResult">
         <include refid="selectArticleDetailVo" />
         where a.id = #{articleId}
@@ -167,4 +172,8 @@
         </set>
         where id = #{articleId}
     </update>
+
+    <delete id="deleteArticleById" parameterType="Long">
+        delete from article where id = #{articleId}
+    </delete>
 </mapper>

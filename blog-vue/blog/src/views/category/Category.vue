@@ -41,6 +41,7 @@ export default {
 
 <style lang="scss" scoped>
     .categories-container {
+        transition: all 0.5s;
         display: flex;
         justify-content: center;
         flex-wrap: wrap;

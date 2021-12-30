@@ -1,15 +1,16 @@
 package com.yeliheng.blogsystem.mapper;
 
 import com.yeliheng.blogsystem.domain.Role;
-import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
 
-public interface RoleMapper extends Mapper<Role> {
+public interface RoleMapper {
 
     int addRole(Role role);
 
     int updateRole(Role role);
+
+    int deleteById(Long roleId);
 
     List<Role> getRolesByUserId(Long userId);
 

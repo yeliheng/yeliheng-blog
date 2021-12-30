@@ -13,9 +13,9 @@ import request from '@/utils/request';
 
 
 //通过Id获取文章
-export function getArticleById(id:any) {
+export function getArticleByUrl(url: any) {
     return request({
-        url: '/articles/' + id,
+        url: '/articles/' + url,
         method: 'get',
     });
 }

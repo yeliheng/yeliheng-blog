@@ -39,4 +39,12 @@
     <select id="countArticles" parameterType="Long" resultType="int">
         select count(1) from article where category_id = #{categoryId}
     </select>
+
+    <select id="existsById" parameterType="Long" resultType="int">
+        select count(1) from category where id = #{categoryId}
+    </select>
+
+    <delete id="deleteById" parameterType="Long">
+        delete from category where id = #{categoryId}
+    </delete>
 </mapper>

@@ -40,4 +40,8 @@
             where tag_name like concat('%', #{tagName}, '%')
         </if>
     </select>
+
+    <delete id="deleteById" parameterType="Long">
+        delete from tag where id = #{tagId}
+    </delete>
 </mapper>

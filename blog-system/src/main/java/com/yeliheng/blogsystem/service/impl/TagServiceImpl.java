@@ -42,7 +42,7 @@ public class TagServiceImpl implements ITagService {
     public void deleteTag(Long tagId) {
         if(tagMapper.checkIfExistArticle(tagId) > 0)
             throw new GeneralException("删除失败，该标签下存在文章");
-        int rows = tagMapper.deleteByPrimaryKey(tagId);
+        int rows = tagMapper.deleteById(tagId);
         if(rows <= 0) throw new GeneralException("删除失败，可能标签不存在");
     }
 

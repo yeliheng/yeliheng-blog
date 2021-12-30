@@ -52,7 +52,7 @@
 
 <script lang="ts">
 import '../../assets/iconfont.css';
-import { getArticleById} from '../../api/index';
+import { getArticleByUrl} from '../../api/index';
 import { useRouter } from 'vue-router';
 import { ref, onMounted } from 'vue';
 import tocbot from 'tocbot';
@@ -78,7 +78,7 @@ export default {
       articleMenu;
     });
     //TODO: 内容加载动画
-    getArticleById(router.currentRoute.value.params.id).then((res: any) => {
+    getArticleByUrl(router.currentRoute.value.params.url).then((res: any) => {
       document.title = res.data.title + ' - Yeliheng的技术小站';
       article.value = res.data;
       articleWrap.value.style.opacity = "1";

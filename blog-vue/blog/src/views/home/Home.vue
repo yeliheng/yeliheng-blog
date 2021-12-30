@@ -5,7 +5,7 @@
         v-for="article in articleList"
         :key="article.id"
       >
-        <div class="article-title" @click="readArticle(article.id)">{{ article.title }}</div>
+        <div class="article-title" @click="readArticle(article.url)">{{ article.title }}</div>
         <div class="article-info">
           <div class="pub-time info"><span class="iconfont icon-rili" style="margin-right: 0.5rem;"></span>
           <span class="info-text">发表于 </span>
@@ -24,7 +24,7 @@
            {{article.summary}}
           </div>
         <div class="read-btn-container">
-          <span class="read-btn" @click="readArticle(article.id)">阅读全文</span>
+          <span class="read-btn" @click="readArticle(article.url)">阅读全文</span>
         </div>
         <div class="split-line"></div>
       </div>
@@ -80,7 +80,7 @@ export default {
 
     const readArticle = (id) =>{ 
       router.push({
-        path: '/articles/' + id, 
+        path: '/p/' + id, 
       });
     }
   

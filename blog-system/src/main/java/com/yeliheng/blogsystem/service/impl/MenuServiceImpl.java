@@ -56,7 +56,7 @@ public class MenuServiceImpl implements IMenuService {
      */
     @Override
     public void deleteMenuById(Long menuId) {
-        int rows = menuMapper.deleteByPrimaryKey(menuId);
+        int rows = menuMapper.deleteById(menuId);
         if(rows <= 0) throw new GeneralException("删除失败，菜单可能不存在");
     }
 
@@ -66,7 +66,7 @@ public class MenuServiceImpl implements IMenuService {
      */
     @Override
     public List<MenuTreeDTO> getMenuTree() {
-        List<Menu> menuTree = buildMenuTree(menuMapper.selectAll());
+        List<Menu> menuTree = buildMenuTree(menuMapper.getMenus());
         return menuTree.stream().map(MenuTreeDTO::new).collect(Collectors.toList());
     }
 

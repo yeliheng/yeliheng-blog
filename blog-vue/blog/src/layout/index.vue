@@ -64,7 +64,7 @@
     <!-- 内容区 -->
     <div class="content"> 
        <router-view v-slot="{ Component }">
-            <transition name="slide-fade">
+            <transition name="fade-transform" mode="out-in">
                 <keep-alive>
                     <component :is="Component" />
                 </keep-alive>
@@ -118,18 +118,19 @@ export default {
     }
 }
 
-.slide-fade-enter-active {
-  transition: all 0.3s ease-out;
+.fade-transform-leave-active,
+.fade-transform-enter-active {
+  transition: all .5s;
 }
 
-.slide-fade-leave-active {
-  transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
-}
-
-.slide-fade-enter-from,
-.slide-fade-leave-to {
-  transform: translateX(20px);
+.fade-transform-enter {
   opacity: 0;
+  transform: translateX(-30px);
+}
+
+.fade-transform-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
 }
 
 :deep(.spinner){

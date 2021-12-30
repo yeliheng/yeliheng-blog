@@ -5,7 +5,7 @@
         v-for="article in articleList"
         :key="article.id"
       >
-        <div class="article-title" @click="readArticle(article.id)">{{ article.title }}</div>
+        <div class="article-title" @click="readArticle(article.url)">{{ article.title }}</div>
         <div class="article-info">
           <div class="pub-time info"><span class="iconfont icon-rili" style="margin-right: 0.5rem;"></span>
           <span class="info-text">发表于 </span>
@@ -24,7 +24,7 @@
            {{article.summary}}
           </div>
         <div class="read-btn-container">
-          <span class="read-btn" @click="readArticle(article.id)">阅读全文</span>
+          <span class="read-btn" @click="readArticle(article.url)">阅读全文</span>
         </div>
         <div class="split-line"></div>
       </div>
@@ -82,9 +82,9 @@ export default {
       });
     }
 
-    const readArticle = (id) =>{ 
+    const readArticle = (url) =>{ 
       router.push({
-        path: '/articles/' + id, 
+        path: '/p/' + url, 
       });
     }
   
@@ -103,6 +103,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+:deep(.spinner){
+    &::after{
+      background-color: #d4d3d3;
+    }
+}
 .loading-bar{
   transition: all 0.5s;
   opacity: 0;
@@ -222,9 +227,6 @@ export default {
   :deep(.Control-active){
     fill: #9e9e9e;
   } 
-
-
-
 /* 移动端 */
 @media screen and (max-width: 900px){
   .info-text{
