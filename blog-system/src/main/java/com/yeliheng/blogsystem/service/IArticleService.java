@@ -78,5 +78,5 @@ public interface IArticleService {
      * @return 文章列表
      *
      *  */
-    List<Article> getArticlesByTag(Long tagId);
+    PageInfo<Article> getArticlesByTag(Long categoryId,Integer page, Integer pageSize);
 }

@@ -17,6 +17,8 @@ public interface ArticleMapper extends Mapper<Article> {
 
     List<Article> getArticlesByCategoryId(Long categoryId);
 
+    List<Article> getArticlesByTagId(Long tagId);
+
     List<Article> getArticlesBacked(Article article);
 
     Article getArticleByIdBacked(Long articleId);

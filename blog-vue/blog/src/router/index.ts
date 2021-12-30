@@ -31,7 +31,7 @@ export const constantRoutes: Array<RouteRecordRaw> = [
         path: '/categories/:id',
         component: (resolve) => import('@/views/category/CategoryArticle.vue'),
         meta: {
-          keepAlive: false
+          keepAlive: true
         }
       },
       {
@@ -41,7 +41,15 @@ export const constantRoutes: Array<RouteRecordRaw> = [
           title: '标签 - Yeliheng的技术小站',
           keepAlive: true
         }
-      }
+      },
+      {
+        path: '/tags/:id',
+        component: (resolve) => import('@/views/tag/TagArticle.vue'),
+        meta: {
+          keepAlive: true
+        }
+      },
+
     ]
   },
   {

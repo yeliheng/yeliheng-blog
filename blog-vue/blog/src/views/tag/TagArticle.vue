@@ -48,7 +48,7 @@
 
 <script lang="ts">
 import '../../assets/iconfont.css';
-import { getArticleListByCategoryId } from '../../api/index';
+import { getArticleListByTagId } from '../../api/index';
 import {useRouter} from 'vue-router';
 import { ref, onMounted,onActivated } from 'vue';
 export default {
@@ -65,7 +65,7 @@ export default {
     onActivated(() => {
       articleList.value = null;
       //刷新数据
-      getArticleListByCategoryId({"categoryId": router.currentRoute.value.params.id, "page": page.value, "pageSize": pageSize}).then((res: any) => {
+      getArticleListByTagId({"tagId": router.currentRoute.value.params.id, "page": page.value, "pageSize": pageSize}).then((res: any) => {
         pageCount.value = res.data.pages;
         articleList.value = res.data.list;
       });
@@ -75,7 +75,7 @@ export default {
 
     const loadArticle = () => {
           loadingBar.value.style.opacity = "1";
-          getArticleListByCategoryId({"categoryId": router.currentRoute.value.params.id, "page": page.value, "pageSize": pageSize}).then((res: any) => {
+          getArticleListByTagId({"tagId": router.currentRoute.value.params.id, "page": page.value, "pageSize": pageSize}).then((res: any) => {
             articleList.value = res.data.list;
             loadingBar.value.style.opacity = "0";
             scrollTo(0,0);

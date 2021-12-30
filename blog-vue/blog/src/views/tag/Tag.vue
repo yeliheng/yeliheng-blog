@@ -1,15 +1,15 @@
 <template>
     <div class="tags-container">
-        <router-link class="tag-card" 
+        <div class="tag-card" 
             v-for="tag in tagList"
             :key="tag.id"
-            :to="'/tag/' + tag.id"
+            @click="handleCardClick(tag.id,tag.articleCount)"
         >
 
                 <span class="tagText"><span class="iconfont icon-24gf-tags"></span> {{tag.tagName}}</span>
                 <div class="text">文章数：<span class="count">{{tag.articleCount}}</span></div>
  
-        </router-link>
+        </div>
     </div>
 
 </template>
@@ -17,14 +17,21 @@
 <script lang="ts">
 import { getTagList } from '@/api/index';
 import { ref } from 'vue';
+import { useRouter } from 'vue-router'
 export default {
     setup(){
         const tagList = ref();
+        const router = useRouter();
         getTagList().then((res: any) => {
             tagList.value = res.data;
         });
+        const handleCardClick = (id,articleCount) => {
+            if(articleCount > 0)
+                router.push('/tags/' + id);
+        }
         return {
             tagList,
+            handleCardClick,
         };
     }
 
@@ -34,14 +41,15 @@ export default {
 <style lang="scss" scoped>
     .tags-container {
         display: flex;
+        justify-content: center;
         flex-wrap: wrap;
         margin-top: 1rem;
-        margin-left: 1rem;
         width: 100%;
         
         .tag-card{
             &:hover{           
                 background: #535353;
+                cursor: pointer;
             }
             text-decoration: none;
             transition: all 0.8s ease-in-out;

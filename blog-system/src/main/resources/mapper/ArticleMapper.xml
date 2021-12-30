@@ -22,6 +22,23 @@
         <collection property="tags" javaType="java.util.List" resultMap="TagResult" />
     </resultMap>
 
+    <resultMap id="ArticleListResult" type="Article">
+        <id property="id" column="id" />
+        <result property="userId" column="user_id" />
+        <result property="categoryId" column="category_id" />
+        <result property="title" column="title" />
+        <result property="summary" column="summary" />
+        <result property="url" column="url" />
+        <result property="visible" column="visible" />
+        <result property="words" column="words" />
+        <result property="views" column="views" />
+        <result property="readingTime" column="reading_time" />
+        <result property="createdAt" column="created_at" />
+        <result property="updatedAt" column="updated_at" />
+        <association property="category" column="category_id" javaType="Category" resultMap="CategoryResult" />
+        <collection property="tags" javaType="java.util.List" resultMap="TagResult" />
+    </resultMap>
+
     <resultMap id="CategoryResult" type="Category">
         <id property="id" column="category_id" />
         <result property="categoryName" column="category_name" />
@@ -133,9 +150,14 @@
         where a.id = #{articleId}
     </select>
 
-    <select id="getArticlesByCategoryId" resultMap="ArticleResult" parameterType="Long">
+    <select id="getArticlesByCategoryId" resultMap="ArticleListResult" parameterType="Long">
         <include refid="selectArticleVo" />
         where category_id = #{categoryId} and visible = 1
+    </select>
+
+    <select id="getArticlesByTagId" resultMap="ArticleListResult" parameterType="Long">
+        <include refid="selectArticleVo" />
+        where atg.tag_id = #{tagId} and visible = 1
     </select>
 
     <update id="increaseViewsByArticleId" parameterType="Long">

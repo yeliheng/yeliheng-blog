@@ -44,3 +44,12 @@ export function getArticleListByCategoryId(params:any) {
         params: params
     });
 }
+
+//根据标签id获取文章
+export function getArticleListByTagId(params:any) {
+    return request({
+        url: '/articles/tag',
+        method: 'get',
+        params: params
+    });
+}

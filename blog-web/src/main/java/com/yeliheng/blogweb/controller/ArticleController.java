@@ -114,6 +114,22 @@ public class ArticleController {
         return CommonResponse.success(articleService.getArticlesByCategory(categoryId,page,pageSize));
     }
 
+    /**
+     *
+     * 根据分类获取文章
+     * @param tagId 标签Id
+     * @param page 当前页
+     * @param pageSize 一页多少
+     * @return
+     */
+    @GetMapping("/articles/tag")
+    public CommonResponse<Object> getArticlesByTagId(
+            @RequestParam("tagId") Long tagId,
+            @RequestParam(value = "page",defaultValue = "1") Integer page,
+            @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize){
+        return CommonResponse.success(articleService.getArticlesByTag(tagId,page,pageSize));
+    }
+
     @PreAuthorize("@perm.hasPerm('admin:articles:delete')")
     @DeleteMapping("/admin/articles")
     public CommonResponse<Object> deleteArticle(@RequestParam("id") Long articleId){

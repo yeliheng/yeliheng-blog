@@ -162,13 +162,18 @@ public class ArticleServiceImpl implements IArticleService {
     /**
      * 通过标签获取文章
      *
-     * @param tagId 标签Id
+     * @param categoryId
+     * @param page
+     * @param pageSize
      * @return 文章列表
      */
     @Override
-    public List<Article> getArticlesByTag(Long tagId) {
-        return null;
+    public PageInfo<Article> getArticlesByTag(Long categoryId, Integer page, Integer pageSize) {
+        PageHelper.startPage(page,pageSize);
+        List<Article> articleList = articleMapper.getArticlesByTagId(categoryId);
+        return new PageInfo<>(articleList);
     }
+
 
     /**
      *
