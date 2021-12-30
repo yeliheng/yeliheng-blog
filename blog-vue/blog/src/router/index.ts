@@ -49,6 +49,14 @@ export const constantRoutes: Array<RouteRecordRaw> = [
           keepAlive: true
         }
       },
+      {
+        path: '/about',
+        component: (resolve) => import('@/views/about/About.vue'),
+        meta: {
+          title: '关于我 - Yeliheng的技术小站',
+          keepAlive: true
+        }
+      },
 
     ]
   },

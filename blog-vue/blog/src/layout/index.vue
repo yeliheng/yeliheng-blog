@@ -3,6 +3,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
   <!-- 头部(移动端) -->
     <div class="header-mobile">
+      <sidebar-mobile></sidebar-mobile>
       <div class="button-container-mobile">
           <span class="iconfont icon-mulu" style="font-size: 1.4rem;"></span>
       </div>
@@ -16,7 +17,7 @@
                 <span class="iconfont icon-shouye"></span>
                 <span>首页</span>
             </router-link>
-            <router-link class="about-button header-button" to="#">
+            <router-link class="about-button header-button" to="/about">
                 <span class="iconfont icon-wo"></span>
                 <span>关于</span>
             </router-link>
@@ -29,9 +30,9 @@
                 <span>标签</span>
             </router-link>
 
-            <a class="category-button header-button" href="#">
-                <span class="iconfont icon-youqinglianjie"></span>
-                <span>友情链接</span>
+            <a class="category-button header-button" href="https://github.com/yeliheng" target="_blank">
+                <span class="iconfont icon-github"></span>
+                <span>Github</span>
             </a>
         </div>
     </div>
@@ -78,11 +79,10 @@
 
 <script lang="ts">
 import '../assets/iconfont.css';
-import {useRouter} from 'vue-router';
-import { ref, onMounted } from 'vue';
 import MyProfile from '@/components/MyProfile.vue';
+import SidebarMobile from '@/layout/SidebarMobile.vue';
 export default {
-  components: { MyProfile },
+  components: { MyProfile, SidebarMobile },
 }
 </script>
 

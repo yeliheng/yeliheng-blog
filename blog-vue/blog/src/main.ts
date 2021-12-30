@@ -10,6 +10,8 @@ import 'highlight.js/styles/monokai.css';
 import 'github-markdown-css/github-markdown-dark.css';
 import 'tocbot/src/scss/tocbot.scss';
 import MyProfile from '@/components/MyProfile.vue';
+import VueSidebarMenu from 'vue-sidebar-menu';
+import 'vue-sidebar-menu/dist/vue-sidebar-menu.css';
 
 router.beforeEach((to, from) => {
     if(to.meta.title) {
@@ -26,4 +28,5 @@ app.component('markdown',Markdown);
 app.component('v-pagination',VPagination);
 app.component('v-loading',RotateSquare2);
 app.component('my-profile',MyProfile);
+app.use(VueSidebarMenu);
 app.mount('#app');
