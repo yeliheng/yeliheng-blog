@@ -1,6 +1,6 @@
 <template>
 <div class="home-container">
-  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+
       <div class="article-container"
         v-for="article in articleList"
         :key="article.id"
@@ -48,9 +48,9 @@
 
 <script lang="ts">
 import '../../assets/iconfont.css';
-import { getArticleList } from '../../api/index';
+import { getArticleListByTagId } from '../../api/index';
 import {useRouter} from 'vue-router';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted,onActivated } from 'vue';
 export default {
   setup(){
     const router = useRouter();
@@ -62,24 +62,29 @@ export default {
     onMounted(() => {
       loadingBar.value
     });
-    //TODO: 内容加载动画
-    getArticleList({"page": page.value,"pageSize": pageSize}).then((res: any) => {
-      pageCount.value = res.data.pages;
-      articleList.value = res.data.list;
+    onActivated(() => {
+      articleList.value = null;
+      //刷新数据
+      getArticleListByTagId({"tagId": router.currentRoute.value.params.id, "page": page.value, "pageSize": pageSize}).then((res: any) => {
+        pageCount.value = res.data.pages;
+        articleList.value = res.data.list;
+      });
     });
+
+
 
     const loadArticle = () => {
           loadingBar.value.style.opacity = "1";
-          getArticleList({"page": page.value,"pageSize": pageSize}).then((res: any) => {
+          getArticleListByTagId({"tagId": router.currentRoute.value.params.id, "page": page.value, "pageSize": pageSize}).then((res: any) => {
             articleList.value = res.data.list;
             loadingBar.value.style.opacity = "0";
             scrollTo(0,0);
       });
     }
 
-    const readArticle = (id) =>{ 
+    const readArticle = (url) =>{ 
       router.push({
-        path: '/p/' + id, 
+        path: '/p/' + url, 
       });
     }
   
@@ -98,6 +103,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+:deep(.spinner){
+    &::after{
+      background-color: #d4d3d3;
+    }
+}
 .loading-bar{
   transition: all 0.5s;
   opacity: 0;
@@ -112,12 +122,6 @@ export default {
     }
     100% {
       opacity: 1;
-    }
-}
-
-:deep(.spinner){
-    &::after{
-      background-color: #d4d3d3;
     }
 }
 

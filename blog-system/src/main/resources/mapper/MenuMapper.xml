@@ -75,4 +75,8 @@
             from menu m order by m.parent_id, m.order_num
     </select>
 
+    <delete id="deleteById" parameterType="Long">
+        delete from menu where id = #{menuId}
+    </delete>
+
 </mapper>

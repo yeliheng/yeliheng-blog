@@ -51,9 +51,20 @@ public class ArticleController {
      * @param articleId 文章Id
      * @return 文章实体
      */
-    @GetMapping("/articles/{articleId}")
+/*    @GetMapping("/articles/{articleId}")
     public CommonResponse<Article> getArticleById(@PathVariable("articleId") Long articleId){
         return CommonResponse.success(articleService.getArticleById(articleId));
+    }*/
+
+    /**
+     *
+     * 根据url获取具体文章内容
+     * @param url url
+     * @return 文章实体
+     */
+    @GetMapping("/articles/{url}")
+    public CommonResponse<Article> getArticleByUrl(@PathVariable("url") String url){
+        return CommonResponse.success(articleService.getArticleByUrl(url));
     }
 
     /**
@@ -106,12 +117,28 @@ public class ArticleController {
      * @param pageSize 一页多少
      * @return
      */
-    @GetMapping("/category")
+    @GetMapping("/articles/category")
     public CommonResponse<Object> getArticlesByCategoryId(
             @RequestParam("categoryId") Long categoryId,
             @RequestParam(value = "page",defaultValue = "1") Integer page,
             @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize){
         return CommonResponse.success(articleService.getArticlesByCategory(categoryId,page,pageSize));
+    }
+
+    /**
+     *
+     * 根据分类获取文章
+     * @param tagId 标签Id
+     * @param page 当前页
+     * @param pageSize 一页多少
+     * @return
+     */
+    @GetMapping("/articles/tag")
+    public CommonResponse<Object> getArticlesByTagId(
+            @RequestParam("tagId") Long tagId,
+            @RequestParam(value = "page",defaultValue = "1") Integer page,
+            @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize){
+        return CommonResponse.success(articleService.getArticlesByTag(tagId,page,pageSize));
     }
 
     @PreAuthorize("@perm.hasPerm('admin:articles:delete')")

@@ -1,11 +1,10 @@
 package com.yeliheng.blogsystem.mapper;
 
 import com.yeliheng.blogsystem.domain.Tag;
-import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
 
-public interface TagMapper extends Mapper<Tag> {
+public interface TagMapper {
 
     int addTag(Tag tag);
 
@@ -16,5 +15,9 @@ public interface TagMapper extends Mapper<Tag> {
     int checkIfExistTag(Long tagId);
 
     List<Tag> selectTagList(Tag tag);
+
+    int countArticles(Long tagId);
+
+    int deleteById(Long tagId);
 
 }

@@ -26,14 +26,25 @@
         where id = #{id}
     </update>
 
-    <select id="checkIfExistArticle" parameterType="Long" resultType="int">
-        select count(1) from article where category_id = #{category_id}
-    </select>
-
     <select id="selectCategoryList" parameterType="Category" resultType="Category">
-        select * from category
+        select c.id, c.category_name, count(a.id) as article_count, c.created_at, c.updated_at
+        from category c
+        left join (select id, category_id from article where visible = 1) a on c.id = a.category_id
+        group by c.id
         <if test="categoryName != null and categoryName != ''">
             where category_name like concat('%', #{categoryName}, '%')
         </if>
     </select>
+
+    <select id="countArticles" parameterType="Long" resultType="int">
+        select count(1) from article where category_id = #{categoryId}
+    </select>
+
+    <select id="existsById" parameterType="Long" resultType="int">
+        select count(1) from category where id = #{categoryId}
+    </select>
+
+    <delete id="deleteById" parameterType="Long">
+        delete from category where id = #{categoryId}
+    </delete>
 </mapper>

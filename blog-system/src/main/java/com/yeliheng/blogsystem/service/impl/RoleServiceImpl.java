@@ -65,7 +65,7 @@ public class RoleServiceImpl implements IRoleService {
         if(userRoleMapper.checkRoleUser(roleId) > 0) {
             throw new GeneralException("删除失败，请解除所有用户与该角色的绑定");
         }
-        int rows = roleMapper.deleteByPrimaryKey(roleId);
+        int rows = roleMapper.deleteById(roleId);
         if(rows <= 0) throw new GeneralException("删除失败，角色可能不存在");
         //删除关联
         deleteRoleMenuByRoleId(roleId);
@@ -94,7 +94,7 @@ public class RoleServiceImpl implements IRoleService {
      */
     @Override
     public List<Role> getRoles() {
-        return roleMapper.selectAll();
+        return roleMapper.getRoleList(null);
     }
 
     /**

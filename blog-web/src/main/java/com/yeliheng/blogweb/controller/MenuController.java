@@ -38,13 +38,11 @@ public class MenuController {
         return CommonResponse.success();
     }
 
-    @PreAuthorize("@perm.hasPerm('admin:menus:list')")
     @GetMapping("/admin/menus/tree")
     public CommonResponse<Object> getMenuTree() {
             return CommonResponse.success(menuService.getMenuTree());
     }
 
-    @PreAuthorize("@perm.hasPerm('admin:menus:list')")
     @GetMapping("/admin/menus/getByRoleId")
     public CommonResponse<Object> getMenuIdsByRoleId(@RequestParam Long id) {
         return CommonResponse.success(menuService.getMenuIdsByRoleId(id));

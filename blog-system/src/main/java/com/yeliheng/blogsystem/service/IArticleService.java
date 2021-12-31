@@ -57,6 +57,15 @@ public interface IArticleService {
 
 
     /**
+     * 通过Url获取文章
+     * @param articleUrl 文章持久化Url
+     * @return 文章实体
+     *
+     * */
+    Article getArticleByUrl(String articleUrl);
+
+
+    /**
      * 通过Id获取文章-后台
      * @param articleId 文章Id
      * @return 文章实体
@@ -78,5 +87,5 @@ public interface IArticleService {
      * @return 文章列表
      *
      *  */
-    List<Article> getArticlesByTag(Long tagId);
+    PageInfo<Article> getArticlesByTag(Long tagId,Integer page, Integer pageSize);
 }

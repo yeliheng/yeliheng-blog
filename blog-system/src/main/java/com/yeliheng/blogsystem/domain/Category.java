@@ -13,6 +13,8 @@ public class Category {
 
     private Long userId;
 
+    private int articleCount;
+
     @NotBlank(message = "分类名称不能为空")
     private String categoryName;
 
@@ -44,6 +46,14 @@ public class Category {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
+    }
+
+    public int getArticleCount() {
+        return articleCount;
+    }
+
+    public void setArticleCount(int articleCount) {
+        this.articleCount = articleCount;
     }
 
     public LocalDateTime getCreatedAt() {

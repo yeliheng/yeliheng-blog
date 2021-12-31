@@ -4,7 +4,7 @@
     </div>
     <span class="title-404">页面找不到了</span>
     <div class="index-button">
-        <router-link to="/">
+        <router-link to="/dashboard">
             <el-button style="background: #a1b9ff;color: #fff;"> 返回首页 </el-button>
         </router-link>
     </div>

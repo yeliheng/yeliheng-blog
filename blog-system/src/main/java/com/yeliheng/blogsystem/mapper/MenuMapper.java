@@ -1,15 +1,16 @@
 package com.yeliheng.blogsystem.mapper;
 
 import com.yeliheng.blogsystem.domain.Menu;
-import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
 
-public interface MenuMapper extends Mapper<Menu> {
+public interface MenuMapper {
 
     int addMenu(Menu menu);
 
     int updateMenu(Menu menu);
+
+    int deleteById(Long menuId);
 
     List<String> getMenuPermissionByUserId(Long userId);
 

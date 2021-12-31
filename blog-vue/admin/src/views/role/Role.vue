@@ -1,5 +1,5 @@
 <template>
-<meta name="viewport" content="width=device-width, initial-scale=1, role-scalable=0" />
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
     <div class="role-list-container">
         <div class="role-list-header">
             <div class="line"></div>
@@ -210,6 +210,8 @@ export default {
 
         const menuIds: any = ref([]);
 
+        let menuParentIds: any = [];
+
         table.value.isMobile = store.state.app.isMobile;
 
 
@@ -227,8 +229,11 @@ export default {
         }
 
         //获取菜单树
-        getSelectMenuTree().then((res) => {
+        getSelectMenuTree().then((res: any) => {
             menuOptions.value = res.data;
+            res.data.forEach(item => {
+                menuParentIds.push(item.id); //构建父菜单
+            });
         });
 
         listRoles();
@@ -278,7 +283,17 @@ export default {
             loading.value = true;
             getMenuIdsByRoleId(row.id).then((res: any) => {
                 if(!res.errCode) {
-                    menuIds.value.setCheckedKeys(res.data);
+                    let menuIdArr = [];
+                    //剔除父菜单
+                    res.data.forEach(element => {
+                        
+                        if(!(menuParentIds.indexOf(element) > -1)) {
+                            menuIdArr.push(element);
+                             
+                        }
+                    });
+                    menuIds.value.setCheckedKeys(menuIdArr);
+                   
                     loading.value = false;
                 }else {
                     ElMessage.error(res.detail);
@@ -297,7 +312,10 @@ export default {
         }
 
         const submitForm = () => {
-            roleForm.value.menuIds = menuIds.value.getCheckedKeys();
+            let menuIdArr = [];
+            menuIdArr = menuIds.value.getCheckedKeys().concat(menuIds.value.getHalfCheckedKeys());
+            roleForm.value.menuIds = menuIdArr;
+            console.log(menuIdArr)
             if(roleForm.value.id) {
                 loading.value = true;
                 updateRole(roleForm.value).then((res: any) => {
@@ -315,7 +333,9 @@ export default {
                     loading.value = false;
                 });
             }else{
-                roleForm.value.menuIds = menuIds.value.getCheckedKeys();
+                let menuIdArr = [];
+                menuIdArr = menuIds.value.getCheckedKeys().concat(menuIds.value.getHalfCheckedKeys());
+                roleForm.value.menuIds = menuIdArr;
                 validate.value.validate((valid) => {
                 if(valid) {
                     loading.value = true;
