@@ -25,5 +25,4 @@ pnpm-debug.log*
 
 # Custom
 .env.development
-.env.production
 dump.rdb
