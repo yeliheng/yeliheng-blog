@@ -16,7 +16,7 @@ export const constantRoutes: Array<RouteRecordRaw> = [
     children: [
       {
         path: 'dashboard',
-        component: (resolve) => import('@/views/Home.vue'),
+        component: () => import('@/views/Home.vue'),
       }
     ]
   },

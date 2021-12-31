@@ -1,5 +1,4 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import NotFound from '../views/error/404.vue';
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import Layout from '../layout/index.vue';
 
 export const constantRoutes: Array<RouteRecordRaw> = [
@@ -13,7 +12,7 @@ export const constantRoutes: Array<RouteRecordRaw> = [
     children:[
       {
         path: '/',
-        component: import('@/views/home/Home.vue'),
+        component: () => import('@/views/home/Home.vue'),
         meta: {
           title: 'Yeliheng的技术小站 - 首页',
           keepAlive: true
@@ -21,7 +20,7 @@ export const constantRoutes: Array<RouteRecordRaw> = [
       },
       {
         path: '/categories',
-        component: (resolve) => import('@/views/category/Category.vue'),
+        component: () => import('@/views/category/Category.vue'),
         meta: {
           title: '分类 - Yeliheng的技术小站',
           keepAlive: true
@@ -29,14 +28,14 @@ export const constantRoutes: Array<RouteRecordRaw> = [
       },
       {
         path: '/categories/:id',
-        component: (resolve) => import('@/views/category/CategoryArticle.vue'),
+        component: () => import('@/views/category/CategoryArticle.vue'),
         meta: {
           keepAlive: true
         }
       },
       {
         path: '/tags',
-        component: (resolve) => import('@/views/tag/Tag.vue'),
+        component: () => import('@/views/tag/Tag.vue'),
         meta: {
           title: '标签 - Yeliheng的技术小站',
           keepAlive: true
@@ -44,14 +43,14 @@ export const constantRoutes: Array<RouteRecordRaw> = [
       },
       {
         path: '/tags/:id',
-        component: (resolve) => import('@/views/tag/TagArticle.vue'),
+        component: () => import('@/views/tag/TagArticle.vue'),
         meta: {
           keepAlive: true
         }
       },
       {
         path: '/about',
-        component: (resolve) => import('@/views/about/About.vue'),
+        component: () => import('@/views/about/About.vue'),
         meta: {
           title: '关于我 - Yeliheng的技术小站',
           keepAlive: true
@@ -62,14 +61,14 @@ export const constantRoutes: Array<RouteRecordRaw> = [
   },
   {
     path: '/p/:url',
-    component: (resolve) => import('@/views/article/Article.vue'),
+    component: () => import('@/views/article/Article.vue'),
     meta: {
       keepAlive: false
     }
   },
   {
     path: '/categories',
-    component: (resolve) => import('@/views/category/Category.vue'),
+    component: () => import('@/views/category/Category.vue'),
     meta: {
       title: '分类 - Yeliheng的技术小站',
       keepAlive: false

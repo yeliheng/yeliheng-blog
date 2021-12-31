@@ -63,7 +63,6 @@ export default {
       loadingBar.value
     });
     //TODO: 内容加载动画
-    
     getArticleList({"page": page.value,"pageSize": pageSize}).then((res: any) => {
       pageCount.value = res.data.pages;
       articleList.value = res.data.list;
