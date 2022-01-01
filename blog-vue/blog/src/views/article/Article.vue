@@ -4,6 +4,13 @@
     <v-loading class="loading-bar"></v-loading>
   </div>
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+      <div class="header-mobile">
+    <sidebar-mobile class="sidebar-mobile" ></sidebar-mobile>
+      <div class="button-container-mobile" @click="handleOpen()">
+          <span class="iconfont icon-mulu" style="font-size: 1.6rem;margin-left: 1rem; top: 1.5rem;color: #9e9e9e;position: absolute"></span>
+      </div>
+      <div class="site-info" style="font-size:1.6rem;margin-left:4rem;font-weight: bold; color: #9e9e9e;">Yeliheng的技术小站</div>
+  </div>
   <div class="body-container">
     
 <!-- 侧边栏(PC) -->
@@ -56,9 +63,13 @@ import { getArticleByUrl} from '../../api/index';
 import { useRouter } from 'vue-router';
 import { ref, onMounted } from 'vue';
 import tocbot from 'tocbot';
+import SidebarMobile from '@/layout/SidebarMobile.vue';
+import { useStore } from 'vuex';
 export default {
+  components: { SidebarMobile },
   setup(){
     const router = useRouter();
+    const store = useStore();
     const pageCount = ref();
     const page = ref(1);
     const pageSize = 5;
@@ -72,6 +83,9 @@ export default {
     const articleWrap = ref();
     const loadingBar = ref();
     const articleMenu = ref();
+    const handleOpen = () => {
+      store.dispatch('toggleSidebar');
+    };
     onMounted(() => {
       articleWrap;
       loadingBar;
@@ -112,7 +126,8 @@ export default {
       article,
       articleWrap,
       articleMenu,
-      loadingBar
+      loadingBar,
+      handleOpen
     }
   }
 
@@ -135,6 +150,10 @@ export default {
 }
 .article-content{
   text-align: start;
+}
+
+.header-mobile{
+  display: none;
 }
 
 
@@ -165,12 +184,6 @@ export default {
 
   }
 
-}
-.header-mobile{
-  opacity: 0;
-  .button-container-mobile{
-    display: none;
-  }
 }
 .body-container{
 
@@ -237,10 +250,16 @@ export default {
   .sidebar{
     display: none;
   }
+  .header-mobile{
+  display: flex;
+  height: 4.5rem;
+  align-items: center;
+  background: #161616;
+}
   .content{
     width: 100%;
     margin: 0;
-    margin-top: 0.5rem;
+    margin-top: 0rem;
     .article-container{
       .article-info{
         .info{
