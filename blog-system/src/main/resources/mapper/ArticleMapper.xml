@@ -176,4 +176,5 @@
     <delete id="deleteArticleById" parameterType="Long">
         delete from article where id = #{articleId}
     </delete>
+
 </mapper>
