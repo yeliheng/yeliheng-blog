@@ -1,2 +1,5 @@
-package com.yeliheng.blogweb.controller;public class SiteController {
+package com.yeliheng.blogweb.controller;
+
+public class SiteController {
+
 }

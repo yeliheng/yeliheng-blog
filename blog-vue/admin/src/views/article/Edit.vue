@@ -14,6 +14,7 @@
 
         <div class="article-content">
             <el-input class="title" v-model="article.title" placeholder="请输入标题" ></el-input>
+            <el-input class="summary" v-model="article.summary" placeholder="请输入简介" style="margin-bottom: 0.5rem;"></el-input>
             <v-md-editor v-model="article.content" placeholder="正文" height="400px" v-loading="loading"></v-md-editor>
         </div>
         <div class="article-footer">

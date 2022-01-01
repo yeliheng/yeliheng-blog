@@ -28,7 +28,7 @@ import java.util.List;
 public class ArticleServiceImpl implements IArticleService {
     private static final Logger logger = LoggerFactory.getLogger(ArticleServiceImpl.class);
 
-    private static final int ARTICLE_URL_LENGTH = 7;
+    private static final int ARTICLE_URL_LENGTH = 8;
     @Autowired
     private ArticleMapper articleMapper;
     @Autowired

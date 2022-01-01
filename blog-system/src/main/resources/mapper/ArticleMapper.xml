@@ -118,7 +118,7 @@
 
     <select id="getArticles" resultMap="ArticleResult">
         <include refid="selectArticleVo" />
-        where visible = 1 order by a.id
+        where visible = 1 order by a.id desc
     </select>
 
     <select id="getArticlesBacked" parameterType="Article" resultMap="ArticleResult">
