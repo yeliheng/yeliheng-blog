@@ -3,8 +3,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
   <!-- 头部(移动端) -->
     <div class="header-mobile">
-      <sidebar-mobile></sidebar-mobile>
-      <div class="button-container-mobile">
+      <sidebar-mobile class="sidebar-mobile"></sidebar-mobile>
+      <div class="button-container-mobile"  @click="handleOpen()">
           <span class="iconfont icon-mulu" style="font-size: 1.4rem;"></span>
       </div>
     </div>
@@ -37,6 +37,7 @@
         </div>
     </div>
   <div class="body-container">
+   
     
 <!-- 侧边栏(PC) -->
     <div class="sidebar">
@@ -78,11 +79,23 @@
 </template>
 
 <script lang="ts">
+import { ref,onMounted } from 'vue';
+import { useStore } from 'vuex';
 import '../assets/iconfont.css';
 import MyProfile from '@/components/MyProfile.vue';
 import SidebarMobile from '@/layout/SidebarMobile.vue';
 export default {
   components: { MyProfile, SidebarMobile },
+  setup() {
+    const store = useStore();
+    const handleOpen = () => {
+        store.dispatch('toggleSidebar');
+    };
+    
+    return {
+      handleOpen,
+    };
+  }
 }
 </script>
 
@@ -227,6 +240,7 @@ iframe{
 }
 .content{
   transition: all 0.5s;
+  z-index: 1;
   opacity: 0;
   animation: bottom-top-anim 0.8s ease 0.5s forwards;
   background: #121212;
