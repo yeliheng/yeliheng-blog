@@ -17,4 +17,7 @@ public interface CategoryMapper {
     public int deleteById(Long categoryId);
 
     public List<Category> selectCategoryList(Category category);
+
+    public int countCategories();
+
 }

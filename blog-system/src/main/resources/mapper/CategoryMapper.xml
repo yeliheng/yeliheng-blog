@@ -47,4 +47,8 @@
     <delete id="deleteById" parameterType="Long">
         delete from category where id = #{categoryId}
     </delete>
+
+    <select id="countCategories" resultType="int">
+        select count(1) from category
+    </select>
 </mapper>

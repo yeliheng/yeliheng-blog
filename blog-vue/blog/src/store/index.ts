@@ -2,18 +2,26 @@ import { createStore } from 'vuex'
 
 export default createStore({
   state: {
-    categories: {},
     showSidebar: false,
+    siteInfo: {
+      'articlesCount': '∞',
+      'categoriesCount': '∞',
+      'tagsCount': '∞',
+      'notice': {
+        content: '',
+      }
+    },
   },
   mutations: {
-    SET_CATEGORIES: (state, categories) => {
-      state.categories = categories;
-    },
+
     TOGGLE_SIDEBAR: (state) => {
       state.showSidebar = !state.showSidebar;
     },
     CLOSE_SIDEBAR: (state) => {
       state.showSidebar = false;
+    },
+    SET_INFO: (state,siteInfo) => {
+      state.siteInfo = siteInfo;
     },
   },
   actions: {
@@ -22,7 +30,7 @@ export default createStore({
     },
     closeSidebar({commit}) {
       commit('CLOSE_SIDEBAR');
-    }
+    },
   },
   modules: {
   }

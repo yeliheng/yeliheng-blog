@@ -53,3 +53,11 @@ export function getArticleListByTagId(params:any) {
         params: params
     });
 }
+
+//获取站点信息
+export function getSiteInfo() {
+    return request({
+        url: '/site/info',
+        method: 'get'
+    });
+}

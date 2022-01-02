@@ -6,18 +6,18 @@
             <div class="art-info">
               <div class="article-count count">
                 <span>文章</span>
-                <span>12</span>
+                <span>{{siteInfo.articlesCount}}</span>
               </div>
               <div class="line"></div>
-              <div class="category-count count">
+              <router-link class="category-count count" to="/categories">
                 <span>分类</span>
-                <span>5</span>
-              </div>
+                <span>{{siteInfo.categoriesCount}}</span>
+              </router-link>
               <div class="line"></div>
-              <div class="tag-count count">
+              <router-link to="/tags" class="tag-count count">
                 <span>标签</span>
-                <span>20</span>
-              </div>
+                <span>{{siteInfo.tagsCount}}</span>
+              </router-link>
             </div>
             <div class="contract-container">
               <a class="iconfont icon-github" href="https://github.com/yeliheng" target="_blank"></a>
@@ -29,12 +29,34 @@
 </template>
 
 <script>
+import { getSiteInfo } from '@/api';
+import { ref } from 'vue';
+import { useStore } from 'vuex';
 export default {
+  setup() {
+    const store = useStore();
+    const siteInfo = ref({
+      'articleCount': '∞',
+      'categoriesCount': '∞',
+      'tagsCount': '∞',
+    });
+    getSiteInfo().then((res) => {
+      siteInfo.value = res.data;
+      store.commit('SET_INFO',res.data);
+    });
+    return {
+      siteInfo,
+    }
+  }
 
 }
 </script>
 
 <style lang="scss" scoped>
+  a {
+    text-decoration: none;
+    color: #9e9e9e;
+  }
   // 我的信息
   .my-info{
     background: #121212;

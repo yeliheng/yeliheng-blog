@@ -46,7 +46,7 @@
         <!-- 站点信息/公告 -->
         <div class="site-info">
             <span style="font-size: 1.3rem; font-weight: bold; display: flex; justify-content: center;margin-top: 1.3rem;">站点公告</span>
-            <span class="announcement">这是Yeliheng的个人博客,我会在这里分享我计算机学习生涯中的笔记、总结、技术干货...</span>
+            <span class="announcement">{{ siteInfo.notice.content }}</span>
             <div class="site-state">
               <div>
                 <span class="iconfont icon-zhinanzhen"></span>
@@ -54,7 +54,7 @@
               </div>
               <div>
                 <span class="iconfont icon-wo"></span> 
-                <span> ©2022 Yeliheng 版权所有</span>
+                <span> ©{{ year }} Yeliheng 版权所有</span>
               </div>
                 
                 <span>转载请注明出处!</span>
@@ -72,35 +72,48 @@
                 </keep-alive>
             </transition>
         </router-view>
+      <site-footer></site-footer>
     </div>
+      
   </div>
+
 </div>
 
 </template>
 
 <script lang="ts">
-import { ref,onMounted } from 'vue';
+import { ref,onMounted, computed } from 'vue';
 import { useStore } from 'vuex';
 import '../assets/iconfont.css';
 import MyProfile from '@/components/MyProfile.vue';
 import SidebarMobile from '@/layout/SidebarMobile.vue';
+import SiteFooter from '@/components/SiteFooter.vue';
 export default {
-  components: { MyProfile, SidebarMobile },
+  components: { MyProfile, SidebarMobile,SiteFooter },
   setup() {
     const store = useStore();
+    const date = new Date();
+    const year = ref();
+    year.value = date.getFullYear();
     const handleOpen = () => {
         store.dispatch('toggleSidebar');
     };
     
+    const siteInfo = computed(
+      () => store.state.siteInfo
+    );
+    
     return {
       handleOpen,
+      siteInfo,
+      year
     };
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.loading-bar{
+.loading-bar {
   transition: all 0.5s;
   opacity: 0;
   display: flex;
@@ -112,7 +125,7 @@ export default {
     0%   {margin-top: 2rem;opacity: 0;}
     100% {margin-top: 7rem;opacity: 1;}
 }
-@keyframes change-opcity{
+@keyframes change-opcity {
     0% {
       opacity: 0;
     }
@@ -120,7 +133,7 @@ export default {
       opacity: 1;
     }
 }
-@keyframes bottom-top-anim{
+@keyframes bottom-top-anim {
     0% {
       opacity: 0;
       margin-top: 10rem;
@@ -146,29 +159,29 @@ export default {
   transform: translateX(30px);
 }
 
-:deep(.spinner){
+:deep(.spinner) {
     &::after{
       background-color: #d4d3d3;
     }
 }
-iframe{
+iframe {
   border: 0;
   height: 20rem;
   width: 100%;
 }
-.header{
+.header {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
   height: 20rem;
-  .title{
+  .title {
     font-size: 1.8rem;
     font-weight: bold;
     position: absolute;
     left: 4rem;
   }
-  .button-container{
+  .button-container {
     color: #fff;
     animation: button-anim 1.5s ease 1.5s forwards;
     position: absolute;
@@ -177,11 +190,11 @@ iframe{
     display: flex;
     font-size: 1.2rem;
     opacity: 0;
-    .iconfont{
+    .iconfont {
       margin-right: 0.4rem;
       font-size: 1.3rem;
     }
-    a{
+    a {
       color: #fff;
       text-decoration: none;
     }
@@ -190,7 +203,7 @@ iframe{
 
 
 // 侧边栏
-.sidebar{
+.sidebar {
   animation: bottom-top-anim 1s ease 0.5s forwards;
   opacity: 0;
   display: flex;
@@ -202,13 +215,13 @@ iframe{
     right: 0.5rem;
   };
 
-  :deep(.spinner){
+  :deep(.spinner) {
     &::after{
       background-color: #d4d3d3;
     }
 }
   // 站点信息
-  .site-info{
+  .site-info {
     position: sticky;
     top: 0.5rem;
     height: 15rem;
@@ -227,7 +240,7 @@ iframe{
   }
 
 }
-.header-mobile{
+.header-mobile {
   opacity: 0;
   .button-container-mobile{
     display: none;
@@ -238,7 +251,8 @@ iframe{
   justify-content: center;
   height: 100%;
 }
-.content{
+.content {
+  position: relative;
   transition: all 0.5s;
   z-index: 1;
   opacity: 0;
@@ -251,6 +265,8 @@ iframe{
   };
 
 }
+
+
 
 /* 移动端 */
 @media screen and (max-width: 900px){

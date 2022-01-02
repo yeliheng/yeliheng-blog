@@ -44,4 +44,8 @@
     <delete id="deleteById" parameterType="Long">
         delete from tag where id = #{tagId}
     </delete>
+
+    <select id="countTags" resultType="int">
+        select count(1) from tag
+    </select>
 </mapper>

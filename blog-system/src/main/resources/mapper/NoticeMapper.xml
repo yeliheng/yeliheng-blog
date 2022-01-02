@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yeliheng.blogsystem.mapper.NoticeMapper">
+    <select id="getNotice" resultType="Notice">
+        select * from notice
+    </select>
+
+    <select id="getLatestNotice" resultType="Notice">
+        select * from notice order by id desc limit 0,1
+    </select>
+</mapper>

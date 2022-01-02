@@ -27,7 +27,7 @@
 
     <!-- 内容区 -->
     <div class="content" 
-        ref="articleWrap"> 
+        ref="articleWrap" @click="handleContentClick()"> 
 
       <div class="article-container">
         <div class="article-title">{{article.title}}</div>
@@ -51,10 +51,16 @@
         style="text-align: start;margin-top: 3rem;background-color: #121212;" 
         :source="article.content"
         />
+        
       </div>
+      <site-footer></site-footer>
     </div> 
+    
   </div>
+  <!-- <site-footer :class="{'display': !isLoading,'hidden': isLoading}"></site-footer> -->
+  
 </div>
+
 </template>
 
 <script lang="ts">
@@ -65,14 +71,16 @@ import { ref, onMounted } from 'vue';
 import tocbot from 'tocbot';
 import SidebarMobile from '@/layout/SidebarMobile.vue';
 import { useStore } from 'vuex';
+import SiteFooter from '@/components/SiteFooter.vue';
 export default {
-  components: { SidebarMobile },
+  components: { SidebarMobile, SiteFooter },
   setup(){
     const router = useRouter();
     const store = useStore();
     const pageCount = ref();
     const page = ref(1);
     const pageSize = 5;
+    const isLoading = ref(true);
     const article = ref({
       'title': '',
       'content': '',
@@ -86,6 +94,10 @@ export default {
     const handleOpen = () => {
       store.dispatch('toggleSidebar');
     };
+
+    const handleContentClick = () => {
+      store.dispatch('closeSidebar');
+    };
     onMounted(() => {
       articleWrap;
       loadingBar;
@@ -93,6 +105,7 @@ export default {
     });
     //TODO: 内容加载动画
     getArticleByUrl(router.currentRoute.value.params.url).then((res: any) => {
+      
       document.title = res.data.title + ' - Yeliheng的技术小站';
       article.value = res.data;
       articleWrap.value.style.opacity = "1";
@@ -114,6 +127,7 @@ export default {
       if(articleWrap.value.scrollHeight < window.innerHeight){
         articleWrap.value.style.height = window.innerHeight + 'px';
       }
+      isLoading.value = false;
       });
     });
     
@@ -127,7 +141,9 @@ export default {
       articleWrap,
       articleMenu,
       loadingBar,
-      handleOpen
+      isLoading,
+      handleOpen,
+      handleContentClick
     }
   }
 
@@ -135,6 +151,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.display {
+  opacity: 1;
+}
+.hidden {
+  opacity: 0;
+}
 :deep(.spinner){
     &::after{
       background-color: #d4d3d3;
