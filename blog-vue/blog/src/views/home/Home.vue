@@ -1,5 +1,8 @@
 <template>
 <div class="home-container">
+  <div class="loading-bar-full" :class="{'no-loading': !isLoading,'is-loading': isLoading}" >
+    <v-loading></v-loading>
+  </div>
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
       <div class="article-container"
         v-for="article in articleList"
@@ -61,6 +64,8 @@ export default {
     const articleList = ref([]);
     const loadingBar = ref(null);
     const store = useStore();
+
+    const isLoading = ref(true);
     onMounted(() => {
       loadingBar.value
     });
@@ -68,6 +73,8 @@ export default {
     getArticleList({"page": page.value,"pageSize": pageSize}).then((res: any) => {
       pageCount.value = res.data.pages;
       articleList.value = res.data.list;
+      
+      isLoading.value = false;
     });
 
     const loadArticle = () => {
@@ -94,6 +101,7 @@ export default {
       page,
       loadingBar,
       readArticle,
+      isLoading,
     }
   }
 
@@ -101,12 +109,43 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+:deep(.spinner){
+    &::after{
+      background-color: #d4d3d3;
+    }
+}
+.no-loading {
+  visibility: collapse;
+  opacity: 0;
+}
+
+.is-loading {
+  visibility: visible;
+  opacity: 1;
+}
+
 .loading-bar{
   transition: all 0.5s;
   opacity: 0;
   display: flex;
   justify-content: center;
   margin-bottom: 2rem;
+}
+
+.loading-bar-full {
+  display: flex;
+  background-color: #121212;
+  transition: all 0.5s;
+  height: 100vh;
+  position: absolute;
+  top: 0;             
+  bottom: 0;           
+  left: 0;        
+  right: 0;
+  margin: auto;
+  justify-content: center;
+  align-items: center;
+  z-index: 999999;
 }
 
 @keyframes change-opcity{

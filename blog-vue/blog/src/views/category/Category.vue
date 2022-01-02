@@ -53,10 +53,12 @@ export default {
     }
 }
 .no-loading {
+  visibility: collapse;
   opacity: 0;
 }
 
 .is-loading {
+  visibility: visible;
   opacity: 1;
 }
 .loading-bar-full {

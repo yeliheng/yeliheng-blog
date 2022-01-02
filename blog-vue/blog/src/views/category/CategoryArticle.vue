@@ -121,10 +121,12 @@ export default {
     }
 }
 .no-loading {
+  visibility: collapse;
   opacity: 0;
 }
 
 .is-loading {
+  visibility: visible;
   opacity: 1;
 }
 

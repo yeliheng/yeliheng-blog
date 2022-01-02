@@ -110,10 +110,12 @@ export default {
 
 <style lang="scss" scoped>
 .no-loading {
+  visibility: collapse;
   opacity: 0;
 }
 
 .is-loading {
+  visibility: visible;
   opacity: 1;
 }
 :deep(.spinner){
