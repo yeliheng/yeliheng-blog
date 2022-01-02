@@ -27,4 +27,6 @@ public interface ArticleMapper{
     Article getArticleByUrl(String url);
 
     int deleteArticleById(Long articleId);
+
+    int countArticles();
 }

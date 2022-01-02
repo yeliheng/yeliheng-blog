@@ -177,4 +177,8 @@
         delete from article where id = #{articleId}
     </delete>
 
+    <select id="countArticles" resultType="int">
+        select count(1) from article where visible = 1
+    </select>
+
 </mapper>

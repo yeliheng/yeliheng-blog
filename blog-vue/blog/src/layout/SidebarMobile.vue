@@ -6,18 +6,18 @@
             <div class="art-info">
               <div class="article-count count">
                 <span>文章</span>
-                <span>12</span>
+                <span>{{siteInfo.articlesCount}}</span>
               </div>
               <div class="line"></div>
-              <div class="category-count count">
+              <router-link class="category-count count" to="/categories" @click="handleClick">
                 <span>分类</span>
-                <span>5</span>
-              </div>
+                <span>{{siteInfo.categoriesCount}}</span>
+              </router-link>
               <div class="line"></div>
-              <div class="tag-count count">
+              <router-link to="/tags" class="tag-count count" @click="handleClick">
                 <span>标签</span>
-                <span>20</span>
-              </div>
+                <span>{{siteInfo.tagsCount}}</span>
+              </router-link>
             </div>
       </div>
       <div class="sidebar-menu">
@@ -45,26 +45,36 @@
 </template>
 
 <script lang="ts">
-  import { useStore } from 'vuex';
-  import { ref, computed} from 'vue';
+import { useStore } from 'vuex';
+import { ref, computed} from 'vue';
+import { getSiteInfo } from '@/api';
   export default {
     setup() {
       const store = useStore();
       const isOpen = computed(() => 
         store.state.showSidebar
       );
+      
+      const siteInfo = computed(() => store.state.siteInfo);
+
+    
       const handleClick = () => {
           store.dispatch('closeSidebar');
       }
       return {
         isOpen,
         handleClick,
+        siteInfo,
       }
     }
   }
 </script>
 
 <style lang="scss" scoped>
+  a {
+    text-decoration: none;
+    color: #9e9e9e;
+  }
 .sidebar-open {
   transform: translateY(0%);
 }

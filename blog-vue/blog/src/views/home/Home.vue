@@ -51,6 +51,7 @@ import '../../assets/iconfont.css';
 import { getArticleList } from '../../api/index';
 import {useRouter} from 'vue-router';
 import { ref, onMounted } from 'vue';
+import { useStore } from 'vuex';
 export default {
   setup(){
     const router = useRouter();
@@ -59,6 +60,7 @@ export default {
     const pageSize = 5;
     const articleList = ref([]);
     const loadingBar = ref(null);
+    const store = useStore();
     onMounted(() => {
       loadingBar.value
     });
@@ -78,6 +80,7 @@ export default {
     }
 
     const readArticle = (id) =>{ 
+      store.dispatch('closeSidebar');
       router.push({
         path: '/p/' + id, 
       });
@@ -90,7 +93,7 @@ export default {
       pageCount,
       page,
       loadingBar,
-      readArticle
+      readArticle,
     }
   }
 

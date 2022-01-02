@@ -20,4 +20,6 @@ public interface TagMapper {
 
     int deleteById(Long tagId);
 
+    int countTags();
+
 }
