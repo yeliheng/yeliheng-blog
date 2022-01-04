@@ -57,7 +57,6 @@
     </div> 
     
   </div>
-  <!-- <site-footer :class="{'display': !isLoading,'hidden': isLoading}"></site-footer> -->
   
 </div>
 

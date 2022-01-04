@@ -1,5 +1,8 @@
 <template>
     <div class="tags-container">
+        <div class="loading-bar-full" :class="{'no-loading': !isLoading,'is-loading': isLoading}" >
+            <v-loading></v-loading>
+        </div>
         <div class="tag-card" 
             v-for="tag in tagList"
             :key="tag.id"
@@ -20,10 +23,12 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router'
 export default {
     setup(){
+        const isLoading = ref(true);
         const tagList = ref();
         const router = useRouter();
         getTagList().then((res: any) => {
             tagList.value = res.data;
+            isLoading.value = false;
         });
         const handleCardClick = (id,articleCount) => {
             if(articleCount > 0)
@@ -32,6 +37,7 @@ export default {
         return {
             tagList,
             handleCardClick,
+            isLoading,
         };
     }
 
@@ -39,6 +45,35 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+:deep(.spinner){
+    &::after{
+      background-color: #d4d3d3;
+    }
+}
+.no-loading {
+  visibility: collapse;
+  opacity: 0;
+}
+
+.is-loading {
+  visibility: visible;
+  opacity: 1;
+}
+.loading-bar-full {
+  display: flex;
+  background-color: #121212;
+  transition: all 0.5s;
+  height: 100vh;
+  position: absolute;
+  top: 0;             
+  bottom: 0;           
+  left: 0;        
+  right: 0;
+  margin: auto;
+  justify-content: center;
+  align-items: center;
+  z-index: 999999;
+}
     .tags-container {
         display: flex;
         justify-content: center;
