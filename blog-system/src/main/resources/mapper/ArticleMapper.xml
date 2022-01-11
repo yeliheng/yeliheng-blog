@@ -36,8 +36,15 @@
         <result property="createdAt" column="created_at" />
         <result property="updatedAt" column="updated_at" />
         <association property="category" column="category_id" javaType="Category" resultMap="CategoryResult" />
-        <collection property="tags" javaType="java.util.List" resultMap="TagResult" />
+        <collection property="tags" javaType="java.util.List" select="selectTagsByArticleId" column="id" />
     </resultMap>
+
+    <select id="selectTagsByArticleId" resultType="Tag">
+        select t.id, t.tag_name, atg.article_id, atg.tag_id
+        from tag t
+        left join article_tag atg on atg.tag_id = t.id
+        where atg.article_id = #{id}
+    </select>
 
     <resultMap id="CategoryResult" type="Category">
         <id property="id" column="category_id" />
@@ -51,12 +58,8 @@
 
     <sql id="selectArticleVo">
         select a.id, a.user_id, a.category_id, a.title, a.summary, a.url, a.visible, a.words, a.views, a.reading_time, a.created_at, a.updated_at,
-               c.id as category_id, c.category_name,
-               atg.id, atg.article_id, atg.tag_id,
-               t.id as tag_id, t.tag_name
+               c.id as category_id, c.category_name
         from article a
-            left join article_tag atg on atg.article_id = a.id
-            left join tag t on t.id = atg.tag_id
             left join category c on a.category_id = c.id
     </sql>
 
@@ -116,12 +119,12 @@
         where id = #{id}
     </update>
 
-    <select id="getArticles" resultMap="ArticleResult">
+    <select id="getArticles" resultMap="ArticleListResult">
         <include refid="selectArticleVo" />
         where visible = 1 order by a.id desc
     </select>
 
-    <select id="getArticlesBacked" parameterType="Article" resultMap="ArticleResult">
+    <select id="getArticlesBacked" parameterType="Article" resultMap="ArticleListResult">
         <include refid="selectArticleVo" />
         <where>
         <if test="title != null and title != ''">

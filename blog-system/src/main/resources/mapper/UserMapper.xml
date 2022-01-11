@@ -12,8 +12,14 @@
         <result column="locked" property="locked"/>
         <result column="created_at" property="createdAt"/>
         <result column="updated_at" property="updatedAt"/>
-        <collection property="roleList" javaType="java.util.List" resultMap="RoleResult" />
+        <collection property="roleList" javaType="java.util.List" select="selectRolesByUserId" column="id"/>
     </resultMap>
+
+    <select id="selectRolesByUserId" resultType="Role">
+        select r.id, r.role_name, r.role_char
+        from role r left join user_role ur on ur.role_id = r.id
+        where ur.user_id = #{id}
+    </select>
 
     <resultMap id="RoleResult" type="Role">
         <id property="id" column="role_id" />
@@ -22,12 +28,8 @@
     </resultMap>
 
     <sql id="selectUserVo">
-        select u.id, u.username, u.nickname, u.phone, u.locked, u.created_at, u.updated_at,
-               r.id as role_id, r.role_char, r.role_name,
-               ur.user_id, ur.role_id
+        select u.id, u.username, u.nickname, u.phone, u.locked, u.created_at, u.updated_at
         from user u
-        left join user_role ur on u.id = ur.user_id
-        left join role r on r.id = ur.role_id
     </sql>
 
     <select id="selectUserList" resultMap="UserResultMap">

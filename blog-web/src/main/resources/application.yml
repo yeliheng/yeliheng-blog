@@ -15,12 +15,6 @@ mybatis:
     map-underscore-to-camel-case: true
   type-aliases-package: com.yeliheng.blogsystem.domain
   mapper-locations: classpath*:mapper/**/*Mapper.xml
-# 通用Mapper
-mapper:
-  mappers:
-    - tk.mybatis.mapper.common.Mapper
-  not-empty: false
-  identity: MYSQL
 # 分页插件
 pagehelper:
   helperDialect: mysql
@@ -37,4 +31,5 @@ token:
   header: Authorization
 # 系统设置
 blogsystem:
+  # 允许注册？
   allow-register: false
