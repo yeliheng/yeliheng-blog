@@ -14,7 +14,7 @@ public class MenuTreeDTO {
 
     private String label;
 
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    //@JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<MenuTreeDTO> children;
 
     public MenuTreeDTO(Menu menu) {

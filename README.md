@@ -180,7 +180,7 @@ git clone https://github.com/yeliheng/yeliheng-blog.git
 
 1、进入本项目中的blog-vue文件夹中，前端分为admin和blog两个模块，此处以admin模块为例进行说明。
 
-2、我们首先进入admin文件夹，admin文件夹中新建文件：**.env.development**，并将**.env.example**中的内容复制到刚刚创建的**.env.development**中，并将**VUE_APP_BASE_API**地址修改为后端地址。若您没有改动后端地址则无需更改。
+2、我们首先进入admin文件夹，admin文件夹中新建文件：**.env.development**，并将 **.env.example** 中的内容复制到刚刚创建的 **.env.development**中，并将**VUE_APP_BASE_API**地址修改为后端地址。若您没有改动后端地址则无需更改。
 
 3、执行如下指令安装所需依赖：
 
@@ -195,6 +195,10 @@ npm run serve
 ```
 
 5、项目成功运行，开始访问吧！
+
+**管理员账号：admin**
+
+**管理员密码: admin123**
 
 **blog模块的安装方法与上述过程完全相同**
 

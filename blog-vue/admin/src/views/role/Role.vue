@@ -231,12 +231,20 @@ export default {
         //获取菜单树
         getSelectMenuTree().then((res: any) => {
             menuOptions.value = res.data;
-            res.data.forEach(item => {
-                menuParentIds.push(item.id); //构建父菜单
-            });
+            foreachParent(res.data);
         });
 
         listRoles();
+
+        //遍历出父菜单，在编辑时剔除以实现半选中
+        const foreachParent = (menuData: any) => {
+            menuData.forEach(item => {
+                if(item.children.length > 0) {
+                    menuParentIds.push(item.id); //构建父菜单
+                    foreachParent(item.children);
+                }
+            });
+        };
 
         const roles = ref([]);
 
