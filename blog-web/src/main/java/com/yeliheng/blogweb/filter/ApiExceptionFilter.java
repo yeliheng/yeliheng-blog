@@ -2,6 +2,7 @@ package com.yeliheng.blogweb.filter;
 
 import com.yeliheng.blogcommon.exception.ApiException;
 import com.yeliheng.blogsystem.dto.ErrorDTO;
+import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -64,6 +65,11 @@ public class ApiExceptionFilter{
             errorDTO.setMessage("请求格式错误");
             errorDTO.setHttpCode(400);
             errorDTO.setDetail("application/json非法或为空");
+        }else if(exception instanceof RedisConnectionFailureException) {
+            errorDTO.setErrCode("REDIS_SERVICE_ERROR");
+            errorDTO.setMessage("Redis异常");
+            errorDTO.setHttpCode(500);
+            errorDTO.setDetail("Redis服务连接失败！请检查服务是否启用");
         }else{
             errorDTO.setErrCode("UNKNOWN_ERROR");
             errorDTO.setMessage("未知系统错误");

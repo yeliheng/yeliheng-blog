@@ -1,5 +1,6 @@
 package com.yeliheng.blogsystem.utils;
 
+import com.yeliheng.blogcommon.utils.ServletUtils;
 import com.yeliheng.blogsystem.service.IUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,9 +18,7 @@ public class UserUtils {
     private TokenUtils tokenUtils;
 
     public Long getLoginUserId(){
-        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-
-        return userService.selectUidByUsername(username);
+        return tokenUtils.getLoginUser(ServletUtils.getRequest()).getUser().getId();
 
     }
 }

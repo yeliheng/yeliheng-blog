@@ -1,6 +1,7 @@
 package com.yeliheng.blogframework.security.handle;
 
 import com.alibaba.fastjson.JSON;
+import com.yeliheng.blogcommon.exception.UnauthorizedException;
 import com.yeliheng.blogcommon.utils.ServletUtils;
 import com.yeliheng.blogcommon.utils.StringUtils;
 import com.yeliheng.blogsystem.domain.LoginUser;
@@ -24,16 +25,15 @@ public class LogoutSuccessHandlerImpl implements LogoutSuccessHandler {
 
     @Override
     public void onLogoutSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
-        try{
-            LoginUser loginUser = tokenUtils.getLoginUser(httpServletRequest);
-            if(StringUtils.isNotNull(loginUser))
-                tokenUtils.deleteLoginUser(loginUser.getUser().getId());
+        String userUUID = tokenUtils.getUUID(httpServletRequest);
+        if(StringUtils.isNotNull(userUUID)) {
+            tokenUtils.deleteLoginUser(userUUID);
             ErrorDTO errorDTO = new ErrorDTO();
             errorDTO.setErrCode("");
             errorDTO.setMessage("登出成功!");
             errorDTO.setHttpCode(200);
-            ServletUtils.renderString(httpServletResponse, JSON.toJSONString(errorDTO),200);
-        }catch (Exception ignored) {}
+            ServletUtils.renderString(httpServletResponse, JSON.toJSONString(errorDTO), 200);
+        }
 
     }
 }

@@ -1,6 +1,7 @@
 package com.yeliheng.blogframework.permission;
 
 import com.yeliheng.blogcommon.constant.Constants;
+import com.yeliheng.blogcommon.utils.ServletUtils;
 import com.yeliheng.blogcommon.utils.StringUtils;
 import com.yeliheng.blogsystem.domain.LoginUser;
 import com.yeliheng.blogsystem.service.IPermissionService;
@@ -33,7 +34,11 @@ public class PermissionUtils {
      */
     public boolean hasPerm(String permission){
         if(StringUtils.isEmpty(permission)) return false;
-        LoginUser loginUser = tokenUtils.getLoginUser(userUtils.getLoginUserId());
+        LoginUser loginUser = tokenUtils.getLoginUser(ServletUtils.getRequest());
+        if (StringUtils.isNull(loginUser))
+        {
+            return false;
+        }
         //获取角色权限
         Set<String> permissions = permissionService.getMenuPermission(loginUser.getUser());
         if(CollectionUtils.isEmpty(permissions)) return false;

@@ -16,7 +16,6 @@ import java.util.Map;
 
 @Api(tags = "登录")
 @RestController
-@Validated
 public class LoginController {
 
     @Autowired
