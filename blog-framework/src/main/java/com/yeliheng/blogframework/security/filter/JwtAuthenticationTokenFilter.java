@@ -1,12 +1,15 @@
 package com.yeliheng.blogframework.security.filter;
 
 import com.yeliheng.blogcommon.constant.Constants;
+import com.yeliheng.blogcommon.utils.StringUtils;
+import com.yeliheng.blogsystem.domain.LoginUser;
 import com.yeliheng.blogsystem.utils.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -26,21 +29,12 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
-        //获取请求头
-        final String header = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
-        if(header == null || !header.startsWith(Constants.TOKEN_PREFIX)){
-            filterChain.doFilter(httpServletRequest,httpServletResponse);
-            return;
+        LoginUser loginUser = tokenUtils.getLoginUser(httpServletRequest);
+        if(StringUtils.isNotNull(loginUser)) {
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginUser,null, loginUser.getAuthorities());
+            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         }
-        String token = header.replace(Constants.TOKEN_PREFIX,"");
-        if(!tokenUtils.verifyToken(token)){
-            filterChain.doFilter(httpServletRequest,httpServletResponse);
-            return;
-        }
-        UsernamePasswordAuthenticationToken authentication = null;
-        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        authentication = new UsernamePasswordAuthenticationToken(tokenUtils.getUsername(token),token,authorities);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
         filterChain.doFilter(httpServletRequest,httpServletResponse);
     }
 }

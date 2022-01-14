@@ -15,12 +15,6 @@ mybatis:
     map-underscore-to-camel-case: true
   type-aliases-package: com.yeliheng.blogsystem.domain
   mapper-locations: classpath*:mapper/**/*Mapper.xml
-# 通用Mapper
-mapper:
-  mappers:
-    - tk.mybatis.mapper.common.Mapper
-  not-empty: false
-  identity: MYSQL
 # 分页插件
 pagehelper:
   helperDialect: mysql
@@ -30,11 +24,12 @@ pagehelper:
 # token 配置
 token:
   # 令牌有效期(默认30分钟)
-  expireTime: 1440
+  expireTime: 30
   # 令牌密钥
   secret: yeliheng123
   # 令牌请求头
   header: Authorization
 # 系统设置
 blogsystem:
+  # 允许注册？
   allow-register: false

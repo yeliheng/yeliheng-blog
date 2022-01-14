@@ -5,7 +5,7 @@
             <i v-else class="el-icon-s-unfold"></i>
         </div>
         <div class="welcome"> 
-            欢迎 👏🏻
+           👏🏻 欢迎您，{{ username }} 
         </div>
         <div class="header-right">
 
@@ -37,6 +37,7 @@ export default {
 
         const router = useRouter();
     
+        const username = store.state.user.username;
 
         const isMobile = computed(() => store.state.app.isMobile);
 
@@ -69,6 +70,7 @@ export default {
             toggleSidebar,
             collapse,
             handleCommand,
+            username,
         }
     }
 }

@@ -16,7 +16,6 @@ import java.util.Map;
 
 @Api(tags = "登录")
 @RestController
-@Validated
 public class LoginController {
 
     @Autowired
@@ -24,7 +23,7 @@ public class LoginController {
 
     @PostMapping("/login")
     public CommonResponse<Object> login(@RequestBody @Validated LoginBody loginBody){
-        String token = loginService.login(loginBody.getUsername(),loginBody.getPassword());
+        String token = loginService.login(loginBody.getUsername(),loginBody.getPassword(),loginBody.isRememberMe());
         Map<String,String> resultMap = new HashMap<>();
         resultMap.put("token",token);
         return CommonResponse.success(resultMap);

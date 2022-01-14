@@ -1,6 +1,7 @@
 spring:
+  # 数据源配置
   datasource:
-    url: jdbc:mysql://address:port/yeliheng_blog?charset=utf8mb4&useSSL=false&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://数据库地址:端口/数据库名称?charset=utf8mb4&useSSL=false&serverTimezone=Asia/Shanghai
     username:
     password:
   # Redis 配置

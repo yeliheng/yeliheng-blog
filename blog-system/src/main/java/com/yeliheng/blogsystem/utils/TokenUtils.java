@@ -3,6 +3,7 @@ package com.yeliheng.blogsystem.utils;
 import com.yeliheng.blogcommon.constant.Constants;
 import com.yeliheng.blogcommon.utils.RedisUtils;
 import com.yeliheng.blogcommon.utils.StringUtils;
+import com.yeliheng.blogcommon.utils.UUIDUtils;
 import com.yeliheng.blogsystem.domain.LoginUser;
 import com.yeliheng.blogsystem.service.IUserService;
 import io.jsonwebtoken.*;
@@ -14,6 +15,9 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class TokenUtils {
@@ -26,12 +30,9 @@ public class TokenUtils {
     @Autowired
     private RedisUtils redisUtils;
 
-    @Autowired
-    private IUserService userService;
-
     //过期时间
     @Value("${token.expireTime}")
-    private long expireTime;
+    private int expireTime;
 
     // 令牌密钥
     @Value("${token.secret}")
@@ -41,69 +42,38 @@ public class TokenUtils {
 
     protected static final long MILLIS_MINUTE = 60 * MILLIS_SECOND;
 
-    private static final Long MILLIS_MINUTE_TEN = 20 * 60 * 1000L;
-
-    public String createToken(LoginUser loginUser) {
-        setLoginUser(loginUser);
-        return Jwts.builder().setSubject(String.format("%s", loginUser.getUsername()))
-                .setExpiration(new Date(System.currentTimeMillis() + expireTime * MILLIS_MINUTE))
-                .signWith(SignatureAlgorithm.HS512, secret).compressWith(CompressionCodecs.GZIP).compact();
-    }
-
-    public boolean verifyToken(String token) {
-        try {
-            Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
-            return true;
-        } catch (SignatureException ex) {
-            logger.warn("Invalid JWT signature - {}", ex.getMessage());
-        } catch (MalformedJwtException ex) {
-            logger.warn("Invalid JWT token - {}", ex.getMessage());
-        } catch (ExpiredJwtException ex) {
-            logger.warn("Expired JWT token - {}", ex.getMessage());
-        } catch (UnsupportedJwtException ex) {
-            logger.warn("Unsupported JWT token - {}", ex.getMessage());
-        } catch (IllegalArgumentException ex) {
-            logger.warn("JWT claims string is empty - {}", ex.getMessage());
+    public String createToken(LoginUser loginUser,boolean rememberMe) {
+        String uuid = UUIDUtils.generateUUID();
+        if(!rememberMe) {
+            setLoginUser(uuid,loginUser,expireTime);
+        }else {
+            setLoginUser(uuid,loginUser,10080);
         }
-        return false;
+
+        Map<String, Object> claims = new HashMap<>();
+        claims.put(Constants.CLAIMS_KEY,uuid);
+        return Jwts.builder().setClaims(claims)
+            .signWith(SignatureAlgorithm.HS512, secret).compressWith(CompressionCodecs.GZIP).compact();
     }
 
     private Claims getClaims(String token) {
-        Claims claims = Jwts.parser()
+        return Jwts.parser()
                 .setSigningKey(secret)
                 .parseClaimsJws(token)
                 .getBody();
-        return claims;
     }
 
-    public String getUsername(String token){
-       return getClaims(token).getSubject();
+
+    public void setLoginUser(String uuid, LoginUser loginUser,int expireTime){
+        redisUtils.setCacheObject(uuid, loginUser, expireTime, TimeUnit.MINUTES);
     }
 
-    public void setLoginUser(LoginUser loginUser){
-        redisUtils.setCacheObject(loginUser.getUser().getId().toString(),loginUser);
-    }
-
-    public void deleteLoginUser(Long userId){
-        redisUtils.deleteObject(userId.toString());
-    }
-
-    /**
-     *
-     * 获取缓存的用户信息(没有则代表凭据过期)
-     * @param userId 用户id
-     * @return 用户信息
-     */
-
-    public LoginUser getLoginUser(Long userId){
-            return redisUtils.getCacheObject(userId.toString());
+    public void deleteLoginUser(String uuid){
+        redisUtils.deleteObject(uuid);
     }
 
     /**
      * 获取请求token
-     *
-     * @param request
-     * @return token
      */
     private String getToken(HttpServletRequest request)
     {
@@ -118,8 +88,23 @@ public class TokenUtils {
 
     public LoginUser getLoginUser(HttpServletRequest request){
         String token = getToken(request);
-        LoginUser loginUser = redisUtils.getCacheObject(userService.selectUidByUsername(getUsername(token)).toString());
-        return loginUser;
+        if(StringUtils.isNotEmpty(token)) {
+            try {
+                Claims claims = getClaims(token);
+                String uuid = claims.get(Constants.CLAIMS_KEY).toString();
+                return redisUtils.getCacheObject(uuid);
+            } catch (Exception ignored) {}
+        }
+        return null;
+    }
+
+    public String getUUID(HttpServletRequest request) {
+        String token = getToken(request);
+        if(StringUtils.isNotEmpty(token)) {
+            Claims claims = getClaims(token);
+            return claims.get(Constants.CLAIMS_KEY).toString();
+        }
+        return null;
     }
 
 

@@ -9,8 +9,6 @@ import java.util.Set;
 
 public class LoginUser implements UserDetails {
 
-    //private Long userId;
-
     private User user;
 
     private Set<String> permissions;
@@ -83,15 +81,6 @@ public class LoginUser implements UserDetails {
     {
         return true;
     }
-
-
-/*    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }*/
 
     public User getUser() {
         return user;
