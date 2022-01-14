@@ -19,6 +19,5 @@ public class UserUtils {
 
     public Long getLoginUserId(){
         return tokenUtils.getLoginUser(ServletUtils.getRequest()).getUser().getId();
-
     }
 }

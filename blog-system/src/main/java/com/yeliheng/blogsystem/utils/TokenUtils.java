@@ -30,12 +30,9 @@ public class TokenUtils {
     @Autowired
     private RedisUtils redisUtils;
 
-    @Autowired
-    private IUserService userService;
-
     //过期时间
     @Value("${token.expireTime}")
-    private long expireTime;
+    private int expireTime;
 
     // 令牌密钥
     @Value("${token.secret}")
@@ -45,32 +42,18 @@ public class TokenUtils {
 
     protected static final long MILLIS_MINUTE = 60 * MILLIS_SECOND;
 
-    public String createToken(LoginUser loginUser) {
+    public String createToken(LoginUser loginUser,boolean rememberMe) {
         String uuid = UUIDUtils.generateUUID();
-        setLoginUser(uuid,loginUser);
+        if(!rememberMe) {
+            setLoginUser(uuid,loginUser,expireTime);
+        }else {
+            setLoginUser(uuid,loginUser,10080);
+        }
+
         Map<String, Object> claims = new HashMap<>();
         claims.put(Constants.CLAIMS_KEY,uuid);
         return Jwts.builder().setClaims(claims)
-                .setExpiration(new Date(System.currentTimeMillis() + expireTime * MILLIS_MINUTE))
-                .signWith(SignatureAlgorithm.HS512, secret).compressWith(CompressionCodecs.GZIP).compact();
-    }
-
-    public boolean verifyToken(String token) {
-        try {
-            Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
-            return true;
-        } catch (SignatureException ex) {
-            logger.warn("Invalid JWT signature - {}", ex.getMessage());
-        } catch (MalformedJwtException ex) {
-            logger.warn("Invalid JWT token - {}", ex.getMessage());
-        } catch (ExpiredJwtException ex) {
-            logger.warn("Expired JWT token - {}", ex.getMessage());
-        } catch (UnsupportedJwtException ex) {
-            logger.warn("Unsupported JWT token - {}", ex.getMessage());
-        } catch (IllegalArgumentException ex) {
-            logger.warn("JWT claims string is empty - {}", ex.getMessage());
-        }
-        return false;
+            .signWith(SignatureAlgorithm.HS512, secret).compressWith(CompressionCodecs.GZIP).compact();
     }
 
     private Claims getClaims(String token) {
@@ -81,8 +64,8 @@ public class TokenUtils {
     }
 
 
-    public void setLoginUser(String uuid, LoginUser loginUser){
-        redisUtils.setCacheObject(uuid, loginUser, (int) expireTime, TimeUnit.MINUTES);
+    public void setLoginUser(String uuid, LoginUser loginUser,int expireTime){
+        redisUtils.setCacheObject(uuid, loginUser, expireTime, TimeUnit.MINUTES);
     }
 
     public void deleteLoginUser(String uuid){

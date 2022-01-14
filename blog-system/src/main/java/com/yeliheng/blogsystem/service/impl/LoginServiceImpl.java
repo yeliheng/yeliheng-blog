@@ -23,7 +23,7 @@ public class LoginServiceImpl implements ILoginService {
     private TokenUtils tokenUtils;
 
     @Override
-    public String login(String username, String password) {
+    public String login(String username, String password,boolean rememberMe) {
         Authentication authentication = null;
         try{
             authentication = authenticationManager
@@ -36,6 +36,6 @@ public class LoginServiceImpl implements ILoginService {
             throw new GeneralException("用户已锁定，请联系管理员");
         }
 
-        return tokenUtils.createToken(loginUser);
+        return tokenUtils.createToken(loginUser,rememberMe);
     }
 }

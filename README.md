@@ -137,18 +137,18 @@ yeliheng-blog
 
 | 开发环境 | 版本   |
 | -------- | ------ |
-| JDK      | 1.8    |
-| JRE      | 1.8    |
-| MySQL    | 5.7    |
-| Redis    | >= 3.x |
+| JDK      | 1.8  |
+| JRE      | 1.8  |
+| MySQL    | 5.7  |
+| Redis    | 6.x  |
 
 ### 前端
 
 | 开发环境 | 版本     |
 | -------- | -------- |
-| Vue      | >= 3     |
-| Node.js  | >= 14.18 |
-| npm      | >= 6.14  |
+| Vue      |  3     |
+| Node.js  | 14.x |
+| npm      | 6.x  |
 
 ## 快速开始
 
@@ -164,7 +164,7 @@ git clone https://github.com/yeliheng/yeliheng-blog.git
 
 3、导入idea或其他IDE，等待Maven导入所有的包。（此过程可能需要一些时间，部分国外仓库加载较慢，建议使用国内镜像源，具体步骤可自行在搜索引擎上查看）
 
-4、在blog-web包下新建配置文件，文件名为：**application-dev.yml**，并将**application-example.yml**中的内容复制到刚刚创建的**application-dev.yml**中，并将datasource中的数据源修改为自己的数据库信息。
+4、在blog-web包的resource目录下新建配置文件，文件名为：**application-dev.yml**，并将**application-example.yml**中的内容复制到刚刚创建的**application-dev.yml**中，并将datasource中的数据源修改为自己的数据库信息。
 
 5、导入数据库
 
@@ -180,7 +180,7 @@ git clone https://github.com/yeliheng/yeliheng-blog.git
 
 1、进入本项目中的blog-vue文件夹中，前端分为admin和blog两个模块，此处以admin模块为例进行说明。
 
-2、我们首先进入admin文件夹，admin文件夹中新建文件：**.env.development**，并将 **.env.example** 中的内容复制到刚刚创建的 **.env.development**中，并将**VUE_APP_BASE_API**地址修改为后端地址。若您没有改动后端地址则无需更改。
+2、**我们首先进入admin文件夹**，在admin文件夹中新建文件：**.env.development**，并将 **.env.example** 中的内容复制到刚刚创建的 **.env.development**中，并将**VUE_APP_BASE_API**地址修改为后端地址。若您没有改动后端地址则无需更改。
 
 3、执行如下指令安装所需依赖：
 

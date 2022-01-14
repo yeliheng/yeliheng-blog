@@ -22,8 +22,6 @@ public class PermissionUtils {
     @Autowired
     private TokenUtils tokenUtils;
     @Autowired
-    private UserUtils userUtils;
-    @Autowired
     private IPermissionService permissionService;
 
     /**

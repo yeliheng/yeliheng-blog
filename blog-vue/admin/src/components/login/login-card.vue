@@ -13,7 +13,7 @@
               <el-input type="password" placeholder="密码" autocomplete="off" v-model="loginForm.password" @keyup.enter="loginHandler"></el-input>
             </el-form-item>
             <div class="login-options">
-              <el-checkbox label="记住我" v-model="loginForm.rememberMe"></el-checkbox>
+              <el-checkbox label="7天内免登录" v-model="loginForm.rememberMe"></el-checkbox>
               <a href="" class="forgot-password">忘记密码?</a>
             </div>
             <el-form-item>
@@ -46,6 +46,7 @@ export default {
     const loginForm = reactive({
       username: "",
       password: "",
+      rememberMe: false,
     });
 
     const loginRules = {

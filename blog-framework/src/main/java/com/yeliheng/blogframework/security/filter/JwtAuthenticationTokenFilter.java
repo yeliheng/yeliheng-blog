@@ -29,23 +29,6 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
-        //获取请求头
-/*        final String header = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
-        if(header == null || !header.startsWith(Constants.TOKEN_PREFIX)){
-            filterChain.doFilter(httpServletRequest,httpServletResponse);
-            return;
-        }
-        String token = header.replace(Constants.TOKEN_PREFIX,"");
-        if(!tokenUtils.verifyToken(token)){
-            filterChain.doFilter(httpServletRequest,httpServletResponse);
-            return;
-        }
-        UsernamePasswordAuthenticationToken authentication = null;
-        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        authentication = new UsernamePasswordAuthenticationToken(tokenUtils.getUsername(token),token,authorities);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        filterChain.doFilter(httpServletRequest,httpServletResponse);*/
-
         LoginUser loginUser = tokenUtils.getLoginUser(httpServletRequest);
         if(StringUtils.isNotNull(loginUser)) {
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginUser,null, loginUser.getAuthorities());
