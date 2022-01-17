@@ -22,7 +22,7 @@ public class RegisterController {
     @Autowired
     private IRegisterService registerService;
 
-    @Value("${blogsystem.allow-register}")
+    @Value("${system.allow-register}")
     private boolean allowRegister;
 
     @PostMapping("register")

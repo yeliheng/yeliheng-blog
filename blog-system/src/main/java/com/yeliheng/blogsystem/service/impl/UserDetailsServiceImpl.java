@@ -25,8 +25,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if(user == null){
             throw new UsernameNotFoundException("用户" + username + "不存在");
         }
-        // 存放权限
-       // List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         return createLoginUser(user);
     }
 
