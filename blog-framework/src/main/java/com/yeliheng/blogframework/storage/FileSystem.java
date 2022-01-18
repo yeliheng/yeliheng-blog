@@ -19,6 +19,4 @@ public interface FileSystem {
      * @return 编码后的文件名
      */
     public String encodeFilename(String originalFileExt);
-
-
 }

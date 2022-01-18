@@ -34,8 +34,8 @@ public class TestController {
     public CommonResponse<Object> test(@RequestParam("file")MultipartFile file){
         String[] allowedExt = {"png","jpg","jpeg","gif"}; //设置允许的后缀
         Storage storage = new Storage("avatar"); //新建一个存储器
-        storage.upload(file,userUtils.getLoginUserId().toString(),allowedExt); //上传！
+        String path = storage.upload(file,userUtils.getLoginUserId().toString(),allowedExt); //上传！
 
-        return CommonResponse.success();
+        return CommonResponse.success(path);
     }
 }

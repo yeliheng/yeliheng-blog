@@ -8,7 +8,13 @@ public interface UserMapper {
 
     User selectUserByUserName(String username);
 
-    Long checkUsernameUnique(String username);
+    int checkUsernameUnique(String username);
+
+    User checkUpdateUsernameUnique(String username);
+
+    User checkEmailUnique(String email);
+
+    User checkPhoneUnique(String phone);
 
     int insertUser(User user);
 
