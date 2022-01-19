@@ -5,7 +5,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,15 +21,23 @@ public class User implements Serializable {
     @Id
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "用户名不能为空")
+    @Size(min = 4,max = 20,message = "用户名不能超过20个字符")
     private String username;
 
-    @NotBlank
     private String password;
 
+    @Size(max = 30, message = "昵称不能超过30个字符")
     private String nickname;
 
+    @Size(max = 11, message = "手机号不能超过11个字符")
     private String phone;
+
+    @Email(message = "邮箱格式不正确")
+    @Size(max = 30, message = "邮箱不能超过30个字符")
+    private String email;
+
+    private String avatar;
 
     private Boolean locked;
 
@@ -92,6 +103,22 @@ public class User implements Serializable {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public Boolean getLocked() {

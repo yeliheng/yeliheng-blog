@@ -50,7 +50,7 @@ public class UserController {
 
     @PreAuthorize("@perm.hasPerm('admin:users:edit')")
     @PutMapping
-    public CommonResponse<Object> update(@RequestBody User user) {
+    public CommonResponse<Object> update(@Validated @RequestBody User user) {
         userService.updateUser(user);
         return CommonResponse.success();
     }

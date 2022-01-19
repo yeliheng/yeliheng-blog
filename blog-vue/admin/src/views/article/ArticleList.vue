@@ -68,6 +68,7 @@
                         </el-tag>
                     </template>
                 </el-table-column>
+                <el-table-column property="views" label="阅读量" width="80" align="center" />
                 <el-table-column property="url" label="持久化链接" width="120" align="center"/>
                 <el-table-column property="createdAt" label="创建时间" width="150" align="center"/>
                 <el-table-column property="updatedAt" label="更新时间" width="150" align="center"/>

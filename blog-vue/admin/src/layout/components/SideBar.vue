@@ -8,7 +8,7 @@
             <div class="logo-container">
                 <span>YNetwork-后台管理</span>
             </div>
-            <template v-for="route of this.$store.state.permission.addRoutes">
+            <template v-for="route of this.$store.state.permission.menuRoutes">
                 <!-- 二级菜单标题 -->
                 <template v-if="route.name && route.children && !route.hidden">
                     <el-sub-menu :key="route.path" :index="route.path">
@@ -51,13 +51,13 @@ export default defineComponent({
         }
     }
 
-    const collapse = computed(() => 
+    const collapse = computed(() =>
         store.state.app.sidebarCollapse
     );
-    const isMobile = computed(() => 
+    const isMobile = computed(() =>
         store.state.app.isMobile
     );
- 
+
     const sidebarClosed = computed(() => store.state.app.sidebarClosed);
 
     let clientWidth:any = ref(document.body.clientWidth);
@@ -81,12 +81,12 @@ export default defineComponent({
     });
 
     onMounted(() => {
-        
+
         window.onresize = () => {
             clientWidth.value = document.body.clientWidth;
         }
     })
-    
+
     return {
       collapse,
       isMobile,
@@ -100,8 +100,8 @@ export default defineComponent({
 <style lang="scss" scoped>
 
 .side-bar-menu:not(.el-menu--collapse) {
-    width: 17.14rem; 
-    .logo-container{  
+    width: 17.14rem;
+    .logo-container{
         opacity: 1;
     }
 }
@@ -116,7 +116,7 @@ export default defineComponent({
         opacity: 0;
         height: 6.86rem;
         white-space: nowrap;
-    }  
+    }
 .side-bar-menu{
     border: 0px;
     i{
@@ -124,7 +124,7 @@ export default defineComponent({
         margin-right: 0.8rem;
         color: #666666;
     }
-    
+
 }
 .mobile{
     overflow: auto;

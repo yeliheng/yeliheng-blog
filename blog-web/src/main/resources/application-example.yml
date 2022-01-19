@@ -13,3 +13,11 @@ mybatis:
   configuration:
     #打印Sql
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+# 服务器配置
+server:
+  port: 8080
+# 系统设置
+system:
+  file-system:
+    # 文件上传绝对路径 例如：(Windows: D:/YNetwork/storage || Linux: /home/YNetwork/storage || MacOS: /Users/myUser/YNetwork/storage)
+    file-path: D:/YNetwork/storage

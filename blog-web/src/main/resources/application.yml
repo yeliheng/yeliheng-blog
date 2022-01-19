@@ -6,6 +6,10 @@ spring:
     web:
       resources:
         add-mappings: false
+    servlet:
+      multipart:
+        max-file-size: 50MB
+        max-request-size: 50MB
 server:
   error:
     whitelabel:
@@ -30,6 +34,11 @@ token:
   # 令牌请求头
   header: Authorization
 # 系统设置
-blogsystem:
+system:
   # 允许注册？
   allow-register: false
+  file-system:
+    # 允许最大的文件名长度
+    max-filename-length: 100
+    # 允许的文件大小(M)
+    max-file-size: 5

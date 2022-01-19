@@ -51,3 +51,4 @@ application-prod.yml
 application-test.yml
 docker-compose.yml
 dump.rdb
+/storage/

@@ -1,5 +1,7 @@
 package com.yeliheng.blogframework.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -34,13 +36,5 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
                 .contact(new Contact("Yeliheng", "https://www.yeliheng.com", "yeliheng00@gmail.com"))
                 .version("1.0")
                 .build();
-    }
-
-    @Override
-    protected void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("swagger-ui.html")
-                .addResourceLocations("classpath:/META-INF/resources/");
-        registry.addResourceHandler("/webjars/**")
-                .addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 }
