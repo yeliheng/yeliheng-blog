@@ -16,6 +16,9 @@
                 <el-form-item label="手机号: ">
                     <el-input v-model="searchParams.phone" placeholder="手机号"></el-input>
                 </el-form-item>
+              <el-form-item label="电子邮箱: ">
+                <el-input v-model="searchParams.email" placeholder="电子邮箱"></el-input>
+              </el-form-item>
                 <el-form-item label="用户状态: ">
                     <el-select v-model="searchParams.locked" clearable>
                         <el-option
@@ -31,7 +34,7 @@
                     <el-button type="primary" @click="searchUsers">搜索</el-button>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" @click="userFormVisible = true">添加用户</el-button>
+                    <el-button type="primary" @click="userForm = {};userFormVisible = true;">添加用户</el-button>
                 </el-form-item>
             </el-form>
                 
@@ -56,8 +59,14 @@
                         <span v-if="scope.row.phone == null"> - </span>
                         {{scope.row.phone}}
                     </template>
-                </el-table-column>    
-                <el-table-column property="roleList" label="用户角色" width="170" align="center">
+                </el-table-column>
+              <el-table-column property="email" label="电子邮箱" width="160" align="center">
+                <template #default="scope">
+                  <span v-if="scope.row.email == null"> - </span>
+                  {{scope.row.email}}
+                </template>
+              </el-table-column>
+              <el-table-column property="roleList" label="用户角色" width="170" align="center">
                     <template #default="scope">
                         <span v-if="scope.row.id == 1"> <el-tag type="success">超级管理员</el-tag></span>
                         <span v-if="scope.row.roleList == '' && scope.row.id != 1"> - </span>
@@ -117,12 +126,15 @@
             <el-form-item label="密码: " label-width="80px" prop="password" required>
                 <el-input show-password autocomplete="off" v-model="userForm.password"></el-input>
             </el-form-item>
-            <el-form-item label="昵称: " label-width="80px">
+            <el-form-item label="昵称: " label-width="80px" prop="nickname">
                 <el-input autocomplete="off" v-model="userForm.nickname"></el-input>
             </el-form-item>            
-            <el-form-item label="手机号: " label-width="80px">
+            <el-form-item label="手机号: " label-width="80px" prop="phone">
                 <el-input autocomplete="off" v-model="userForm.phone"></el-input>
             </el-form-item>
+              <el-form-item label="电子邮箱: " label-width="80px" prop="email">
+                <el-input autocomplete="off" v-model="userForm.email"></el-input>
+              </el-form-item>
             <el-form-item label="角色: " label-width="80px">
                 <el-select placeholder="请选择一个角色" v-model="userForm.roles" multiple>
                     <el-option
@@ -157,11 +169,14 @@
                 <el-form-item label="密码: " label-width="80px" prop="password">
                     <el-input show-password placeholder="密码未更改" autocomplete="off" v-model="userForm.password"></el-input>
                 </el-form-item>
-                <el-form-item label="昵称: " label-width="80px">
+                <el-form-item label="昵称: " label-width="80px" prop="nickname">
                     <el-input autocomplete="off" v-model="userForm.nickname"></el-input>
                 </el-form-item>            
-                <el-form-item label="手机号: " label-width="80px">
+                <el-form-item label="手机号: " label-width="80px" prop="phone">
                     <el-input autocomplete="off" v-model="userForm.phone"></el-input>
+                </el-form-item>
+                <el-form-item label="电子邮箱: " label-width="80px" prop="email">
+                  <el-input autocomplete="off" v-model="userForm.email"></el-input>
                 </el-form-item>
                 <el-form-item label="角色: " label-width="80px">
                     <el-select placeholder="请选择一个角色" v-model="userForm.roles" multiple>
@@ -212,17 +227,17 @@ export default {
 
         const formRules = {
             username: [
-            {
-                required: true,
-                message: '请输入用户名',
-                trigger: 'blur',
-            },
-            {
-                min: 5,
-                max: 12,
-                message: '用户名长度必须在5-12个字符之间',
-                trigger: 'blur',
-            }
+              {
+                  required: true,
+                  message: '请输入用户名',
+                  trigger: 'blur',
+              },
+              {
+                  min: 4,
+                  max: 20,
+                  message: '用户名长度必须在4-20个字符之间',
+                  trigger: 'blur',
+              }
             ],
             password: [
             {
@@ -235,32 +250,86 @@ export default {
                 max: 18,
                 message: '密码长度必须在6-18个字符之间',
                 trigger: 'blur',
-            }
+            },
+            ],
+            nickname: [
+              {
+                max: 30,
+                message: '昵称不能超过30个字符!',
+                trigger: 'blur',
+              }
+            ],
+            phone: [
+              {
+                pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/,
+                message: "手机号码格式不正确!",
+                trigger: "blur"
+              }
+            ],
+            email: [
+              {
+                max: 30,
+                message: "邮箱不能超过30个字符",
+                trigger: ["blur", "change"]
+              },
+              {
+                type: "email",
+                message: "邮箱格式不正确",
+                trigger: ["blur", "change"]
+              }
             ],
         };
 
         const editFormRules = {
-            username: [
+          username: [
             {
                 required: true,
                 message: '请输入用户名',
                 trigger: 'blur',
             },
             {
-                min: 5,
-                max: 12,
-                message: '用户名长度必须在5-12个字符之间',
-                trigger: 'blur',
+              min: 4,
+              max: 20,
+              message: '用户名长度必须在4-20个字符之间',
+              trigger: 'blur',
             }
-            ],
-            password: [
+          ],
+          password: [
             {
                 min: 6,
                 max: 18,
                 message: '密码长度必须在6-18个字符之间',
                 trigger: 'blur',
             }
-            ],
+          ],
+          nickname: [
+            {
+              max: 30,
+              message: '昵称不能超过30个字符!',
+              trigger: 'blur',
+            }
+          ],
+          phone: [
+            {
+              pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/,
+              message: "请输入正确的手机号码",
+              trigger: "blur"
+            }
+          ],
+          email: [
+            {
+              max: 30,
+              message: "邮箱不能超过30个字符!",
+              trigger: ["blur", "change"]
+            },
+            {
+              type: "email",
+              message: "邮箱格式不正确",
+              trigger: ["blur", "change"]
+            }
+          ]
+
+
         }
 
         const getLockedDict = (locked) => {
@@ -307,6 +376,7 @@ export default {
             username: '',
             nickname: '', 
             phone: '',
+            email: '',
             locked: '',
         });
 
@@ -316,6 +386,7 @@ export default {
           password: '',
           nickname: '',
           phone: '',
+          email: '',
           roles: [],
           locked: 0
         });
@@ -363,6 +434,7 @@ export default {
                 username: searchParams.value.username,
                 nickname: searchParams.value.nickname,
                 phone: searchParams.value.phone,
+                email: searchParams.value.email,
                 locked: searchParams.value.locked,
 
             }).then((res: any) => {
@@ -384,6 +456,7 @@ export default {
         }
 
         const handleEditClick = (row) => {
+            userForm.value = {};
             const formData = JSON.parse(JSON.stringify(row)); //消除row的响应性
             //获取角色id
             let roleIds = [];
@@ -405,7 +478,6 @@ export default {
                         if(!res.errCode) {
                             ElMessage.success('更新用户成功!');
                             userEditFormVisible.value = false;
-                            userForm.value = {};
                             listUsers();
                         } else {
                             ElMessage.error(res.detail);
@@ -427,7 +499,6 @@ export default {
                         if(!res.errCode){
                             ElMessage.success('新建用户成功!');
                             userFormVisible.value = false;
-                            userForm.value = {};
                             listUsers();
                         }else{
                             ElMessage.error(res.detail);

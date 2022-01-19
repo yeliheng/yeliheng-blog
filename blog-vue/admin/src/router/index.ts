@@ -10,15 +10,13 @@ export const constantRoutes: Array<RouteRecordRaw> = [
     component: Login
   },
   {
-    path: '',
+    path: '/',
+    redirect: '/dashboard',
+  },
+  {
+    path: '/',
     component: Layout,
-    redirect: 'dashboard',
-    children: [
-      {
-        path: 'dashboard',
-        component: () => import('@/views/Home.vue'),
-      }
-    ]
+    name: 'ParentRoute'
   },
   
 ];

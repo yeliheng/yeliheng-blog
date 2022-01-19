@@ -27,14 +27,14 @@ public class User implements Serializable {
 
     private String password;
 
-    @Size(max = 30, message = "昵称不能超过20个字符")
+    @Size(max = 30, message = "昵称不能超过30个字符")
     private String nickname;
 
     @Size(max = 11, message = "手机号不能超过11个字符")
     private String phone;
 
     @Email(message = "邮箱格式不正确")
-    @Size(max = 50, message = "邮箱不能超过50个字符")
+    @Size(max = 30, message = "邮箱不能超过30个字符")
     private String email;
 
     private String avatar;

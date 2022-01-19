@@ -4,17 +4,14 @@ import NotFound from '@/views/error/404.vue';
 import router, { constantRoutes } from "@/router";
    const state = {
         routes: [],
-        addRoutes: [],
+        menuRoutes: [],
         defaultRoutes: [],
     };
 
     const mutations = {
         SET_ROUTES: (state, routes) => {
-            state.addRoutes = routes;
+            state.menuRoutes = routes;
             state.routes = constantRoutes.concat(routes)
-        },
-        SET_DEFAULT_ROUTES: (state, routes) => {
-            state.defaultRoutes = constantRoutes.concat(routes)
         },
 
     };
@@ -26,26 +23,30 @@ import router, { constantRoutes } from "@/router";
                     const routerList:any = res.data;
 
                     routerList.forEach((item) => {
-                        
-                        //添加父菜单路由
+
+                        //遍历出父菜单，并添加到侧边栏
                         if(item.icon != null){
                             item.icon = "fa " + item.icon + " fa-fw";
                         }
+                        //判断是否是父路由
                         if (item.component == "Layout") {
                             item.component = Layout;
+                        }else {
+                            //若是顶层路由，则直接加载组件
+                            item.icon = "fa " + item.icon + " fa-fw";
+                            item.component = loadView(item.component);
+                            router.addRoute('ParentRoute',item);
                         }
-                        
+
                         if(item.children && item.children.length > 0) {
                             item.children.forEach(route => {
                                 //添加子菜单路由
-                                route.icon = "fa " + route.icon + " fa-fw";                            
+                                route.icon = "fa " + route.icon + " fa-fw";
                                 route.component = loadView(route.component);
-                                
+                                router.addRoute('ParentRoute',route);
                             });
-                            
-                        }
 
-                        router.addRoute(item);
+                        }
                     });
 
                     router.addRoute({
@@ -53,7 +54,7 @@ import router, { constantRoutes } from "@/router";
                         name: "404",
                         component: NotFound,
                     });
-                      
+
                     commit("SET_ROUTES",routerList);
                     resolve(routerList);
                 });

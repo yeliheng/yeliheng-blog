@@ -129,7 +129,6 @@ public class UserServiceImpl implements IUserService {
         deleteUserRole(user);
         //添加角色关联
         insertUserRole(user);
-        //TODO: 刷新缓存
     }
 
     /**
@@ -213,7 +212,9 @@ public class UserServiceImpl implements IUserService {
             throw new GeneralException("修改失败,手机号已存在!");
         if(userMapper.updateUser(user) <= 0)
             throw new UnexpectedException();
-        //TODO: 刷新缓存
+        //刷新缓存
+        loginUser.setUser(user);
+        tokenUtils.refreshLoginUser(loginUser);
     }
 
     /**
@@ -228,12 +229,15 @@ public class UserServiceImpl implements IUserService {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         if(!bCryptPasswordEncoder.matches(oldPassword,loginUser.getPassword()))
             throw new GeneralException("旧密码错误!");
+        String newEncryptedPassword = encryptPassword(newPassword);
         User user = new User();
         user.setId(loginUser.getUser().getId());
-        user.setPassword(encryptPassword(newPassword));
+        user.setPassword(newEncryptedPassword);
         if(userMapper.updateUser(user) <= 0)
             throw new UnexpectedException();
-        //TODO: 刷新缓存
+        //刷新缓存
+        loginUser.getUser().setPassword(newEncryptedPassword);
+        tokenUtils.refreshLoginUser(loginUser);
     }
 
 
