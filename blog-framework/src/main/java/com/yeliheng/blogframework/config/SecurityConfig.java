@@ -99,7 +99,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         //标签
                         "/tags","/tags/**",
                         //站点信息
-                        "/site","/site/**"
+                        "/site","/site/**",
+                        //头像静态资源
+                        "/avatar/**"
                 ).permitAll()
                 // 除上面外的所有请求全部需要鉴权认证
                 .anyRequest().authenticated()

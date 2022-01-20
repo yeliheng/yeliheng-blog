@@ -5,6 +5,7 @@ import { ElMessage } from "element-plus";
 const state = {
     token: getToken(),
     username: '',
+    profile: {},
     roles: [],
     permissions: [],
 };
@@ -21,6 +22,9 @@ const mutations = {
     },
     SET_PERMISSIONS: (state,permissions) =>{
          state.permissions = permissions;
+    },
+    SET_PROFILE: (state,profile) => {
+        state.profile = profile;
     }
 };
 

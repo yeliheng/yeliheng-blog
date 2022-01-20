@@ -2,8 +2,10 @@ package com.yeliheng.blogweb.controller;
 
 import com.yeliheng.blogcommon.exception.RequestFormatException;
 import com.yeliheng.blogcommon.exception.UnexpectedException;
+import com.yeliheng.blogcommon.utils.ServletUtils;
 import com.yeliheng.blogcommon.utils.StringUtils;
 import com.yeliheng.blogframework.storage.Storage;
+import com.yeliheng.blogsystem.domain.LoginUser;
 import com.yeliheng.blogsystem.domain.User;
 import com.yeliheng.blogsystem.service.IUserService;
 import com.yeliheng.blogsystem.utils.TokenUtils;
@@ -62,6 +64,10 @@ public class ProfileController {
         User user = new User();
         user.setAvatar(path);
         userService.updateProfile(user);
+        //刷新缓存
+        LoginUser loginUser = tokenUtils.getLoginUser(ServletUtils.getRequest());
+        loginUser.getUser().setAvatar(path);
+        tokenUtils.refreshLoginUser(loginUser);
         return CommonResponse.success(path);
     }
 }

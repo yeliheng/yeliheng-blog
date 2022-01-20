@@ -16,7 +16,7 @@
             </div> 
             <template #dropdown>
                 <el-dropdown-menu>
-                    <el-dropdown-item command="user">个人中心</el-dropdown-item>
+                    <el-dropdown-item command="user" @click="profileClick()">个人中心</el-dropdown-item>
                     <el-dropdown-item divided command="logout">退出登录</el-dropdown-item>
                 </el-dropdown-menu>
             </template>
@@ -50,6 +50,10 @@ export default {
             
         }
 
+        const profileClick = () => {
+          router.push('/users/profile');
+        };
+
         
         const collapse = computed(() => 
             store.state.app.sidebarCollapse
@@ -71,6 +75,7 @@ export default {
             collapse,
             handleCommand,
             username,
+            profileClick,
         }
     }
 }
