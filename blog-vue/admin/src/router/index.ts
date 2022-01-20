@@ -2,6 +2,7 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import Login from '@/views/login/Login.vue';
 
 import Layout from '@/layout/index.vue';
+import Home from '@/views/Home.vue';
 import NotFound from '../views/error/404.vue';
 
 export const constantRoutes: Array<RouteRecordRaw> = [
@@ -12,6 +13,7 @@ export const constantRoutes: Array<RouteRecordRaw> = [
   {
     path: '/',
     redirect: '/dashboard',
+    component: Home
   },
   {
     path: '/',

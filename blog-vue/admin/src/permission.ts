@@ -25,7 +25,7 @@ router.beforeEach((to,from, next) =>{
             store.dispatch('GetUserInfo').then(() => {
                 //获取路由信息
                 store.dispatch('GenerateRoutes').then(routes => {
-                    router.addRoute(routes);            
+                    //router.addRoute(routes);
                     next({...to,replace:true});
                 })
             }).catch(error => {
