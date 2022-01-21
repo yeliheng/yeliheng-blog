@@ -15,6 +15,7 @@ import com.yeliheng.blogsystem.mapper.UserMapper;
 import com.yeliheng.blogsystem.mapper.UserRoleMapper;
 import com.yeliheng.blogsystem.service.IUserService;
 import com.yeliheng.blogsystem.utils.TokenUtils;
+import com.yeliheng.blogsystem.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,7 @@ public class UserServiceImpl implements IUserService {
     private UserRoleMapper userRoleMapper;
     @Autowired
     private TokenUtils tokenUtils;
+
 
     //生成强哈希密码
     private String encryptPassword(String password){
@@ -203,9 +205,10 @@ public class UserServiceImpl implements IUserService {
     public void updateProfile(User user) {
         LoginUser loginUser = tokenUtils.getLoginUser(ServletUtils.getRequest());
         User setUser = loginUser.getUser();
+        //以下三个属性不允许修改
         user.setId(setUser.getId());
         user.setUsername(setUser.getUsername());
-        user.setPassword(null);
+        user.setPassword(setUser.getPassword());
         if(StringUtils.isNotEmpty(user.getEmail()) && !checkEmailUnique(user))
             throw new GeneralException("修改失败,邮箱已存在!");
         if(StringUtils.isNotEmpty(user.getPhone()) && !checkPhoneUnique(user))
@@ -213,7 +216,7 @@ public class UserServiceImpl implements IUserService {
         if(userMapper.updateUser(user) <= 0)
             throw new UnexpectedException();
         //刷新缓存
-        loginUser.setUser(user);
+        loginUser.setUser(userMapper.selectUserByUserId(loginUser.getUser().getId()));
         tokenUtils.refreshLoginUser(loginUser);
     }
 
@@ -236,7 +239,7 @@ public class UserServiceImpl implements IUserService {
         if(userMapper.updateUser(user) <= 0)
             throw new UnexpectedException();
         //刷新缓存
-        loginUser.getUser().setPassword(newEncryptedPassword);
+        loginUser.setUser(userMapper.selectUserByUserId(loginUser.getUser().getId()));
         tokenUtils.refreshLoginUser(loginUser);
     }
 

@@ -16,6 +16,8 @@ public interface UserMapper {
 
     User checkPhoneUnique(String phone);
 
+    User selectUserByUserId(Long id);
+
     int insertUser(User user);
 
     int updateUser(User user);
@@ -25,4 +27,5 @@ public interface UserMapper {
     List<User> selectUserList(User user);
 
     int deleteUserById(Long id);
+
 }
