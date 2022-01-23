@@ -11,7 +11,8 @@
 
         <el-dropdown class="user-name" trigger="click" @command="handleCommand">
             <div class="user-avater">
-                <img src="../../assets/images/avater.jpg"/>
+              <img :src="avatar" class="user-avatar" v-if="avatar != null"/>
+              <img src="../../assets/images/avatar_default.svg" v-if="avatar == null" class="user-avatar">
                 <i class="el-icon-caret-bottom"></i>
             </div> 
             <template #dropdown>
@@ -36,6 +37,12 @@ export default {
         const store = useStore();
 
         const router = useRouter();
+
+        const user = store.state.user;
+        let avatar = null;
+        if(user.profile.avatar) {
+          avatar = process.env.VUE_APP_BASE_API + user.profile.avatar;
+        }
     
         const username = store.state.user.username;
 
@@ -76,6 +83,8 @@ export default {
             handleCommand,
             username,
             profileClick,
+            user,
+            avatar
         }
     }
 }

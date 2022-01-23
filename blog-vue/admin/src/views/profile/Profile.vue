@@ -5,9 +5,10 @@
         <div class="card-header">
           <span>我的资料卡</span>
         </div>
-        <div class="avatar-container">
+        <div class="avatar-container" @click="openCropper()">
           <img :src="avatar" class="user-avatar" v-if="avatar != null"/>
           <img src="../../assets/images/avatar_default.svg" v-if="avatar == null" class="user-avatar">
+
         </div>
       </template>
 
@@ -58,7 +59,7 @@
         </div>
         <el-tabs v-model="activeTab">
           <el-tab-pane label="我的资料" name="profile">
-            <el-form ref="profileForm" :model="userForm" :rules="profileRules" label-width="6rem">
+            <el-form ref="profileForm" :model="userForm" :rules="profileRules" label-width="8rem">
               <el-form-item label="昵称: " prop="nickname">
                 <el-input v-model="userForm.nickname" placeholder="请输入昵称" maxlength="30" />
               </el-form-item>
@@ -76,7 +77,7 @@
             </el-form>
           </el-tab-pane>
           <el-tab-pane label="修改密码" name="resetPassword">
-            <el-form ref="pwdForm" :model="passwordForm" :rules="resetPasswordRules" label-width="6rem">
+            <el-form ref="pwdForm" :model="passwordForm" :rules="resetPasswordRules" label-width="8rem">
               <el-form-item label="旧密码" prop="oldPassword">
                 <el-input v-model="passwordForm.oldPassword" placeholder="请输入旧密码" type="password"/>
               </el-form-item>
@@ -210,6 +211,10 @@ export default {
       router.back();
     };
 
+    const openCropper = () => {
+      console.log('打开裁剪框');
+    }
+
 
     return {
       user,
@@ -224,8 +229,11 @@ export default {
       resetPasswordRules,
       pwdForm,
       profileForm,
+      openCropper,
 
     }
+  },
+  components: {
   }
 }
 </script>
@@ -237,7 +245,7 @@ export default {
   }
   .edit-profile-card {
     margin-left: 3rem;
-    width: 34rem;
+    width: 35vw;
   }
   .card-header {
     display: flex;
@@ -258,6 +266,7 @@ export default {
       margin-left: 1rem;
     }
   }
+
 .avatar-container{
   display: flex;
   justify-content: center;
@@ -269,12 +278,29 @@ export default {
   }
 }
 
+.avatar-container:hover:after {
+  content: ' + ';
+  position: absolute;
+  margin-top: 0.3rem;
+  width: 9.2rem;
+  height: 9.1rem;
+  color: #eee;
+  background: rgba(0, 0, 0, 0.5);
+  font-size: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  line-height: 110px;
+  border-radius: 50%;
+}
+
   .item {
     margin-bottom: 18px;
   }
 
   .box-card {
-    width: 34rem;
+    width: 35vw;
   }
 
   /* 移动端 */

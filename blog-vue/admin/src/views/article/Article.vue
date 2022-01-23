@@ -6,8 +6,8 @@
             <div class="line"></div>
             <span>发布文章</span>
             <div class="article-btn">
-                    <span>设为私密</span>
-                    <el-switch class="private-sw" v-model="article.visible" active-value="0" inactive-value="1"/>
+                <span>设为私密</span>
+                <el-switch class="private-sw" v-model="article.visible" active-value="0" inactive-value="1"/>
                 <el-button class="publish-btn" type="primary" @click="publishArticle">保存并发布</el-button>
             </div>
         </div>
