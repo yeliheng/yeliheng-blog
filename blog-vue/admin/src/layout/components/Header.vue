@@ -11,12 +11,13 @@
 
         <el-dropdown class="user-name" trigger="click" @command="handleCommand">
             <div class="user-avater">
-                <img src="../../assets/images/avater.jpg"/>
+              <img :src="avatar" class="user-avatar" v-if="avatar != null"/>
+              <img src="../../assets/images/avatar_default.svg" v-if="avatar == null" class="user-avatar">
                 <i class="el-icon-caret-bottom"></i>
             </div> 
             <template #dropdown>
                 <el-dropdown-menu>
-                    <el-dropdown-item command="user">个人中心</el-dropdown-item>
+                    <el-dropdown-item command="user" @click="profileClick()">个人中心</el-dropdown-item>
                     <el-dropdown-item divided command="logout">退出登录</el-dropdown-item>
                 </el-dropdown-menu>
             </template>
@@ -36,6 +37,12 @@ export default {
         const store = useStore();
 
         const router = useRouter();
+
+        const user = store.state.user;
+        let avatar = null;
+        if(user.profile.avatar) {
+          avatar = process.env.VUE_APP_BASE_API + user.profile.avatar;
+        }
     
         const username = store.state.user.username;
 
@@ -49,6 +56,10 @@ export default {
             }
             
         }
+
+        const profileClick = () => {
+          router.push('/users/profile');
+        };
 
         
         const collapse = computed(() => 
@@ -71,6 +82,9 @@ export default {
             collapse,
             handleCommand,
             username,
+            profileClick,
+            user,
+            avatar
         }
     }
 }

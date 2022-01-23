@@ -22,10 +22,11 @@ router.beforeEach((to,from, next) =>{
 
            if(store.getters.roles.length === 0){ 
             //获取用户信息
-            store.dispatch('GetUserInfo').then(() => {
+            store.dispatch('GetUserInfo').then((res: any) => {
+                store.commit("SET_PROFILE",res.data.user);
                 //获取路由信息
                 store.dispatch('GenerateRoutes').then(routes => {
-                    router.addRoute(routes);            
+                    //router.addRoute(routes);
                     next({...to,replace:true});
                 })
             }).catch(error => {
