@@ -168,7 +168,7 @@ git clone https://github.com/yeliheng/yeliheng-blog.git
 
 5、导入数据库
 
-将项目根目录下的**yeliheng-blog.sql**文件导入到数据库中。
+将项目sql文件夹中的**yeliheng-blog.sql**文件导入到数据库中。
 
 6、准备完成，开始运行项目！
 

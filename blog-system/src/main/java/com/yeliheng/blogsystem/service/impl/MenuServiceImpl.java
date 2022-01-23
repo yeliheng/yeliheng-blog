@@ -32,7 +32,7 @@ public class MenuServiceImpl implements IMenuService {
      */
     @Override
     public void addMenu(Menu menu) {
-        menu.setUserId(userUtils.getLoginUserId());
+       menu.setUserId(userUtils.getLoginUserId());
        int rows = menuMapper.addMenu(menu);
        if(rows <= 0) throw new InternalServerException("新增菜单失败，未知错误");
 
@@ -80,16 +80,15 @@ public class MenuServiceImpl implements IMenuService {
     public List<Menu> buildMenuTree(List<Menu> menuList) {
         List<Menu> resultList = new ArrayList<>();
         List<Long> temp = new ArrayList<>();
-        for(Menu item : menuList) {
-            temp.add(item.getId());
-        }
-        for(Iterator<Menu> iterator = menuList.iterator();iterator.hasNext();) {
-            Menu menu = iterator.next();
-            if(!temp.contains(menu.getParentId())) {
-                recursionFn(menuList,menu);
+        menuList.forEach(Menu -> temp.add(Menu.getId()));
+
+        for (Menu menu : menuList) {
+            if (!temp.contains(menu.getParentId())) {
+                recursionFn(menuList, menu);
                 resultList.add(menu);
             }
         }
+
         if(resultList.isEmpty())
             resultList = menuList;
         return resultList;
@@ -133,10 +132,9 @@ public class MenuServiceImpl implements IMenuService {
 
     public List<Menu> getChildPerms(List<Menu> list,int parentId){
         List<Menu> treeList = new ArrayList<>();
-        for (Iterator<Menu> iterator = list.iterator(); iterator.hasNext();){
-            Menu t = iterator.next();
-            if(t.getParentId() == parentId){
-                recursionFn(list,t);
+        for (Menu t : list) {
+            if (t.getParentId() == parentId) {
+                recursionFn(list, t);
                 treeList.add(t);
             }
         }
@@ -154,13 +152,9 @@ public class MenuServiceImpl implements IMenuService {
         // 得到子节点列表
         List<Menu> childList = getChildList(list, t);
         t.setChildren(childList);
-        for (Menu tChild : childList)
-        {
-            if (hasChild(list, tChild))
-            {
-                recursionFn(list, tChild);
-            }
-        }
+        childList.stream()
+                .filter(Menu -> hasChild(list, Menu))
+                .forEach(Menu -> {recursionFn(list, Menu);});
     }
 
     /**
@@ -169,12 +163,8 @@ public class MenuServiceImpl implements IMenuService {
     private List<Menu> getChildList(List<Menu> list, Menu t)
     {
         List<Menu> tlist = new ArrayList<>();
-        Iterator<Menu> it = list.iterator();
-        while (it.hasNext())
-        {
-            Menu n = it.next();
-            if (n.getParentId().longValue() == t.getId().longValue())
-            {
+        for (Menu n : list) {
+            if (n.getParentId().longValue() == t.getId().longValue()) {
                 tlist.add(n);
             }
         }
