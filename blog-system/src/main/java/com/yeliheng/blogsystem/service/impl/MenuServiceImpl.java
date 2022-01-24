@@ -61,6 +61,17 @@ public class MenuServiceImpl implements IMenuService {
     }
 
     /**
+     * 获取菜单列表
+     *
+     * @param menu 菜单实体
+     * @return 菜单列表
+     */
+    @Override
+    public List<Menu> getMenuList(Menu menu) {
+        return menuMapper.getMenuList(menu);
+    }
+
+    /**
      * 获取前端选择所需的菜单树
      * @return 菜单树形列表
      */
@@ -202,6 +213,11 @@ public class MenuServiceImpl implements IMenuService {
         return routerList;
     }
 
+    /**
+     * 通过角色Id获取菜单Id
+     * @param roleId 角色id
+     * @return 菜单id
+     */
     @Override
     public List<Long> getMenuIdsByRoleId(Long roleId) {
         return menuMapper.getMenuIdsByRoleId(roleId);

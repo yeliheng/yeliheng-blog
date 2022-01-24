@@ -4,6 +4,9 @@
             :class="{mobile: isMobile,close: sidebarClosed,}"
             :collapse="collapse"
             router
+            background-color="#324157"
+            text-color="#bfcbd9"
+            active-text-color="#20a0ff"
         >
             <div class="logo-container">
                 <span>YNetwork-后台管理</span>
@@ -112,7 +115,7 @@ export default defineComponent({
         font-size: 1.14rem;
         font-family: Source Han Sans CN;
         font-weight: bold;
-        color: #666666;
+        color: #fff;
         opacity: 0;
         height: 6.86rem;
         white-space: nowrap;
@@ -122,9 +125,9 @@ export default defineComponent({
     i{
         margin-bottom: 0.21rem;
         margin-right: 0.8rem;
-        color: #666666;
+       // color: #666666;
     }
-
+    height: 100%;
 }
 .mobile{
     overflow: auto;
@@ -148,12 +151,12 @@ export default defineComponent({
 }
 
 .menu-title{
-    color: #666666;
+    //color: #666666;
     font-weight: bold;
 }
 .menu-item-title{
 
-    color: #666666;
+    //color: #666666;
 }
 
 </style>

@@ -27,10 +27,9 @@
 </template>
 
 <script>
-import { onMounted,computed } from 'vue';
+import { computed } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
-import Cookies from 'js-cookie';
 import { logout } from '@/api/login';
 export default {
     setup(){
@@ -67,7 +66,7 @@ export default {
         );
 
         const handleCommand = (command) => {
-            if(command == "logout"){
+            if(command === "logout"){
                 store.dispatch('Logout').then(() => {
                     router.push('/login');
                 }).catch(() => {

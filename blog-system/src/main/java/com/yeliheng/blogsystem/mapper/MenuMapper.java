@@ -18,5 +18,9 @@ public interface MenuMapper {
 
     List<Menu> getMenus();
 
+    List<Menu> getMenuList(Menu menu);
+
     List<Long> getMenuIdsByRoleId(Long roleId);
+
+
 }
