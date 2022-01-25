@@ -12,6 +12,8 @@ public interface MenuMapper {
 
     int deleteById(Long menuId);
 
+    int checkMenuAllowed(Long menuId);
+
     List<String> getMenuPermissionByUserId(Long userId);
 
     List<Menu> getMenusByUserId(Long userId);

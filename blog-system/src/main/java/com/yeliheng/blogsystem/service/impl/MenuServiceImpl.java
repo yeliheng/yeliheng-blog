@@ -56,6 +56,8 @@ public class MenuServiceImpl implements IMenuService {
      */
     @Override
     public void deleteMenuById(Long menuId) {
+        if(menuMapper.checkMenuAllowed(menuId) > 0)
+            throw new GeneralException("删除失败，请先删除所有子菜单");
         int rows = menuMapper.deleteById(menuId);
         if(rows <= 0) throw new GeneralException("删除失败，菜单可能不存在");
     }
