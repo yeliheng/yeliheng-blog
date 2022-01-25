@@ -12,11 +12,17 @@ public interface MenuMapper {
 
     int deleteById(Long menuId);
 
+    int checkMenuAllowed(Long menuId);
+
     List<String> getMenuPermissionByUserId(Long userId);
 
     List<Menu> getMenusByUserId(Long userId);
 
     List<Menu> getMenus();
 
+    List<Menu> getMenuList(Menu menu);
+
     List<Long> getMenuIdsByRoleId(Long roleId);
+
+
 }

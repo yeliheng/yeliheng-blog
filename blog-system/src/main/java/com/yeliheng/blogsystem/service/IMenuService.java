@@ -32,6 +32,13 @@ public interface IMenuService {
     void deleteMenuById(Long menuId);
 
     /**
+     * 获取菜单列表
+     * @param menu 菜单实体
+     * @return 菜单列表
+     */
+    List<Menu> getMenuList(Menu menu);
+
+    /**
      *
      * 获取前端选择所需的菜单树
      * @return 菜单树形列表
@@ -68,6 +75,13 @@ public interface IMenuService {
      */
     List<Router> buildMenus(List<Menu> menuList);
 
+    /**
+     * 通过角色Id获取菜单Id
+     * @param roleId 角色id
+     * @return 菜单id
+     */
     List<Long> getMenuIdsByRoleId(Long roleId);
+
+
 
 }

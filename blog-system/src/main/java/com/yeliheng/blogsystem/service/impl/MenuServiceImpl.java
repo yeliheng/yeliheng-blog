@@ -56,8 +56,21 @@ public class MenuServiceImpl implements IMenuService {
      */
     @Override
     public void deleteMenuById(Long menuId) {
+        if(menuMapper.checkMenuAllowed(menuId) > 0)
+            throw new GeneralException("删除失败，请先删除所有子菜单");
         int rows = menuMapper.deleteById(menuId);
         if(rows <= 0) throw new GeneralException("删除失败，菜单可能不存在");
+    }
+
+    /**
+     * 获取菜单列表
+     *
+     * @param menu 菜单实体
+     * @return 菜单列表
+     */
+    @Override
+    public List<Menu> getMenuList(Menu menu) {
+        return menuMapper.getMenuList(menu);
     }
 
     /**
@@ -202,6 +215,11 @@ public class MenuServiceImpl implements IMenuService {
         return routerList;
     }
 
+    /**
+     * 通过角色Id获取菜单Id
+     * @param roleId 角色id
+     * @return 菜单id
+     */
     @Override
     public List<Long> getMenuIdsByRoleId(Long roleId) {
         return menuMapper.getMenuIdsByRoleId(roleId);

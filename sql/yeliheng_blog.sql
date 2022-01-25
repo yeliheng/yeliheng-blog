@@ -167,8 +167,8 @@ CREATE TABLE `menu` (
   `user_id` bigint(20) DEFAULT NULL COMMENT '创建者id',
   `parent_id` bigint(20) DEFAULT '0' COMMENT '父菜单id',
   `menu_name` varchar(255) NOT NULL COMMENT '菜单名称',
-  `order_num` int(11) DEFAULT '0' COMMENT '排序',
-  `path` varchar(255) DEFAULT NULL COMMENT 'URL',
+  `order_num` int(11) DEFAULT '100' COMMENT '排序',
+  `path` varchar(255) DEFAULT '/#' COMMENT 'URL',
   `component` varchar(255) DEFAULT 'Home' COMMENT '组件地址',
   `hidden` tinyint(1) DEFAULT '0' COMMENT '可见性',
   `permission` varchar(255) DEFAULT NULL COMMENT '菜单权限',
@@ -176,43 +176,42 @@ CREATE TABLE `menu` (
   `created_at` timestamp NULL DEFAULT NULL COMMENT '创建时间',
   `updated_at` timestamp NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of menu
 -- ----------------------------
 BEGIN;
 INSERT INTO `menu` VALUES (1, 1, 0, '首页', 0, '/dashboard', 'Home', 0, NULL, 'fa-dashboard', '2021-11-02 06:26:04', '2021-11-02 06:26:06');
-INSERT INTO `menu` VALUES (2, 1, 0, '文章管理', 0, '/articles', 'Layout', 0, 'admin:articles:view', 'fa-file', '2021-10-29 18:48:46', '2021-10-29 18:48:46');
+INSERT INTO `menu` VALUES (2, 1, 0, '文章管理', 1, '/#', 'Layout', 0, 'admin:articles:view', 'fa-file', '2021-10-29 18:48:46', '2021-10-29 18:48:46');
 INSERT INTO `menu` VALUES (3, 1, 2, '发布文章', 0, '/articles', 'article/Article', 0, 'admin:articles:add', 'fa-paper-plane', '2021-10-29 18:55:14', '2021-10-29 18:55:14');
 INSERT INTO `menu` VALUES (4, 1, 2, '文章列表', 0, '/articles/list', 'article/ArticleList', 0, 'admin:articles:list', 'fa-file-text', '2021-10-29 18:55:57', '2021-10-29 18:55:57');
 INSERT INTO `menu` VALUES (5, 1, 2, '修改文章', 0, '/articles/:id', 'article/Edit', 1, 'admin:articles:edit', NULL, '2021-11-14 06:23:28', '2021-11-14 06:23:28');
 INSERT INTO `menu` VALUES (6, 1, 2, '删除文章', 0, '/#', 'Home', 1, 'admin:articles:delete', NULL, '2021-11-14 06:23:36', '2021-11-14 06:23:36');
-INSERT INTO `menu` VALUES (7, 1, 2, '分类管理', 0, '/categories', 'category/Category', 0, 'admin:categories:view', 'fa-th', '2021-10-29 18:56:09', '2021-10-29 18:56:09');
+INSERT INTO `menu` VALUES (7, 1, 2, '分类管理', 1, '/categories', 'category/Category', 0, 'admin:categories:view', 'fa-th', '2021-10-29 18:56:09', '2021-10-29 18:56:09');
 INSERT INTO `menu` VALUES (8, 1, 7, '新增分类', 0, '/#', 'Home', 1, 'admin:categories:add', NULL, '2021-11-14 06:21:30', '2021-11-14 06:21:44');
 INSERT INTO `menu` VALUES (9, 1, 7, '分类列表', 0, '/#', 'Home', 1, 'admin:categories:list', NULL, '2021-11-14 06:21:30', '2021-11-14 06:21:44');
 INSERT INTO `menu` VALUES (10, 1, 7, '修改分类', 0, '/#', 'Home', 1, 'admin:categories:edit', NULL, '2021-11-14 06:21:10', '2021-11-14 06:21:10');
 INSERT INTO `menu` VALUES (11, 1, 7, '删除分类', 0, '/#', 'Home', 1, 'admin:categories:delete', NULL, '2021-11-14 06:22:03', '2021-11-14 06:22:03');
-INSERT INTO `menu` VALUES (12, 1, 2, '标签管理', 0, '/tags', 'tag/Tag', 0, 'admin:tags:view', 'fa-tags', '2021-10-29 18:56:22', '2021-10-29 18:56:22');
+INSERT INTO `menu` VALUES (12, 1, 2, '标签管理', 2, '/tags', 'tag/Tag', 0, 'admin:tags:view', 'fa-tags', '2021-10-29 18:56:22', '2021-10-29 18:56:22');
 INSERT INTO `menu` VALUES (13, 1, 12, '新增标签', 0, '/#', 'Home', 1, 'admin:tags:add', NULL, '2021-11-14 06:24:07', '2021-11-14 06:24:07');
 INSERT INTO `menu` VALUES (14, 1, 12, '标签列表', 0, '/#', 'Home', 1, 'admin:tags:list', NULL, '2021-11-14 06:24:07', '2021-11-14 06:24:07');
 INSERT INTO `menu` VALUES (15, 1, 12, '修改标签', 0, '/#', 'Home', 1, 'admin:tags:edit', NULL, '2021-11-14 06:24:15', '2021-11-14 06:24:15');
 INSERT INTO `menu` VALUES (16, 1, 12, '删除标签', 0, '/#', 'Home', 1, 'admin:tags:delete', NULL, '2021-11-14 06:24:25', '2021-11-14 06:24:25');
-INSERT INTO `menu` VALUES (17, 1, 0, '用户管理', 0, '/users', 'Layout', 0, 'admin:users:view', 'fa-user', '2021-10-29 18:57:10', '2021-10-29 18:57:10');
-INSERT INTO `menu` VALUES (18, 1, 17, '用户列表', 0, '/users/list', 'user/User', 0, 'admin:users:list', 'fa-users', '2021-10-29 18:58:54', '2021-10-29 18:58:54');
+INSERT INTO `menu` VALUES (17, 1, 0, '用户管理', 2, '/#', 'Layout', 0, 'admin:users:view', 'fa-user', '2021-10-29 18:57:10', '2021-10-29 18:57:10');
+INSERT INTO `menu` VALUES (18, 1, 17, '用户列表', 1, '/users/list', 'user/User', 0, 'admin:users:list', 'fa-users', '2021-10-29 18:58:54', '2021-10-29 18:58:54');
 INSERT INTO `menu` VALUES (19, 1, 17, '新增用户', 0, '/#', 'Home', 1, 'admin:users:add', NULL, '2021-11-14 22:37:32', '2021-11-14 22:37:32');
 INSERT INTO `menu` VALUES (20, 1, 17, '修改用户', 0, '/#', 'Home', 1, 'admin:users:edit', NULL, '2021-11-14 22:37:32', '2021-11-14 22:37:32');
 INSERT INTO `menu` VALUES (21, 1, 17, '删除用户', 0, '/#', 'Home', 1, 'admin:users:delete', NULL, '2021-11-14 22:37:32', '2021-11-14 22:37:32');
-INSERT INTO `menu` VALUES (22, 1, 0, '权限管理', 0, '/perm', 'Layout', 0, 'admin:perm:view', 'fa-shield', '2021-11-14 22:41:59', '2021-11-14 22:41:59');
-INSERT INTO `menu` VALUES (23, 1, 22, '角色管理', 0, '/roles', 'role/Role', 0, 'admin:roles:list', 'fa-id-badge', '2021-11-14 22:49:27', '2021-11-14 22:49:27');
+INSERT INTO `menu` VALUES (22, 1, 0, '权限管理', 3, '/#', 'Layout', 0, 'admin:perm:view', 'fa-shield', '2021-11-14 22:41:59', '2021-11-14 22:41:59');
+INSERT INTO `menu` VALUES (23, 1, 22, '角色管理', 1, '/roles', 'role/Role', 0, 'admin:roles:list', 'fa-id-badge', '2021-11-14 22:49:27', '2021-11-14 22:49:27');
 INSERT INTO `menu` VALUES (24, 1, 22, '新增角色', 0, '/roles', 'role/Role', 1, 'admin:roles:add', '', '2021-11-14 22:49:27', '2021-11-14 22:49:27');
 INSERT INTO `menu` VALUES (25, 1, 22, '修改角色', 0, '/roles', 'role/Role', 1, 'admin:roles:edit', '', '2021-11-14 22:49:27', '2021-11-14 22:49:27');
 INSERT INTO `menu` VALUES (26, 1, 22, '删除角色', 0, '/roles', 'role/Role', 1, 'admin:roles:delete', '', '2021-11-14 22:49:27', '2021-11-14 22:49:27');
-INSERT INTO `menu` VALUES (27, 1, 0, '菜单管理', 0, '/menu', 'Layout', 0, 'admin:menus:view', 'fa-list-ul', '2021-11-15 22:23:41', '2021-11-15 22:23:45');
-INSERT INTO `menu` VALUES (28, 1, 27, '菜单列表', 0, '/menu', 'Home', 0, 'admin:menus:list', 'fa-th-list', '2021-11-15 22:31:08', '2021-11-15 22:31:08');
-INSERT INTO `menu` VALUES (29, 1, 27, '新增菜单', 0, '/#', 'Home', 1, 'admin:menus:add', '', '2021-11-15 22:31:08', '2021-11-15 22:31:08');
-INSERT INTO `menu` VALUES (30, 1, 27, '修改菜单', 0, '/#', 'Home', 1, 'admin:menus:edit', '', '2021-11-15 22:31:08', '2021-11-15 22:31:08');
-INSERT INTO `menu` VALUES (31, 1, 27, '删除菜单', 0, '/#', 'Home', 1, 'admin:menus:delete', '', '2021-11-15 22:31:08', '2021-11-15 22:31:08');
+INSERT INTO `menu` VALUES (27, 1, 0, '菜单管理', 4, '/menu', 'menu/Menu', 0, 'admin:menus:view', 'fa-list-ul', '2021-11-15 22:23:41', '2021-11-15 22:23:45');
+INSERT INTO `menu` VALUES (28, 1, 27, '新增菜单', 0, '/#', 'Home', 1, 'admin:menus:add', '', '2021-11-15 22:31:08', '2021-11-15 22:31:08');
+INSERT INTO `menu` VALUES (29, 1, 27, '修改菜单', 0, '/#', 'Home', 1, 'admin:menus:edit', '', '2021-11-15 22:31:08', '2021-11-15 22:31:08');
+INSERT INTO `menu` VALUES (30, 1, 27, '删除菜单', 0, '/#', 'Home', 1, 'admin:menus:delete', '', '2021-11-15 22:31:08', '2021-11-15 22:31:08');
 COMMIT;
 
 -- ----------------------------

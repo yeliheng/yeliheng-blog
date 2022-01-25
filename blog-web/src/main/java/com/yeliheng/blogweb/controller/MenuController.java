@@ -38,6 +38,12 @@ public class MenuController {
         return CommonResponse.success();
     }
 
+    @PreAuthorize("@perm.hasPerm('admin:menus:view')")
+    @GetMapping("/admin/menus")
+    public CommonResponse<Object> get(Menu menu){
+        return CommonResponse.success(menuService.getMenuList(menu));
+    }
+
     @GetMapping("/admin/menus/tree")
     public CommonResponse<Object> getMenuTree() {
             return CommonResponse.success(menuService.getMenuTree());
