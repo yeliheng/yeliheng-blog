@@ -198,6 +198,7 @@ public class MenuServiceImpl implements IMenuService {
 
         for(Menu menu : menuList) {
             Router router = new Router();
+            router.setId(menu.getId());
             router.setName(menu.getMenuName());
             router.setPath(menu.getPath());
             router.setComponent(menu.getComponent());

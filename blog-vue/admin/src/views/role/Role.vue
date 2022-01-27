@@ -419,7 +419,6 @@ export default {
 }
 .role-table {
     width: 100%;
-    height: 50rem;
     overflow: auto;
 }
 
