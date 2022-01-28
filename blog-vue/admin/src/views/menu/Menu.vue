@@ -94,6 +94,7 @@
           <el-cascader :options="table.data"
                        :props="{checkStrictly: true,label: 'menuName',value: 'id'}"
                        v-model="menuForm.parentId"
+                       ref="parentFormId"
                        clearable />
         </el-form-item>
         <el-form-item label="隐藏菜单: " label-width="100px">
@@ -132,6 +133,8 @@ export default {
     const formSize = ref('large');
 
     const dialogTitle = ref('');
+
+    const parentFormId = ref();
 
     const formRules = {
       menuName: [
@@ -201,7 +204,6 @@ export default {
 
     table.value.isMobile = store.state.app.isMobile;
 
-
     //获取菜单列表
     const listMenus = () => {
       table.value.loading = true;
@@ -242,20 +244,22 @@ export default {
     const handleEditClick = (row) => {
       const formData = JSON.parse(JSON.stringify(row)); //消除row的响应性
       dialogTitle.value = '修改菜单';
-
       menuForm.value = formData;
       menuOpen.value = true;
-
     }
 
     const onCancel = () => {
       menuOpen.value = false;
     }
 
+
     const submitForm = () => {
-      if(menuForm.value.parentId)
-        menuForm.value.parentId = menuForm.value.parentId.pop();
-      else menuForm.value.parentId = 0;
+      if(parentFormId.value.getCheckedNodes.length > 0) {
+        menuForm.value.parentId = parentFormId.value.getCheckedNodes()[0].value;
+      }else {
+        menuForm.value.parentId = 0;
+      }
+
       if(menuForm.value.id) {
         //更新
         loading.value = true;
@@ -314,6 +318,7 @@ export default {
       validate,
       dialogTitle,
       onCancel,
+      parentFormId,
     };
   }
 }

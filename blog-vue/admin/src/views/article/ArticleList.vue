@@ -273,7 +273,6 @@ export default {
 }
 .article-table{
     width: 100%;
-    height: 50rem;
     overflow: auto;
 }
 

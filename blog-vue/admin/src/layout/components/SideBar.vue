@@ -11,31 +11,10 @@
             <div class="logo-container">
                 <span>YNetwork-后台管理</span>
             </div>
-            <template v-for="route of this.$store.state.permission.menuRoutes">
-                <!-- 二级菜单标题 -->
-                <template v-if="route.name && route.children && !route.hidden">
-                    <el-sub-menu :key="route.path" :index="route.path">
-                        <template #title>
-                            <i :class="route.icon"/>
-                            <span class="menu-title"> {{ route.name }}</span>
-                        </template>
-                        <!-- 二级菜单选项 -->
-                        <template v-for="(item, index) of route.children">
-                            <el-menu-item v-if="!item.hidden" :key="index" :index="item.path"  @click="handleMenuClick">
-                                <i :class="item.icon" />
-                                <span class="menu-item-title">{{ item.name }}</span>
-                            </el-menu-item>
-                        </template>
-                    </el-sub-menu>
-                </template>
-                <!-- 一级菜单 -->
-                <template v-else-if="!route.hidden">
-                    <el-menu-item :index="route.path" :key="route.path">
-                        <i :class="route.icon" />
-                         <span class="menu-title"> {{ route.name }}</span>
-                    </el-menu-item>
-                </template>
-            </template>
+            <side-bar-item
+                v-for="(route, index) in sidebarMenu"
+                :key="route.path + index"
+                :route="route"/>
       </el-menu>
 
 </template>
@@ -43,10 +22,41 @@
 <script lang="ts">
 import { defineComponent,computed,watch,onMounted,ref } from 'vue'
 import { useStore } from 'vuex';
+import SideBarItem from '@/layout/components/SideBarItem.vue';
 
 export default defineComponent({
+  components: {SideBarItem},
   setup() {
+
     const store = useStore();
+
+    const menuRoutes = store.state.permission.menuRoutes;
+
+
+    //剔除子菜单中隐藏的菜单
+    const buildChildMenu = (routes: any) => {
+      const routeArr = JSON.parse(JSON.stringify(routes));
+      for(let i in routeArr) {
+         let children = [];
+         if(routeArr[i].children) {
+            for (let j in routeArr[i].children) {
+               if(routeArr[i].children[j].children) {
+                  routeArr[i].children = buildChildMenu(routeArr[i].children);
+               }
+               if(routeArr[i].children[j].hidden == 0) {
+                  children.push(routeArr[i].children[j]);
+               }
+            }
+            if(children.length == 0) routeArr[i].children = null;
+            else routeArr[i].children = children;
+         }
+      }
+      return routeArr;
+    }
+
+
+    const sidebarMenu = buildChildMenu(menuRoutes);
+
 
     const handleMenuClick = () => {
         if(isMobile.value){
@@ -95,6 +105,8 @@ export default defineComponent({
       isMobile,
       sidebarClosed,
       handleMenuClick,
+      menuRoutes,
+      sidebarMenu,
     }
   },
 })

@@ -563,7 +563,6 @@ const validate = ref(null);
 }
 .user-table {
     width: 100%;
-    height: 50rem;
     overflow: auto;
 }
 
