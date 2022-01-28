@@ -51,7 +51,6 @@ export default defineComponent({
             else routeArr[i].children = children;
          }
       }
-      console.log(routeArr);
       return routeArr;
     }
 

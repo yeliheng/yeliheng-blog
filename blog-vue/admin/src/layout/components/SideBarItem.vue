@@ -1,21 +1,33 @@
 <template>
-  <!-- 二级菜单标题 -->
+  <!-- 子菜单标题 -->
   <template v-if="route.name && route.children && !route.hidden">
-    <el-sub-menu :key="route.path + route.id" :index="route.id" >
+    <el-sub-menu :key="route.path + route.id" :index="route.path + route.id">
       <template #title >
         <i :class="route.icon"/>
         <span class="menu-title"> {{ route.name }}</span>
       </template>
-      <!-- 二级菜单选项 -->
+
+      <!-- 子菜单选项 -->
       <template v-for="(item, index) of route.children">
-        <el-menu-item v-if="!item.hidden" :key="index" :index="item.path" >
+        <el-sub-menu v-if=" item.children && !item.hidden" :index="item.path" :key="index">
+          <template #title >
+            <i :class="item.icon"/>
+            <span class="menu-title"> {{ item.name }}</span>
+          </template>
+          <side-bar-item
+              v-for="(route, index) in item.children"
+              :key="route.path + index"
+              :route="route"/>
+        </el-sub-menu>
+        <el-menu-item v-else-if="!item.children && !item.hidden" :index="item.path" :key="item.id">
           <i :class="item.icon" />
-          <span class="menu-item-title">{{ item.name }}</span>
+          <span class="menu-title"> {{ item.name }}</span>
         </el-menu-item>
       </template>
     </el-sub-menu>
+
   </template>
-  <!-- 一级菜单 -->
+  <!-- 顶级菜单 -->
   <template v-else-if="!route.hidden" >
     <el-menu-item :index="route.path" :key="route.path + route.id">
       <i :class="route.icon" />
@@ -27,10 +39,10 @@
 <script>
 
 export default {
-  name: "SideBarItem.vue",
+  name: "SideBarItem",
   props: {
     route: {
-      required: true
+      required: true,
     },
   },
   setup() {
