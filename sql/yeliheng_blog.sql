@@ -176,7 +176,7 @@ CREATE TABLE `menu` (
   `created_at` timestamp NULL DEFAULT NULL COMMENT '创建时间',
   `updated_at` timestamp NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of menu
@@ -203,15 +203,17 @@ INSERT INTO `menu` VALUES (18, 1, 17, '用户列表', 1, '/users/list', 'user/Us
 INSERT INTO `menu` VALUES (19, 1, 17, '新增用户', 0, '/#', 'Home', 1, 'admin:users:add', NULL, '2021-11-14 22:37:32', '2021-11-14 22:37:32');
 INSERT INTO `menu` VALUES (20, 1, 17, '修改用户', 0, '/#', 'Home', 1, 'admin:users:edit', NULL, '2021-11-14 22:37:32', '2021-11-14 22:37:32');
 INSERT INTO `menu` VALUES (21, 1, 17, '删除用户', 0, '/#', 'Home', 1, 'admin:users:delete', NULL, '2021-11-14 22:37:32', '2021-11-14 22:37:32');
-INSERT INTO `menu` VALUES (22, 1, 0, '权限管理', 3, '/perms', 'Layout', 0, 'admin:perm:view', 'fa-shield', '2021-11-14 22:41:59', '2021-11-14 22:41:59');
-INSERT INTO `menu` VALUES (23, 1, 22, '角色管理', 1, '/roles', 'role/Role', 0, 'admin:roles:list', 'fa-id-badge', '2021-11-14 22:49:27', '2021-11-14 22:49:27');
-INSERT INTO `menu` VALUES (24, 1, 22, '新增角色', 0, '/#', 'role/Role', 1, 'admin:roles:add', '', '2021-11-14 22:49:27', '2021-11-14 22:49:27');
-INSERT INTO `menu` VALUES (25, 1, 22, '修改角色', 0, '/#', 'role/Role', 1, 'admin:roles:edit', '', '2021-11-14 22:49:27', '2021-11-14 22:49:27');
-INSERT INTO `menu` VALUES (26, 1, 22, '删除角色', 0, '/#', 'role/Role', 1, 'admin:roles:delete', '', '2021-11-14 22:49:27', '2021-11-14 22:49:27');
-INSERT INTO `menu` VALUES (27, 1, 0, '菜单管理', 4, '/menus', 'menu/Menu', 0, 'admin:menus:view', 'fa-list-ul', '2021-11-15 22:23:41', '2021-11-15 22:23:45');
+INSERT INTO `menu` VALUES (22, 1, 0, '权限管理', 0, '/perm', 'Layout', 0, 'admin:perm:view', 'fa-shield', '2021-11-14 22:41:59', '2021-11-14 22:41:59');
+INSERT INTO `menu` VALUES (23, 1, 22, '角色管理', 0, '/roles', 'role/Role', 0, 'admin:roles:list', 'fa-id-badge', '2021-11-14 22:49:27', '2021-11-14 22:49:27');
+INSERT INTO `menu` VALUES (24, 1, 22, '新增角色', 0, '/roles', 'role/Role', 1, 'admin:roles:add', '', '2021-11-14 22:49:27', '2021-11-14 22:49:27');
+INSERT INTO `menu` VALUES (25, 1, 22, '修改角色', 0, '/roles', 'role/Role', 1, 'admin:roles:edit', '', '2021-11-14 22:49:27', '2021-11-14 22:49:27');
+INSERT INTO `menu` VALUES (26, 1, 22, '删除角色', 0, '/roles', 'role/Role', 1, 'admin:roles:delete', '', '2021-11-14 22:49:27', '2021-11-14 22:49:27');
+INSERT INTO `menu` VALUES (27, 1, 0, '菜单管理', 0, '/menu', 'Layout', 0, 'admin:menus:view', 'fa-list-ul', '2021-11-15 22:23:41', '2021-11-15 22:23:45');
 INSERT INTO `menu` VALUES (28, 1, 27, '新增菜单', 0, '/#', 'Home', 1, 'admin:menus:add', '', '2021-11-15 22:31:08', '2021-11-15 22:31:08');
 INSERT INTO `menu` VALUES (29, 1, 27, '修改菜单', 0, '/#', 'Home', 1, 'admin:menus:edit', '', '2021-11-15 22:31:08', '2021-11-15 22:31:08');
 INSERT INTO `menu` VALUES (30, 1, 27, '删除菜单', 0, '/#', 'Home', 1, 'admin:menus:delete', '', '2021-11-15 22:31:08', '2021-11-15 22:31:08');
+INSERT INTO `menu` VALUES (31, 1, 0, '系统监控', 100, '/#', 'Layout', 0, NULL, 'fa-dashboard   ', '2022-01-28 18:59:14', '2022-01-28 19:08:29');
+INSERT INTO `menu` VALUES (32, 1, 31, '数据库监控', 1, '/druid', 'monitor/Druid', 0, 'admin:monitor:druid', 'fa-database', '2022-01-28 19:03:18', '2022-01-28 19:08:38');
 COMMIT;
 
 -- ----------------------------

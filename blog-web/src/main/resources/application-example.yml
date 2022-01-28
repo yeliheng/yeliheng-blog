@@ -1,9 +1,37 @@
 spring:
   # 数据源配置
   datasource:
-    url: jdbc:mysql://数据库地址:端口/数据库名称?charset=utf8mb4&useSSL=false&serverTimezone=Asia/Shanghai
-    username:
-    password:
+    #Druid配置
+    druid:
+      url: jdbc:mysql://数据库地址:端口/数据库名称?charset=utf8mb4&useSSL=false&serverTimezone=Asia/Shanghai
+      username: 用户名
+      password: 密码
+      # 等待超时时间(ms)
+      max-wait: 60000
+      # 连接检测时间(ms)
+      time-between-eviction-runs-millis: 60000
+      # 连接的最小生命周期(ms)
+      min-evictable-idle-time-millis: 300000
+      # 连接的最大生命周期(ms)
+      max-evictable-idle-time-millis: 900000
+      # 控制台
+      stat-view-servlet:
+        enabled: true
+        # 设置白名单，不填则允许所有访问
+        allow:
+        url-pattern: /druid/*
+        # 控制台管理用户名和密码
+        login-username: admin
+        login-password: admin123
+      filter:
+        stat:
+          enabled: true
+          log-slow-sql: true
+          slow-sql-millis: 1000
+          merge-sql: true
+        wall:
+          config:
+            multi-statement-allow: true
   # Redis 配置
   redis:
     host: localhost
