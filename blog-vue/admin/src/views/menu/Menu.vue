@@ -254,7 +254,8 @@ export default {
 
 
     const submitForm = () => {
-      if(parentFormId.value.getCheckedNodes.length > 0) {
+      console.log(parentFormId.value.getCheckedNodes());
+      if(parentFormId.value.getCheckedNodes().length > 0) {
         menuForm.value.parentId = parentFormId.value.getCheckedNodes()[0].value;
       }else {
         menuForm.value.parentId = 0;
