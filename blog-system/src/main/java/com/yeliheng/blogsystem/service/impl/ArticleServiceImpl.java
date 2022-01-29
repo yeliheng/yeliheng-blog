@@ -15,8 +15,6 @@ import com.yeliheng.blogsystem.mapper.CategoryMapper;
 import com.yeliheng.blogsystem.service.IArticleService;
 import com.yeliheng.blogsystem.utils.UserUtils;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +24,6 @@ import java.util.List;
 
 @Service
 public class ArticleServiceImpl implements IArticleService {
-    private static final Logger logger = LoggerFactory.getLogger(ArticleServiceImpl.class);
 
     private static final int ARTICLE_URL_LENGTH = 8;
     @Autowired

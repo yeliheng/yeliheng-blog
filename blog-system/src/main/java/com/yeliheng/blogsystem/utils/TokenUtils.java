@@ -6,23 +6,18 @@ import com.yeliheng.blogcommon.utils.ServletUtils;
 import com.yeliheng.blogcommon.utils.StringUtils;
 import com.yeliheng.blogcommon.utils.UUIDUtils;
 import com.yeliheng.blogsystem.domain.LoginUser;
-import com.yeliheng.blogsystem.service.IUserService;
 import io.jsonwebtoken.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Component
 public class TokenUtils {
-    private static final Logger logger = LoggerFactory.getLogger(TokenUtils.class);
 
     // 令牌自定义标识
     @Value("${token.header}")
