@@ -46,6 +46,12 @@ server:
   port: 8080
 # 系统设置
 system:
+  # 文件系统
   file-system:
     # 文件上传绝对路径 例如：(Windows: D:/YNetwork/storage || Linux: /home/YNetwork/storage || MacOS: /Users/myUser/YNetwork/storage)
     file-path: D:/YNetwork/storage
+  #日志设置
+  log:
+    # 日志的存储绝对路径 例如：(Windows: D:/YNetwork/logs || Linux: /home/YNetwork/logs || MacOS: /Users/myUser/YNetwork/logs)
+    path: D:/YNetwork/logs
+    level: info
