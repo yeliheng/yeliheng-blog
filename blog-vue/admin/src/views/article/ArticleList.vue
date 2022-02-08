@@ -35,7 +35,7 @@
                 <el-button type="primary" @click="searchArticles">搜索</el-button>
                 </el-form-item>
                 <el-form-item>
-                    <router-link to="/articles/"><el-button type="primary">发布文章</el-button></router-link>    
+                    <router-link to="/articles/publish"><el-button type="primary">发布文章</el-button></router-link>
                 </el-form-item>
             </el-form>
                 
@@ -47,8 +47,8 @@
                 v-loading="table.loading"
             >
                 <el-table-column type="selection" width="55" />
-                <el-table-column property="id" label="文章编号" width="80" align="center" />
-                <el-table-column property="title" label="标题" width="220" align="center"/>
+                <el-table-column property="id" label="文章编号" width="100" align="center" sortable />
+                <el-table-column property="title" label="标题" width="220" align="center" sortable/>
                 <el-table-column property="categoryName" label="分类" width="120" align="center">
                     <template #default="scope">
                         <span v-if="scope.row.category == null"> - </span>
@@ -68,11 +68,12 @@
                         </el-tag>
                     </template>
                 </el-table-column>
-                <el-table-column property="views" label="阅读量" width="80" align="center" />
+              <el-table-column property="words" label="字数" width="100" align="center" sortable />
+                <el-table-column property="views" label="阅读量" width="100" align="center" sortable />
                 <el-table-column property="url" label="持久化链接" width="120" align="center"/>
-                <el-table-column property="createdAt" label="创建时间" width="150" align="center"/>
-                <el-table-column property="updatedAt" label="更新时间" width="150" align="center"/>
-                <el-table-column property="visible" label="状态" align="center">
+                <el-table-column property="createdAt" label="创建时间" width="150" align="center" sortable />
+                <el-table-column property="updatedAt" label="更新时间" width="150" align="center" sortable />
+                <el-table-column property="visible" label="状态" align="center" sortable>
                     <template #default="scope">
                     <el-tag :type="getVisibleDict(scope.row.visible).type"> {{getVisibleDict(scope.row.visible).label}} </el-tag>
                     </template>

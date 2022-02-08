@@ -26,15 +26,15 @@
       <el-table
       ref="multipleTable"
       :data="table.data"
-      style="width: 100%; height: 400px;overflow: auto;"
+      style="width: 100%;overflow: auto;"
       v-loading="table.loading"
-      
+      class="category-table"
       >
         <el-table-column type="selection" width="55" />
-        <el-table-column property="id" label="分类编号" width="120" align="center" />
-        <el-table-column property="categoryName" label="分类名称" width="200" align="center"/>
-        <el-table-column property="articleCount" label="文章数" width="120" align="center"/>
-        <el-table-column property="createdAt" label="创建时间" align="center"/>
+        <el-table-column property="id" label="分类编号" width="120" align="center" sortable/>
+        <el-table-column property="categoryName" label="分类名称" width="200" align="center" sortable/>
+        <el-table-column property="articleCount" label="文章数" width="120" align="center" sortable/>
+        <el-table-column property="createdAt" label="创建时间" align="center" sortable/>
         <el-table-column label="操作" align="center">
           <template #default="scope">
             <el-button type="text" size="mini" icon="fa fa-edit" @click="handleEditClick(scope.row)">编辑</el-button>
@@ -326,5 +326,12 @@ export default {
   display: flex;
   justify-content: flex-end;
   margin-bottom: 1rem;
+}
+
+@media screen and (max-width: 480px){
+  .category-table{
+    height: 36rem;
+    overflow: auto;
+  }
 }
 </style>
