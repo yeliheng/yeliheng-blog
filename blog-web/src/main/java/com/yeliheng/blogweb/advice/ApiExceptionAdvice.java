@@ -1,4 +1,4 @@
-package com.yeliheng.blogweb.filter;
+package com.yeliheng.blogweb.advice;
 
 import com.yeliheng.blogcommon.exception.ApiException;
 import com.yeliheng.blogsystem.dto.ErrorDTO;
