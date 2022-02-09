@@ -40,16 +40,16 @@
                 v-loading="table.loading"
             >
                 <el-table-column type="selection" width="55" />
-                <el-table-column property="id" label="角色编号" width="80" align="center" />
-                <el-table-column property="roleName" label="角色名称" width="220" align="center"/>
-                <el-table-column property="roleChar" label="角色字符" width="120" align="center"/>
-                <el-table-column property="locked" label="角色状态" align="center">
+                <el-table-column property="id" label="角色编号" width="100" align="center" sortable/>
+                <el-table-column property="roleName" label="角色名称" width="120" align="center" sortable/>
+                <el-table-column property="roleChar" label="角色字符" width="120" align="center" sortable/>
+                <el-table-column property="locked" label="角色状态" width="120" align="center" sortable>
                     <template #default="scope">
                     <el-tag :type="getLockedDict(scope.row.locked).type"> {{getLockedDict(scope.row.locked).label}} </el-tag>
                     </template>
                 </el-table-column>
-                <el-table-column property="createdAt" label="创建时间" width="150" align="center"/>
-                <el-table-column property="updatedAt" label="更新时间" width="150" align="center"/>
+                <el-table-column property="createdAt" label="创建时间" width="150" align="center" sortable/>
+                <el-table-column property="updatedAt" label="更新时间" width="150" align="center" sortable/>
 
                 <el-table-column label="操作" align="center">
                 <template #default="scope">

@@ -1,5 +1,8 @@
 package com.yeliheng.blogcommon.exception;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 public class ApiException extends RuntimeException{
     protected String errCode;
     protected Integer httpCode;
@@ -46,5 +49,15 @@ public class ApiException extends RuntimeException{
 
     public void setDetail(String detail) {
         this.detail = detail;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.JSON_STYLE)
+            .append("errCode", getErrCode())
+            .append("httpCode", getHttpCode())
+            .append("errMsg", getErrMsg())
+            .append("detail", getDetail())
+            .toString();
     }
 }

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yeliheng.blogsystem.mapper.OperateLogMapper">
+    <insert id="insertLog" parameterType="OperateLog" useGeneratedKeys="true" keyProperty="id">
+        insert into operate_log(
+        <if test="userId != null and userId != ''">user_id,</if>
+        <if test="moduleName != null and moduleName != ''">module_name,</if>
+        <if test="businessType != null and businessType != ''">business_type,</if>
+        <if test="ip != null and ip != ''">ip,</if>
+        <if test="url != null and url != ''">url,</if>
+        <if test="method != null and method != ''">method,</if>
+        <if test="function != null and function != ''">function,</if>
+        <if test="param != null and param != ''">param,</if>
+        <if test="result != null and result != ''">result,</if>
+        <if test="errorDetail != null and errorDetail != ''">error_detail,</if>
+        created_at,
+        updated_at
+        )values (
+        <if test="userId != null and userId != ''">#{userId},</if>
+        <if test="moduleName != null and moduleName != ''">#{moduleName},</if>
+        <if test="businessType != null and businessType != ''">#{businessType},</if>
+        <if test="ip != null and ip != ''">#{ip},</if>
+        <if test="url != null and url != ''">#{url},</if>
+        <if test="method != null and method != ''">#{method},</if>
+        <if test="function != null and function != ''">#{function},</if>
+        <if test="param != null and param != ''">#{param},</if>
+        <if test="result != null and result != ''">#{result},</if>
+        <if test="errorDetail != null and errorDetail != ''">#{errorDetail},</if>
+        sysdate(),
+        sysdate()
+        )
+    </insert>
+</mapper>

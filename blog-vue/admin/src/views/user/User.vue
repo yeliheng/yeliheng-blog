@@ -46,27 +46,27 @@
                 v-loading="table.loading"
             >
                 <el-table-column type="selection" width="55" />
-                <el-table-column property="id" label="用户编号" width="80" align="center" />
-                <el-table-column property="username" label="用户名" width="220" align="center"/>
-                <el-table-column property="nickname" label="昵称" width="120" align="center">
+                <el-table-column property="id" label="用户编号" width="100" align="center" sortable/>
+                <el-table-column property="username" label="用户名" width="220" align="center" sortable/>
+                <el-table-column property="nickname" label="昵称" width="120" align="center" sortable>
                     <template #default="scope">
                         <span v-if="scope.row.nickname == null"> - </span>
                         {{scope.row.nickname}}
                     </template>
                 </el-table-column>
-                <el-table-column property="phone" label="手机号" width="120" align="center">
+                <el-table-column property="phone" label="手机号" width="120" align="center" sortable>
                     <template #default="scope">
                         <span v-if="scope.row.phone == null"> - </span>
                         {{scope.row.phone}}
                     </template>
                 </el-table-column>
-              <el-table-column property="email" label="电子邮箱" width="160" align="center">
+              <el-table-column property="email" label="电子邮箱" width="160" align="center" sortable>
                 <template #default="scope">
                   <span v-if="scope.row.email == null"> - </span>
                   {{scope.row.email}}
                 </template>
               </el-table-column>
-              <el-table-column property="roleList" label="用户角色" width="170" align="center">
+              <el-table-column property="roleList" label="用户角色" width="170" align="center" sortable>
                     <template #default="scope">
                         <span v-if="scope.row.id == 1"> <el-tag type="success">超级管理员</el-tag></span>
                         <span v-if="scope.row.roleList == '' && scope.row.id != 1"> - </span>
@@ -80,9 +80,9 @@
                         </el-tag>
                     </template>
                 </el-table-column>
-                <el-table-column property="createdAt" label="创建时间" width="150" align="center"/>
-                <el-table-column property="updatedAt" label="更新时间" width="150" align="center"/>
-                <el-table-column property="locked" label="状态" align="center">
+                <el-table-column property="createdAt" label="创建时间" width="150" align="center" sortable/>
+                <el-table-column property="updatedAt" label="更新时间" width="150" align="center" sortable/>
+                <el-table-column property="locked" label="状态" align="center" sortable>
                     <template #default="scope">
                     <el-tag :type="getLockedDict(scope.row.locked).type"> {{getLockedDict(scope.row.locked).label}} </el-tag>
                     </template>

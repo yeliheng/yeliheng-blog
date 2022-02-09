@@ -15,7 +15,7 @@
         <div class="article-content">
             <el-input class="title" v-model="article.title" placeholder="请输入标题" @blur="saveDraft()"></el-input>
             <el-input class="summary" v-model="article.summary" placeholder="请输入文章简介" @blur="saveDraft()" style="margin-bottom: 0.5rem;"></el-input>
-            <v-md-editor v-model="article.content" placeholder="正文" height="400px" @blur="saveDraft()"></v-md-editor>
+            <v-md-editor v-model="article.content" placeholder="正文" @blur="saveDraft()"></v-md-editor>
         </div>
         <div class="article-footer">
             <div class="category">
@@ -236,6 +236,10 @@ setup() {
         margin-left: 0.5rem;
         width: 30vw;
     }
+}
+
+:deep(.v-md-editor){
+  height: 60vh;
 }
     
 </style>

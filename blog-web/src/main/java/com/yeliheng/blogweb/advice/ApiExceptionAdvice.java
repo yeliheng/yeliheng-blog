@@ -1,4 +1,4 @@
-package com.yeliheng.blogweb.filter;
+package com.yeliheng.blogweb.advice;
 
 import com.yeliheng.blogcommon.exception.ApiException;
 import com.yeliheng.blogsystem.dto.ErrorDTO;
@@ -18,7 +18,7 @@ import javax.validation.ConstraintViolationException;
 
 
 @RestControllerAdvice
-public class ApiExceptionFilter{
+public class ApiExceptionAdvice {
 
     @ExceptionHandler(value = Exception.class)
     //由ApiException接管Service异常和系统异常
