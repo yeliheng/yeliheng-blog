@@ -11,6 +11,7 @@ import com.yeliheng.blogsystem.domain.LoginUser;
 import com.yeliheng.blogsystem.domain.OperateLog;
 import com.yeliheng.blogsystem.service.IOperateLogService;
 import com.yeliheng.blogsystem.utils.TokenUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -77,11 +78,11 @@ public class LogAspect {
         operateLog.setFunction(className + "." + methodName + "()");
         //请求参数
         String params = parseParams(joinPoint.getArgs());
-        operateLog.setParam(StringUtils.substring(params,0,1000));
+        operateLog.setParam(StringUtils.substring(params,0,254));
         operateLog.setResult(JSON.toJSONString(jsonResponse));
         if(e != null) {
             operateLog.setStatus("0");
-            operateLog.setErrorDetail(e.toString());
+            operateLog.setErrorDetail(StringEscapeUtils.unescapeJson(e.toString()));
         }else {
             operateLog.setStatus("1");
         }
