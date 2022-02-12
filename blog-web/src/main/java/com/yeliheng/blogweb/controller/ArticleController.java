@@ -2,6 +2,8 @@ package com.yeliheng.blogweb.controller;
 
 
 
+import com.yeliheng.blogcommon.annotation.Log;
+import com.yeliheng.blogcommon.constant.BusinessType;
 import com.yeliheng.blogsystem.domain.Article;
 import com.yeliheng.blogsystem.service.IArticleService;
 import com.yeliheng.blogweb.common.CommonResponse;
@@ -26,6 +28,7 @@ public class ArticleController {
      * @return 请求结果
      */
     @PreAuthorize("@perm.hasPerm('admin:articles:add')")
+    @Log(moduleName = "发布文章",businessType = BusinessType.INSERT)
     @PostMapping("/admin/articles")
     public CommonResponse<Object> add(@Validated @RequestBody Article article){
         articleService.addArticle(article);
@@ -39,6 +42,7 @@ public class ArticleController {
      * @return 请求结果
      */
     @PreAuthorize("@perm.hasPerm('admin:articles:edit')")
+    @Log(moduleName = "更新文章",businessType = BusinessType.UPDATE)
     @PutMapping("/admin/articles")
     public CommonResponse<Object> update(@Validated @RequestBody Article article){
         articleService.updateArticle(article);
@@ -142,6 +146,7 @@ public class ArticleController {
     }
 
     @PreAuthorize("@perm.hasPerm('admin:articles:delete')")
+    @Log(moduleName = "删除文章",businessType = BusinessType.DELETE)
     @DeleteMapping("/admin/articles")
     public CommonResponse<Object> deleteArticle(@RequestParam("id") Long articleId){
         //TODO: 软删除

@@ -6,6 +6,7 @@
     <insert id="insertLog" parameterType="OperateLog" useGeneratedKeys="true" keyProperty="id">
         insert into operate_log(
         <if test="userId != null and userId != ''">user_id,</if>
+        <if test="username != null and username != ''">username,</if>
         <if test="moduleName != null and moduleName != ''">module_name,</if>
         <if test="businessType != null and businessType != ''">business_type,</if>
         <if test="ip != null and ip != ''">ip,</if>
@@ -15,10 +16,12 @@
         <if test="param != null and param != ''">param,</if>
         <if test="result != null and result != ''">result,</if>
         <if test="errorDetail != null and errorDetail != ''">error_detail,</if>
+        <if test="status != null">status,</if>
         created_at,
         updated_at
         )values (
         <if test="userId != null and userId != ''">#{userId},</if>
+        <if test="username != null and username != ''">#{username},</if>
         <if test="moduleName != null and moduleName != ''">#{moduleName},</if>
         <if test="businessType != null and businessType != ''">#{businessType},</if>
         <if test="ip != null and ip != ''">#{ip},</if>
@@ -28,8 +31,39 @@
         <if test="param != null and param != ''">#{param},</if>
         <if test="result != null and result != ''">#{result},</if>
         <if test="errorDetail != null and errorDetail != ''">#{errorDetail},</if>
+        <if test="status != null">#{status},</if>
         sysdate(),
         sysdate()
         )
     </insert>
+
+    <select id="getOperateLog" resultType="OperateLog" parameterType="OperateLog">
+        select * from operate_log
+        <where>
+            <if test="moduleName != null and moduleName != ''">
+                and module_name like concat('%', #{moduleName}, '%')
+            </if>
+            <if test="username != null and username != ''">
+                and username = #{username}
+            </if>
+            <if test="businessType != null and businessType != ''">
+                and business_type = #{businessType}
+            </if>
+            <if test="status != null and status != ''">
+                and status = #{status}
+            </if>
+        </where>
+        order by id desc
+    </select>
+
+    <delete id="deleteOperateLogByIds" parameterType="Long">
+        delete from operate_log where id in
+        <foreach collection="array" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <update id="clearOperateLog">
+        truncate table operate_log
+    </update>
 </mapper>

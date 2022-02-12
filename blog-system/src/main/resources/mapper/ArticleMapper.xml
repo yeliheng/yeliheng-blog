@@ -140,7 +140,7 @@
             and category_id = #{categoryId}
         </if>
         </where>
-        order by a.id
+        order by a.id desc
     </select>
 
     <select id="getArticleById" resultMap="ArticleResult">

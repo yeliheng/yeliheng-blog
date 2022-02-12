@@ -1,5 +1,7 @@
 package com.yeliheng.blogweb.controller;
 
+import com.yeliheng.blogcommon.annotation.Log;
+import com.yeliheng.blogcommon.constant.BusinessType;
 import com.yeliheng.blogcommon.utils.StringUtils;
 import com.yeliheng.blogsystem.domain.Category;
 import com.yeliheng.blogsystem.service.ICategoryService;
@@ -17,12 +19,14 @@ public class CategoryController {
     private ICategoryService categoryService;
 
     @PreAuthorize("@perm.hasPerm('admin:categories:add')")
+    @Log(moduleName = "添加分类",businessType = BusinessType.INSERT)
     @PostMapping("/admin/categories")
     public CommonResponse<Object> add(@Validated @RequestBody Category category){
         categoryService.addCategory(category);
         return CommonResponse.success();
     }
     @PreAuthorize("@perm.hasPerm('admin:categories:delete')")
+    @Log(moduleName = "删除分类",businessType = BusinessType.DELETE)
     @DeleteMapping("/admin/categories")
     public CommonResponse<Object> delete(@RequestParam Long id){
         categoryService.deleteCategory(id);
@@ -30,6 +34,7 @@ public class CategoryController {
     }
 
     @PreAuthorize("@perm.hasPerm('admin:categories:edit')")
+    @Log(moduleName = "修改分类",businessType = BusinessType.INSERT)
     @PutMapping("/admin/categories")
     public CommonResponse<Object> update(@RequestBody Category category){
         categoryService.updateCategory(category);

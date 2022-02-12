@@ -1,5 +1,7 @@
 package com.yeliheng.blogweb.controller;
 
+import com.yeliheng.blogcommon.annotation.Log;
+import com.yeliheng.blogcommon.constant.BusinessType;
 import com.yeliheng.blogcommon.utils.StringUtils;
 import com.yeliheng.blogsystem.domain.Tag;
 import com.yeliheng.blogsystem.service.ITagService;
@@ -15,6 +17,7 @@ public class TagController {
     private ITagService tagService;
 
     @PreAuthorize("@perm.hasPerm('admin:tags:add')")
+    @Log(moduleName = "添加标签",businessType = BusinessType.INSERT)
     @PostMapping("/admin/tags")
     public CommonResponse<Object> add(@Validated @RequestBody Tag tag){
         tagService.addTag(tag);
@@ -22,6 +25,7 @@ public class TagController {
     }
 
     @PreAuthorize("@perm.hasPerm('admin:tags:delete')")
+    @Log(moduleName = "删除标签",businessType = BusinessType.DELETE)
     @DeleteMapping("/admin/tags")
     public CommonResponse<Object> delete(@RequestParam Long id){
         tagService.deleteTag(id);
@@ -29,6 +33,7 @@ public class TagController {
     }
 
     @PreAuthorize("@perm.hasPerm('admin:tags:edit')")
+    @Log(moduleName = "修改标签",businessType = BusinessType.UPDATE)
     @PutMapping("/admin/tags")
     public CommonResponse<Object> update(@RequestBody Tag tag){
         tagService.updateTag(tag);

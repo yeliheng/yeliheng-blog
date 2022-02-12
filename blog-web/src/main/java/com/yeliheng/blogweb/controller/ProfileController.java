@@ -1,5 +1,7 @@
 package com.yeliheng.blogweb.controller;
 
+import com.yeliheng.blogcommon.annotation.Log;
+import com.yeliheng.blogcommon.constant.BusinessType;
 import com.yeliheng.blogcommon.exception.RequestFormatException;
 import com.yeliheng.blogcommon.exception.UnexpectedException;
 import com.yeliheng.blogcommon.utils.ServletUtils;
@@ -34,6 +36,7 @@ public class ProfileController {
      * @param user 用户实体
      */
     @PutMapping
+    @Log(moduleName = "修改个人信息",businessType = BusinessType.UPDATE)
     public CommonResponse<Object> updateProfile(@Validated @RequestBody User user) {
         userService.updateProfile(user);
         return CommonResponse.success();
@@ -45,6 +48,7 @@ public class ProfileController {
      * @param newPassword 新密码
      */
     @PutMapping("/resetPassword")
+    @Log(moduleName = "修改密码",businessType = BusinessType.UPDATE)
     public CommonResponse<Object> resetPassword(String oldPassword, String newPassword) {
         if(StringUtils.isNull(oldPassword) || StringUtils.isNull(newPassword))
             throw new RequestFormatException("密码输入不合法!");
@@ -57,6 +61,7 @@ public class ProfileController {
      * @param file 文件
      */
     @PostMapping("/avatar")
+    @Log(moduleName = "设置头像",businessType = BusinessType.INSERT)
     public CommonResponse<Object> setAvatar(MultipartFile file) {
         if(StringUtils.isNull(file) || file.isEmpty()) throw new RequestFormatException("文件不能为空!");
         String[] allowedExt = {"png","jpg","jpeg","gif"}; //设置允许的后缀
