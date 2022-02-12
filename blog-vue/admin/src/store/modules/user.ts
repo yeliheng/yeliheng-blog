@@ -67,6 +67,14 @@ const actions = {
         });
     },
 
+    //移除保存的Token
+    RemoveToken({commit}){
+        commit('SET_TOKEN','');
+        commit('SET_ROLES',[]);
+        commit('SET_PERMISSIONS','');
+        removeToken();
+    },
+
     //获取用户信息
     GetUserInfo({commit}){
         return new Promise((resolve, reject) => {

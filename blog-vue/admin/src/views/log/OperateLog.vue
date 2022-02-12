@@ -217,7 +217,7 @@ export default {
     const getStatusDict = (status) => {
       let label = '';
       let type = '';
-      if(!status){
+      if(status == "0"){
         label = '失败';
         type = 'warning';
       }else{

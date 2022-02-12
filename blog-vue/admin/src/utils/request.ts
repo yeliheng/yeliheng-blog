@@ -2,6 +2,8 @@ import axios, { Axios, AxiosResponse } from "axios";
 import { getToken } from "@/utils/auth";
 import errorCode from "@/utils/errorCode";
 import { ElMessage, ElNotification } from "element-plus";
+import store from "@/store";
+import router from "@/router";
 
 const requestHeaders: HeadersInit = new Headers();
 requestHeaders.set('Content-Type','application/json;charset=utf-8');
@@ -51,6 +53,12 @@ error => {
       break;
     case 405:
       showErrorMessage("请求方法不支持");
+      break;
+    case 401:
+      showErrorMessage("用户凭据已过期，请重新登录!");
+      store.dispatch("RemoveToken").then(() => {
+          router.push('/login');
+      });
       break;
   }
 }

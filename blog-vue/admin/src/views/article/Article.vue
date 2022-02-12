@@ -85,9 +85,12 @@
 <script lang="ts">
 import { Ref, ref } from 'vue';
 import { addArticle, getCategories,getTags } from '@/api/article';
-import { ElMessage } from 'element-plus';
+import {ElMessage, ElMessageBox} from 'element-plus';
+import { useRouter } from "vue-router";
 export default {
 setup() {
+    const router = useRouter();
+
     let categories: Ref = ref([]);
     let tags: Ref = ref([]);
     let dialogVisible = ref(false);
@@ -123,8 +126,14 @@ setup() {
     }
 
     const trashDraft = () => {
+      ElMessageBox.confirm('确定吗？所有的草稿将被删除！', "警告", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(function() {
         localStorage.removeItem('draft');
         existDraft.value = false;
+      });
     }
 
     const publishArticle = () => {
@@ -150,12 +159,18 @@ setup() {
         loading.value = true;
         addArticle(article.value).then((data: any) => {
             dialogVisible.value = false;
-            if(data){
+            if(!data.errCode){
                 ElMessage({
                     message: "发布成功！",
                     type: 'success',
                 });
-            }  
+                router.push('/articles/list');
+                //删除草稿
+                localStorage.removeItem('draft');
+                existDraft.value = false;
+            } else {
+              ElMessage.error(data.detail);
+            }
         });
     }
 
