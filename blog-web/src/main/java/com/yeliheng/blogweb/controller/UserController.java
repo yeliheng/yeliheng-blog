@@ -41,9 +41,8 @@ public class UserController {
     @Autowired
     private IMenuService menuService;
 
-
-
     @PreAuthorize("@perm.hasPerm('admin:users:add')")
+    @Log(moduleName = "新增用户",businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResponse<Object> add(@Validated @RequestBody User user) {
         userService.insertUser(user);
@@ -51,6 +50,7 @@ public class UserController {
     }
 
     @PreAuthorize("@perm.hasPerm('admin:users:edit')")
+    @Log(moduleName = "修改用户",businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResponse<Object> update(@Validated @RequestBody User user) {
         userService.updateUser(user);
@@ -58,6 +58,7 @@ public class UserController {
     }
 
     @PreAuthorize("@perm.hasPerm('admin:users:delete')")
+    @Log(moduleName = "删除用户",businessType = BusinessType.DELETE)
     @DeleteMapping
     public CommonResponse<Object> delete(@RequestParam("id") Long id) {
         userService.deleteUser(id);

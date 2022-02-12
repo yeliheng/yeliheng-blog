@@ -27,7 +27,6 @@ import org.springframework.web.servlet.HandlerMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
@@ -60,6 +59,8 @@ public class LogAspect {
         OperateLog operateLog = new OperateLog();
         //用户Id
         operateLog.setUserId(loginUser.getUser().getId());
+        //用户名
+        operateLog.setUsername(loginUser.getUsername());
         //模块名称
         operateLog.setModuleName(log.moduleName());
         //业务类型
@@ -75,16 +76,14 @@ public class LogAspect {
         String methodName = joinPoint.getSignature().getName();
         operateLog.setFunction(className + "." + methodName + "()");
         //请求参数
-        if(HttpMethod.POST.name().equals(request.getMethod()) || HttpMethod.PUT.name().equals(request.getMethod())) {
-            String params = parseParams(joinPoint.getArgs());
-            operateLog.setParam(StringUtils.substring(params,0,1000));
-        } else {
-            Map<?,?> paramsMap = (Map<?, ?>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
-            operateLog.setParam(StringUtils.substring(paramsMap.toString(),0,1000));
-        }
+        String params = parseParams(joinPoint.getArgs());
+        operateLog.setParam(StringUtils.substring(params,0,1000));
         operateLog.setResult(JSON.toJSONString(jsonResponse));
         if(e != null) {
+            operateLog.setStatus("0");
             operateLog.setErrorDetail(e.toString());
+        }else {
+            operateLog.setStatus("1");
         }
 
         //写入数据库

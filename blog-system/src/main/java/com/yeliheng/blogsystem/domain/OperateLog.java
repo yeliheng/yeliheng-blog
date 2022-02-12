@@ -10,6 +10,8 @@ public class OperateLog {
 
     private Long userId;
 
+    private String username;
+
     private String moduleName;
 
     private int businessType;
@@ -27,6 +29,8 @@ public class OperateLog {
     private String result;
 
     private String errorDetail;
+
+    private String status;
 
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
@@ -48,6 +52,15 @@ public class OperateLog {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getModuleName() {
@@ -122,6 +135,14 @@ public class OperateLog {
         this.errorDetail = errorDetail;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -137,4 +158,6 @@ public class OperateLog {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+
 }

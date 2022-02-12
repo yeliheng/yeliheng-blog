@@ -96,7 +96,7 @@
             <el-pagination
                 class="pagination-nav"
                 v-model:currentPage="table.page"
-                :page-sizes="[10, 20, 30]"
+                :page-sizes="[30, 50, 80]"
                 :page-size="table.pageSize"
                 layout="total, sizes, prev, pager, next, jumper"
                 :total="table.total"
@@ -158,7 +158,7 @@ export default {
 
         const table:any = ref({
             page: 1,        // 当前在第几页
-            pageSize: 10,   // 一页显示多少
+            pageSize: 30,   // 一页显示多少
             total: 0,       // 数据总量
             loading: false,  // 加载中
             data: [],       // 表格数据

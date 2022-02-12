@@ -41,8 +41,6 @@ gen/
 .DS_Store
 
 ### Other ###
-logs/
-log
 temp/
 
 ### Custom ###
