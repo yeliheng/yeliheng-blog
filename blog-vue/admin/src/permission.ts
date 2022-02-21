@@ -9,6 +9,9 @@ NProgress.configure({showSpinner: false});
 
 const whiteList = ['/login']
 router.beforeEach((to,from, next) =>{
+    if(to.meta.title) {
+        document.title = to.meta.title as string + " - YNetwork后台管理系统";
+    }
     NProgress.start();
     if(getToken()){
         //存在Token
