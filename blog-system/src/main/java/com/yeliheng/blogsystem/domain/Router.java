@@ -19,6 +19,8 @@ public class Router {
 
     private String permission;
 
+    private RouterMeta meta;
+
     private Integer hidden;
 
     private List<Router> children;
@@ -69,6 +71,14 @@ public class Router {
 
     public void setPermission(String permission) {
         this.permission = permission;
+    }
+
+    public RouterMeta getMeta() {
+        return meta;
+    }
+
+    public void setMeta(RouterMeta meta) {
+        this.meta = meta;
     }
 
     public Integer getHidden() {

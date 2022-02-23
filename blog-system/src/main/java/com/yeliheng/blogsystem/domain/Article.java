@@ -25,6 +25,8 @@ public class Article {
 
     private String url;
 
+    private String top;
+
     private String visible;
 
     private int words;
@@ -101,6 +103,14 @@ public class Article {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getTop() {
+        return top;
+    }
+
+    public void setTop(String top) {
+        this.top = top;
     }
 
     public String getVisible() {

@@ -18,7 +18,7 @@ public class OperateLogController {
     @Autowired
     private IOperateLogService operateLogService;
 
-    @PreAuthorize("@perm.hasPerm('admin:operatelog:view')")
+    @PreAuthorize("@perm.hasPerm('admin:operatelog:list')")
     @GetMapping("/admin/operateLogs")
     public CommonResponse<Object> getOperateLogs(@RequestParam(value = "page",defaultValue = "1") Integer page,
                                                  @RequestParam(value = "pageSize",defaultValue = "30") Integer pageSize, OperateLog operateLog){

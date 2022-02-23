@@ -4,5 +4,6 @@ export interface IArticle{
     summary: string,
     content: string,
     tagIds: number[],
+    top: number,
     visible: number,
 }

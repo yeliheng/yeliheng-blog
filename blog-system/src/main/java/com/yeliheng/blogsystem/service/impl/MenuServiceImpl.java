@@ -5,6 +5,7 @@ import com.yeliheng.blogcommon.exception.InternalServerException;
 import com.yeliheng.blogcommon.utils.StringUtils;
 import com.yeliheng.blogsystem.domain.Menu;
 import com.yeliheng.blogsystem.domain.Router;
+import com.yeliheng.blogsystem.domain.RouterMeta;
 import com.yeliheng.blogsystem.dto.MenuTreeDTO;
 
 import com.yeliheng.blogsystem.mapper.MenuMapper;
@@ -204,6 +205,9 @@ public class MenuServiceImpl implements IMenuService {
             router.setComponent(menu.getComponent());
             router.setIcon(menu.getIcon());
             router.setPermission(menu.getPermission());
+            RouterMeta meta = new RouterMeta();
+            meta.setTitle(menu.getMenuName());
+            router.setMeta(meta);
             router.setHidden(menu.getHidden());
             List<Menu> childMenus = menu.getChildren();
 

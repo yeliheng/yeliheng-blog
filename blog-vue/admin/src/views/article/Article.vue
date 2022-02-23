@@ -6,8 +6,10 @@
             <div class="line"></div>
             <span>发布文章</span>
             <div class="article-btn">
-                <span>设为私密</span>
+                <span>私密</span>
                 <el-switch class="private-sw" v-model="article.visible" active-value="0" inactive-value="1"/>
+                <span>置顶</span>
+                <el-switch class="top-sw" v-model="article.top" active-value="1" inactive-value="0"/>
                 <el-button class="publish-btn" type="primary" @click="publishArticle">保存并发布</el-button>
             </div>
         </div>
@@ -111,6 +113,7 @@ setup() {
         summary: "",
         content: "",
         visible: 1,
+        top: 0,
     })
 
     //检查是否存在草稿

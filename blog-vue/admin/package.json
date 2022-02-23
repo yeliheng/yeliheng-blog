@@ -1,5 +1,7 @@
 {
-  "name": "blog-admin",
+  "name": "y-network-admin",
+  "description": "YNetwork后台管理",
+  "author": "Yeliheng",
   "version": "0.1.0",
   "private": true,
   "scripts": {

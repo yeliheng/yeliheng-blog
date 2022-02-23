@@ -21,6 +21,7 @@
             </div>
           <div class="read-time info"><span class="iconfont icon-shizhong" style="margin-right: 0.5rem;"></span>
           <span class="info-text">阅读时长(分钟) ≈  </span>{{article.readingTime}}</div>
+          <div class="is-top" v-if="article.top === '1'">置顶</div>
         </div>
         <div class="summary">
             <span v-if="article.summary == null"> 暂无简介 </span>
@@ -109,11 +110,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 :deep(.spinner){
     &::after{
       background-color: #d4d3d3;
     }
 }
+
 .no-loading {
   visibility: collapse;
   opacity: 0;
@@ -122,6 +125,18 @@ export default {
 .is-loading {
   visibility: visible;
   opacity: 1;
+}
+
+.is-top {
+  width: 2.7rem;
+  height: 1.2rem;
+  background: #3f3f3f;
+  border-radius: 6px;
+  margin: {
+    left: 0.6rem;
+    top: 0.4rem;
+  }
+  font-size: 0.7rem;
 }
 
 .loading-bar{
