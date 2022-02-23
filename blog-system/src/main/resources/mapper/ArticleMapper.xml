@@ -12,6 +12,7 @@
         <result property="summary" column="summary" />
         <result property="content" column="content" />
         <result property="url" column="url" />
+        <result property="top" column="top" />
         <result property="visible" column="visible" />
         <result property="words" column="words" />
         <result property="views" column="views" />
@@ -29,6 +30,7 @@
         <result property="title" column="title" />
         <result property="summary" column="summary" />
         <result property="url" column="url" />
+        <result property="top" column="top" />
         <result property="visible" column="visible" />
         <result property="words" column="words" />
         <result property="views" column="views" />
@@ -57,14 +59,14 @@
     </resultMap>
 
     <sql id="selectArticleVo">
-        select a.id, a.user_id, a.category_id, a.title, a.summary, a.url, a.visible, a.words, a.views, a.reading_time, a.created_at, a.updated_at,
+        select a.id, a.user_id, a.category_id, a.title, a.summary, a.url, a.top, a.visible, a.words, a.views, a.reading_time, a.created_at, a.updated_at,
                c.id as category_id, c.category_name
         from article a
             left join category c on a.category_id = c.id
     </sql>
 
     <sql id="selectArticleDetailVo">
-        select a.id, a.user_id, a.category_id, a.title, a.summary, a.content, a.url, a.visible, a.words, a.views, a.reading_time, a.created_at, a.updated_at,
+        select a.id, a.user_id, a.category_id, a.title, a.summary, a.content, a.url, a.top, a.visible, a.words, a.views, a.reading_time, a.created_at, a.updated_at,
                c.id as category_id, c.category_name,
                atg.id, atg.article_id, atg.tag_id,
                t.id as tag_id, t.tag_name
@@ -82,6 +84,7 @@
         <if test="summary != null and summary != ''">summary,</if>
         <if test="content != null and content != ''">content,</if>
         <if test="url != null and url != ''">url,</if>
+        <if test="top != null and top != ''">top,</if>
         <if test="visible != null and visible != ''">visible,</if>
         <if test="words != null and words != ''">words,</if>
         <if test="readingTime != null and readingTime != ''">reading_time,</if>
@@ -94,6 +97,7 @@
         <if test="summary != null and summary != ''">#{summary},</if>
         <if test="content != null and content != ''">#{content},</if>
         <if test="url != null and url != ''">#{url},</if>
+        <if test="top != null and top != ''">#{top},</if>
         <if test="visible != null and visible != ''">#{visible},</if>
         <if test="words != null and words != ''">#{words},</if>
         <if test="readingTime != null and readingTime != ''">#{readingTime},</if>
@@ -110,6 +114,7 @@
             <if test="title != null and title != ''">title = #{title},</if>
             <if test="summary != null and summary != ''">summary = #{summary},</if>
             <if test="content != null and content != ''">content = #{content},</if>
+            <if test="top != null and top != ''">top = #{top},</if>
             <if test="visible != null and visible != ''">visible = #{visible},</if>
             <if test="url != null and url != ''">url = #{url},</if>
             <if test="words != null and words != ''">words = #{words},</if>
@@ -121,7 +126,7 @@
 
     <select id="getArticles" resultMap="ArticleListResult">
         <include refid="selectArticleVo" />
-        where visible = 1 order by a.id desc
+        where visible = 1 order by top desc , a.id desc
     </select>
 
     <select id="getArticlesBacked" parameterType="Article" resultMap="ArticleListResult">
@@ -140,7 +145,7 @@
             and category_id = #{categoryId}
         </if>
         </where>
-        order by a.id desc
+        order by top desc, a.id desc
     </select>
 
     <select id="getArticleById" resultMap="ArticleResult">
@@ -164,7 +169,7 @@
     </select>
 
     <select id="getArticlesByTagId" resultMap="ArticleResult" parameterType="Long">
-        select a.id, a.user_id, a.category_id, a.title, a.summary, a.url, a.visible, a.words, a.views, a.reading_time, a.created_at, a.updated_at,
+        select a.id, a.user_id, a.category_id, a.title, a.summary, a.url, a.top, a.visible, a.words, a.views, a.reading_time, a.created_at, a.updated_at,
                c.id as category_id, c.category_name,
                atg.id, atg.article_id, atg.tag_id,
                t.id as tag_id, t.tag_name

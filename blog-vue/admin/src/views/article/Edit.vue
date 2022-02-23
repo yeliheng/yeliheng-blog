@@ -6,9 +6,11 @@
             <div class="line"></div>
             <span>编辑文章</span>
             <div class="article-btn">
-                    <span>设为私密</span>
-                    <el-switch class="private-sw" v-model="article.visible" active-value="0" inactive-value="1"/>
-                <el-button class="publish-btn" type="primary" @click="publishArticle">保存更改</el-button>
+              <span>私密</span>
+              <el-switch class="private-sw" v-model="article.visible" active-value="0" inactive-value="1"/>
+              <span>置顶</span>
+              <el-switch class="top-sw" v-model="article.top" active-value="1" inactive-value="0"/>
+              <el-button class="publish-btn" type="primary" @click="publishArticle">保存更改</el-button>
             </div>
         </div>
 
@@ -93,6 +95,7 @@ setup() {
         title: "",
         summary: "",
         content: "",
+        top: 0,
         visible: 1,
     })
 
@@ -133,11 +136,12 @@ setup() {
         updateArticle(article.value).then((data: any) => {
             dialogVisible.value = false;
             loading.value = false;
-            if(data){
+            if(!data.errCode){
                 ElMessage({
                     message: "文章保存成功!",
                     type: 'success',
                 });
+                router.push('/articles/list');
             }  
         });
     }

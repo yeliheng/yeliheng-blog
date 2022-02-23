@@ -47,7 +47,12 @@
                 v-loading="table.loading"
             >
                 <el-table-column type="selection" width="55" />
-                <el-table-column property="id" label="文章编号" width="100" align="center" sortable />
+                <el-table-column property="id" label="文章编号" width="100" align="center" sortable>
+                  <template #default="scope">
+                    <i v-if="scope.row.top == '1'" class="fa fa-thumb-tack" style="color: #579ff8"> </i>
+                    {{scope.row.id}}
+                  </template>
+                </el-table-column>
                 <el-table-column property="title" label="标题" width="220" align="center" sortable/>
                 <el-table-column property="categoryName" label="分类" width="120" align="center">
                     <template #default="scope">
