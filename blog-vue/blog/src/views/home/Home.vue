@@ -21,7 +21,7 @@
             </div>
           <div class="read-time info"><span class="iconfont icon-shizhong" style="margin-right: 0.5rem;"></span>
           <span class="info-text">阅读时长(分钟) ≈  </span>{{article.readingTime}}</div>
-          <div class="is-top" v-if="article.top === '1'">置顶</div>
+          <span class="iconfont icon-tuding is-top" v-if="article.top === '1'"></span>
         </div>
         <div class="summary">
             <span v-if="article.summary == null"> 暂无简介 </span>
@@ -128,15 +128,12 @@ export default {
 }
 
 .is-top {
-  width: 2.7rem;
-  height: 1.2rem;
-  background: #3f3f3f;
-  border-radius: 6px;
+  color: #ffffff;
   margin: {
     left: 0.6rem;
     top: 0.4rem;
   }
-  font-size: 0.7rem;
+  font-size: 1rem;
 }
 
 .loading-bar{
