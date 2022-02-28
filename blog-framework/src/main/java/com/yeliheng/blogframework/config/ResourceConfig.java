@@ -17,6 +17,6 @@ public class ResourceConfig extends WebMvcConfigurationSupport {
                 .addResourceLocations("classpath:/META-INF/resources/webjars/springfox-swagger-ui/");
         registry.addResourceHandler("/webjars/**")
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");
-        registry.addResourceHandler("/**").addResourceLocations("file:///" + FrameworkConfig.getFilePath() + "/avatar");
+        registry.addResourceHandler("/**").addResourceLocations("file:///" + LocalStorageConfig.getFilePath() + "/avatar");
     }
 }

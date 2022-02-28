@@ -4,8 +4,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConfigurationProperties(prefix = "system.file-system")
-public class FrameworkConfig {
+@ConfigurationProperties(prefix = "system.file-system.local")
+public class LocalStorageConfig {
 
     private static String filePath; //文件系统的绝对路径
 
@@ -18,7 +18,7 @@ public class FrameworkConfig {
     }
 
     public void setFilePath(String filePath) {
-        FrameworkConfig.filePath = filePath;
+        LocalStorageConfig.filePath = filePath;
     }
 
     public static int getMaxFilenameLength() {
@@ -26,7 +26,7 @@ public class FrameworkConfig {
     }
 
     public void setMaxFilenameLength(int maxFilenameLength) {
-        FrameworkConfig.maxFilenameLength = maxFilenameLength;
+        LocalStorageConfig.maxFilenameLength = maxFilenameLength;
     }
 
     public static long getMaxFileSize() {
@@ -34,6 +34,6 @@ public class FrameworkConfig {
     }
 
     public void setMaxFileSize(long maxFileSize) {
-        FrameworkConfig.maxFileSize = maxFileSize;
+        LocalStorageConfig.maxFileSize = maxFileSize;
     }
 }

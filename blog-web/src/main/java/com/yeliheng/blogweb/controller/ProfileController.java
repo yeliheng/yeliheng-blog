@@ -6,7 +6,8 @@ import com.yeliheng.blogcommon.exception.RequestFormatException;
 import com.yeliheng.blogcommon.exception.UnexpectedException;
 import com.yeliheng.blogcommon.utils.ServletUtils;
 import com.yeliheng.blogcommon.utils.StringUtils;
-import com.yeliheng.blogframework.storage.Storage;
+import com.yeliheng.blogframework.storage.FileSystemAdapter;
+import com.yeliheng.blogframework.storage.LocalStorage;
 import com.yeliheng.blogsystem.domain.LoginUser;
 import com.yeliheng.blogsystem.domain.User;
 import com.yeliheng.blogsystem.mapper.UserMapper;
@@ -65,8 +66,9 @@ public class ProfileController {
     public CommonResponse<Object> setAvatar(MultipartFile file) {
         if(StringUtils.isNull(file) || file.isEmpty()) throw new RequestFormatException("文件不能为空!");
         String[] allowedExt = {"png","jpg","jpeg","gif"}; //设置允许的后缀
-        Storage storage = new Storage("avatar"); //指定存储器
-        String path = storage.upload(file,userUtils.getLoginUserId().toString(),allowedExt); //上传！
+        LocalStorage localStorage = new LocalStorage("avatar"); //新建一个存储器
+        FileSystemAdapter adapter = new FileSystemAdapter(localStorage);
+        String path = adapter.getFileSystem().handleFile(file,userUtils.getLoginUserId().toString(),allowedExt);
         if(StringUtils.isEmpty(path))
             throw new UnexpectedException();
         User user = new User();
