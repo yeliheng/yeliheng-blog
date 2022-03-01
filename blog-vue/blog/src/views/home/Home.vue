@@ -61,7 +61,7 @@ export default {
     const router = useRouter();
     const pageCount = ref();
     const page = ref(1);
-    const pageSize = 5;
+    const pageSize = 10;
     const articleList = ref([]);
     const loadingBar = ref(null);
     const store = useStore();
