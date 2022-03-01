@@ -116,6 +116,13 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!-- kaptcha 验证码 -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>kaptcha-spring-boot-starter</artifactId>
+            <version>1.1.0</version>
+        </dependency>
+
 
     </dependencies>
 

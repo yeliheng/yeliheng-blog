@@ -46,10 +46,45 @@ token:
   secret: yeliheng123
   # 令牌请求头
   header: Authorization
+#验证码配置
+kaptcha:
+  # 高度
+  height: 50
+  # 宽度
+  width: 200
+  # 内容
+  content:
+    # 长度
+    length: 4
+    # 从以下字母生成
+    source: abcdefghjklmnopqrstuvwxyz23456789
+    # 空格
+    space: 2
+  # 字体
+  font:
+    # 颜色
+    color: black
+    # 字体
+    name: Arial
+    # 字号
+    size: 40
+  # 背景颜色(渐变)
+  background-color:
+    from: lightGray
+    to: white
+  # 边框
+  border:
+    enabled: true
+    # 边框颜色
+    color: black
+    # 粗细
+    thickness: 1
 # 系统设置
 system:
   # 允许注册？
   allow-register: false
+  # 验证码开关
+  captcha-enabled: true
   file-system:
     #本地配置
     local:
@@ -57,3 +92,4 @@ system:
       max-filename-length: 100
       # 允许的文件大小(M)
       max-file-size: 5
+

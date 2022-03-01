@@ -1,7 +1,5 @@
 package com.yeliheng.blogframework.storage;
 
-import org.springframework.web.multipart.MultipartFile;
-
 public class FileSystemAdapter{
 
     private final FileSystem fileSystem;

@@ -4,14 +4,9 @@ import com.yeliheng.blogcommon.exception.RequestFormatException;
 import com.yeliheng.blogcommon.utils.DateUtils;
 import com.yeliheng.blogcommon.utils.UUIDUtils;
 import com.yeliheng.blogframework.config.LocalStorageConfig;
-import com.yeliheng.blogframework.config.OssStorageConfig;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 public abstract class FileSystem {
 

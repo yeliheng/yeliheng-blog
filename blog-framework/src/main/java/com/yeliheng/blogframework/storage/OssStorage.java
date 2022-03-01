@@ -3,7 +3,6 @@ package com.yeliheng.blogframework.storage;
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
 import com.yeliheng.blogcommon.exception.UnexpectedException;
-import com.yeliheng.blogframework.config.LocalStorageConfig;
 import com.yeliheng.blogframework.config.OssStorageConfig;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
