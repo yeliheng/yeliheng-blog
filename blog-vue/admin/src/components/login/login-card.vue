@@ -13,12 +13,12 @@
               <el-input type="password" placeholder="密码" autocomplete="off" v-model="loginForm.password" @keyup.enter="loginHandler"></el-input>
             </el-form-item>
 
-              <el-form-item prop="captcha">
+<!--              <el-form-item prop="captcha">
                 <div class="captcha-wrap">
                   <el-input placeholder="验证码" autocomplete="off" v-model="loginForm.captcha" @keyup.enter="loginHandler"></el-input>
                   <img :src="captchaSrc" class="captcha-img" @click="getCaptcha"/>
                 </div>
-              </el-form-item>
+              </el-form-item>-->
 
 
             <div class="login-options">
@@ -46,11 +46,11 @@ export default {
   setup() {
     const router = useRouter();
 
-    const captchaSrc = ref(process.env.VUE_APP_BASE_API + "/captcha/render?" + new Date().getTime());
+/*    const captchaSrc = ref(process.env.VUE_APP_BASE_API + "/captcha/render?" + new Date().getTime());
 
     const getCaptcha = () => {
         captchaSrc.value = process.env.VUE_APP_BASE_API + "/captcha/render?" + new Date().getTime();
-    };
+    };*/
 
     let loading = ref(false);
     
@@ -109,7 +109,7 @@ export default {
             store.dispatch("Login",loginForm).then(() => {
               router.push({path: '/'});
             }).catch(() => {
-              getCaptcha();
+              //getCaptcha();
               loading.value = false;
             });
 
@@ -125,8 +125,8 @@ export default {
         login,
         loginHandler,
         loading,
-        captchaSrc,
-       getCaptcha,
+       // captchaSrc,
+      // getCaptcha,
       } 
   },
 

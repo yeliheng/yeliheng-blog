@@ -84,7 +84,7 @@ system:
   # 允许注册？
   allow-register: false
   # 验证码开关
-  captcha-enabled: true
+  captcha-enabled: false
   file-system:
     #本地配置
     local:

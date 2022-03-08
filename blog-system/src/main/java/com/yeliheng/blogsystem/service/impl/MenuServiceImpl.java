@@ -4,8 +4,8 @@ import com.yeliheng.blogcommon.exception.GeneralException;
 import com.yeliheng.blogcommon.exception.InternalServerException;
 import com.yeliheng.blogcommon.utils.StringUtils;
 import com.yeliheng.blogsystem.domain.Menu;
-import com.yeliheng.blogsystem.domain.Router;
-import com.yeliheng.blogsystem.domain.RouterMeta;
+import com.yeliheng.blogsystem.dto.Router;
+import com.yeliheng.blogsystem.dto.RouterMeta;
 import com.yeliheng.blogsystem.dto.MenuTreeDTO;
 
 import com.yeliheng.blogsystem.mapper.MenuMapper;

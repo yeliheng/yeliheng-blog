@@ -1,10 +1,7 @@
-# Yeliheng-Blog
+> Yeliheng-Blog文档在[GitHub](https://github.com/yeliheng/yeliheng-blog/)、[Yeliheng的技术小站](https://www.yeliheng.com/p/f1d1e1d9)上同步更新，开源仓库地址: [https://github.com/yeliheng/yeliheng-blog](https://github.com/yeliheng/yeliheng-blog)
+>
+> 欢迎Star，Issue，Pull requests以及任何对本项目的贡献。开发不易，感谢支持！
 
----
-
-Yeliheng-Blog说明在[我的博客](https://www.yeliheng.com/)上同步更新，地址:[https://www.yeliheng.com/p/f1d1e1d9](https://www.yeliheng.com/p/f1d1e1d9)
-
-欢迎Star，Issue，Pull requests以及任何对本项目的贡献。开发不易，感谢支持！
 # 系统介绍
 
 这个开源仓库是Yeliheng的技术小站的前后端实现。Yeliheng-Blog是一个基于SpringBoot + Vue3开发的前后端分离的完整博客系统。它并不仅仅是一个简单的博客系统，更是一个**后台权限管理系统**，通过**模块化**使其具有高拓展性，可拓展成任何您想要的管理系统，例如文章系统，OA办公系统，仓库管理系统等...
@@ -38,16 +35,12 @@ Yeliheng-Blog说明在[我的博客](https://www.yeliheng.com/)上同步更新�
 ### 目前已有功能
 
 - 文章管理：实现文章的增删改查，以及文章分类、标签，隐私性的设置。
-
 - 用户管理：用户登录、注册以及管理员对用户的增删改查操作。
-
 - 角色管理：对角色系统的增删改查以及为用户分配多个角色。
-
 - 权限管理：可为不同角色分配所需的不同权限。
-
 - 菜单管理：为角色分配菜单权限，以及前端菜单的动态路由处理。
-
 - 站点统计：目前仅实现对文章字数，阅读时长及字数的统计，后续将以模块化形式实现站点的完整统计功能。
+- 数据库监控：基于Druid的数据库可视化监控。
 
 ### 正在开发中的功能
 
@@ -168,7 +161,7 @@ git clone https://github.com/yeliheng/yeliheng-blog.git
 
 5、导入数据库
 
-将项目sql文件夹中的**yeliheng-blog.sql**文件导入到数据库中。
+将项目sql文件夹中的所有.sql文件导入到数据库中。
 
 6、准备完成，开始运行项目！
 
@@ -180,7 +173,7 @@ git clone https://github.com/yeliheng/yeliheng-blog.git
 
 1、进入本项目中的blog-vue文件夹中，前端分为admin和blog两个模块，此处以admin模块为例进行说明。
 
-2、**我们首先进入admin文件夹**，在admin文件夹中新建文件：**.env.development**，并将 **.env.example** 中的内容复制到刚刚创建的 **.env.development**中，并将**VUE_APP_BASE_API**地址修改为后端地址。若您没有改动后端地址则无需更改。
+2、**我们首先进入admin文件夹**，在admin文件夹中新建文件：**.env.development**（重要！），并将 **.env.example** 中的内容复制到刚刚创建的 **.env.development**中，并将**VUE_APP_BASE_API**地址修改为后端地址。若您没有改动后端地址则无需更改。
 
 3、执行如下指令安装所需依赖：
 
@@ -213,4 +206,3 @@ npm run serve
 ![后台](https://cdn.yeliheng.com/yeliheng-blog/admin-article-list.png)
 
 ![权限管理](https://cdn.yeliheng.com/yeliheng-blog/admin-role-manage.png)
-

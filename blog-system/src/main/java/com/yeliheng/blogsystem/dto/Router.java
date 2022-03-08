@@ -1,4 +1,4 @@
-package com.yeliheng.blogsystem.domain;
+package com.yeliheng.blogsystem.dto;
 
 import java.util.List;
 
