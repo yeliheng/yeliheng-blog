@@ -45,4 +45,10 @@ public class DictionaryController {
                                        @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize, Dictionary dictionary) {
         return CommonResponse.success(dictionaryService.getDictionaryList(page,pageSize,dictionary));
     }
+
+    @PreAuthorize("@perm.hasPerm('admin:dictionary:get')")
+    @GetMapping("/admin/dictionaryById")
+    public CommonResponse<Object> getById(@RequestParam Long id) {
+        return CommonResponse.success(dictionaryService.getDictionaryById(id));
+    }
 }

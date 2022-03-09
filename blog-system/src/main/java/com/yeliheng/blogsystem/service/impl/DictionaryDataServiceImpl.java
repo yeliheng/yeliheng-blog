@@ -28,10 +28,6 @@ public class DictionaryDataServiceImpl implements IDictionaryDataService {
      */
     @Override
     public void addDictionaryData(DictionaryData dictData) {
-        if(!checkDictLabelUnique(dictData))
-            throw new GeneralException("字典数据标签已存在！");
-        if(!checkDictValueUnique(dictData))
-            throw new GeneralException("字典数据值已存在！");
         dictData.setUserId(userUtils.getLoginUserId());
         dictionaryDataMapper.addDictionaryData(dictData);
     }
@@ -54,10 +50,6 @@ public class DictionaryDataServiceImpl implements IDictionaryDataService {
      */
     @Override
     public void updateDictionaryData(DictionaryData dictData) {
-        if(!checkDictLabelUnique(dictData))
-            throw new GeneralException("字典数据标签已存在！");
-        if(!checkDictValueUnique(dictData))
-            throw new GeneralException("字典数据值已存在！");
         dictionaryDataMapper.updateDictionaryData(dictData);
     }
 
@@ -84,6 +76,17 @@ public class DictionaryDataServiceImpl implements IDictionaryDataService {
     @Override
     public DictionaryData getDictionaryDataById(long id) {
         return dictionaryDataMapper.selectDictionaryDataById(id);
+    }
+
+    /**
+     * 通过dictCode获取字典数据
+     *
+     * @param dictCode 字典代码
+     * @return 字典数据
+     */
+    @Override
+    public List<DictionaryData> getDictionaryDataByCode(String dictCode) {
+        return dictionaryDataMapper.selectDictionaryDataByCode(dictCode);
     }
 
     /**

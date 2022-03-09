@@ -73,6 +73,10 @@
         select * from dictionary_data where id = #{id} and status = 1
     </select>
 
+    <select id="selectDictionaryDataByCode" parameterType="String" resultType="DictionaryData">
+        select * from dictionary_data where dict_code = #{dictCode} and status = 1
+    </select>
+
     <select id="checkDictLabelUnique" resultType="Long">
         select id from dictionary_data where dict_label = #{dictLabel}
     </select>

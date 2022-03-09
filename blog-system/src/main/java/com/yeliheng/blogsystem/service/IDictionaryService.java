@@ -36,7 +36,7 @@ public interface IDictionaryService {
      * 获取字典中的具体数据
      * @param id 字典id
      */
-    void getDictionaryById(long id);
+    Dictionary getDictionaryById(long id);
 
     /**
      * 检查字典代码是否唯一

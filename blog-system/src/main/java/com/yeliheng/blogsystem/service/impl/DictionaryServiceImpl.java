@@ -78,8 +78,8 @@ public class DictionaryServiceImpl implements IDictionaryService {
      * @param id 字典id
      */
     @Override
-    public void getDictionaryById(long id) {
-
+    public Dictionary getDictionaryById(long id) {
+        return dictionaryMapper.selectDictionaryById(id);
     }
 
     /**

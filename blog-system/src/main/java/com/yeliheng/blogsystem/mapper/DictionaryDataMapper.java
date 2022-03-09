@@ -17,6 +17,8 @@ public interface DictionaryDataMapper {
 
     public DictionaryData selectDictionaryDataById(long id);
 
+    public List<DictionaryData> selectDictionaryDataByCode(String dictCode);
+
     public Long checkDictLabelUnique(DictionaryData dictData);
 
     public Long checkDictValueUnique(DictionaryData dictData);

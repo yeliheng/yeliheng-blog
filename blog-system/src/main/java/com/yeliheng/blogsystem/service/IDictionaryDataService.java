@@ -3,6 +3,8 @@ package com.yeliheng.blogsystem.service;
 import com.github.pagehelper.PageInfo;
 import com.yeliheng.blogsystem.domain.DictionaryData;
 
+import java.util.List;
+
 public interface IDictionaryDataService {
 
     /**
@@ -37,6 +39,13 @@ public interface IDictionaryDataService {
      * @param id id
      */
     DictionaryData getDictionaryDataById(long id);
+
+    /**
+     * 通过dictCode获取字典数据
+     * @param dictCode 字典代码
+     * @return 字典数据
+     */
+    List<DictionaryData> getDictionaryDataByCode(String dictCode);
 
     /**
      * 检查字典标签是否唯一

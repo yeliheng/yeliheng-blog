@@ -45,4 +45,16 @@ public class DictionaryDataController {
                                        @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize, DictionaryData dictionaryData) {
         return CommonResponse.success(dictionaryDataService.getDictionaryDataList(page,pageSize,dictionaryData));
     }
+
+    @PreAuthorize("@perm.hasPerm('admin:dictionarydata:get')")
+    @GetMapping("/admin/dictionaryDataById")
+    public CommonResponse<Object> getById(@RequestParam Long id) {
+        return CommonResponse.success(dictionaryDataService.getDictionaryDataById(id));
+    }
+
+    @PreAuthorize("@perm.hasPerm('admin:dictionarydata:get')")
+    @GetMapping("/admin/dictionaryDataByCode")
+    public CommonResponse<Object> getByCode(@RequestParam String dictCode) {
+        return CommonResponse.success(dictionaryDataService.getDictionaryDataByCode(dictCode));
+    }
 }
