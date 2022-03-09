@@ -5,17 +5,17 @@ import java.time.LocalDateTime;
 
 public class DictionaryData {
 
-    private long id;
+    private Long id;
 
-    private long userId;
+    private Long userId;
 
-    @NotBlank
+    @NotBlank(message = "字典标签不能为空")
     private String dictLabel;
 
-    @NotBlank
+    @NotBlank(message = "字典值不能为空")
     private String dictValue;
 
-    @NotBlank
+    @NotBlank(message = "字典代码不能为空")
     private String dictCode;
 
     private String classType;
@@ -30,19 +30,19 @@ public class DictionaryData {
 
     private LocalDateTime updatedAt;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public long getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 

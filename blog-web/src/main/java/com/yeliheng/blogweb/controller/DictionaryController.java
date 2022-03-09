@@ -22,6 +22,7 @@ public class DictionaryController {
         dictionaryService.addDictionary(dictionary);
         return CommonResponse.success();
     }
+
     @PreAuthorize("@perm.hasPerm('admin:dictionary:delete')")
     @Log(moduleName = "删除字典",businessType = BusinessType.DELETE)
     @DeleteMapping("/admin/dictionary")
