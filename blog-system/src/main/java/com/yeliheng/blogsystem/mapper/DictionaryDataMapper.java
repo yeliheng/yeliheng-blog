@@ -23,4 +23,6 @@ public interface DictionaryDataMapper {
 
     public Long checkDictValueUnique(DictionaryData dictData);
 
+    public int countDictionaryDataByCode(String dictCode);
+
 }

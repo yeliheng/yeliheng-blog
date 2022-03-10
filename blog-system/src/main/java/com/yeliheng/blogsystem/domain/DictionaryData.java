@@ -3,9 +3,10 @@ package com.yeliheng.blogsystem.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class DictionaryData {
+public class DictionaryData implements Serializable {
 
     private Long id;
 

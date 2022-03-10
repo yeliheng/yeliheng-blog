@@ -85,6 +85,10 @@
         select id from dictionary_data where dict_value = #{dictValue}
     </select>
 
+    <select id="countDictionaryDataByCode" resultType="int">
+        select count(1) from dictionary_data where dict_code = #{dictCode}
+    </select>
+
     <delete id="deleteById" parameterType="Long">
         delete from dictionary_data where id = #{id}
     </delete>

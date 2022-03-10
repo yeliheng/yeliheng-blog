@@ -5,9 +5,11 @@ public class Constants {
      * 令牌前缀
      */
     public static final String TOKEN_PREFIX = "Bearer ";
-    /**
-     * 令牌Cliams
-     */
+
+    /** 登录用户缓存键 */
+    public static final String LOGIN_USER_KEY = "login_users:";
+
+    /** 令牌Cliams */
     public static final String CLAIMS_KEY = "user_claim";
     /**
      * 数据库中0/1映射
@@ -25,6 +27,9 @@ public class Constants {
     public static final String ROLE_DELIMETER = ",";
 
     public static final String PERMISSION_DELIMETER = ",";
+
+    /** 字典缓存键 */
+    public static final String DICTIONARY_KEY = "dictionary:";
 
 
 

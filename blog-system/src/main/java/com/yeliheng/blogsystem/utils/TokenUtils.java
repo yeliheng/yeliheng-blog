@@ -1,6 +1,7 @@
 package com.yeliheng.blogsystem.utils;
 
 import com.yeliheng.blogcommon.constant.Constants;
+import com.yeliheng.blogcommon.exception.UnexpectedException;
 import com.yeliheng.blogcommon.utils.RedisUtils;
 import com.yeliheng.blogcommon.utils.ServletUtils;
 import com.yeliheng.blogcommon.utils.StringUtils;
@@ -78,7 +79,7 @@ public class TokenUtils {
      * @param expireTime 缓存过期时间
      */
     public void setLoginUser(String uuid, LoginUser loginUser,int expireTime){
-        redisUtils.setCacheObject(uuid, loginUser, expireTime, TimeUnit.MINUTES);
+        redisUtils.setCacheObject(getTokenCacheKey(uuid), loginUser, expireTime, TimeUnit.MINUTES);
     }
 
     /**
@@ -87,7 +88,7 @@ public class TokenUtils {
      */
     public void refreshLoginUser(LoginUser loginUser) {
         String uuid = getUUID(ServletUtils.getRequest());
-        redisUtils.setCacheObject(uuid,loginUser,expireTime,TimeUnit.MINUTES);
+        redisUtils.setCacheObject(getTokenCacheKey(uuid),loginUser,expireTime,TimeUnit.MINUTES);
     }
 
     /**
@@ -95,7 +96,7 @@ public class TokenUtils {
      * @param uuid uuid
      */
     public void deleteLoginUser(String uuid){
-        redisUtils.deleteObject(uuid);
+        redisUtils.deleteObject(getTokenCacheKey(uuid));
     }
 
     /**
@@ -125,8 +126,10 @@ public class TokenUtils {
             try {
                 Claims claims = getClaims(token);
                 String uuid = claims.get(Constants.CLAIMS_KEY).toString();
-                return redisUtils.getCacheObject(uuid);
-            } catch (Exception ignored) {}
+                return redisUtils.getCacheObject(getTokenCacheKey(uuid));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return null;
     }
@@ -143,6 +146,16 @@ public class TokenUtils {
             return claims.get(Constants.CLAIMS_KEY).toString();
         }
         return null;
+    }
+
+
+    /**
+     * 获取Token缓存键
+     * @param key 原始键
+     * @return 缓存键
+     */
+    public String getTokenCacheKey(String key) {
+        return Constants.LOGIN_USER_KEY + key;
     }
 
 

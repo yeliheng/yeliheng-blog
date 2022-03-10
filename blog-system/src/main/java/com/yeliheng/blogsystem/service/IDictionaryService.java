@@ -44,4 +44,9 @@ public interface IDictionaryService {
      * @return true/false
      */
     boolean checkDictCodeUnique(Dictionary dictionary);
+
+    /**
+     * 刷新字典缓存
+     */
+    void refreshDictionaryCache();
 }

@@ -3,11 +3,16 @@ package com.yeliheng.blogsystem.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yeliheng.blogcommon.exception.GeneralException;
+import com.yeliheng.blogcommon.utils.DictionaryUtils;
 import com.yeliheng.blogcommon.utils.StringUtils;
+import com.yeliheng.blogsystem.domain.Dictionary;
 import com.yeliheng.blogsystem.domain.DictionaryData;
 import com.yeliheng.blogsystem.mapper.DictionaryDataMapper;
+import com.yeliheng.blogsystem.mapper.DictionaryMapper;
 import com.yeliheng.blogsystem.service.IDictionaryDataService;
 import com.yeliheng.blogsystem.utils.UserUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +25,8 @@ public class DictionaryDataServiceImpl implements IDictionaryDataService {
     private UserUtils userUtils;
     @Autowired
     private DictionaryDataMapper dictionaryDataMapper;
+    @Autowired
+    private DictionaryUtils<DictionaryData> dictionaryUtils;
 
     /**
      * 添加字典数据
@@ -29,7 +36,11 @@ public class DictionaryDataServiceImpl implements IDictionaryDataService {
     @Override
     public void addDictionaryData(DictionaryData dictData) {
         dictData.setUserId(userUtils.getLoginUserId());
-        dictionaryDataMapper.addDictionaryData(dictData);
+        int row = dictionaryDataMapper.addDictionaryData(dictData);
+        if(row > 0) {
+            List<DictionaryData> dictionaryDataList = dictionaryDataMapper.selectDictionaryDataByCode(dictData.getDictCode());
+            dictionaryUtils.setDictionaryCache(dictData.getDictCode(),dictionaryDataList);
+        }
     }
 
     /**
@@ -39,8 +50,11 @@ public class DictionaryDataServiceImpl implements IDictionaryDataService {
      */
     @Override
     public void deleteDictionaryData(long id) {
+        DictionaryData dictionaryData = dictionaryDataMapper.selectDictionaryDataById(id);
         if(dictionaryDataMapper.deleteById(id) <= 0)
             throw new GeneralException("删除失败，字典数据不存在");
+        List<DictionaryData> dictionaryDataList = dictionaryDataMapper.selectDictionaryDataByCode(dictionaryData.getDictCode());
+        dictionaryUtils.setDictionaryCache(dictionaryData.getDictCode(), dictionaryDataList);
     }
 
     /**
@@ -50,7 +64,11 @@ public class DictionaryDataServiceImpl implements IDictionaryDataService {
      */
     @Override
     public void updateDictionaryData(DictionaryData dictData) {
-        dictionaryDataMapper.updateDictionaryData(dictData);
+        int row = dictionaryDataMapper.updateDictionaryData(dictData);
+        if(row > 0) {
+            List<DictionaryData> dictionaryDataList = dictionaryDataMapper.selectDictionaryDataByCode(dictData.getDictCode());
+            dictionaryUtils.setDictionaryCache(dictData.getDictCode(),dictionaryDataList);
+        }
     }
 
     /**
@@ -86,7 +104,18 @@ public class DictionaryDataServiceImpl implements IDictionaryDataService {
      */
     @Override
     public List<DictionaryData> getDictionaryDataByCode(String dictCode) {
-        return dictionaryDataMapper.selectDictionaryDataByCode(dictCode);
+        List<DictionaryData> dictionaryDataList = dictionaryUtils.getDictionaryCache(dictCode);
+        //存在缓存
+        if(StringUtils.isNotEmpty(dictionaryDataList)) {
+            return dictionaryDataList;
+        }
+        //不存在缓存
+        dictionaryDataList = dictionaryDataMapper.selectDictionaryDataByCode(dictCode);
+        if(StringUtils.isNotEmpty(dictionaryDataList)) {
+            dictionaryUtils.setDictionaryCache(dictCode,dictionaryDataList);
+            return dictionaryDataList;
+        }
+        return null;
     }
 
     /**

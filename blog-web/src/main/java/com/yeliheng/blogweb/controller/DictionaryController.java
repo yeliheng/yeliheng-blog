@@ -51,4 +51,11 @@ public class DictionaryController {
     public CommonResponse<Object> getById(@RequestParam Long id) {
         return CommonResponse.success(dictionaryService.getDictionaryById(id));
     }
+
+    @PreAuthorize("@perm.hasPerm('admin:dictionary:edit')")
+    @PostMapping("/admin/dictionary/refreshCache")
+    public CommonResponse<Object> refreshCache() {
+        dictionaryService.refreshDictionaryCache();
+        return CommonResponse.success();
+    }
 }
