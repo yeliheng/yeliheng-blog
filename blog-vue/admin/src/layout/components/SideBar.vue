@@ -7,6 +7,7 @@
             background-color="#324157"
             text-color="#bfcbd9"
             active-text-color="#20a0ff"
+            unique-opened
         >
             <div class="logo-container">
                 <span>YNetwork-后台管理</span>

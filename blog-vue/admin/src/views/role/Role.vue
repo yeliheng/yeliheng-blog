@@ -28,7 +28,7 @@
                     <el-button type="primary" @click="searchRoles">搜索</el-button>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" @click="roleFormVisible = true;dialogTitle = '添加角色';roleForm = {};">新增角色</el-button>
+                    <el-button type="primary" @click="handleAddRole()">新增角色</el-button>
                 </el-form-item>
             </el-form>
                 
@@ -91,14 +91,20 @@
                     <el-input autocomplete="off" v-model="roleForm.roleChar"></el-input>
                 </el-form-item>   
                 <el-form-item label="角色权限: " label-width="100px">
+                    <el-checkbox v-model="linkage">父子联动</el-checkbox>
+                  <div>
                     <el-tree
+                        class="tree-border"
                         :data="menuOptions"
                         show-checkbox
                         ref="menuIds"
                         node-key="id"
                         empty-text="菜单加载中"
                         v-loading="loading"
+                        :check-strictly=!linkage
                     ></el-tree>
+                  </div>
+
                 </el-form-item>          
                 <el-form-item label="锁定角色: " label-width="100px">
                     <el-switch v-model="roleForm.locked"/>
@@ -135,6 +141,8 @@ export default {
         const formSize = ref('large');
 
         const dialogTitle = ref('');
+
+        const linkage = ref(false);
 
         const formRules = {
             roleName: [
@@ -210,8 +218,6 @@ export default {
 
         const menuIds: any = ref([]);
 
-        let menuParentIds: any = [];
-
         table.value.isMobile = store.state.app.isMobile;
 
 
@@ -228,23 +234,19 @@ export default {
             });
         }
 
+        const handleAddRole = () => {
+          roleFormVisible.value = true;
+          dialogTitle.value = '添加角色';
+          roleForm.value = {};
+          menuIds.value.setCheckedKeys([]);
+        }
+
         //获取菜单树
         getSelectMenuTree().then((res: any) => {
             menuOptions.value = res.data;
-            foreachParent(res.data);
         });
 
         listRoles();
-
-        //遍历出父菜单，在编辑时剔除以实现半选中
-        const foreachParent = (menuData: any) => {
-            menuData.forEach(item => {
-                if(item.children.length > 0) {
-                    menuParentIds.push(item.id); //构建父菜单
-                    foreachParent(item.children);
-                }
-            });
-        };
 
         const roles = ref([]);
 
@@ -291,17 +293,7 @@ export default {
             loading.value = true;
             getMenuIdsByRoleId(row.id).then((res: any) => {
                 if(!res.errCode) {
-                    let menuIdArr = [];
-                    //剔除父菜单
-                    res.data.forEach(element => {
-                        
-                        if(!(menuParentIds.indexOf(element) > -1)) {
-                            menuIdArr.push(element);
-                             
-                        }
-                    });
-                    menuIds.value.setCheckedKeys(menuIdArr);
-                   
+                    menuIds.value.setCheckedKeys(res.data);
                     loading.value = false;
                 }else {
                     ElMessage.error(res.detail);
@@ -316,14 +308,12 @@ export default {
 
         const onCancel = () => {
             roleFormVisible.value = false;
-            menuIds.value.setCheckedKeys([]);
         }
 
         const submitForm = () => {
             let menuIdArr = [];
             menuIdArr = menuIds.value.getCheckedKeys().concat(menuIds.value.getHalfCheckedKeys());
             roleForm.value.menuIds = menuIdArr;
-            console.log(menuIdArr)
             if(roleForm.value.id) {
                 loading.value = true;
                 updateRole(roleForm.value).then((res: any) => {
@@ -390,6 +380,8 @@ export default {
             menuIds,
             dialogTitle,
             onCancel,
+            handleAddRole,
+            linkage,
             };
         }
 }
@@ -420,6 +412,13 @@ export default {
 .role-table {
     width: 100%;
     overflow: auto;
+}
+
+.tree-border {
+    margin-top: 5px;
+    border: 1px solid #e5e6e7;
+    background: #FFFFFF none;
+    border-radius:4px;
 }
 
 @media screen and (max-width: 480px){
