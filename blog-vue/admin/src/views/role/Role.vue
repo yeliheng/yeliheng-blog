@@ -302,9 +302,7 @@ export default {
             });
             roleForm.value = formData;
             roleFormVisible.value = true;
-
         }
-
 
         const onCancel = () => {
             roleFormVisible.value = false;
