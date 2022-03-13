@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yeliheng.blogsystem.mapper.DictionaryDataMapper">
+
+    <insert id="addDictionaryData" parameterType="DictionaryData" useGeneratedKeys="true" keyProperty="id">
+        insert into dictionary_data(
+        <if test="userId != null and userId != ''">user_id,</if>
+        <if test="dictLabel != null and dictLabel != ''">dict_label,</if>
+        <if test="dictValue != null and dictValue != ''">dict_value,</if>
+        <if test="dictCode != null and dictCode != ''">dict_code,</if>
+        <if test="classType != null and classType != ''">class_type,</if>
+        <if test="description != null and description != ''">description,</if>
+        <if test="status != null and status != ''">status,</if>
+        <if test="sort != null and sort != ''">sort,</if>
+        created_at,
+        updated_at
+        )values (
+        <if test="userId != null and userId != ''">#{userId},</if>
+        <if test="dictLabel != null and dictLabel != ''">#{dictLabel},</if>
+        <if test="dictValue != null and dictValue != ''">#{dictValue},</if>
+        <if test="dictCode != null and dictCode != ''">#{dictCode},</if>
+        <if test="classType != null and classType != ''">#{classType},</if>
+        <if test="description != null and description != ''">#{description},</if>
+        <if test="status != null and status != ''">#{status},</if>
+        <if test="sort != null and sort != ''">#{sort},</if>
+        sysdate(),
+        sysdate()
+        )
+    </insert>
+    <update id="updateDictionaryData" parameterType="DictionaryData">
+        update dictionary_data
+        <set>
+            <if test="userId != null and userId != ''">user_id = #{userId},</if>
+            <if test="dictLabel != null and dictLabel != ''">dict_label = #{dictLabel},</if>
+            <if test="dictValue != null and dictValue != ''">dict_value = #{dictValue},</if>
+            <if test="dictCode != null and dictCode != ''">dict_code = #{dictCode},</if>
+            class_type = #{classType},
+            <if test="description != null and description != ''">description = #{description},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="sort != null and sort != ''">sort = #{sort},</if>
+            updated_at = sysdate()
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="selectDictionaryDataList" parameterType="DictionaryData" resultType="DictionaryData">
+        select * from dictionary_data
+        <where>
+            <if test="dictLabel != null and dictLabel != ''">
+                and dict_label like concat('%', #{dictLabel}, '%')
+            </if>
+            <if test="dictValue != null and dictValue != ''">
+                and dict_value = #{dictValue}
+            </if>
+            <if test="dictCode != null and dictCode != ''">
+                and dict_code = #{dictCode}
+            </if>
+            <if test="classType != null and classType != ''">
+                and class_type = #{classType}
+            </if>
+            <if test="description != null and description != ''">
+                and description like concat('%', #{description}, '%')
+            </if>
+            <if test="status != null and status != ''">
+                and status = #{status}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectDictionaryDataById" parameterType="Long" resultType="DictionaryData">
+        select * from dictionary_data where id = #{id} and status = 1
+    </select>
+
+    <select id="selectDictionaryDataByCode" parameterType="String" resultType="DictionaryData">
+        select * from dictionary_data where dict_code = #{dictCode} and status = 1
+    </select>
+
+    <select id="checkDictLabelUnique" resultType="Long">
+        select id from dictionary_data where dict_label = #{dictLabel}
+    </select>
+
+    <select id="checkDictValueUnique" resultType="Long">
+        select id from dictionary_data where dict_value = #{dictValue}
+    </select>
+
+    <select id="countDictionaryDataByCode" resultType="int">
+        select count(1) from dictionary_data where dict_code = #{dictCode}
+    </select>
+
+    <delete id="deleteById" parameterType="Long">
+        delete from dictionary_data where id = #{id}
+    </delete>
+
+</mapper>

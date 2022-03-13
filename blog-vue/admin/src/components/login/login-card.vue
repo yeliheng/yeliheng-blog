@@ -12,6 +12,15 @@
             <el-form-item prop="password">
               <el-input type="password" placeholder="密码" autocomplete="off" v-model="loginForm.password" @keyup.enter="loginHandler"></el-input>
             </el-form-item>
+
+<!--              <el-form-item prop="captcha">
+                <div class="captcha-wrap">
+                  <el-input placeholder="验证码" autocomplete="off" v-model="loginForm.captcha" @keyup.enter="loginHandler"></el-input>
+                  <img :src="captchaSrc" class="captcha-img" @click="getCaptcha"/>
+                </div>
+              </el-form-item>-->
+
+
             <div class="login-options">
               <el-checkbox label="7天内免登录" v-model="loginForm.rememberMe"></el-checkbox>
               <a href="" class="forgot-password">忘记密码?</a>
@@ -37,6 +46,12 @@ export default {
   setup() {
     const router = useRouter();
 
+/*    const captchaSrc = ref(process.env.VUE_APP_BASE_API + "/captcha/render?" + new Date().getTime());
+
+    const getCaptcha = () => {
+        captchaSrc.value = process.env.VUE_APP_BASE_API + "/captcha/render?" + new Date().getTime();
+    };*/
+
     let loading = ref(false);
     
     const store = useStore();
@@ -46,6 +61,7 @@ export default {
     const loginForm = reactive({
       username: "",
       password: "",
+      captcha: "",
       rememberMe: false,
     });
 
@@ -76,6 +92,12 @@ export default {
               trigger: 'blur',
         }
       ],
+      captcha: [
+        {
+          required: true,
+          message: "请输入验证码"
+        }
+      ]
     };
 
     const loginHandler = () => {
@@ -83,11 +105,15 @@ export default {
         login.value.validate((valid:any) => {
           if(valid){
             loading.value = true;
+
             store.dispatch("Login",loginForm).then(() => {
               router.push({path: '/'});
             }).catch(() => {
+              //getCaptcha();
               loading.value = false;
             });
+
+
           }
         });
         
@@ -99,6 +125,8 @@ export default {
         login,
         loginHandler,
         loading,
+       // captchaSrc,
+      // getCaptcha,
       } 
   },
 
@@ -159,6 +187,16 @@ export default {
 
     a{
       color: #409EFF;
+    }
+    .captcha-wrap {
+      display: flex;
+      .captcha-img {
+        margin-left: 1rem;
+        width: 7rem;
+        &:hover {
+          cursor: pointer;
+        }
+      }
     }
 
 @media screen and (max-width: 480px){

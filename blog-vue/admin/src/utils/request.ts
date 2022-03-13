@@ -4,13 +4,15 @@ import errorCode from "@/utils/errorCode";
 import { ElMessage, ElNotification } from "element-plus";
 import store from "@/store";
 import router from "@/router";
-
+axios.defaults.withCredentials = true
 const requestHeaders: HeadersInit = new Headers();
 requestHeaders.set('Content-Type','application/json;charset=utf-8');
 const service = axios.create({
     baseURL: process.env.VUE_APP_BASE_API,
     timeout: 10000
 });
+
+axios.defaults.withCredentials = true;
 
 //request拦截器
 service.interceptors.request.use(config => {

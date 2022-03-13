@@ -1,5 +1,8 @@
 package com.yeliheng.blogweb.advice;
 
+import com.baomidou.kaptcha.exception.KaptchaIncorrectException;
+import com.baomidou.kaptcha.exception.KaptchaNotFoundException;
+import com.baomidou.kaptcha.exception.KaptchaTimeoutException;
 import com.yeliheng.blogcommon.exception.ApiException;
 import com.yeliheng.blogsystem.dto.ErrorDTO;
 import org.springframework.data.redis.RedisConnectionFailureException;
@@ -70,7 +73,17 @@ public class ApiExceptionAdvice {
             errorDTO.setMessage("Redis异常");
             errorDTO.setHttpCode(500);
             errorDTO.setDetail("Redis服务连接失败！请检查服务是否启用");
-        }else{
+        }else if(exception instanceof KaptchaIncorrectException || exception instanceof KaptchaNotFoundException) {
+            errorDTO.setErrCode("GENERAL_EXCEPTION");
+            errorDTO.setMessage("验证码错误");
+            errorDTO.setHttpCode(200);
+            errorDTO.setDetail("请输入正确的验证码");
+        } else if (exception instanceof KaptchaTimeoutException) {
+            errorDTO.setErrCode("GENERAL_EXCEPTION");
+            errorDTO.setMessage("验证码已过期");
+            errorDTO.setHttpCode(200);
+            errorDTO.setDetail("验证码已过期");
+        } else{
             errorDTO.setErrCode("UNKNOWN_ERROR");
             errorDTO.setMessage("未知系统错误");
             errorDTO.setHttpCode(500);

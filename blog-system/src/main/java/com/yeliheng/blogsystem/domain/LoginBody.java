@@ -10,6 +10,8 @@ public class LoginBody {
     @NotBlank
     private String password;
 
+    private String code;
+
     private boolean rememberMe;
 
     public String getUsername() {
@@ -26,6 +28,14 @@ public class LoginBody {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public boolean isRememberMe() {

@@ -34,9 +34,10 @@ const actions = {
     Login({ commit },userInfo){
         const username = userInfo.username.trim();
         const password = userInfo.password;
+        const captcha = userInfo.captcha;
         const rememberMe = userInfo.rememberMe;
         return new Promise<void>((resolve,reject) => {
-            login(username,password,rememberMe).then((res: any) => {
+            login(username,password,captcha,rememberMe).then((res: any) => {
                 if(res.errCode == 'GENERAL_EXCEPTION') {
                     ElMessage.error(res.detail);
                     reject();

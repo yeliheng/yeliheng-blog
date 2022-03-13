@@ -48,8 +48,17 @@ server:
 system:
   # 文件系统
   file-system:
-    # 文件上传绝对路径 例如：(Windows: D:/YNetwork/storage || Linux: /home/YNetwork/storage || MacOS: /Users/myUser/YNetwork/storage)
-    file-path: D:/YNetwork/storage
+    # 本地配置
+    local:
+      # 文件上传绝对路径 例如：(Windows: D:/YNetwork/storage || Linux: /home/YNetwork/storage || MacOS: /Users/myUser/YNetwork/storage)
+      file-path: D:/YNetwork/storage
+    # OSS 配置（文档地址：https://help.aliyun.com/product/31815.html）
+    oss:
+      # 接入点（例如：华东1-杭州: https://oss-cn-hangzhou.aliyuncs.com）
+      endpoint: https://oss-cn-hangzhou.aliyuncs.com
+      # 安全信息
+      access-key-id: accessKeyId
+      access-key-secret: accessKey安全码
   #日志设置
   log:
     # 日志的存储绝对路径 例如：(Windows: D:/YNetwork/logs || Linux: /home/YNetwork/logs || MacOS: /Users/myUser/YNetwork/logs)

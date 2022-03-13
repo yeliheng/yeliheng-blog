@@ -1,4 +1,4 @@
-package com.yeliheng.blogsystem.domain;
+package com.yeliheng.blogsystem.dto;
 
 public class RouterMeta {
 

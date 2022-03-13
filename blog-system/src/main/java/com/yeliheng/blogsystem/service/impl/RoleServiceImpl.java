@@ -37,9 +37,9 @@ public class RoleServiceImpl implements IRoleService {
     @Transactional
     @Override
     public void addRole(Role role) {
-        if(!checkRoleNameUnique(role.getRoleName()))
+        if(!checkRoleNameUnique(role))
             throw new GeneralException("角色名称已存在");
-        if(!checkRoleCharUnique(role.getRoleChar()))
+        if(!checkRoleCharUnique(role))
             throw new GeneralException("角色标识符已存在");
         int rows = roleMapper.addRole(role);
         if(rows <= 0) throw new InternalServerException("添加失败，未知错误");
@@ -79,6 +79,10 @@ public class RoleServiceImpl implements IRoleService {
     @Transactional
     @Override
     public void updateRole(Role role) {
+        if(!checkRoleNameUnique(role))
+            throw new GeneralException("角色名称已存在");
+        if(!checkRoleCharUnique(role))
+            throw new GeneralException("角色标识符已存在");
         int rows = roleMapper.updateRole(role);
         //删除关联
         deleteRoleMenuByRoleId(role.getId());
@@ -165,24 +169,26 @@ public class RoleServiceImpl implements IRoleService {
     /**
      * 检查角色名称是否唯一
      *
-     * @param roleName 角色名称
-     * @return 角色名称
+     * @param role 角色实体
+     * @return true/false
      */
     @Override
-    public Boolean checkRoleNameUnique(String roleName) {
-        Long roleId = roleMapper.checkRoleNameUnique(roleName);
-        return StringUtils.isNull(roleId);
+    public Boolean checkRoleNameUnique(Role role) {
+        long tempId = StringUtils.isNull(role.getId()) ? -1L : role.getId();
+        Long roleId = roleMapper.checkRoleNameUnique(role.getRoleName());
+        return StringUtils.isNull(roleId) || tempId == roleId;
     }
 
     /**
      * 检查角色标识符是否唯一
      *
-     * @param roleChar 角色标识
-     * @return 角色名称
+     * @param role 角色实体
+     * @return true/false
      */
     @Override
-    public Boolean checkRoleCharUnique(String roleChar) {
-        Long roleId = roleMapper.checkRoleCharUnique(roleChar);
-        return StringUtils.isNull(roleId);
+    public Boolean checkRoleCharUnique(Role role) {
+        long tempId = StringUtils.isNull(role.getId()) ? -1L : role.getId();
+        Long roleId = roleMapper.checkRoleCharUnique(role.getRoleChar());
+        return StringUtils.isNull(roleId) || tempId == roleId;
     }
 }
