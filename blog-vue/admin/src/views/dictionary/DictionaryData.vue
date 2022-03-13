@@ -20,7 +20,11 @@
       >
         <el-table-column type="selection" width="55" />
         <el-table-column property="id" label="数据编号" width="100" align="center" sortable/>
-        <el-table-column property="dictLabel" label="数据标签" width="150" align="center" sortable />
+        <el-table-column property="dictLabel" label="数据标签" width="150" align="center" sortable>
+          <template #default="scope">
+            <el-tag :type="scope.row.classType">{{scope.row.dictLabel}}</el-tag>
+          </template>
+        </el-table-column>
         <el-table-column property="dictValue" label="数据值" width="120" align="center" sortable />
         <el-table-column property="description" label="数据描述" width="220" align="center">
           <template #default="scope">
@@ -65,7 +69,17 @@
           <el-input autocomplete="off" v-model="dictForm.description" type="textarea"></el-input>
         </el-form-item>
         <el-form-item label="字典样式: " label-width="100px" prop="classType">
-          <el-input autocomplete="off" v-model="dictForm.classType"></el-input>
+          <el-select v-model="dictForm.classType" clearable>
+            <el-option
+                v-for="item in classTypeOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="数据排序: " label-width="100px" prop="orderNum">
+          <el-input autocomplete="off" v-model="dictForm.sort" type="number" maxlength="10" placeholder="0"></el-input>
         </el-form-item>
         <el-form-item label="锁定字典: " label-width="80px">
           <el-switch v-model="dictForm.status"
@@ -85,7 +99,7 @@
 </template>
 
 <script lang="ts">
-import {reactive, ref, toRefs, watch} from 'vue';
+import {ref, watch} from 'vue';
 import {
   addDictionaryData,
   deleteDictionaryData,
@@ -103,7 +117,7 @@ export default {
 
     const dictCode = ref(props.code);
     watch( () => props.code,
-        (newValue,oldValue) => {
+        (newValue) => {
           dictCode.value = newValue;
           listDictionary();
     });
@@ -149,13 +163,6 @@ export default {
           message: '描述不能超过50个字符!',
           trigger: 'blur',
         }
-      ],
-      classType: [
-        {
-          max: 20,
-          message: '字典样式不能超过20个字符!',
-          trigger: 'blur',
-        },
       ],
     };
 
@@ -240,9 +247,28 @@ export default {
       formVisible.value = true;
     }
 
+    const classTypeOptions = [
+      {
+        value: "success",
+        label: "成功"
+      },
+      {
+        value: "info",
+        label: "信息"
+      },
+      {
+        value: "warning",
+        label: "警告"
+      },
+      {
+        value: "danger",
+        label: "危险"
+      }
+    ];
+
     const handleSubmit = () => {
       dictForm.value.dictCode = dictCode.value;
-      //添加字典
+      //添加字典数据
       if(!dictForm.value.id) {
         validate.value.validate((valid) => {
           if(valid) {
@@ -261,7 +287,7 @@ export default {
             });
           }
         });
-        //修改字典
+        //修改字典数据
       }else {
         validate.value.validate((valid) => {
           if(valid){
@@ -300,6 +326,7 @@ export default {
       validate,
       formTitle,
       handleAddClick,
+      classTypeOptions,
     };
   }
 }

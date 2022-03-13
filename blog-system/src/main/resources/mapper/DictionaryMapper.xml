@@ -45,6 +45,9 @@
             <if test="dictCode != null and dictCode != ''">
                 and dict_code = #{dictCode}
             </if>
+            <if test="description != null and description != ''">
+                and description like concat('%', #{description}, '%')
+            </if>
             <if test="status != null and status != ''">
                 and status = #{status}
             </if>

@@ -46,7 +46,13 @@
       >
         <el-table-column type="selection" width="55" />
         <el-table-column property="id" label="字典编号" width="100" align="center" sortable/>
-        <el-table-column property="dictName" label="字典名称" width="150" align="center" sortable />
+        <el-table-column property="dictName" label="字典名称" width="150" align="center" sortable>
+          <template #default="scope">
+            <div class="dict-name" @click="handleModalOpen(scope);">
+              {{scope.row.dictName}}
+            </div>
+          </template>
+        </el-table-column>
         <el-table-column property="dictCode" label="字典代码" width="120" align="center" sortable />
         <el-table-column property="description" label="字典描述" width="220" align="center">
           <template #default="scope">
@@ -437,6 +443,14 @@ const validate = ref(null);
 .dictionary-table {
   width: 100%;
   overflow: auto;
+}
+
+.dict-name {
+  color: #1890FF;
+  font-weight: bold;
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 @media screen and (max-width: 480px){

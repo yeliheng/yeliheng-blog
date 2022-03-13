@@ -46,15 +46,20 @@ public class DictionaryDataController {
         return CommonResponse.success(dictionaryDataService.getDictionaryDataList(page,pageSize,dictionaryData));
     }
 
-    @PreAuthorize("@perm.hasPerm('admin:dictionarydata:get')")
+    @PreAuthorize("@perm.hasPerm('admin:dictionarydata:list')")
     @GetMapping("/admin/dictionaryDataById")
     public CommonResponse<Object> getById(@RequestParam Long id) {
         return CommonResponse.success(dictionaryDataService.getDictionaryDataById(id));
     }
 
-    @PreAuthorize("@perm.hasPerm('admin:dictionarydata:get')")
+    @PreAuthorize("@perm.hasPerm('admin:dictionarydata:list')")
     @GetMapping("/admin/dictionaryDataByCode")
     public CommonResponse<Object> getByCode(@RequestParam String dictCode) {
+        return CommonResponse.success(dictionaryDataService.getDictionaryDataByCode(dictCode));
+    }
+
+    @GetMapping("/admin/dictionaryData/{dictCode}")
+    public CommonResponse<Object> getDictData(@PathVariable String dictCode) {
         return CommonResponse.success(dictionaryDataService.getDictionaryDataByCode(dictCode));
     }
 }

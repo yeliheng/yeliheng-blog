@@ -46,7 +46,7 @@ public class DictionaryController {
         return CommonResponse.success(dictionaryService.getDictionaryList(page,pageSize,dictionary));
     }
 
-    @PreAuthorize("@perm.hasPerm('admin:dictionary:get')")
+    @PreAuthorize("@perm.hasPerm('admin:dictionary:list')")
     @GetMapping("/admin/dictionaryById")
     public CommonResponse<Object> getById(@RequestParam Long id) {
         return CommonResponse.success(dictionaryService.getDictionaryById(id));
