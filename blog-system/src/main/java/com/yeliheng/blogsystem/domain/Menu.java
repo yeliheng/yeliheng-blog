@@ -15,14 +15,21 @@ public class Menu {
 
     private Long parentId;
 
-    @NotBlank
+    @NotBlank(message = "菜单类型不能为空")
+    private String menuType;
+
+    @NotBlank(message = "菜单名称不能为空")
     private String menuName;
 
     private Integer orderNum;
 
+    private String external;
+
     private String path;
 
     private String component;
+
+    private String cache;
 
     private Integer hidden;
 
@@ -142,5 +149,29 @@ public class Menu {
 
     public void setChildren(List<Menu> children) {
         this.children = children;
+    }
+
+    public String getMenuType() {
+        return menuType;
+    }
+
+    public void setMenuType(String menuType) {
+        this.menuType = menuType;
+    }
+
+    public String getExternal() {
+        return external;
+    }
+
+    public void setExternal(String external) {
+        this.external = external;
+    }
+
+    public String getCache() {
+        return cache;
+    }
+
+    public void setCache(String cache) {
+        this.cache = cache;
     }
 }

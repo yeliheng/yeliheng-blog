@@ -29,17 +29,8 @@ router.beforeEach((to,from, next) =>{
                 store.commit("SET_PROFILE",res.data.user);
                 //获取路由信息
                 store.dispatch('GenerateRoutes').then(routes => {
-                    //router.addRoute(routes);
                     next({...to,replace:true});
                 })
-            }).catch(error => {
-                store.dispatch('Logout').then(() => {
-                    ElMessage({
-                        type: 'error',
-                        message: "用户凭据已过期，请重新登录!",
-                    });
-                    router.push('/login');
-                });
             });
 
            } else {

@@ -24,7 +24,7 @@ export const constantRoutes: Array<RouteRecordRaw> = [
         path: '/users/profile',
         component: Profile,
         name: '个人中心',
-      }
+      },
     ]
   },
 

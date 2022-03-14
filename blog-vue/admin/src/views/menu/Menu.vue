@@ -40,6 +40,13 @@
       >
         <el-table-column type="selection" width="55" />
         <el-table-column property="menuName" label="菜单名称" width="130" align="center"/>
+        <el-table-column property="menuType" label="菜单类型" width="130" align="center">
+          <template #default="scope">
+            <el-tag v-if="scope.row.menuType === 'TOP'">父菜单</el-tag>
+            <el-tag type="success" v-if="scope.row.menuType === 'SECOND'">菜单</el-tag>
+            <el-tag type="warning" v-if="scope.row.menuType === 'BUTTON'">按钮</el-tag>
+          </template>
+        </el-table-column>
         <el-table-column property="icon" label="图标" width="80" align="center">
           <template #default="scope">
             <i :class="'fa ' + scope.row.icon" />
@@ -70,18 +77,26 @@
 
 
     <!-- 添加或修改菜单 -->
-    <el-dialog v-model="menuOpen" :title="dialogTitle" :close-on-click-modal="false" width="25rem">
+    <el-dialog v-model="menuOpen" :title="dialogTitle" :close-on-click-modal="false" class="add-menu">
       <el-form ref="validate" :model="menuForm" label-position="left" :rules="formRules">
+        <el-form-item label="菜单类型: " prop="menuType">
+          <el-radio-group v-model="menuForm.menuType">
+            <el-radio label="TOP">父菜单</el-radio>
+            <el-radio label="SECOND">菜单</el-radio>
+            <el-radio label="BUTTON">按钮</el-radio>
+          </el-radio-group>
+        </el-form-item>
         <el-form-item label="菜单名称: " label-width="100px" prop="menuName">
           <el-input autocomplete="off" placeholder="请输入菜单名称" v-model="menuForm.menuName" maxlength="30"></el-input>
         </el-form-item>
-        <el-form-item label="菜单图标: " label-width="100px" prop="icon">
+        <el-form-item v-if="menuForm.menuType !== 'BUTTON'" label="菜单图标: " label-width="100px" prop="icon">
           <el-input autocomplete="off" placeholder="font-awesome的图标名称" v-model="menuForm.icon" maxlength="30"></el-input>
         </el-form-item>
-        <el-form-item label="路由地址: " label-width="100px" prop="path">
-          <el-input autocomplete="off" placeholder="必须以 / 开头" v-model="menuForm.path" maxlength="30"></el-input>
+        <el-form-item v-if="menuForm.menuType !== 'BUTTON'" label="路由地址: " label-width="100px" prop="path">
+          <el-input v-if="menuForm.external === '0'" autocomplete="off" placeholder="必须以 / 开头" v-model="menuForm.path" maxlength="30"></el-input>
+          <el-input v-if="menuForm.external === '1'" autocomplete="off" placeholder="必须以http://或https://开头" v-model="menuForm.path" maxlength="30"></el-input>
         </el-form-item>
-        <el-form-item label="组件路径: " label-width="100px" prop="component">
+        <el-form-item v-if="menuForm.menuType === 'SECOND'" label="组件路径: " label-width="100px" prop="component">
           <el-input autocomplete="off" placeholder="对应Vue的组件路径" v-model="menuForm.component" maxlength="30"></el-input>
         </el-form-item>
         <el-form-item label="菜单权限: " label-width="100px" prop="permission">
@@ -97,9 +112,18 @@
                        ref="parentFormId"
                        clearable />
         </el-form-item>
-        <el-form-item label="隐藏菜单: " label-width="100px">
-          <el-switch v-model="menuForm.hidden" active-value="1" inactive-value="0"/>
-        </el-form-item>
+          <el-form-item label="隐藏菜单: " label-width="100px">
+            <el-switch v-model="menuForm.hidden" :active-value="1" :inactive-value="0"/>
+          </el-form-item>
+        <div style="display: flex;justify-content: space-between">
+          <el-form-item v-if="menuForm.menuType !== 'BUTTON'" label="是否外链: "  label-width="100px">
+            <el-switch v-model="menuForm.external" active-value="1" inactive-value="0"/>
+          </el-form-item>
+          <el-form-item v-if="menuForm.menuType === 'SECOND'" label="是否缓存: " label-width="100px" style="margin-left: 1rem;">
+            <el-switch v-model="menuForm.cache" active-value="1" inactive-value="0" />
+          </el-form-item>
+        </div>
+
       </el-form>
       <template #footer>
             <span class="dialog-footer">
@@ -119,6 +143,7 @@ import { useStore } from 'vuex';
 import { ElMessage } from 'element-plus';
 import {addMenu, deleteMenu, getMenuList, updateMenu} from "@/api/menu";
 import {buildMenuTree} from "@/utils/treeBuilder";
+import {getDictionaryDataAnon} from "@/api/dictionaryData";
 
 export default {
   setup(){
@@ -141,6 +166,18 @@ export default {
         {
           required: true,
           message: '请输入菜单名',
+        },
+      ],
+      menuType: [
+        {
+          required: true,
+          message: '请选择菜单类型',
+        },
+      ],
+      path: [
+        {
+          required: true,
+          message: '请选择路由地址',
         },
       ],
     };
@@ -183,23 +220,9 @@ export default {
       isMobile: false,// 表格是否移动端
     });
 
-    const searchParams: any = ref({
-      menuName: '',
-      hidden: '',
-    });
+    const searchParams: any = ref({});
 
-    const menuForm: any = ref({
-      id: 0,
-      parentId: '',
-      menuName: '',
-      orderNum: '',
-      path: '',
-      component: '',
-      hidden: '',
-      permission: '',
-      icon: '',
-      createdAt: '',
-    });
+    const menuForm: any = ref({});
 
 
     table.value.isMobile = store.state.app.isMobile;
@@ -254,7 +277,6 @@ export default {
 
 
     const submitForm = () => {
-      console.log(parentFormId.value.getCheckedNodes());
       if(parentFormId.value.getCheckedNodes().length > 0) {
         menuForm.value.parentId = parentFormId.value.getCheckedNodes()[0].value;
       }else {
@@ -298,7 +320,6 @@ export default {
           }
         });
       }
-
     }
 
 
@@ -352,9 +373,16 @@ export default {
   overflow: auto;
 }
 
+:deep(.el-dialog) {
+  width: 30%;
+}
+
 @media screen and (max-width: 480px){
   .menu-table{
     overflow: auto;
+  }
+  :deep(.el-dialog) {
+    width: 25rem;
   }
 }
 

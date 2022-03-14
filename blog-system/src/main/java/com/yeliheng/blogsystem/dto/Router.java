@@ -19,6 +19,8 @@ public class Router {
 
     private String permission;
 
+    private String external;
+
     private RouterMeta meta;
 
     private Integer hidden;
@@ -95,5 +97,13 @@ public class Router {
 
     public void setChildren(List<Router> children) {
         this.children = children;
+    }
+
+    public String getExternal() {
+        return external;
+    }
+
+    public void setExternal(String external) {
+        this.external = external;
     }
 }

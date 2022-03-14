@@ -198,24 +198,28 @@ public class MenuServiceImpl implements IMenuService {
         List<Router> routerList = new LinkedList<>();
 
         for(Menu menu : menuList) {
-            Router router = new Router();
-            router.setId(menu.getId());
-            router.setName(menu.getMenuName());
-            router.setPath(menu.getPath());
-            router.setComponent(menu.getComponent());
-            router.setIcon(menu.getIcon());
-            router.setPermission(menu.getPermission());
-            RouterMeta meta = new RouterMeta();
-            meta.setTitle(menu.getMenuName());
-            router.setMeta(meta);
-            router.setHidden(menu.getHidden());
-            List<Menu> childMenus = menu.getChildren();
+            if(!menu.getMenuType().equals("BUTTON")) {
+                Router router = new Router();
+                router.setId(menu.getId());
+                router.setName(menu.getMenuName());
+                router.setPath(menu.getPath());
+                router.setComponent(menu.getComponent());
+                router.setIcon(menu.getIcon());
+                router.setPermission(menu.getPermission());
+                router.setExternal(menu.getExternal());
+                RouterMeta meta = new RouterMeta();
+                meta.setTitle(menu.getMenuName());
+                router.setMeta(meta);
+                router.setHidden(menu.getHidden());
+                List<Menu> childMenus = menu.getChildren();
 
-            if (!childMenus.isEmpty()) {
-                router.setChildren(buildMenus(childMenus));
+                if (!childMenus.isEmpty()) {
+                    router.setChildren(buildMenus(childMenus));
+                }
+
+                routerList.add(router);
             }
 
-            routerList.add(router);
         }
         return routerList;
     }
