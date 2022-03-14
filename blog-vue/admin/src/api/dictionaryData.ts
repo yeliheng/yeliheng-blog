@@ -26,6 +26,13 @@ export function getDictionaryDataByCode(code:string){
     });
 }
 
+export function getDictionaryDataAnon(code:string){
+    return request({
+        url: '/admin/dictionaryData/' + code,
+        method: 'get',
+    });
+}
+
 export function deleteDictionaryData(id:number){
     return request({
         url: '/admin/dictionaryData',

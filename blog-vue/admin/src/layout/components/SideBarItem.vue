@@ -19,9 +19,15 @@
               :key="route.path + index"
               :route="route"/>
         </el-sub-menu>
-        <el-menu-item v-else-if="!item.children && !item.hidden" :index="item.path" :key="item.id">
-          <i :class="item.icon" />
-          <span class="menu-title"> {{ item.name }}</span>
+        <el-menu-item v-else-if="!item.children && !item.hidden" :index="resolvePath(item.external, item.path)" :key="item.id">
+          <a v-if="item.external === '1'" :href="item.path" target="_blank" class="external-href">
+            <i :class="item.icon" />
+            <span class="menu-title"> {{ item.name }}</span>
+          </a>
+          <div v-else>
+            <i :class="item.icon" />
+            <span class="menu-title"> {{ item.name }}</span>
+          </div>
         </el-menu-item>
       </template>
     </el-sub-menu>
@@ -29,14 +35,22 @@
   </template>
   <!-- 顶级菜单 -->
   <template v-else-if="!route.hidden" >
-    <el-menu-item :index="route.path" :key="route.path + route.id">
-      <i :class="route.icon" />
-      <span class="menu-title"> {{ route.name }}</span>
+    <el-menu-item :index="resolvePath(route.external, route.path)" :key="route.path + route.id" style="background-color: #324157">
+      <a v-if="route.external === '1'" :href="route.path" target="_blank" class="external-href" width="100%">
+        <i :class="route.icon" />
+        <span class="menu-title"> {{ route.name }}</span>
+      </a>
+      <div v-else>
+        <i :class="route.icon" />
+        <span class="menu-title"> {{ route.name }}</span>
+      </div>
     </el-menu-item>
   </template>
 </template>
 
-<script>
+<script lang="ts">
+
+import * as path from "path";
 
 export default {
   name: "SideBarItem",
@@ -47,7 +61,16 @@ export default {
   },
   setup() {
 
+    const resolvePath = (external: string,routePath: string) => {
+      if(external === '1') {
+        return "#" + routePath;
+      } else {
+        return path.resolve(routePath)
+      }
+    }
+
     return {
+      resolvePath,
     }
   }
 }
@@ -57,15 +80,16 @@ export default {
 i{
   margin-bottom: 0.21rem;
   margin-right: 0.8rem;
-// color: #666666;
 }
 
 .menu-title{
-//color: #666666;
   font-weight: bold;
 }
-.menu-item-title{
 
-//color: #666666;
+.external-href {
+  text-decoration: none;
+  color: inherit;
+  display: block;
 }
+
 </style>

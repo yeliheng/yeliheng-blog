@@ -19,7 +19,7 @@ CREATE TABLE `dictionary_data` (
   `created_at` datetime DEFAULT NULL COMMENT '创建时间',
   `updated_at` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of dictionary_data
@@ -31,6 +31,8 @@ INSERT INTO `dictionary_data` VALUES (3, 1, '锁定', '1', 'lock_unlock', 'warni
 INSERT INTO `dictionary_data` VALUES (4, 1, '正常', '0', 'lock_unlock', 'success', '表示一个项已解锁', 1, 0, '2022-03-13 15:18:46', '2022-03-13 15:18:46');
 INSERT INTO `dictionary_data` VALUES (5, 1, '公开', '1', 'public_private', 'success', '表示一个项公开可见', 1, 0, '2022-03-13 15:20:46', '2022-03-13 15:20:46');
 INSERT INTO `dictionary_data` VALUES (6, 1, '私密', '0', 'public_private', 'warning', '表示一个项不被公开', 1, 0, '2022-03-13 15:21:08', '2022-03-13 15:21:08');
+INSERT INTO `dictionary_data` VALUES (7, 1, '是', '1', 'yes_no', NULL, NULL, 1, 0, '2022-03-13 21:18:33', '2022-03-13 21:18:33');
+INSERT INTO `dictionary_data` VALUES (8, 1, '否', '0', 'yes_no', NULL, NULL, 1, 0, '2022-03-13 21:18:41', '2022-03-13 21:18:41');
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;

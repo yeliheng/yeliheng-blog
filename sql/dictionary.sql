@@ -16,7 +16,7 @@ CREATE TABLE `dictionary` (
   `created_at` datetime DEFAULT NULL COMMENT '创建时间',
   `updated_at` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of dictionary
@@ -25,6 +25,7 @@ BEGIN;
 INSERT INTO `dictionary` VALUES (1, 1, '停用/启用', 'disable_enable', '系统停用/启用开关选项', 1, '2022-03-13 15:15:56', '2022-03-13 15:15:56');
 INSERT INTO `dictionary` VALUES (2, 1, '锁定/解锁', 'lock_unlock', '系统锁定/解锁开关选项', 1, '2022-03-13 15:17:48', '2022-03-13 15:17:48');
 INSERT INTO `dictionary` VALUES (3, 1, '公开/私密', 'public_private', '内容的公开/私密切换', 1, '2022-03-13 15:19:34', '2022-03-13 15:22:44');
+INSERT INTO `dictionary` VALUES (4, 1, '是/否', 'yes_no', '数据库中的是/否操作，例如：是否缓存，是否外链等', 1, '2022-03-13 21:18:05', '2022-03-13 21:18:05');
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;
