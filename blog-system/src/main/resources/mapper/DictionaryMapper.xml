@@ -29,7 +29,7 @@
             <if test="userId != null and userId != ''">user_id = #{userId},</if>
             <if test="dictName != null and dictName != ''">dict_name = #{dictName},</if>
             <if test="dictCode != null and dictCode != ''">dict_code = #{dictCode},</if>
-            <if test="description != null and description != ''">description = #{description},</if>
+            <if test="description != null">description = #{description},</if>
             <if test="status != null and status != ''">status = #{status},</if>
             updated_at = sysdate()
         </set>

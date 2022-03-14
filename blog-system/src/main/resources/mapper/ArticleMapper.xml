@@ -112,7 +112,7 @@
             <if test="userId != null and userId != ''">user_id = #{userId},</if>
             category_id = #{categoryId},
             <if test="title != null and title != ''">title = #{title},</if>
-            <if test="summary != null and summary != ''">summary = #{summary},</if>
+            <if test="summary != null">summary = #{summary},</if>
             <if test="content != null and content != ''">content = #{content},</if>
             <if test="top != null and top != ''">top = #{top},</if>
             <if test="visible != null and visible != ''">visible = #{visible},</if>

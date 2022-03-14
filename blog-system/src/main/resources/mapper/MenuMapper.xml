@@ -50,12 +50,12 @@
             <if test="menuName != null and menuName != ''">menu_name = #{menuName},</if>
             <if test="orderNum != null">order_num = #{orderNum},</if>
             <if test="external != null">external = #{external},</if>
-            <if test="path != null and path != ''">path = #{path},</if>
-            <if test="component != null and component != ''">component = #{component},</if>
+            <if test="path != null">path = #{path},</if>
+            <if test="component != null">component = #{component},</if>
             <if test="cache != null and cache != ''">cache = #{cache},</if>
             <if test="hidden != null">hidden = #{hidden},</if>
-            <if test="permission != null and permission != ''">permission = #{permission},</if>
-            <if test="icon != null and icon != ''">icon = #{icon},</if>
+            <if test="permission != null">permission = #{permission},</if>
+            <if test="icon != null">icon = #{icon},</if>
             updated_at = sysdate()
         </set>
         where id = #{id}
