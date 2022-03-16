@@ -1,117 +1,119 @@
 <template>
+  <div>
     <div class="article-list-container">
-        <div class="article-list-header">
-            <div class="line"></div>
-            <span>文章管理</span>
-        </div>
-        <div class="article-list-body">
-            <el-form :inline="true" :model="searchParams" class="search-article" :size="formSize">
-                <el-form-item label="标题: ">
-                <el-input v-model="searchParams.title" placeholder="标题关键字"></el-input>
-                </el-form-item>
-                <el-form-item label="分类:">
-                    <el-select v-model="searchParams.categoryId" clearable placeholder="选择一个分类">
-                        <el-option
-                        v-for="item in categories"
-                        :key="item.id"
-                        :label="item.categoryName"
-                        :value="item.id"
-                        >
-                        </el-option>
-                    </el-select> 
-                </el-form-item>
-                <el-form-item label="可见性: ">
-                    <el-select v-model="searchParams.visible" clearable>
-                        <el-option
-                        v-for="item in articleVisible"
-                        :key="item.visible"
-                        :label="item.label"
-                        :value="item.visible"
-                        >
-                        </el-option>
-                    </el-select>  
-                </el-form-item>
-                <el-form-item>
-                <el-button type="primary" @click="searchArticles">搜索</el-button>
-                </el-form-item>
-                <el-form-item>
-                    <router-link to="/articles/publish"><el-button type="primary">发布文章</el-button></router-link>
-                </el-form-item>
-            </el-form>
-                
-            
-            <el-table
-            class="article-table"
-                ref="multipleTable"
-                :data="table.data"
-                v-loading="table.loading"
-            >
-                <el-table-column type="selection" width="55" />
-                <el-table-column property="id" label="文章编号" width="100" align="center" sortable>
-                  <template #default="scope">
-                    <i v-if="scope.row.top == '1'" class="fa fa-thumb-tack" style="color: #579ff8"> </i>
-                    {{scope.row.id}}
-                  </template>
-                </el-table-column>
-                <el-table-column property="title" label="标题" width="220" align="center" sortable/>
-                <el-table-column property="categoryName" label="分类" width="120" align="center">
-                    <template #default="scope">
-                        <span v-if="scope.row.category == null"> - </span>
-                        <el-tag v-else type="warning"> {{scope.row.category.categoryName}} </el-tag>
-                    </template>
-                </el-table-column>
-                <el-table-column property="tags" label="标签" width="170" align="center">
-                    <template #default="scope">
-                        <span v-if="scope.row.tags == ''"> - </span>
-                        <el-tag style="margin-left: 0.2rem"
-                        v-for="item in scope.row.tags"
-                        :key="item.id"
-                        :label="item.tagName"
-                        :value="item.id"                  
-                        >
-                        {{item.tagName}} 
-                        </el-tag>
-                    </template>
-                </el-table-column>
-              <el-table-column property="words" label="字数" width="100" align="center" sortable />
-                <el-table-column property="views" label="阅读量" width="100" align="center" sortable />
-                <el-table-column property="url" label="持久化链接" width="120" align="center"/>
-                <el-table-column property="createdAt" label="创建时间" width="150" align="center" sortable />
-                <el-table-column property="updatedAt" label="更新时间" width="150" align="center" sortable />
-                <el-table-column property="visible" label="状态" align="center" sortable>
-                    <template #default="scope">
-                    <el-tag :type="getVisibleDict(scope.row.visible).type"> {{getVisibleDict(scope.row.visible).label}} </el-tag>
-                    </template>
-                </el-table-column>
-                <el-table-column label="操作" align="center">
-                <template #default="scope">
-                    <el-button type="text" size="mini" icon="fa fa-edit" @click="handleEditClick(scope.row.id)">编辑</el-button>
-                    <el-popconfirm title="确定删除该文章? " @confirm="handleDelete(scope.row.id)">
-                    <template #reference>
-                    <el-button type="text" size="mini" style="color: #ff8989;" icon="fa fa-trash">删除</el-button>
-                    </template>
-                </el-popconfirm>
-                </template>
-                </el-table-column>
-            </el-table>
-        </div>
+      <div class="article-list-header">
+        <div class="line"></div>
+        <span>文章管理</span>
+      </div>
+      <div class="article-list-body">
+        <el-form :inline="true" :model="searchParams" class="search-article" :size="formSize">
+          <el-form-item label="标题: ">
+            <el-input v-model="searchParams.title" placeholder="标题关键字"></el-input>
+          </el-form-item>
+          <el-form-item label="分类:">
+            <el-select v-model="searchParams.categoryId" clearable placeholder="选择一个分类">
+              <el-option
+                  v-for="item in categories"
+                  :key="item.id"
+                  :label="item.categoryName"
+                  :value="item.id"
+              >
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="可见性: ">
+            <el-select v-model="searchParams.visible" clearable>
+              <el-option
+                  v-for="item in articleVisible"
+                  :key="item.visible"
+                  :label="item.label"
+                  :value="item.visible"
+              >
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="searchArticles">搜索</el-button>
+          </el-form-item>
+          <el-form-item>
+            <router-link to="/articles/publish"><el-button type="primary">发布文章</el-button></router-link>
+          </el-form-item>
+        </el-form>
 
-        <div class="article-list-footer">
-            <!-- 分页 -->
-            <el-pagination
-                class="pagination-nav"
-                v-model:currentPage="table.page"
-                :page-sizes="[30, 50, 80]"
-                :page-size="table.pageSize"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="table.total"
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :small="table.isMobile"
-            >
-            </el-pagination>
-        </div>
+
+        <el-table
+            class="article-table"
+            ref="multipleTable"
+            :data="table.data"
+            v-loading="table.loading"
+        >
+          <el-table-column type="selection" width="55" />
+          <el-table-column property="id" label="文章编号" width="100" align="center" sortable>
+            <template #default="scope">
+              <i v-if="scope.row.top == '1'" class="fa fa-thumb-tack" style="color: #579ff8"> </i>
+              {{scope.row.id}}
+            </template>
+          </el-table-column>
+          <el-table-column property="title" label="标题" width="220" align="center" sortable/>
+          <el-table-column property="categoryName" label="分类" width="120" align="center">
+            <template #default="scope">
+              <span v-if="scope.row.category == null"> - </span>
+              <el-tag v-else type="warning"> {{scope.row.category.categoryName}} </el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column property="tags" label="标签" width="170" align="center">
+            <template #default="scope">
+              <span v-if="scope.row.tags == ''"> - </span>
+              <el-tag style="margin-left: 0.2rem"
+                      v-for="item in scope.row.tags"
+                      :key="item.id"
+                      :label="item.tagName"
+                      :value="item.id"
+              >
+                {{item.tagName}}
+              </el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column property="words" label="字数" width="100" align="center" sortable />
+          <el-table-column property="views" label="阅读量" width="100" align="center" sortable />
+          <el-table-column property="url" label="持久化链接" width="120" align="center"/>
+          <el-table-column property="createdAt" label="创建时间" width="150" align="center" sortable />
+          <el-table-column property="updatedAt" label="更新时间" width="150" align="center" sortable />
+          <el-table-column property="visible" label="状态" align="center" sortable>
+            <template #default="scope">
+              <el-tag :type="getVisibleDict(scope.row.visible).type"> {{getVisibleDict(scope.row.visible).label}} </el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column label="操作" align="center">
+            <template #default="scope">
+              <el-button type="text" size="mini" icon="fa fa-edit" @click="handleEditClick(scope.row.id)">编辑</el-button>
+              <el-popconfirm title="确定删除该文章? " @confirm="handleDelete(scope.row.id)">
+                <template #reference>
+                  <el-button type="text" size="mini" style="color: #ff8989;" icon="fa fa-trash">删除</el-button>
+                </template>
+              </el-popconfirm>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+
+      <div class="article-list-footer">
+        <!-- 分页 -->
+        <el-pagination
+            class="pagination-nav"
+            v-model:currentPage="table.page"
+            :page-sizes="[30, 50, 80]"
+            :page-size="table.pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="table.total"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :small="table.isMobile"
+        >
+        </el-pagination>
+      </div>
     </div>
+  </div>
 </template>
 
 <script lang="ts">

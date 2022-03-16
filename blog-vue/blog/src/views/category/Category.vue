@@ -1,8 +1,8 @@
 <template>
     <div class="categories-container">
-        <div class="loading-bar-full" :class="{'no-loading': !isLoading,'is-loading': isLoading}" >
+<!--        <div class="loading-bar-full" :class="{'no-loading': !isLoading,'is-loading': isLoading}" >
             <v-loading></v-loading>
-        </div>
+        </div>-->
         <div class="category-card"
             v-for="category in categoryList"
             :key="category.id"

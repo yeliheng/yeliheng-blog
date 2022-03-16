@@ -1,207 +1,207 @@
 <template>
-<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
-    <div class="user-list-container">
-        <div class="user-list-header">
-            <div class="line"></div>
-            <span>用户管理</span>
-        </div>
-        <div class="user-list-body">
-            <el-form :inline="true" :model="searchParams" class="search-user" :size="formSize">
-                <el-form-item label="用户名: ">
-                <el-input v-model="searchParams.username" placeholder="用户名关键字"></el-input>
-                </el-form-item>
-                <el-form-item label="昵称: ">
-                    <el-input v-model="searchParams.nickname" placeholder="昵称关键字"></el-input>
-                </el-form-item>
-                <el-form-item label="手机号: ">
-                    <el-input v-model="searchParams.phone" placeholder="手机号"></el-input>
-                </el-form-item>
-              <el-form-item label="电子邮箱: ">
-                <el-input v-model="searchParams.email" placeholder="电子邮箱"></el-input>
+  <div class="user-list-container">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+      <div class="user-list-header">
+          <div class="line"></div>
+          <span>用户管理</span>
+      </div>
+      <div class="user-list-body">
+          <el-form :inline="true" :model="searchParams" class="search-user" :size="formSize">
+              <el-form-item label="用户名: ">
+              <el-input v-model="searchParams.username" placeholder="用户名关键字"></el-input>
               </el-form-item>
-                <el-form-item label="用户状态: ">
-                    <el-select v-model="searchParams.locked" clearable>
-                        <el-option
-                        v-for="item in userLocked"
-                        :key="item.locked"
-                        :label="item.label"
-                        :value="item.locked"
-                        >
-                        </el-option>
-                    </el-select>  
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" @click="searchUsers">搜索</el-button>
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" @click="userForm = {};userFormVisible = true;">添加用户</el-button>
-                </el-form-item>
-            </el-form>
-                
-            
-            <el-table
-                class="user-table"
-                ref="multipleTable"
-                :data="table.data"
-                v-loading="table.loading"
-            >
-                <el-table-column type="selection" width="55" />
-                <el-table-column property="id" label="用户编号" width="100" align="center" sortable/>
-                <el-table-column property="username" label="用户名" width="220" align="center" sortable/>
-                <el-table-column property="nickname" label="昵称" width="120" align="center" sortable>
-                    <template #default="scope">
-                        <span v-if="scope.row.nickname == null"> - </span>
-                        {{scope.row.nickname}}
-                    </template>
-                </el-table-column>
-                <el-table-column property="phone" label="手机号" width="120" align="center" sortable>
-                    <template #default="scope">
-                        <span v-if="scope.row.phone == null"> - </span>
-                        {{scope.row.phone}}
-                    </template>
-                </el-table-column>
-              <el-table-column property="email" label="电子邮箱" width="160" align="center" sortable>
-                <template #default="scope">
-                  <span v-if="scope.row.email == null"> - </span>
-                  {{scope.row.email}}
-                </template>
+              <el-form-item label="昵称: ">
+                  <el-input v-model="searchParams.nickname" placeholder="昵称关键字"></el-input>
+              </el-form-item>
+              <el-form-item label="手机号: ">
+                  <el-input v-model="searchParams.phone" placeholder="手机号"></el-input>
+              </el-form-item>
+            <el-form-item label="电子邮箱: ">
+              <el-input v-model="searchParams.email" placeholder="电子邮箱"></el-input>
+            </el-form-item>
+              <el-form-item label="用户状态: ">
+                  <el-select v-model="searchParams.locked" clearable>
+                      <el-option
+                      v-for="item in userLocked"
+                      :key="item.locked"
+                      :label="item.label"
+                      :value="item.locked"
+                      >
+                      </el-option>
+                  </el-select>
+              </el-form-item>
+              <el-form-item>
+                  <el-button type="primary" @click="searchUsers">搜索</el-button>
+              </el-form-item>
+              <el-form-item>
+                  <el-button type="primary" @click="userForm = {};userFormVisible = true;">添加用户</el-button>
+              </el-form-item>
+          </el-form>
+
+
+          <el-table
+              class="user-table"
+              ref="multipleTable"
+              :data="table.data"
+              v-loading="table.loading"
+          >
+              <el-table-column type="selection" width="55" />
+              <el-table-column property="id" label="用户编号" width="100" align="center" sortable/>
+              <el-table-column property="username" label="用户名" width="220" align="center" sortable/>
+              <el-table-column property="nickname" label="昵称" width="120" align="center" sortable>
+                  <template #default="scope">
+                      <span v-if="scope.row.nickname == null"> - </span>
+                      {{scope.row.nickname}}
+                  </template>
               </el-table-column>
-              <el-table-column property="roleList" label="用户角色" width="170" align="center" sortable>
-                    <template #default="scope">
-                        <span v-if="scope.row.id == 1"> <el-tag type="success">超级管理员</el-tag></span>
-                        <span v-if="scope.row.roleList == '' && scope.row.id != 1"> - </span>
-                        <el-tag style="margin-left: 0.2rem"
-                        v-for="item in scope.row.roleList"
-                        :key="item.id"
-                        :label="item.roleName"
-                        :value="item.id"                  
-                        >
-                        {{item.roleName}} 
-                        </el-tag>
-                    </template>
-                </el-table-column>
-                <el-table-column property="createdAt" label="创建时间" width="150" align="center" sortable/>
-                <el-table-column property="updatedAt" label="更新时间" width="150" align="center" sortable/>
-                <el-table-column property="locked" label="状态" align="center" sortable>
-                    <template #default="scope">
-                    <el-tag :type="getLockedDict(scope.row.locked).type"> {{getLockedDict(scope.row.locked).label}} </el-tag>
-                    </template>
-                </el-table-column>
-                <el-table-column label="操作" align="center" >
-                <template #default="scope">
-                    <el-button type="text" size="mini" icon="fa fa-edit" @click="handleEditClick(scope.row)">修改</el-button>
-                    <el-popconfirm title="确定删除该用户? " @confirm="handleDelete(scope.row.id)">
-                    <template #reference>
-                    <el-button type="text" size="mini" style="color: #ff8989;" icon="fa fa-trash">删除</el-button>
-                    </template>
-                </el-popconfirm>
-                </template>
-                </el-table-column>
-            </el-table>
-        </div>
+              <el-table-column property="phone" label="手机号" width="120" align="center" sortable>
+                  <template #default="scope">
+                      <span v-if="scope.row.phone == null"> - </span>
+                      {{scope.row.phone}}
+                  </template>
+              </el-table-column>
+            <el-table-column property="email" label="电子邮箱" width="160" align="center" sortable>
+              <template #default="scope">
+                <span v-if="scope.row.email == null"> - </span>
+                {{scope.row.email}}
+              </template>
+            </el-table-column>
+            <el-table-column property="roleList" label="用户角色" width="170" align="center" sortable>
+                  <template #default="scope">
+                      <span v-if="scope.row.id == 1"> <el-tag type="success">超级管理员</el-tag></span>
+                      <span v-if="scope.row.roleList == '' && scope.row.id != 1"> - </span>
+                      <el-tag style="margin-left: 0.2rem"
+                      v-for="item in scope.row.roleList"
+                      :key="item.id"
+                      :label="item.roleName"
+                      :value="item.id"
+                      >
+                      {{item.roleName}}
+                      </el-tag>
+                  </template>
+              </el-table-column>
+              <el-table-column property="createdAt" label="创建时间" width="150" align="center" sortable/>
+              <el-table-column property="updatedAt" label="更新时间" width="150" align="center" sortable/>
+              <el-table-column property="locked" label="状态" align="center" sortable>
+                  <template #default="scope">
+                  <el-tag :type="getLockedDict(scope.row.locked).type"> {{getLockedDict(scope.row.locked).label}} </el-tag>
+                  </template>
+              </el-table-column>
+              <el-table-column label="操作" align="center" >
+              <template #default="scope">
+                  <el-button type="text" size="mini" icon="fa fa-edit" @click="handleEditClick(scope.row)">修改</el-button>
+                  <el-popconfirm title="确定删除该用户? " @confirm="handleDelete(scope.row.id)">
+                  <template #reference>
+                  <el-button type="text" size="mini" style="color: #ff8989;" icon="fa fa-trash">删除</el-button>
+                  </template>
+              </el-popconfirm>
+              </template>
+              </el-table-column>
+          </el-table>
+      </div>
 
-        <div class="user-list-footer">
-            <!-- 分页 -->
-            <el-pagination
-                class="pagination-nav"
-                v-model:currentPage="table.page"
-                :page-sizes="[10, 20, 30]"
-                :page-size="table.pageSize"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="table.total"
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :small="table.isMobile"
-            >
-            </el-pagination>
-        </div>
+      <div class="user-list-footer">
+          <!-- 分页 -->
+          <el-pagination
+              class="pagination-nav"
+              v-model:currentPage="table.page"
+              :page-sizes="[10, 20, 30]"
+              :page-size="table.pageSize"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="table.total"
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :small="table.isMobile"
+          >
+          </el-pagination>
+      </div>
 
-        
-        <!-- 添加用户 -->
-        <el-dialog v-model="userFormVisible" title="添加用户" :close-on-click-modal="false" width="25rem">
-            <el-form ref="validate" :model="userForm" label-position="left" :rules="formRules">
-            <el-form-item label="用户名: " label-width="80px" prop="username" required>
-                <el-input autocomplete="off" v-model="userForm.username"></el-input>
+
+      <!-- 添加用户 -->
+      <el-dialog v-model="userFormVisible" title="添加用户" :close-on-click-modal="false" width="25rem">
+          <el-form ref="validate" :model="userForm" label-position="left" :rules="formRules">
+          <el-form-item label="用户名: " label-width="80px" prop="username" required>
+              <el-input autocomplete="off" v-model="userForm.username"></el-input>
+          </el-form-item>
+          <el-form-item label="密码: " label-width="80px" prop="password" required>
+              <el-input show-password autocomplete="off" v-model="userForm.password"></el-input>
+          </el-form-item>
+          <el-form-item label="昵称: " label-width="80px" prop="nickname">
+              <el-input autocomplete="off" v-model="userForm.nickname"></el-input>
+          </el-form-item>
+          <el-form-item label="手机号: " label-width="80px" prop="phone">
+              <el-input autocomplete="off" v-model="userForm.phone"></el-input>
+          </el-form-item>
+            <el-form-item label="电子邮箱: " label-width="80px" prop="email">
+              <el-input autocomplete="off" v-model="userForm.email"></el-input>
             </el-form-item>
-            <el-form-item label="密码: " label-width="80px" prop="password" required>
-                <el-input show-password autocomplete="off" v-model="userForm.password"></el-input>
-            </el-form-item>
-            <el-form-item label="昵称: " label-width="80px" prop="nickname">
-                <el-input autocomplete="off" v-model="userForm.nickname"></el-input>
-            </el-form-item>            
-            <el-form-item label="手机号: " label-width="80px" prop="phone">
-                <el-input autocomplete="off" v-model="userForm.phone"></el-input>
-            </el-form-item>
+          <el-form-item label="角色: " label-width="80px">
+              <el-select placeholder="请选择一个角色" v-model="userForm.roles" multiple>
+                  <el-option
+                      v-for="item in roles"
+                      :key="item.id"
+                      :label="item.roleName"
+                      :value="item.id"
+                      >
+                      </el-option>
+              </el-select>
+          </el-form-item>
+          <el-form-item label="锁定用户: " label-width="80px">
+              <el-switch v-model="userForm.locked"/>
+          </el-form-item>
+          </el-form>
+          <template #footer>
+          <span class="dialog-footer">
+              <el-button @click="userFormVisible = false">取消</el-button>
+              <el-button type="primary" @click="handleAddUser()" :loading="loading"
+              >确定</el-button
+              >
+          </span>
+          </template>
+      </el-dialog>
+
+      <!-- 编辑用户 -->
+      <el-dialog v-model="userEditFormVisible" title="编辑用户"  :close-on-click-modal="false" width="25rem">
+          <el-form ref="validate" :model="userForm" label-position="left" :rules="editFormRules">
+              <el-form-item label="用户名: " label-width="80px" prop="username" required>
+                  <el-input autocomplete="off" v-model="userForm.username"></el-input>
+              </el-form-item>
+              <el-form-item label="密码: " label-width="80px" prop="password">
+                  <el-input show-password placeholder="密码未更改" autocomplete="off" v-model="userForm.password"></el-input>
+              </el-form-item>
+              <el-form-item label="昵称: " label-width="80px" prop="nickname">
+                  <el-input autocomplete="off" v-model="userForm.nickname"></el-input>
+              </el-form-item>
+              <el-form-item label="手机号: " label-width="80px" prop="phone">
+                  <el-input autocomplete="off" v-model="userForm.phone"></el-input>
+              </el-form-item>
               <el-form-item label="电子邮箱: " label-width="80px" prop="email">
                 <el-input autocomplete="off" v-model="userForm.email"></el-input>
               </el-form-item>
-            <el-form-item label="角色: " label-width="80px">
-                <el-select placeholder="请选择一个角色" v-model="userForm.roles" multiple>
-                    <el-option
-                        v-for="item in roles"
-                        :key="item.id"
-                        :label="item.roleName"
-                        :value="item.id"
-                        >
-                        </el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item label="锁定用户: " label-width="80px">
-                <el-switch v-model="userForm.locked"/>
-            </el-form-item>
-            </el-form>
-            <template #footer>
-            <span class="dialog-footer">
-                <el-button @click="userFormVisible = false">取消</el-button>
-                <el-button type="primary" @click="handleAddUser()" :loading="loading"
-                >确定</el-button
-                >
-            </span>
-            </template>
-        </el-dialog>
-
-        <!-- 编辑用户 -->
-        <el-dialog v-model="userEditFormVisible" title="编辑用户"  :close-on-click-modal="false" width="25rem">
-            <el-form ref="validate" :model="userForm" label-position="left" :rules="editFormRules">
-                <el-form-item label="用户名: " label-width="80px" prop="username" required>
-                    <el-input autocomplete="off" v-model="userForm.username"></el-input>
-                </el-form-item>
-                <el-form-item label="密码: " label-width="80px" prop="password">
-                    <el-input show-password placeholder="密码未更改" autocomplete="off" v-model="userForm.password"></el-input>
-                </el-form-item>
-                <el-form-item label="昵称: " label-width="80px" prop="nickname">
-                    <el-input autocomplete="off" v-model="userForm.nickname"></el-input>
-                </el-form-item>            
-                <el-form-item label="手机号: " label-width="80px" prop="phone">
-                    <el-input autocomplete="off" v-model="userForm.phone"></el-input>
-                </el-form-item>
-                <el-form-item label="电子邮箱: " label-width="80px" prop="email">
-                  <el-input autocomplete="off" v-model="userForm.email"></el-input>
-                </el-form-item>
-                <el-form-item label="角色: " label-width="80px">
-                    <el-select placeholder="请选择一个角色" v-model="userForm.roles" multiple>
-                        <el-option
-                            v-for="item in roles"
-                            :key="item.id"
-                            :label="item.roleName"
-                            :value="item.id"
-                            >
-                            </el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="锁定用户: " label-width="80px">
-                    <el-switch v-model="userForm.locked"/>
-                </el-form-item>
-            </el-form>
-            <template #footer>
-            <span class="dialog-footer">
-                <el-button @click="userEditFormVisible = false">取消</el-button>
-                <el-button type="primary" @click="handleEditUser()" :loading="loading"
-                >确定</el-button
-                >
-            </span>
-            </template>
-        </el-dialog>
+              <el-form-item label="角色: " label-width="80px">
+                  <el-select placeholder="请选择一个角色" v-model="userForm.roles" multiple>
+                      <el-option
+                          v-for="item in roles"
+                          :key="item.id"
+                          :label="item.roleName"
+                          :value="item.id"
+                          >
+                          </el-option>
+                  </el-select>
+              </el-form-item>
+              <el-form-item label="锁定用户: " label-width="80px">
+                  <el-switch v-model="userForm.locked"/>
+              </el-form-item>
+          </el-form>
+          <template #footer>
+          <span class="dialog-footer">
+              <el-button @click="userEditFormVisible = false">取消</el-button>
+              <el-button type="primary" @click="handleEditUser()" :loading="loading"
+              >确定</el-button
+              >
+          </span>
+          </template>
+      </el-dialog>
     </div>
 </template>
 

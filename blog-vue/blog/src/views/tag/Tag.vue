@@ -1,8 +1,8 @@
 <template>
     <div class="tags-container">
-        <div class="loading-bar-full" :class="{'no-loading': !isLoading,'is-loading': isLoading}" >
+<!--        <div class="loading-bar-full" :class="{'no-loading': !isLoading,'is-loading': isLoading}" >
             <v-loading></v-loading>
-        </div>
+        </div>-->
         <div class="tag-card" 
             v-for="tag in tagList"
             :key="tag.id"

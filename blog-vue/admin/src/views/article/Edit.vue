@@ -1,71 +1,72 @@
 <template>
-<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+  <div>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
     <div class="article-container">
-        
-        <div class="article-header">
-            <div class="line"></div>
-            <span>编辑文章</span>
-            <div class="article-btn">
-              <span>私密</span>
-              <el-switch class="private-sw" v-model="article.visible" active-value="0" inactive-value="1"/>
-              <span>置顶</span>
-              <el-switch class="top-sw" v-model="article.top" active-value="1" inactive-value="0"/>
-              <el-button class="publish-btn" type="primary" @click="publishArticle">保存更改</el-button>
-            </div>
+
+      <div class="article-header">
+        <div class="line"></div>
+        <span>编辑文章</span>
+        <div class="article-btn">
+          <span>私密</span>
+          <el-switch class="private-sw" v-model="article.visible" active-value="0" inactive-value="1"/>
+          <span>置顶</span>
+          <el-switch class="top-sw" v-model="article.top" active-value="1" inactive-value="0"/>
+          <el-button class="publish-btn" type="primary" @click="publishArticle">保存更改</el-button>
+        </div>
+      </div>
+
+      <div class="article-content">
+        <el-input class="title" v-model="article.title" placeholder="请输入标题" ></el-input>
+        <el-input class="summary" v-model="article.summary" placeholder="请输入简介" style="margin-bottom: 0.5rem;"></el-input>
+        <v-md-editor v-model="article.content" placeholder="正文" v-loading="loading"></v-md-editor>
+      </div>
+      <div class="article-footer">
+        <div class="category">
+          <span>分类:</span>
+          <el-select class="category-select" v-model="article.categoryId" clearable placeholder="选择一个分类" >
+            <el-option
+                v-for="item in categories"
+                :key="item.id"
+                :label="item.categoryName"
+                :value="item.id"
+            >
+            </el-option>
+          </el-select>
+        </div>
+        <div class="tag">
+          <span>标签:</span>
+          <el-select class="tag-select" v-model="article.tagIds" multiple placeholder="选择标签">
+            <el-option
+                v-for="item in tags"
+                :key="item.id"
+                :label="item.tagName"
+                :value="item.id"
+            >
+            </el-option>
+          </el-select>
         </div>
 
-        <div class="article-content">
-            <el-input class="title" v-model="article.title" placeholder="请输入标题" ></el-input>
-            <el-input class="summary" v-model="article.summary" placeholder="请输入简介" style="margin-bottom: 0.5rem;"></el-input>
-            <v-md-editor v-model="article.content" placeholder="正文" v-loading="loading"></v-md-editor>
-        </div>
-        <div class="article-footer">
-            <div class="category">
-                <span>分类:</span>
-                    <el-select class="category-select" v-model="article.categoryId" clearable placeholder="选择一个分类" >
-                        <el-option
-                        v-for="item in categories"
-                        :key="item.id"
-                        :label="item.categoryName"
-                        :value="item.id"
-                        >
-                        </el-option>
-                    </el-select> 
-            </div>
-            <div class="tag">
-                <span>标签:</span>
-                <el-select class="tag-select" v-model="article.tagIds" multiple placeholder="选择标签">
-                    <el-option
-                        v-for="item in tags"
-                        :key="item.id"
-                        :label="item.tagName"
-                        :value="item.id"
-                    >
-                    </el-option>
-                </el-select> 
-            </div>
-            
-        </div>
+      </div>
     </div>
 
     <el-dialog
-    v-model="dialogVisible"
-    width="20rem"
-    title="提示"
-  >
-    <span>确认保存吗？</span>
-    
-    <template #footer>
+        v-model="dialogVisible"
+        width="20rem"
+        title="提示"
+    >
+      <span>确认保存吗？</span>
+
+      <template #footer>
       <span class="dialog-footer" style="display: flex; justify-content: center;">
         <el-button @click="dialogVisible = false">取消</el-button>
         <el-button type="primary" @click="onConfirmClick" :loading="loading"
-          >确定</el-button
+        >确定</el-button
         >
       </span>
-    </template>
-  </el-dialog>
+      </template>
+    </el-dialog>
 
-
+  </div>
 </template>
 
 <script lang="ts">

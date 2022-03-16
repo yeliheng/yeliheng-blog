@@ -2,7 +2,7 @@
   <div id="nav">
     <router-link to="/"></router-link>
   </div>
-  <router-view/>
+  <router-view />
 </template>
 
 <style lang="scss">
@@ -31,4 +31,5 @@
         font-size: 75%;
     }
 }
+
 </style>
