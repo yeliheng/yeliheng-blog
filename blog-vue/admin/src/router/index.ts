@@ -3,7 +3,6 @@ import Login from '@/views/login/Login.vue';
 
 import Layout from '@/layout/index.vue';
 import Home from '@/views/Home.vue';
-import Profile from '@/views/profile/Profile.vue';
 
 export const constantRoutes: Array<RouteRecordRaw> = [
   {
@@ -19,13 +18,7 @@ export const constantRoutes: Array<RouteRecordRaw> = [
     path: '/',
     component: Layout,
     name: 'ParentRoute',
-    children: [
-      {
-        path: '/users/profile',
-        component: Profile,
-        name: '个人中心',
-      },
-    ]
+    children: []
   },
 
 ];

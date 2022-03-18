@@ -12,4 +12,6 @@ public class BusinessType {
 
     public final static int QUERY = 4; //查
 
+    public final static int EXPORT = 5; //导出
+
 }

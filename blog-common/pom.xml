@@ -51,7 +51,12 @@
             <artifactId>javax.servlet-api</artifactId>
         </dependency>
 
-
+        <!-- Excel插件 -->
+        <dependency>
+            <groupId>org.jeecgframework</groupId>
+            <artifactId>autopoi-web</artifactId>
+            <version>1.4.0</version>
+        </dependency>
 
     </dependencies>
 

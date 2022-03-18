@@ -4,7 +4,7 @@ package com.yeliheng.blogweb.controller;
 import com.yeliheng.blogcommon.annotation.Log;
 import com.yeliheng.blogcommon.constant.BusinessType;
 import com.yeliheng.blogcommon.exception.UnauthorizedException;
-import com.yeliheng.blogcommon.utils.RedisUtils;
+import com.yeliheng.blogcommon.utils.ExcelUtils;
 import com.yeliheng.blogcommon.utils.ServletUtils;
 import com.yeliheng.blogcommon.utils.StringUtils;
 import com.yeliheng.blogsystem.domain.LoginUser;
@@ -17,6 +17,7 @@ import com.yeliheng.blogsystem.service.IUserService;
 import com.yeliheng.blogsystem.utils.TokenUtils;
 import com.yeliheng.blogsystem.utils.UserUtils;
 import com.yeliheng.blogweb.common.CommonResponse;
+import org.jeecgframework.poi.excel.entity.ExportParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -41,24 +42,25 @@ public class UserController {
     @Autowired
     private IMenuService menuService;
 
-    @PreAuthorize("@perm.hasPerm('admin:users:add')")
     @Log(moduleName = "新增用户",businessType = BusinessType.INSERT)
+    @PreAuthorize("@perm.hasPerm('admin:users:add')")
     @PostMapping
     public CommonResponse<Object> add(@Validated @RequestBody User user) {
         userService.insertUser(user);
         return CommonResponse.success();
     }
 
-    @PreAuthorize("@perm.hasPerm('admin:users:edit')")
+
     @Log(moduleName = "修改用户",businessType = BusinessType.UPDATE)
+    @PreAuthorize("@perm.hasPerm('admin:users:edit')")
     @PutMapping
     public CommonResponse<Object> update(@Validated @RequestBody User user) {
         userService.updateUser(user);
         return CommonResponse.success();
     }
 
-    @PreAuthorize("@perm.hasPerm('admin:users:delete')")
     @Log(moduleName = "删除用户",businessType = BusinessType.DELETE)
+    @PreAuthorize("@perm.hasPerm('admin:users:delete')")
     @DeleteMapping
     public CommonResponse<Object> delete(@RequestParam("id") Long id) {
         userService.deleteUser(id);
@@ -99,4 +101,13 @@ public class UserController {
         List<Menu> menuList = menuService.getMenusByUserId(userUtils.getLoginUserId());
         return CommonResponse.success(menuService.buildMenus(menuList));
     }
+
+
+    @Log(moduleName = "导出用户",businessType = BusinessType.EXPORT)
+    @PreAuthorize("@perm.hasPerm('admin:users:export')")
+    @GetMapping(value = "/export")
+    public CommonResponse<Object> export(User user) {
+        return CommonResponse.success(userService.exportUser(user));
+    }
+
 }

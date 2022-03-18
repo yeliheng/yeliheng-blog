@@ -3,6 +3,8 @@ package com.yeliheng.blogsystem.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.jeecgframework.poi.excel.annotation.Excel;
+import org.jeecgframework.poi.excel.annotation.ExcelCollection;
 import org.springframework.data.annotation.Id;
 
 import javax.validation.constraints.Email;
@@ -23,22 +25,27 @@ public class User implements Serializable {
 
     @NotBlank(message = "用户名不能为空")
     @Size(min = 4,max = 20,message = "用户名不能超过20个字符")
+    @Excel(name = "用户名")
     private String username;
 
     private String password;
 
+    @Excel(name = "昵称")
     @Size(max = 30, message = "昵称不能超过30个字符")
     private String nickname;
 
+    @Excel(name = "手机号")
     @Size(max = 11, message = "手机号不能超过11个字符")
     private String phone;
 
+    @Excel(name = "电子邮箱")
     @Email(message = "邮箱格式不正确")
     @Size(max = 30, message = "邮箱不能超过30个字符")
     private String email;
 
     private String avatar;
 
+    @Excel(name = "状态",replace = {"正常_0","锁定_1"})
     private Boolean locked;
 
     private Long[] roles;
@@ -55,13 +62,13 @@ public class User implements Serializable {
         return userId != null && 1L == userId;
     }
 
+    @Excel(name = "注册时间",width = 15,format = "yyyy-MM-dd")
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
 
+    @Excel(name = "更新时间",width = 15,format = "yyyy-MM-dd")
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updatedAt;
-
-
 
     public Long getId() {
         return id;
