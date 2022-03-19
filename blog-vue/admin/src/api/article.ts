@@ -56,3 +56,11 @@ export function updateArticle(article) {
         data: article
     });
 }
+
+//导出文章
+export function exportArticles() {
+    return request({
+        url: '/admin/articles/export',
+        method: 'get',
+    });
+}

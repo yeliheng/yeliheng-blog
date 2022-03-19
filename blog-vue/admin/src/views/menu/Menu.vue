@@ -1,6 +1,6 @@
 <template>
-  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
   <div class="menu-container">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
     <div class="menu-header">
       <div class="line"></div>
       <span>菜单管理</span>

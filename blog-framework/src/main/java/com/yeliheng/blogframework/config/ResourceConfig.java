@@ -1,5 +1,6 @@
 package com.yeliheng.blogframework.config;
 
+import com.yeliheng.blogcommon.config.LocalStorageConfig;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
@@ -17,6 +18,7 @@ public class ResourceConfig extends WebMvcConfigurationSupport {
                 .addResourceLocations("classpath:/META-INF/resources/webjars/springfox-swagger-ui/");
         registry.addResourceHandler("/webjars/**")
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");
+        //头像静态资源
         registry.addResourceHandler("/**").addResourceLocations("file:///" + LocalStorageConfig.getFilePath() + "/avatar");
     }
 }

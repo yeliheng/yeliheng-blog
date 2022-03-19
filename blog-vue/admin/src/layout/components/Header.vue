@@ -4,8 +4,8 @@
             <i v-if="!collapse" class="el-icon-s-fold"></i>
             <i v-else class="el-icon-s-unfold"></i>
         </div>
-        <div class="welcome"> 
-           👏🏻 欢迎您，{{ username }} 
+        <div class="welcome">
+           👏🏻 欢迎您，{{ username }}
         </div>
         <div class="header-right">
 
@@ -14,7 +14,7 @@
               <img :src="avatar" class="user-avatar" v-if="avatar != null"/>
               <img src="../../assets/images/avatar_default.svg" v-if="avatar == null" class="user-avatar">
                 <i class="el-icon-caret-bottom"></i>
-            </div> 
+            </div>
             <template #dropdown>
                 <el-dropdown-menu>
                     <el-dropdown-item command="user" @click="profileClick()">个人中心</el-dropdown-item>
@@ -100,7 +100,7 @@ export default {
             left: 0rem;
             :hover{
                 cursor: pointer;
-                color: #666666;
+                color: #fff;
             }
         }
         .welcome{

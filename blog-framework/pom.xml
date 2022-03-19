@@ -47,7 +47,8 @@
 			<artifactId>aliyun-sdk-oss</artifactId>
 			<version>3.10.2</version>
 		</dependency>
-    </dependencies>
+
+	</dependencies>
 	<build>
 	</build>
 

@@ -3,7 +3,7 @@ package com.yeliheng.blogframework.storage;
 import com.yeliheng.blogcommon.exception.RequestFormatException;
 import com.yeliheng.blogcommon.utils.DateUtils;
 import com.yeliheng.blogcommon.utils.UUIDUtils;
-import com.yeliheng.blogframework.config.LocalStorageConfig;
+import com.yeliheng.blogcommon.config.LocalStorageConfig;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.web.multipart.MultipartFile;
 

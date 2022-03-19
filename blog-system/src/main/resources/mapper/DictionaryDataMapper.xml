@@ -36,8 +36,8 @@
             <if test="dictLabel != null and dictLabel != ''">dict_label = #{dictLabel},</if>
             <if test="dictValue != null and dictValue != ''">dict_value = #{dictValue},</if>
             <if test="dictCode != null and dictCode != ''">dict_code = #{dictCode},</if>
-            class_type = #{classType},
-            <if test="description != null and description != ''">description = #{description},</if>
+            <if test="classType != null">class_type = #{classType},</if>
+            <if test="description != null">description = #{description},</if>
             <if test="status != null and status != ''">status = #{status},</if>
             <if test="sort != null and sort != ''">sort = #{sort},</if>
             updated_at = sysdate()

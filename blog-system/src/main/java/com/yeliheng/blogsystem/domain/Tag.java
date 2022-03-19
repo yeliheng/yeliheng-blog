@@ -2,6 +2,7 @@ package com.yeliheng.blogsystem.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
+import org.jeecgframework.poi.excel.annotation.Excel;
 
 
 import javax.validation.constraints.NotBlank;
@@ -10,12 +11,14 @@ import java.time.LocalDateTime;
 @ApiModel(description = "Tag")
 public class Tag {
 
+    @Excel(name = "标签ID")
     private Long id;
 
     private Long userId;
 
     private int articleCount;
 
+    @Excel(name = "标签名称")
     @NotBlank(message = "标签名称不能为空")
     private String tagName;
 

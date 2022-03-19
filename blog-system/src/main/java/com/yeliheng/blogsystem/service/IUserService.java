@@ -64,4 +64,6 @@ public interface IUserService {
      */
     public void resetPassword(String oldPassword, String newPassword);
 
+    public String exportUser(User user);
+
 }

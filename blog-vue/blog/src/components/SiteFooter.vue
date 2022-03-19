@@ -21,10 +21,12 @@ export default {
 
 <style lang="scss" scoped>
     .site-footer {
-        text-align: center;
-        background: #121212;
-        opacity: 0.5;
-        width: 100%;
+      position: absolute;
+      bottom: -3rem;
+      text-align: center;
+      background: inherit ;
+      opacity: 0.5;
+      width: 100%;
     }
     a {
       color: #fff;

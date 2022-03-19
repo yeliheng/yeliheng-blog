@@ -38,3 +38,10 @@ export function updateUser(userData) {
         data: userData,
     });
 }
+
+export function exportUser() {
+    return request({
+        url: '/admin/users/export',
+        method: 'get',
+    });
+}

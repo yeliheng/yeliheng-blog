@@ -6,6 +6,7 @@ import com.yeliheng.blogcommon.exception.GeneralException;
 import com.yeliheng.blogcommon.exception.InternalServerException;
 import com.yeliheng.blogcommon.exception.RequestFormatException;
 import com.yeliheng.blogcommon.exception.UnexpectedException;
+import com.yeliheng.blogcommon.utils.ExcelUtils;
 import com.yeliheng.blogcommon.utils.ServletUtils;
 import com.yeliheng.blogcommon.utils.StringUtils;
 import com.yeliheng.blogsystem.domain.LoginUser;
@@ -16,6 +17,8 @@ import com.yeliheng.blogsystem.mapper.UserRoleMapper;
 import com.yeliheng.blogsystem.service.IUserService;
 import com.yeliheng.blogsystem.utils.TokenUtils;
 import com.yeliheng.blogsystem.utils.UserUtils;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.jeecgframework.poi.excel.entity.ExportParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -32,6 +35,8 @@ public class UserServiceImpl implements IUserService {
     private UserRoleMapper userRoleMapper;
     @Autowired
     private TokenUtils tokenUtils;
+    @Autowired
+    private ExcelUtils excelUtils;
 
 
     //生成强哈希密码
@@ -241,6 +246,15 @@ public class UserServiceImpl implements IUserService {
         //刷新缓存
         loginUser.setUser(userMapper.selectUserByUserId(loginUser.getUser().getId()));
         tokenUtils.refreshLoginUser(loginUser);
+    }
+
+    @Override
+    public String exportUser(User user) {
+        List<User> userList =  userMapper.selectUserList(user);
+        ExportParams exportParams = new ExportParams();
+        exportParams.setTitle("用户列表");
+        exportParams.setSheetName("用户列表");
+        return excelUtils.exportExcel(exportParams,userList,User.class);
     }
 
 
