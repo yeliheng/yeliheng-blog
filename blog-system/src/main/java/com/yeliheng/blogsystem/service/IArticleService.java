@@ -2,6 +2,7 @@ package com.yeliheng.blogsystem.service;
 
 import com.github.pagehelper.PageInfo;
 import com.yeliheng.blogsystem.domain.Article;
+import com.yeliheng.blogsystem.domain.User;
 
 import java.util.List;
 
@@ -88,4 +89,11 @@ public interface IArticleService {
      *
      *  */
     PageInfo<Article> getArticlesByTag(Long tagId,Integer page, Integer pageSize);
+
+    /**
+     * 导出文章
+     * @param article 文章筛选条件
+     * @return 导出的excel路径
+     */
+    public String exportArticle(Article article);
 }

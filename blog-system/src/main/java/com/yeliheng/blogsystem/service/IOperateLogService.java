@@ -15,4 +15,11 @@ public interface IOperateLogService {
 
     void clearOperateLog();
 
+    /**
+     * 导出操作日志
+     * @param operateLog 操作日志筛选
+     * @return excel路径
+     */
+    String exportOperateLog(OperateLog operateLog);
+
 }

@@ -2,6 +2,7 @@ package com.yeliheng.blogweb.controller;
 
 import com.yeliheng.blogcommon.annotation.Log;
 import com.yeliheng.blogcommon.constant.BusinessType;
+import com.yeliheng.blogsystem.domain.Article;
 import com.yeliheng.blogsystem.domain.OperateLog;
 import com.yeliheng.blogsystem.service.IOperateLogService;
 import com.yeliheng.blogweb.common.CommonResponse;
@@ -39,5 +40,12 @@ public class OperateLogController {
     public CommonResponse<Object> clearOperateLogs() {
         operateLogService.clearOperateLog();
         return CommonResponse.success();
+    }
+
+    @Log(moduleName = "导出日志",businessType = BusinessType.EXPORT)
+    @PreAuthorize("@perm.hasPerm('admin:operatelog:export')")
+    @GetMapping(value = "/admin/operateLogs/export")
+    public CommonResponse<Object> export(OperateLog operateLog) {
+        return CommonResponse.success(operateLogService.exportOperateLog(operateLog));
     }
 }

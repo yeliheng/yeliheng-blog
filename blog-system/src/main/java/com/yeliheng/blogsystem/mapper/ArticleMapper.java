@@ -20,6 +20,8 @@ public interface ArticleMapper{
 
     List<Article> getArticlesBacked(Article article);
 
+    List<Article> exportArticlesBacked(Article article);
+
     Article getArticleByIdBacked(Long articleId);
 
     Article getArticleById(Long articleId);

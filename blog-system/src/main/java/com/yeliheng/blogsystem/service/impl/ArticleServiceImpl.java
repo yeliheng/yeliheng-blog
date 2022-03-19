@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.yeliheng.blogcommon.exception.GeneralException;
 import com.yeliheng.blogcommon.exception.InternalServerException;
 import com.yeliheng.blogcommon.exception.NotFoundException;
+import com.yeliheng.blogcommon.utils.ExcelUtils;
 import com.yeliheng.blogcommon.utils.StringUtils;
 import com.yeliheng.blogcommon.utils.WordUtils;
 import com.yeliheng.blogsystem.domain.AritcleTag;
@@ -15,6 +16,7 @@ import com.yeliheng.blogsystem.mapper.CategoryMapper;
 import com.yeliheng.blogsystem.service.IArticleService;
 import com.yeliheng.blogsystem.utils.UserUtils;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.jeecgframework.poi.excel.entity.ExportParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +36,8 @@ public class ArticleServiceImpl implements IArticleService {
     private ArticleTagMapper articleTagMapper;
     @Autowired
     private UserUtils userUtils;
+    @Autowired
+    private ExcelUtils excelUtils;
 
     /**
      * 新增文章
@@ -189,6 +193,21 @@ public class ArticleServiceImpl implements IArticleService {
         PageHelper.startPage(page,pageSize);
         List<Article> articleList = articleMapper.getArticlesByTagId(tagId);
         return new PageInfo<>(articleList);
+    }
+
+    /**
+     * 导出文章
+     *
+     * @param article 文章筛选条件
+     * @return 导出的excel路径
+     */
+    @Override
+    public String exportArticle(Article article) {
+        List<Article> articleList =  articleMapper.exportArticlesBacked(article);
+        ExportParams exportParams = new ExportParams();
+        exportParams.setTitle("文章列表");
+        exportParams.setSheetName("文章列表");
+        return excelUtils.exportExcel(exportParams,articleList,Article.class);
     }
 
 

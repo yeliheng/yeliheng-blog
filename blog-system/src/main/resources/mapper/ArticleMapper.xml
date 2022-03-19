@@ -41,6 +41,25 @@
         <collection property="tags" javaType="java.util.List" select="selectTagsByArticleId" column="id" />
     </resultMap>
 
+    <resultMap id="ArticleExportListResult" type="Article">
+        <id property="id" column="id" />
+        <result property="userId" column="user_id" />
+        <result property="categoryId" column="category_id" />
+        <result property="title" column="title" />
+        <result property="content" column="content" />
+        <result property="summary" column="summary" />
+        <result property="url" column="url" />
+        <result property="top" column="top" />
+        <result property="visible" column="visible" />
+        <result property="words" column="words" />
+        <result property="views" column="views" />
+        <result property="readingTime" column="reading_time" />
+        <result property="createdAt" column="created_at" />
+        <result property="updatedAt" column="updated_at" />
+        <association property="category" column="category_id" javaType="Category" resultMap="CategoryResult" />
+        <collection property="tags" javaType="java.util.List" select="selectTagsByArticleId" column="id" />
+    </resultMap>
+
     <select id="selectTagsByArticleId" resultType="Tag">
         select t.id, t.tag_name, atg.article_id, atg.tag_id
         from tag t
@@ -194,6 +213,28 @@
 
     <select id="countArticles" resultType="int">
         select count(1) from article where visible = 1
+    </select>
+
+    <select id="exportArticlesBacked" parameterType="Article" resultMap="ArticleExportListResult">
+        select a.id, a.user_id, a.category_id, a.title, a.summary, a.content, a.url, a.top, a.visible, a.words, a.views, a.reading_time, a.created_at, a.updated_at,
+        c.id as category_id, c.category_name
+        from article a
+        left join category c on a.category_id = c.id
+        <where>
+            <if test="title != null and title != ''">
+                and title like concat('%', #{title}, '%')
+            </if>
+            <if test="summary != null and summary != ''">
+                and summary like concat('%', #{summary}, '%')
+            </if>
+            <if test="visible != null and visible != ''">
+                and visible = #{visible}
+            </if>
+            <if test="categoryId != null and categoryId != ''">
+                and category_id = #{categoryId}
+            </if>
+        </where>
+        order by top desc, a.id desc
     </select>
 
 </mapper>

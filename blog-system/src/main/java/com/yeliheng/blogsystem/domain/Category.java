@@ -2,6 +2,7 @@ package com.yeliheng.blogsystem.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
+import org.jeecgframework.poi.excel.annotation.Excel;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
@@ -15,6 +16,7 @@ public class Category {
 
     private int articleCount;
 
+    @Excel(name = "分类名称")
     @NotBlank(message = "分类名称不能为空")
     private String categoryName;
 

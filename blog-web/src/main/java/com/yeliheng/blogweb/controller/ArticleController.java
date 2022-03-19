@@ -5,6 +5,7 @@ package com.yeliheng.blogweb.controller;
 import com.yeliheng.blogcommon.annotation.Log;
 import com.yeliheng.blogcommon.constant.BusinessType;
 import com.yeliheng.blogsystem.domain.Article;
+import com.yeliheng.blogsystem.domain.User;
 import com.yeliheng.blogsystem.service.IArticleService;
 import com.yeliheng.blogweb.common.CommonResponse;
 import io.swagger.annotations.Api;
@@ -152,6 +153,13 @@ public class ArticleController {
         //TODO: 软删除
         articleService.deleteAritcle(articleId);
         return CommonResponse.success();
+    }
+
+    @Log(moduleName = "导出文章",businessType = BusinessType.EXPORT)
+    @PreAuthorize("@perm.hasPerm('admin:articles:export')")
+    @GetMapping(value = "/admin/articles/export")
+    public CommonResponse<Object> export(Article article) {
+        return CommonResponse.success(articleService.exportArticle(article));
     }
 
 }

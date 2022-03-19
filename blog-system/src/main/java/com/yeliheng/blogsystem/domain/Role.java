@@ -1,6 +1,7 @@
 package com.yeliheng.blogsystem.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.jeecgframework.poi.excel.annotation.Excel;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
@@ -11,9 +12,11 @@ public class Role implements Serializable {
 
     private Long id;
 
+    @Excel(name = "角色字符")
     @NotBlank
     private String roleChar;
 
+    @Excel(name = "角色名称")
     @NotBlank
     private String roleName;
 

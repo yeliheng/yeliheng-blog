@@ -1,35 +1,48 @@
 package com.yeliheng.blogsystem.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.jeecgframework.poi.excel.annotation.Excel;
 
 import java.time.LocalDateTime;
 
 public class OperateLog {
 
+    @Excel(name = "操作日志ID")
     private Long id;
 
     private Long userId;
 
+    @Excel(name = "操作者",width = 20)
     private String username;
 
+    @Excel(name = "模块名",width = 20)
     private String moduleName;
 
+    @Excel(name = "业务类型", replace = {"其他_0", "插入_1", "删除_2", "修改_3", "查询_4", "导出_5"})
     private int businessType;
 
+    @Excel(name = "操作者IP",width = 25)
     private String ip;
 
+    @Excel(name = "URL",width = 20)
     private String url;
 
+    @Excel(name = "请求方法")
     private String method;
 
+    @Excel(name = "操作函数",width = 30)
     private String function;
 
+    @Excel(name = "请求参数", width = 30)
     private String param;
 
+    @Excel(name = "结果", width = 30)
     private String result;
 
+    @Excel(name = "错误详情",width = 30)
     private String errorDetail;
 
+    @Excel(name = "状态",replace = {"成功_1","失败_0"})
     private String status;
 
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
@@ -53,7 +66,6 @@ public class OperateLog {
     public void setUserId(Long userId) {
         this.userId = userId;
     }
-
 
     public String getUsername() {
         return username;
