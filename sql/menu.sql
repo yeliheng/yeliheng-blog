@@ -23,14 +23,14 @@ CREATE TABLE `menu` (
   `created_at` timestamp NULL DEFAULT NULL COMMENT '创建时间',
   `updated_at` timestamp NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of menu
 -- ----------------------------
 BEGIN;
 INSERT INTO `menu` VALUES (1, 1, 0, 'SECOND', '首页', 0, 0, '/dashboard', 'Home', 1, 0, NULL, 'fa-dashboard', '2021-11-02 06:26:04', '2022-02-10 14:54:49');
-INSERT INTO `menu` VALUES (2, 1, 0, 'TOP', '文章管理', 0, 0, '/articles', 'Layout', 1, 0, 'admin:articles:view', 'fa-file', '2021-10-29 18:48:46', '2022-01-29 18:59:06');
+INSERT INTO `menu` VALUES (2, 1, 0, 'TOP', '文章管理', 0, 0, '/articles', 'Layout', 1, 0, '', 'fa-file', '2021-10-29 18:48:46', '2022-03-14 21:27:51');
 INSERT INTO `menu` VALUES (3, 1, 2, 'SECOND', '发布文章', 0, 0, '/articles/publish', 'article/Article', 1, 0, 'admin:articles:add', 'fa-paper-plane', '2021-10-29 18:55:14', '2021-10-29 18:55:14');
 INSERT INTO `menu` VALUES (4, 1, 2, 'SECOND', '文章列表', 0, 0, '/articles/list', 'article/ArticleList', 1, 0, 'admin:articles:list', 'fa-file-text', '2021-10-29 18:55:57', '2021-10-29 18:55:57');
 INSERT INTO `menu` VALUES (5, 1, 2, 'SECOND', '修改文章', 0, 0, '/articles/:id', 'article/Edit', 1, 1, 'admin:articles:edit', NULL, '2021-11-14 06:23:28', '2021-11-14 06:23:28');
@@ -74,6 +74,10 @@ INSERT INTO `menu` VALUES (42, 1, 36, 'BUTTON', '修改字典数据', 100, 0, ''
 INSERT INTO `menu` VALUES (43, 1, 36, 'BUTTON', '字典数据列表', 100, 0, '', '', 1, 0, 'admin:dictionarydata:list', NULL, '2022-03-12 16:24:40', '2022-03-13 23:18:59');
 INSERT INTO `menu` VALUES (44, 1, 36, 'BUTTON', '删除字典数据', 100, 0, '', '', 1, 0, 'admin:dictionarydata:delete', NULL, '2022-03-12 16:25:47', '2022-03-13 23:19:04');
 INSERT INTO `menu` VALUES (45, 1, 0, 'SECOND', 'Yeliheng的技术小站', 100, 1, 'https://www.yeliheng.com', NULL, 0, 0, NULL, 'fa-home', '2022-03-14 20:29:18', '2022-03-14 20:29:35');
+INSERT INTO `menu` VALUES (46, 1, 0, 'SECOND', '个人中心', 100, 0, '/users/profile', 'profile/Profile', 1, 1, NULL, NULL, '2022-03-17 14:24:46', '2022-03-17 14:24:46');
+INSERT INTO `menu` VALUES (47, 1, 17, 'BUTTON', '导出用户数据', 100, 0, NULL, NULL, 1, 0, 'admin:users:export', NULL, '2022-03-19 14:58:40', '2022-03-19 14:58:40');
+INSERT INTO `menu` VALUES (48, 1, 2, 'BUTTON', '导出文章列表', 100, 0, NULL, NULL, 1, 0, 'admin:articles:export', NULL, '2022-03-19 14:59:39', '2022-03-19 14:59:39');
+INSERT INTO `menu` VALUES (49, 1, 34, 'BUTTON', '导出操作日志', 100, 0, NULL, NULL, 1, 0, 'admin:operatelog:export', NULL, '2022-03-19 21:57:13', '2022-03-19 21:59:29');
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;
