@@ -25,5 +25,12 @@ export function clearOperateLogs(){
     });
 }
 
+export function exportOperateLogs() {
+    return request({
+        url: '/admin/operateLogs/export',
+        method: 'get',
+    });
+}
+
 
 

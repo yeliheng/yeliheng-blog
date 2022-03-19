@@ -32,6 +32,7 @@
       <div class="log-btns">
         <el-button type="danger" @click="handleDelete" style="margin-right:1rem" :disabled="!canBeDelete">删除选中</el-button>
         <el-button type="danger" @click="handleClear" style="margin-right:1rem">清空日志</el-button>
+        <el-button type="success" @click="handleExport()" :loading="exporting">导出</el-button>
       </div>
       <el-table
           ref="multipleTable"
@@ -123,11 +124,14 @@
 import { ref } from 'vue';
 import { useStore } from 'vuex';
 import {ElMessage, ElMessageBox} from 'element-plus';
-import {clearOperateLogs, deleteOperateLogs, getOperateLogs} from "@/api/operateLog";
-import {getArticlesAdmin} from "@/api/article";
+import {clearOperateLogs, deleteOperateLogs, exportOperateLogs, getOperateLogs} from "@/api/operateLog";
+import {download} from "@/api/download";
+import fileDownload from "js-file-download";
 export default {
   setup(){
     const store = useStore();
+
+    const exporting = ref(false);
 
     const formSize = ref('large');
 
@@ -275,7 +279,30 @@ export default {
           }
         });
       });
-    }
+    };
+
+    const handleExport = () => {
+      ElMessageBox.confirm('是否导出？', "警告", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(function() {
+        exporting.value = true;
+        exportOperateLogs().then((res: any) => {
+          if(res.data) {
+            const path = res.data;
+            download(path).then((blob: any) => {
+              fileDownload(blob,new Date().getTime() + "_操作日志.xlsx");
+              exporting.value = false;
+            }).catch(() => {
+              exporting.value = false;
+            });
+          }
+        }).catch(() => {
+          exporting.value = false;
+        });
+      });
+    };
 
 
     return {
@@ -297,6 +324,8 @@ export default {
       searchParams,
       statusDict,
       formSize,
+      handleExport,
+      exporting,
 
     }
   }

@@ -38,6 +38,9 @@
           <el-form-item>
             <router-link to="/articles/publish"><el-button type="primary">发布文章</el-button></router-link>
           </el-form-item>
+          <el-form-item>
+            <el-button type="success" @click="handleExport()" :loading="exporting">导出</el-button>
+          </el-form-item>
         </el-form>
 
 
@@ -118,10 +121,12 @@
 
 <script lang="ts">
 import { ref } from 'vue';
-import { deleteArticle, getArticlesAdmin,getCategories } from '@/api/article';
+import {deleteArticle, exportArticles, getArticlesAdmin, getCategories} from '@/api/article';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
-import { ElMessage } from 'element-plus';
+import {ElMessage, ElMessageBox} from 'element-plus';
+import {download} from "@/api/download";
+import fileDownload from "js-file-download";
 
 export default {    
     setup(){
@@ -131,6 +136,8 @@ export default {
         const router = useRouter();
 
         const formSize = ref('large');
+
+        const exporting = ref(false);
 
         const getVisibleDict = (visible) => {
             let label = '';
@@ -240,6 +247,30 @@ export default {
         const handleEditClick = (id) => {
             router.push('/articles/' + id);
         }
+
+      const handleExport = () => {
+        ElMessageBox.confirm('是否导出？', "警告", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }).then(function() {
+          exporting.value = true;
+          exportArticles().then((res: any) => {
+            if(res.data) {
+              const path = res.data;
+              download(path).then((blob: any) => {
+                fileDownload(blob,new Date().getTime() + "_文章列表.xlsx");
+                exporting.value = false;
+              }).catch(() => {
+                exporting.value = false;
+              });
+            }
+          }).catch(() => {
+            exporting.value = false;
+          });
+        });
+      };
+
         return {
             table,
             handleSizeChange,
@@ -251,7 +282,9 @@ export default {
             articleVisible,
             getVisibleDict,
             handleDelete,
-            handleEditClick
+            handleEditClick,
+            handleExport,
+            exporting,
             };
         }
 }

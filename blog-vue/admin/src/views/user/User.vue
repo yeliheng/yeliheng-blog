@@ -36,6 +36,9 @@
               <el-form-item>
                   <el-button type="primary" @click="userForm = {};userFormVisible = true;">添加用户</el-button>
               </el-form-item>
+              <el-form-item>
+                <el-button type="success" @click="handleExport()" :loading="exporting">导出</el-button>
+              </el-form-item>
           </el-form>
 
 
@@ -207,9 +210,12 @@
 
 <script lang="ts">
 import { ref } from 'vue';
-import { deleteUser, getUserList, getRoles, addUser, updateUser } from '@/api/user';
+import {deleteUser, getUserList, getRoles, addUser, updateUser, exportUser} from '@/api/user';
 import { useStore } from 'vuex';
-import { ElMessage } from 'element-plus';
+import {ElMessage, ElMessageBox} from 'element-plus';
+import {download} from "@/api/download";
+import fileDownload from 'js-file-download';
+import {exportArticles} from "@/api/article";
 
 export default {
     setup(){
@@ -393,6 +399,8 @@ export default {
 
         table.value.isMobile = store.state.app.isMobile;
 
+        const exporting = ref(false);
+
 
         //获取用户列表
         const listUsers = () => {
@@ -405,7 +413,7 @@ export default {
                 table.value.total = res.data.total;
                 table.value.loading = false;
             });
-        }
+        };
 
         listUsers();
 
@@ -419,12 +427,12 @@ export default {
         const handleSizeChange = (pageSize: number) => {
             table.value.pageSize = pageSize;
             listUsers();
-        }
+        };
 
         const handleCurrentChange = (page: number) => {
             table.value.page = page;
             listUsers();
-        }
+        };
 
         const searchUsers = () => {
             table.value.loading = true,
@@ -442,7 +450,7 @@ export default {
                 table.value.total = res.data.total;
                 table.value.loading = false;
             });
-        }
+        };
 
         const handleDelete = (id) => {
             deleteUser(id).then((res: any) => {
@@ -453,7 +461,7 @@ export default {
                     ElMessage.error(res.detail);
                 }
             });
-        }
+        };
 
         const handleEditClick = (row) => {
             userForm.value = {};
@@ -467,7 +475,7 @@ export default {
             });
             userEditFormVisible.value = true;
 
-        }
+        };
 
 
         const handleEditUser = () => {
@@ -489,7 +497,7 @@ export default {
                 }
             });
 
-        }
+        };
 
         const handleAddUser = () => {
             validate.value.validate((valid) => {
@@ -509,7 +517,30 @@ export default {
                     });
                 }
             });
-        }
+        };
+
+        const handleExport = () => {
+          ElMessageBox.confirm('是否导出？', "警告", {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning"
+          }).then(function() {
+            exporting.value = true;
+            exportArticles().then((res: any) => {
+              if(res.data) {
+                const path = res.data;
+                download(path).then((blob: any) => {
+                  fileDownload(blob,new Date().getTime() + "_文章列表.xlsx");
+                  exporting.value = false;
+                }).catch(() => {
+                  exporting.value = false;
+                });
+              }
+            }).catch(() => {
+              exporting.value = false;
+            });
+          });
+        };
 
         
         return {
@@ -533,6 +564,8 @@ export default {
             handleEditUser,
             editFormRules,
             validate,
+            handleExport,
+            exporting,
             };
         }
 }
