@@ -215,7 +215,6 @@ import { useStore } from 'vuex';
 import {ElMessage, ElMessageBox} from 'element-plus';
 import {download} from "@/api/download";
 import fileDownload from 'js-file-download';
-import {exportArticles} from "@/api/article";
 
 export default {
     setup(){
@@ -526,11 +525,11 @@ export default {
             type: "warning"
           }).then(function() {
             exporting.value = true;
-            exportArticles().then((res: any) => {
+            exportUser().then((res: any) => {
               if(res.data) {
                 const path = res.data;
                 download(path).then((blob: any) => {
-                  fileDownload(blob,new Date().getTime() + "_文章列表.xlsx");
+                  fileDownload(blob,new Date().getTime() + "_用户数据.xlsx");
                   exporting.value = false;
                 }).catch(() => {
                   exporting.value = false;

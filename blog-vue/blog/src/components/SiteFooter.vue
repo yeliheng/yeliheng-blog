@@ -21,8 +21,6 @@ export default {
 
 <style lang="scss" scoped>
     .site-footer {
-      position: absolute;
-      bottom: -3rem;
       text-align: center;
       background: inherit ;
       opacity: 0.5;

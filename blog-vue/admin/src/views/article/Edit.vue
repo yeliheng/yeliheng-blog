@@ -164,16 +164,16 @@ setup() {
 
 <style lang="scss" scoped>
 .article-btn{
-    position: absolute;
-    right: 1.5rem;
-    top: 4.4rem;
-    > span{  
-       margin-right: 0.3rem;
-    }
-    .private-sw{
-        margin-right: 1rem;
-    }
-    
+  display: flex;
+  align-items: center;
+  margin-left: 1rem;
+  > span{
+    margin-right: 0.3rem;
+  }
+  .private-sw{
+    margin-right: 1rem;
+  }
+
 }
 .article-header{
     display: flex;
