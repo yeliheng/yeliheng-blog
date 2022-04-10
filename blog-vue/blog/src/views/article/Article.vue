@@ -184,7 +184,7 @@ export default {
   opacity: 1;
   display: flex;
   flex-direction: column;
-  width: 22rem;
+  width: 17vw;
   margin: {
     top: 0.5rem;
     left: 0.5rem;
@@ -202,12 +202,10 @@ export default {
   .article-menu{
     display: flex;
     justify-content: center;
-
   }
 
 }
 .body-container{
-
   display: flex;
   justify-content: center;
   height: 100%;
@@ -229,7 +227,7 @@ export default {
   opacity: 0;
  // animation: bottom-top-anim 1s ease forwards;
   background: #121212;
-  width: 90rem;
+  width: 70vw;
   margin: {
     top: 0.5rem;
     right: 0.5rem;
@@ -279,8 +277,7 @@ export default {
 }
   .content{
     width: 100%;
-    margin: 0;
-    margin-top: 0rem;
+    margin: 0rem 0 0;
     .article-container{
       .article-info{
         .info{

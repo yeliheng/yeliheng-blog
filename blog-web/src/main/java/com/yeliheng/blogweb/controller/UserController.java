@@ -88,7 +88,6 @@ public class UserController {
         //获取角色权限
         Set<String> permissions = permissionService.getMenuPermission(loginUser.getUser());
 
-
         map.put("user",loginUser.getUser());
         map.put("roles",roles);
         map.put("permissions",permissions);
