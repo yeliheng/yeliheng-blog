@@ -1,7 +1,6 @@
 #!/bin/bash
 
-APP_NAME="yeliheng-blog"
-JAR_FILE="yeliheng-blog.jar"
+APP_NAME="blog-web"
 LOGGING_LEVEL="-Dlogging.level.com.yeliheng=info"
 SPRING_ACTIVE_PROFILE="-Dspring.profiles.active=prod"
 JVM_OPTS="-Xms512m -Xmx1024m -XX:+UseG1GC -XX:+HeapDumpOnOutOfMemoryError -XX:MetaspaceSize=256M"
@@ -16,9 +15,9 @@ start() {
   fi
 
   # 启动应用
-  echo "Running params: java $SPRING_ACTIVE_PROFILE $JVM_OPTS $LOGGING_LEVEL -jar $JAR_FILE"
+  echo "Running params: java $SPRING_ACTIVE_PROFILE $JVM_OPTS $LOGGING_LEVEL -jar $APP_NAME.jar"
   # shellcheck disable=SC2086
-  nohup java $SPRING_ACTIVE_PROFILE $JVM_OPTS $LOGGING_LEVEL -jar $JAR_FILE > /dev/null 2>&1 &
+  nohup java $SPRING_ACTIVE_PROFILE $JVM_OPTS $LOGGING_LEVEL -jar $APP_NAME.jar > /dev/null 2>&1 &
 
   echo "$APP_NAME running successfully in process $PID"
 }
