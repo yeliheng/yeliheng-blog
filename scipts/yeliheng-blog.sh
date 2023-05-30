@@ -36,6 +36,21 @@ stop() {
   echo "$APP_NAME pid $PID stopped successfully."
 }
 
+restart() {
+  # 循环检查应用是否停止
+  # shellcheck disable=SC2009
+  PID=$(ps -ef |grep java|grep $APP_NAME|grep -v grep|awk '{print $2}')
+  echo "$APP_NAME is running in pid $PID, stopping..."
+  while [ x"$PID" != x"" ]; do
+    stop > /dev/null 2>&1
+    sleep 1
+    # shellcheck disable=SC2009
+    PID=$(ps -ef |grep java|grep $APP_NAME|grep -v grep|awk '{print $2}')
+  done
+  echo "Starting $APP_NAME..."
+  start
+}
+
 status() {
   # 检查应用状态
   # shellcheck disable=SC2009
@@ -54,11 +69,14 @@ case $1 in
   "stop")
     stop
     ;;
+  "restart")
+    restart
+    ;;
   "status")
     status
     ;;
   *)
-    echo "Usage: $0 {start|stop|status}"
+    echo "Usage: $0 {start|stop|restart|status}"
     exit 1
     ;;
 esac
