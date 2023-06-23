@@ -24,3 +24,4 @@ pnpm-debug.log*
 
 # Custom
 .env.development
+**/package-lock.json

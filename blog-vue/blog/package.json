@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "dev": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint --fix"
   },
@@ -16,28 +16,20 @@
     "tocbot": "^4.17.3",
     "vue": "^3.0.0",
     "vue-class-component": "^8.0.0-0",
-    "vue-infinite-loading": "^2.4.5",
     "vue-loading-overlay": "^5.0.1",
-    "vue-loading-spinner": "^1.0.11",
     "vue-router": "^4.0.0-0",
     "vue3-markdown-it": "^1.0.9",
+    "vue3-spinner": "^0.0.17",
     "vuex": "^4.0.0-0"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^4.18.0",
-    "@typescript-eslint/parser": "^4.18.0",
-    "@vue/cli-plugin-babel": "~4.5.0",
-    "@vue/cli-plugin-eslint": "~4.5.0",
-    "@vue/cli-plugin-router": "~4.5.0",
-    "@vue/cli-plugin-typescript": "~4.5.0",
-    "@vue/cli-plugin-vuex": "~4.5.0",
-    "@vue/cli-service": "~4.5.0",
+    "@vue/cli-plugin-router": "~4.5.19",
+    "@vue/cli-plugin-typescript": "~4.5.19",
+    "@vue/cli-plugin-vuex": "~4.5.19",
+    "@vue/cli-service": "~4.5.19",
     "@vue/compiler-sfc": "^3.0.0",
-    "@vue/eslint-config-typescript": "^7.0.0",
-    "eslint": "^6.7.2",
-    "eslint-plugin-vue": "^7.0.0",
-    "typescript": "~4.1.5",
     "sass": "^1.26.5",
-    "sass-loader": "^8.0.2"
+    "sass-loader": "~10.1.1",
+    "typescript": "~4.9.5"
   }
 }
