@@ -26,3 +26,4 @@ pnpm-debug.log*
 # Custom
 .env.development
 dump.rdb
+**/package-lock.json
