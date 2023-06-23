@@ -1,7 +1,11 @@
 <template>
 <div class="home-container">
   <div class="loading-bar" ref="loadingBar" >
-    <v-loading class="loading-bar"></v-loading>
+
+    <bounce-loader class="loading-bar"
+        :loading="true"
+        :color="'#fff'"
+    />
   </div>
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
       <div class="header-mobile">
@@ -211,6 +215,9 @@ export default {
   height: 100%;
 }
 .loading-bar{
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: #272727;
   transition: all 0.5s;
   opacity: 1;
