@@ -1,8 +1,6 @@
 <template>
 <div class="home-container">
-  <div class="loading-bar-full" :class="{'no-loading': !isLoading,'is-loading': isLoading}" >
-    <v-loading></v-loading>
-  </div>
+
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
       <div class="article-container"
         v-for="article in articleList"
@@ -32,10 +30,13 @@
         </div>
         <div class="split-line"></div>
       </div>
-      <div class="loading-bar" ref="loadingBar">
-        <v-loading></v-loading>
+
+      <div class="loading-bar-full" :class="{'no-loading': !isLoading,'is-loading': isLoading}" >
+        <bounce-loader
+            :loading="true"
+            :color="'#fff'"
+        />
       </div>
-          
       <div class="pagination">
         <v-pagination
           v-model="page"
@@ -136,19 +137,11 @@ export default {
   font-size: 1rem;
 }
 
-.loading-bar{
-  transition: all 0.5s;
-  opacity: 0;
-  display: flex;
-  justify-content: center;
-  margin-bottom: 2rem;
-}
-
 .loading-bar-full {
   display: flex;
   background-color: #121212;
   transition: all 0.5s;
-  height: 100vh;
+  height: 100%;
   position: absolute;
   top: 0;             
   bottom: 0;           
@@ -285,5 +278,27 @@ export default {
   .info-text{
     display: none;
   }
+
+  .loading-bar-full {
+    display: flex;
+    background-color: #121212;
+    transition: all 0.5s;
+    height: 60vh;
+    position: relative;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    justify-content: center;
+    align-items: center;
+    z-index: 999999;
+  }
+  .no-loading {
+    position: absolute;
+    visibility: collapse;
+    opacity: 0;
+  }
+
 }
 </style>
