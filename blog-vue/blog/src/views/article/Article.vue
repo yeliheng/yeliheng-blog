@@ -12,9 +12,10 @@
     <div class="button-container-mobile" @click="handleOpen()">
         <span class="iconfont icon-mulu" style="font-size: 1.6rem;margin-left: 1rem; top: 1rem;color: #9e9e9e;position: absolute"></span>
     </div>
-    <router-link class="site-info" to="/">Yeliheng的技术小站</router-link>
+    <router-link class="site-info" to="/" @click="onSiteClick()">Yeliheng的技术小站</router-link>
+
   </div>
-  <div class="split-line"></div>
+
   <div class="body-container">
 
 <!-- 侧边栏(PC) -->
@@ -30,8 +31,8 @@
     </div>
 
     <!-- 内容区 -->
-    <div class="content" ref="articleWrap" @click="handleContentClick()"  :class="{'fixed': isOpen, 'no-fixed': !isOpen}">
-
+    <div class="content" ref="articleWrap" >
+      <div class="split-line"></div>
       <div class="article-container">
         <div class="article-title">{{article.title}}</div>
         <div class="article-info">
@@ -101,16 +102,14 @@ export default {
     const loadingBar = ref();
     const articleMenu = ref();
 
+    let top = 0;
     const handleOpen = () => {
       store.dispatch('toggleSidebar');
+      document.body.style.overflow = 'hidden';
     };
     const isOpen = computed(() =>
         store.state.showSidebar
     );
-
-    const handleContentClick = () => {
-      store.dispatch('closeSidebar');
-    };
     onMounted(() => {
       articleWrap;
       loadingBar;
@@ -154,9 +153,9 @@ export default {
       isLoading.value = false;
       });
     });
-    
-
-  
+    const onSiteClick = () => {
+      scrollTo(0,0);
+    }
 
     return {
       pageCount,
@@ -168,7 +167,7 @@ export default {
       isLoading,
       isOpen,
       handleOpen,
-      handleContentClick
+      onSiteClick,
     }
   }
 
@@ -305,8 +304,11 @@ export default {
     display: none;
   }
   .header-mobile{
+    position: fixed;
+    z-index: 2;
     display: flex;
     height: 4rem;
+    width: 100%;
     align-items: center;
     background: #161616;
   }
@@ -319,17 +321,16 @@ export default {
   }
 
   .split-line {
+    width: 100%;
+    top: 4rem;
     height: 0.3rem;
     opacity: 0.6;
     background: #8b1bce;
   }
 
-  .sidebar-mobile {
-
-  }
   .content{
     width: 100%;
-    margin: 0rem 0 0;
+    margin: 4rem 0 0;
     .article-container{
       .article-info{
         .info{

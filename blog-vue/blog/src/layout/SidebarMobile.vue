@@ -30,7 +30,7 @@
         </div>
       </div>
     </div>
-    <div class="transparent-mask" v-show="isOpen" @click="store.dispatch('toggleSidebar');"></div>
+    <div class="transparent-mask" v-show="isOpen" @click="handleMaskClick()"></div>
   </div>
 
 </template>
@@ -66,12 +66,18 @@ import store from "@/store";
         return window.location.pathname;
       }
 
+      const handleMaskClick = () => {
+        store.dispatch('toggleSidebar');
+        document.body.style.overflow = 'auto';
+      }
+
       return {
         isOpen,
         handleClick,
         siteInfo,
         year,
-        getCurrentUri
+        getCurrentUri,
+        handleMaskClick,
       }
     }
   }
@@ -89,7 +95,7 @@ import store from "@/store";
     transform: translateX(-100%);
   }
   .sidebar-menu-wrap {
-    z-index: 3;
+    z-index: 999;
     display: flex;
     position: fixed;
     transition: all cubic-bezier(0.39, 0.575, 0.565, 1) 0.5s;
