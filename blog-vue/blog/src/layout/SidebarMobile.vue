@@ -1,6 +1,6 @@
 <template>
-  <div class="sidebar-container" @touchmove.prevent>
-    <div class="sidebar-menu-wrap" :class="{'sidebar-open': isOpen,'sidebar-close': !isOpen}">
+  <div class="sidebar-container">
+    <div class="sidebar-menu-wrap" :class="{'sidebar-open': isOpen,'sidebar-close': !isOpen}" >
       <div class="sidebar">
         <!-- 作者信息 -->
         <my-profile></my-profile>
@@ -96,6 +96,7 @@ import store from "@/store";
     height: 100vh;
     width: 75%;
     background: #121212;
+    overflow: auto;
   }
   .transparent-mask {
     // 从透明度0渐显到0.9

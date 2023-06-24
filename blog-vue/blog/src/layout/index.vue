@@ -2,7 +2,7 @@
 <div class="home-container">
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
   <!-- 头部(移动端) -->
-    <div class="header-mobile">
+    <div class="header-mobile" @touchmove.prevent>
       <sidebar-mobile class="sidebar-mobile"></sidebar-mobile>
       <div class="button-container-mobile"  @click="handleOpen()">
           <span class="iconfont icon-mulu" style="font-size: 1.4rem;" v-if="!isOpen"></span>
@@ -43,7 +43,7 @@
 
     
     <!-- 内容区 -->
-    <div class="content"> 
+    <div class="content">
        <router-view v-slot="{ Component }">
             <transition name="fade-transform" mode="out-in">
                 <keep-alive>
@@ -78,12 +78,15 @@ export default {
   },
   setup() {
     const store = useStore();
+
     const handleOpen = () => {
       store.dispatch('toggleSidebar');
+
     };
     const isOpen = computed(() =>
         store.state.showSidebar
     );
+
     return {
       handleOpen,
       isOpen

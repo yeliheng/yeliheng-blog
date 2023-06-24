@@ -30,8 +30,7 @@
     </div>
 
     <!-- 内容区 -->
-    <div class="content" 
-        ref="articleWrap" @click="handleContentClick()"> 
+    <div class="content" ref="articleWrap" @click="handleContentClick()"  :class="{'fixed': isOpen, 'no-fixed': !isOpen}">
 
       <div class="article-container">
         <div class="article-title">{{article.title}}</div>
@@ -68,15 +67,22 @@
 
 <script lang="ts">
 import '../../assets/iconfont.css';
-import { getArticleByUrl} from '../../api/index';
+import { getArticleByUrl} from '@/api';
 import { useRouter } from 'vue-router';
 import { ref, onMounted } from 'vue';
 import tocbot from 'tocbot';
 import SidebarMobile from '@/layout/SidebarMobile.vue';
 import { useStore } from 'vuex';
 import SiteFooter from '@/components/SiteFooter.vue';
+import {computed} from "vue";
+import store from "@/store";
 export default {
   components: { SidebarMobile, SiteFooter },
+  computed: {
+    store() {
+      return store
+    }
+  },
   setup(){
     const router = useRouter();
     const store = useStore();
@@ -94,9 +100,13 @@ export default {
     const articleWrap = ref();
     const loadingBar = ref();
     const articleMenu = ref();
+
     const handleOpen = () => {
       store.dispatch('toggleSidebar');
     };
+    const isOpen = computed(() =>
+        store.state.showSidebar
+    );
 
     const handleContentClick = () => {
       store.dispatch('closeSidebar');
@@ -156,6 +166,7 @@ export default {
       articleMenu,
       loadingBar,
       isLoading,
+      isOpen,
       handleOpen,
       handleContentClick
     }
@@ -170,6 +181,12 @@ export default {
 }
 .hidden {
   opacity: 0;
+}
+.fixed {
+  position: fixed;
+}
+.no-fixed {
+  position: relative;
 }
 :deep(.spinner){
     &::after{
