@@ -5,7 +5,7 @@
     <div class="header-mobile">
       <sidebar-mobile class="sidebar-mobile"></sidebar-mobile>
       <div class="button-container-mobile"  @click="handleOpen()">
-          <span class="iconfont icon-mulu" style="font-size: 1.4rem;"></span>
+          <span class="iconfont icon-mulu" style="font-size: 1.4rem;" v-if="!isOpen"></span>
       </div>
     </div>
   <!-- 头部(PC) -->
@@ -38,30 +38,9 @@
     </div>
   <div class="body-container">
    
-    
-<!-- 侧边栏(PC) -->
-    <div class="sidebar">
-        <!-- 作者信息 -->
-        <my-profile></my-profile>
-        <!-- 站点信息/公告 -->
-        <div class="site-info">
-            <span style="font-size: 1.3rem; font-weight: bold; display: flex; justify-content: center;margin-top: 1.3rem;">站点公告</span>
-            <span class="announcement">{{ siteInfo.notice.content }}</span>
-            <div class="site-state">
-              <div>
-                <span class="iconfont icon-zhinanzhen"></span>
-                <span> 本站建立于2018年11月19日</span>
-              </div>
-              <div>
-                <span class="iconfont icon-wo"></span> 
-                <span> ©{{ year }} Yeliheng 版权所有</span>
-              </div>
-                
-                <span>转载请注明出处!</span>
-            </div>
+    <!-- 侧边栏(PC) -->
+    <Sidebar></Sidebar>
 
-        </div>
-    </div>
     
     <!-- 内容区 -->
     <div class="content"> 
@@ -82,33 +61,35 @@
 </template>
 
 <script lang="ts">
-import { ref,onMounted, computed } from 'vue';
-import { useStore } from 'vuex';
 import '../assets/iconfont.css';
 import MyProfile from '@/components/MyProfile.vue';
 import SidebarMobile from '@/layout/SidebarMobile.vue';
 import SiteFooter from '@/components/SiteFooter.vue';
+import Sidebar from "@/layout/Sidebar.vue";
+import {useStore} from "vuex";
+import store from "@/store";
+import {computed} from "vue";
 export default {
-  components: { MyProfile, SidebarMobile,SiteFooter },
+  components: { MyProfile, SidebarMobile,SiteFooter, Sidebar},
+  computed: {
+    store() {
+      return store
+    }
+  },
   setup() {
     const store = useStore();
-    const date = new Date();
-    const year = ref();
-    year.value = date.getFullYear();
     const handleOpen = () => {
-        store.dispatch('toggleSidebar');
+      store.dispatch('toggleSidebar');
     };
-    
-    const siteInfo = computed(
-      () => store.state.siteInfo
+    const isOpen = computed(() =>
+        store.state.showSidebar
     );
-    
     return {
       handleOpen,
-      siteInfo,
-      year
+      isOpen
     };
   }
+
 }
 </script>
 
@@ -135,11 +116,11 @@ export default {
 }
 @keyframes bottom-top-anim {
     0% {
-      opacity: 0;
+      visibility: hidden;
       margin-top: 10rem;
     }
     100% {
-      opacity: 1;
+      visibility: visible;
       margin-top: 0.5rem;
     }
 }
@@ -201,48 +182,10 @@ iframe {
   }
 }
 
-
-// 侧边栏
-.sidebar {
-  animation: bottom-top-anim 1s ease 0.5s forwards;
-  opacity: 0;
-  display: flex;
-  flex-direction: column;
-  width: 22rem;
-  margin: {
-    top: 0.5rem;
-    left: 0.5rem;
-    right: 0.5rem;
-  };
-
-  :deep(.spinner) {
-    &::after{
-      background-color: #d4d3d3;
-    }
-}
-  // 站点信息
-  .site-info {
-    position: sticky;
-    top: 0.5rem;
-    height: 15rem;
-    margin-top: 0.5rem;
-    background: #121212; 
-    .announcement{
-      display: block;
-      margin: 1.2rem;
-      text-align: center;
-      color: #9e9e9e;
-    }
-    .site-state{
-      text-align: center;
-      color: #9e9e9e;
-    }
-  }
-
-}
 .header-mobile {
   opacity: 0;
   .button-container-mobile{
+    z-index: 9;
     display: none;
   }
 }
@@ -250,12 +193,11 @@ iframe {
   display: flex;
   justify-content: center;
   height: 100%;
+
 }
 .content {
-  position: relative;
   transition: all 0.5s;
-  z-index: 1;
-  opacity: 0;
+  visibility: hidden;
   animation: bottom-top-anim 0.8s ease 0.5s forwards;
   background: #121212;
   width: 90rem;
@@ -263,7 +205,6 @@ iframe {
     top: 0.5rem;
     right: 0.5rem;
   };
-
 }
 
 
@@ -295,8 +236,7 @@ iframe {
   }
   .content{
     width: 100%;
-    margin: 0;
-    margin-top: 0.5rem;
+    margin: 0.5rem 0 0;
   }
   .info-text{
     display: none;

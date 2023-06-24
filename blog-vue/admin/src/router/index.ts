@@ -1,10 +1,10 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import Login from '@/views/login/Login.vue';
 
 import Layout from '@/layout/index.vue';
 import Home from '@/views/Home.vue';
 
-export const constantRoutes: Array<RouteRecordRaw> = [
+export const constantRoutes: Array<any> = [
   {
     path: '/login',
     component: Login

@@ -24,6 +24,6 @@ const app = Vue.createApp(App);
 
 app.use(store);
 app.use(router);
-app.use(ElementPlus,{locale: zhCn});
+app.use(ElementPlus as any,{locale: zhCn});
 app.use(VMdEditor);
 app.mount('#app');

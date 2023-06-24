@@ -31,7 +31,13 @@
         <div class="split-line"></div>
       </div>
 
-      <div class="loading-bar-full" :class="{'no-loading': !isLoading,'is-loading': isLoading}" >
+      <div class="loading-bar-full" :class="{'no-loading': !isLoading,'is-loading': isLoading}" ref="loadingBar">
+        <bounce-loader
+            :loading="true"
+            :color="'#fff'"
+        />
+      </div>
+      <div class="loading-bar" ref="loadingBar">
         <bounce-loader
             :loading="true"
             :color="'#fff'"
@@ -53,7 +59,7 @@
 
 <script lang="ts">
 import '../../assets/iconfont.css';
-import { getArticleList } from '../../api/index';
+import { getArticleList } from '@/api';
 import {useRouter} from 'vue-router';
 import { ref, onMounted } from 'vue';
 import { useStore } from 'vuex';
@@ -80,11 +86,11 @@ export default {
     });
 
     const loadArticle = () => {
-          loadingBar.value.style.opacity = "1";
-          getArticleList({"page": page.value,"pageSize": pageSize}).then((res: any) => {
-            articleList.value = res.data.list;
-            loadingBar.value.style.opacity = "0";
-            scrollTo(0,0);
+      loadingBar.value.style.opacity = "1";
+      getArticleList({"page": page.value,"pageSize": pageSize}).then((res: any) => {
+        articleList.value = res.data.list;
+        loadingBar.value.style.opacity = "0";
+        scrollTo(0,0);
       });
     }
 
@@ -137,6 +143,16 @@ export default {
   font-size: 1rem;
 }
 
+//底部的loadingBar
+.loading-bar{
+  transition: all 0.5s;
+  opacity: 0;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+//全屏的loadingBar
 .loading-bar-full {
   display: flex;
   background-color: #121212;
