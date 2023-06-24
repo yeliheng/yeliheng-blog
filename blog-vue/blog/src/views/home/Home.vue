@@ -59,7 +59,7 @@
 
 <script lang="ts">
 import '../../assets/iconfont.css';
-import { getArticleList } from '../../api/index';
+import { getArticleList } from '@/api';
 import {useRouter} from 'vue-router';
 import { ref, onMounted } from 'vue';
 import { useStore } from 'vuex';

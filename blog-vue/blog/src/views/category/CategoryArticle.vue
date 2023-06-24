@@ -3,7 +3,10 @@
 
 <div class="home-container">
     <div class="loading-bar-full" :class="{'no-loading': !isLoading,'is-loading': isLoading}" >
-    <v-loading></v-loading>
+      <bounce-loader
+          :loading="true"
+          :color="'#fff'"
+      />
   </div>
       <div class="article-container"
         v-for="article in articleList"
@@ -34,7 +37,10 @@
         <div class="split-line"></div>
       </div>
       <div class="loading-bar" ref="loadingBar">
-        <v-loading></v-loading>
+        <bounce-loader
+            :loading="true"
+            :color="'#fff'"
+        />
       </div>
           
       <div class="pagination">

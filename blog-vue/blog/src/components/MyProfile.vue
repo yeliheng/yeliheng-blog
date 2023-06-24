@@ -1,28 +1,28 @@
 <template>
   <!-- 作者信息 -->
         <div class="my-info">
-            <div class="avatar"></div>
-            <span class="name">Yeliheng</span>
+            <router-link class="avatar" to="/about" @click="store.dispatch('toggleSidebar');"></router-link>
+            <span class="name">Liam Ye</span>
             <div class="art-info">
-              <div class="article-count count">
+              <router-link class="article-count count" to="/" @click="handleClick()">
                 <span>文章</span>
                 <span>{{siteInfo.articlesCount}}</span>
-              </div>
+              </router-link>
               <div class="line"></div>
-              <router-link class="category-count count" to="/categories">
+              <router-link class="category-count count" to="/categories" @click="handleClick()">
                 <span>分类</span>
                 <span>{{siteInfo.categoriesCount}}</span>
               </router-link>
               <div class="line"></div>
-              <router-link to="/tags" class="tag-count count">
+              <router-link to="/tags" class="tag-count count" @click="handleClick()">
                 <span>标签</span>
                 <span>{{siteInfo.tagsCount}}</span>
               </router-link>
             </div>
             <div class="contract-container">
               <a class="iconfont icon-github" href="https://github.com/yeliheng" target="_blank"></a>
-              <a class="iconfont icon-shouye" href="/" ></a>
-              <a class="iconfont icon-email-fill" href="mailto://yeliheng00@gmail.com" target="_blank"></a>
+              <a class="iconfont icon-shouye" href="/"></a>
+              <a class="iconfont icon-email-fill" href="mailto:yeliheng00@gmail.com" target="_blank"></a>
             </div>
             
         </div>
@@ -32,7 +32,13 @@
 import { getSiteInfo } from '@/api';
 import { ref } from 'vue';
 import { useStore } from 'vuex';
+import store from "@/store";
 export default {
+  computed: {
+    store() {
+      return store
+    }
+  },
   setup() {
     const store = useStore();
     const siteInfo = ref({
@@ -44,8 +50,12 @@ export default {
       siteInfo.value = res.data;
       store.commit('SET_INFO',res.data);
     });
+    const handleClick = () => {
+      store.dispatch('toggleSidebar');
+    };
     return {
       siteInfo,
+      handleClick,
     }
   }
 
@@ -65,11 +75,17 @@ export default {
     align-items: center;
     .avatar{
       margin-top: 1rem;
-      width: 7rem;
-      height: 7rem;
+      width: 10rem;
+      height: 10rem;
       border-radius: 50%;
-      background-image: url("../assets/images/avater.jpg");
+      background-image: url("https://cdn.yeliheng.com/16287964.jpeg");
       background-repeat: round;
+      &:hover{
+        transform: rotate(1turn);
+        transition-duration: 0.5s;
+        transition-timing-function: linear;
+      }
+
     }
     .name{
       margin-top: 1rem;

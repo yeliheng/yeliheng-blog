@@ -1,22 +1,22 @@
 <template>
 <div class="home-container">
+  <sidebar-mobile class="sidebar-mobile" ></sidebar-mobile>
   <div class="loading-bar" ref="loadingBar" >
-
     <bounce-loader class="loading-bar"
         :loading="true"
         :color="'#fff'"
     />
   </div>
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
-      <div class="header-mobile">
-    <sidebar-mobile class="sidebar-mobile" ></sidebar-mobile>
-      <div class="button-container-mobile" @click="handleOpen()">
-          <span class="iconfont icon-mulu" style="font-size: 1.6rem;margin-left: 1rem; top: 1.5rem;color: #9e9e9e;position: absolute"></span>
-      </div>
-      <div class="site-info" style="font-size:1.6rem;margin-left:4rem;font-weight: bold; color: #9e9e9e;">Yeliheng的技术小站</div>
+  <div class="header-mobile">
+    <div class="button-container-mobile" @click="handleOpen()">
+        <span class="iconfont icon-mulu" style="font-size: 1.6rem;margin-left: 1rem; top: 1rem;color: #9e9e9e;position: absolute"></span>
+    </div>
+    <router-link class="site-info" to="/">Yeliheng的技术小站</router-link>
   </div>
+  <div class="split-line"></div>
   <div class="body-container">
-    
+
 <!-- 侧边栏(PC) -->
     <div class="sidebar" >
         <!-- 作者信息 -->
@@ -127,6 +127,17 @@ export default {
             e.preventDefault();
           }
         });
+        tocbot.init({
+          tocSelector: '.article-menu-mobile',
+          contentSelector: '.markdown-body',
+          headingSelector: 'h1, h2, h3',
+          hasInnerContainers: true,
+          scrollSmoothDuration: 100,
+          scrollSmooth: true,
+          onClick(){
+            store.dispatch("toggleSidebar")
+          }
+        });
       if(articleWrap.value.scrollHeight < window.innerHeight){
         articleWrap.value.style.height = window.innerHeight + 'px';
       }
@@ -181,7 +192,6 @@ export default {
   display: none;
 }
 
-
 // 侧边栏
 .sidebar{
  // transition: all 1s;
@@ -209,6 +219,7 @@ export default {
   }
 
 }
+
 .body-container{
   display: flex;
   justify-content: center;
@@ -229,10 +240,10 @@ export default {
   margin: auto;
   height: 100%;
 }
+
 .content{
   transition: all 1s;
   opacity: 0;
- // animation: bottom-top-anim 1s ease forwards;
   background: #121212;
   width: 70vw;
   margin: {
@@ -277,11 +288,28 @@ export default {
     display: none;
   }
   .header-mobile{
-  display: flex;
-  height: 4.5rem;
-  align-items: center;
-  background: #161616;
-}
+    display: flex;
+    height: 4rem;
+    align-items: center;
+    background: #161616;
+  }
+
+  .site-info {
+    text-decoration: none;
+    font-size: 1.5rem;
+    margin-left: 4rem;
+    color: #9e9e9e;
+  }
+
+  .split-line {
+    height: 0.3rem;
+    opacity: 0.6;
+    background: #8b1bce;
+  }
+
+  .sidebar-mobile {
+
+  }
   .content{
     width: 100%;
     margin: 0rem 0 0;
