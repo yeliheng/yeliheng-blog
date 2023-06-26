@@ -3,7 +3,6 @@
       <div style="text-align: center; font-size: 1.5rem; font-weight: bold;">关于我</div>
        <markdown 
         class="markdown-body"
-        style="text-align: start;margin-top: 0.5rem;background-color: #121212;" 
         :source="about"
         />
   </div>
@@ -41,7 +40,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .markdown-container{
-        margin: 2rem;
-    }
+@use "@/theme/_handle.scss" as *;
+.markdown-body {
+  margin-top: 0.5rem;
+  text-align: start;
+  @include background_color("contentBackgroudColor");
+  @include font_color("primaryTextColor");
+}
+.markdown-container{
+    margin: 2rem;
+}
 </style>

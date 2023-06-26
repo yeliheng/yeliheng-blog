@@ -24,6 +24,7 @@
 </template>
 
 <style lang="scss" scoped>
+@use "@/theme/_handle.scss" as *;
 @keyframes bottom-top-anim {
   0% {
     opacity: 0;
@@ -51,26 +52,21 @@
     right: 0.5rem;
   };
 
-  :deep(.spinner) {
-    &::after{
-      background-color: #d4d3d3;
-    }
-  }
   // 站点信息
   .site-info {
     top: 0.5rem;
     height: 15rem;
     margin-top: 0.5rem;
-    background: #121212;
+    @include background_color("contentBackgroudColor");
     .announcement{
       display: block;
       margin: 1.2rem;
       text-align: center;
-      color: #9e9e9e;
+      @include font_color("secondaryTextColor");
     }
     .site-state{
       text-align: center;
-      color: #9e9e9e;
+      @include font_color("secondaryTextColor");
     }
   }
 

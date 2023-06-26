@@ -1,0 +1,35 @@
+$themes: (
+        // 夜间主题
+        "dark":
+        (
+                mainBackgroundColor: #1b1b1b, // 主背景色
+                contentBackgroudColor: #121212, // 内容背景色
+                cardHoverBackgroundColor: #535353, // 分类和标签的卡片覆盖背景色
+                splitLineColor: #6f6f6f, // 分割线颜色
+                primaryTextColor: #d0d0d0, // 主要字体色，如：标题、正文等
+                secondaryTextColor: #9e9e9e, // 次要字体色，如摘要等
+                highlightTextColor: #fff, // 突出字体色
+                decorateColor: #8b1bce, // 装饰色
+                hoverColor:#d0d0d0, // 鼠标覆盖色
+                reverseTextColor: #121212, //反转文字颜色，白->黑
+                borderColor: #d0d0d0, // 边框描边颜色
+                markdownBorderBottomColor: #2a2f35, // markdown的border-bottom颜色
+        ),
+
+        // 日间主题
+        "light":
+        (
+                mainBackgroundColor: #f5f7f9, // 主背景色
+                contentBackgroudColor: #fff, // 内容背景色
+                cardHoverBackgroundColor: #c6dcda, // 分类和标签的卡片覆盖背景色
+                splitLineColor: #6f6f6f, // 分割线颜色
+                primaryTextColor: #202529, // 主要字体色，如：标题、正文等
+                secondaryTextColor: #5e5e5e, // 次要字体色，如摘要等
+                highlightTextColor: #000, // 突出字体色
+                decorateColor: #c6dcda, // 装饰色
+                hoverColor: #fff, // 鼠标覆盖色
+                reverseTextColor: #fff, //反转文字颜色，白->黑
+                borderColor: #EDF3FE, // 边框描边颜色
+                markdownBorderBottomColor: #d2d9e0, // markdown的border-bottom颜色
+        ),
+);

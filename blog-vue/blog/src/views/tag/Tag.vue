@@ -1,14 +1,16 @@
 <template>
     <div class="tags-container">
-<!--        <div class="loading-bar-full" :class="{'no-loading': !isLoading,'is-loading': isLoading}" >
-            <v-loading></v-loading>
-        </div>-->
+        <div class="loading-bar-full" :class="{'no-loading': !isLoading,'is-loading': isLoading}" >
+          <bounce-loader
+              :loading="true"
+              :color="'#fff'"
+          />
+        </div>
         <div class="tag-card" 
             v-for="tag in tagList"
             :key="tag.id"
             @click="handleCardClick(tag.id,tag.articleCount)"
         >
-
                 <span class="tagText"><span class="iconfont icon-24gf-tags"></span> {{tag.tagName}}</span>
                 <div class="text">文章数：<span class="count">{{tag.articleCount}}</span></div>
  
@@ -18,7 +20,7 @@
 </template>
 
 <script lang="ts">
-import { getTagList } from '@/api/index';
+import { getTagList } from '@/api';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router'
 export default {
@@ -45,11 +47,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-:deep(.spinner){
-    &::after{
-      background-color: #d4d3d3;
-    }
-}
+@use "@/theme/_handle.scss" as *;
 .no-loading {
   visibility: collapse;
   opacity: 0;
@@ -61,7 +59,7 @@ export default {
 }
 .loading-bar-full {
   display: flex;
-  background-color: #121212;
+  @include background_color("contentBackgroudColor");
   transition: all 0.5s;
   height: 100vh;
   position: absolute;
@@ -82,8 +80,8 @@ export default {
         width: 100%;
         
         .tag-card{
-            &:hover{           
-                background: #535353;
+            &:hover{
+                @include background_color("cardBackgroundColor");
                 cursor: pointer;
             }
             text-decoration: none;
@@ -97,18 +95,18 @@ export default {
             width: 20rem;
             height: 10rem;
             border-radius: 20px;
-            background: #1e1e1e;
+          @include background_color("mainBackgroundColor");
             .tagText{
-                color: #d0d0d0;
+              @include font_color("primaryTextColor");
             }
             .text{
                 font-size: 1rem;
-                color: #9e9e9e;
+                @include font_color("secondaryTextColor");
                 .count{
                   font-style: italic;  
                   font-weight: bold;
-                  font-size: 1.2rem;  
-                  color: #d0d0d0;
+                  font-size: 1.2rem;
+                  @include font_color("primaryTextColor");
                 }
             }
         }

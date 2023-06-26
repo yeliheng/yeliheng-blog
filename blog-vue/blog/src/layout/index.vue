@@ -3,11 +3,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
   <!-- 头部(移动端) -->
     <div class="header-mobile" @touchmove.prevent>
-      <sidebar-mobile class="sidebar-mobile"></sidebar-mobile>
       <div class="button-container-mobile"  @click="handleOpen()">
-          <span class="iconfont icon-mulu" style="font-size: 1.4rem;" v-if="!isOpen"></span>
+          <span class="iconfont icon-mulu" v-if="!isOpen"></span>
       </div>
     </div>
+  <sidebar-mobile class="sidebar-mobile"></sidebar-mobile>
   <!-- 头部(PC) -->
     <div class="header">
         <!-- TODO: 后台获取站点信息 -->
@@ -97,6 +97,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use "@/theme/_handle.scss" as *;
 .loading-bar {
   transition: all 0.5s;
   opacity: 0;
@@ -143,11 +144,11 @@ export default {
   transform: translateX(30px);
 }
 
-:deep(.spinner) {
-    &::after{
-      background-color: #d4d3d3;
-    }
+.icon-mulu {
+  font-size: 1.4rem;
+  @include font_color("secondaryTextColor");
 }
+
 iframe {
   border: 0;
   height: 20rem;
@@ -166,7 +167,7 @@ iframe {
     left: 4rem;
   }
   .button-container {
-    color: #fff;
+    @include font_color("highlightTextColor");
     animation: button-anim 1.5s ease 1.5s forwards;
     position: absolute;
     justify-content: center;
@@ -179,7 +180,7 @@ iframe {
       font-size: 1.3rem;
     }
     a {
-      color: #fff;
+      @include font_color("highlightTextColor");
       text-decoration: none;
     }
   }
@@ -202,7 +203,7 @@ iframe {
   transition: all 0.5s;
   visibility: hidden;
   animation: bottom-top-anim 0.8s ease 0.5s forwards;
-  background: #121212;
+  @include background_color("contentBackgroudColor");
   width: 90rem;
   margin: {
     top: 0.5rem;

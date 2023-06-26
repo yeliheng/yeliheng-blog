@@ -10,7 +10,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
   <div class="header-mobile">
     <div class="button-container-mobile" @click="handleOpen()">
-        <span class="iconfont icon-mulu" style="font-size: 1.6rem;margin-left: 1rem; top: 1rem;color: #9e9e9e;position: absolute"></span>
+        <span class="iconfont icon-mulu"></span>
     </div>
     <router-link class="site-info" to="/" @click="onSiteClick()">Yeliheng的技术小站</router-link>
 
@@ -52,7 +52,6 @@
         </div>
         <markdown 
         class="markdown-body"
-        style="text-align: start;margin-top: 3rem;background-color: #121212;" 
         :source="article.content"
         />
         
@@ -144,7 +143,7 @@ export default {
           scrollSmoothDuration: 100,
           scrollSmooth: true,
           onClick(){
-            store.dispatch("toggleSidebar")
+            store.dispatch("closeSidebar")
           }
         });
       if(articleWrap.value.scrollHeight < window.innerHeight){
@@ -175,6 +174,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use "@/theme/_handle.scss" as *;
 .display {
   opacity: 1;
 }
@@ -187,19 +187,15 @@ export default {
 .no-fixed {
   position: relative;
 }
-:deep(.spinner){
-    &::after{
-      background-color: #d4d3d3;
-    }
-}
+
 :deep(.is-active-link){
   &::before{
     background-color: #bb46ff;
   }
 }
-:deep(.toc-link){
-  color: #9e9e9e;
-}
+
+
+
 .article-content{
   text-align: start;
 }
@@ -207,6 +203,7 @@ export default {
 .header-mobile{
   display: none;
 }
+
 
 // 侧边栏
 .sidebar{
@@ -227,7 +224,7 @@ export default {
     top: 0.5rem;
     padding-bottom: 2rem;
     margin-top: 0.5rem;
-    background: #121212; 
+    @include background_color("contentBackgroudColor");
   }
   .article-menu{
     display: flex;
@@ -245,7 +242,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #272727;
+  @include background_color("mainBackgroundColor");
   transition: all 0.5s;
   opacity: 1;
   position: absolute;
@@ -255,12 +252,13 @@ export default {
   right: 0;
   margin: auto;
   height: 100%;
+  z-index: 9999;
 }
 
 .content{
   transition: all 1s;
   opacity: 0;
-  background: #121212;
+  @include background_color("contentBackgroudColor");
   width: 70vw;
   margin: {
     top: 0.5rem;
@@ -276,14 +274,14 @@ export default {
     text-align: center;
     .article-title{
       font-size: 2rem;
-      color: #d0d0d0;
+      @include font_color("primaryTextColor");
       font-weight: bold;
     }
     .article-info{
       display: flex;
       justify-content: center;
       .info{
-          color: #9e9e9e;
+          @include font_color("secondaryTextColor");
           font-size: 0.8rem;
           margin-left: 1.2rem;
           margin-top: 0.2rem;
@@ -300,6 +298,13 @@ export default {
 
 /* 移动端 */
 @media screen and (max-width: 900px){
+  .icon-mulu{
+    font-size: 1.6rem;
+    margin-left: 1rem;
+    top: 1rem;
+    @include font_color("secondaryTextColor");
+    position: absolute;
+  }
   .sidebar{
     display: none;
   }
@@ -310,14 +315,14 @@ export default {
     height: 4rem;
     width: 100%;
     align-items: center;
-    background: #161616;
+    @include background_color("mainBackgroundColor");
   }
 
   .site-info {
     text-decoration: none;
     font-size: 1.5rem;
     margin-left: 4rem;
-    color: #9e9e9e;
+    @include font_color("secondaryTextColor");
   }
 
   .split-line {
@@ -325,7 +330,7 @@ export default {
     top: 4rem;
     height: 0.3rem;
     opacity: 0.6;
-    background: #8b1bce;
+    @include background_color("decorateColor");
   }
 
   .content{

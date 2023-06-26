@@ -1,7 +1,7 @@
 <template>
   <!-- 作者信息 -->
         <div class="my-info">
-            <router-link class="avatar" to="/about" @click="store.dispatch('toggleSidebar');"></router-link>
+            <router-link class="avatar" to="/about" @click="store.dispatch('closeSidebar');"></router-link>
             <span class="name">Liam Ye</span>
             <div class="art-info">
               <router-link class="article-count count" to="/" @click="handleClick()">
@@ -51,7 +51,7 @@ export default {
       store.commit('SET_INFO',res.data);
     });
     const handleClick = () => {
-      store.dispatch('toggleSidebar');
+      store.dispatch('closeSidebar');
     };
     return {
       siteInfo,
@@ -63,71 +63,73 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  a {
-    text-decoration: none;
-    color: #9e9e9e;
-  }
-  // 我的信息
-  .my-info{
-    background: #121212;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    .avatar{
-      margin-top: 1rem;
-      width: 10rem;
-      height: 10rem;
-      border-radius: 50%;
-      background-image: url("https://cdn.yeliheng.com/16287964.jpeg");
-      background-repeat: round;
-      &:hover{
-        transform: rotate(1turn);
-        transition-duration: 0.5s;
-        transition-timing-function: linear;
-      }
+@use '@/theme/_handle.scss' as *;
+a {
+  text-decoration: none;
+  @include font_color("secondaryTextColor");
+}
+// 我的信息
+.my-info{
+  @include background_color("contentBackgroudColor");
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .avatar{
+    margin-top: 1rem;
+    width: 10rem;
+    height: 10rem;
+    border-radius: 50%;
+    background-image: url("https://cdn.yeliheng.com/16287964.jpeg");
+    background-repeat: round;
+    &:hover{
+      transform: rotate(1turn);
+      transition-duration: 0.5s;
+      transition-timing-function: linear;
+    }
 
+  }
+  .name{
+    margin-top: 1rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  .art-info{
+    display: flex;
+    font-size: 1.2rem;
+    @include font_color("secondaryTextColor");
+    .line{
+      @include background_color("secondaryTextColor");
+      margin-top: 2rem;
+      height: 3.5rem;
+      width: 0.05rem;
+      opacity: 0.3;
     }
-    .name{
-      margin-top: 1rem;
-      font-size: 1.5rem;
-      font-weight: bold;
-    }
-    .art-info{
+    .count{
       display: flex;
-      font-size: 1.2rem;
-      color: #9e9e9e;
-      .line{
-        background: #353535;
-        margin-top: 2rem;
-        height: 3.5rem;
-        width: 0.05rem;
-      }
-      .count{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        margin: {
-          left: 1rem;
-          right: 1rem;
-          top: 1.5rem;
-        };
-      }
-    }
-    .contract-container{
-      color: #9e9e9e;
-      display: flex;        
-      flex-direction: row;
+      flex-direction: column;
       justify-content: center;
-      margin-top: 1.5rem;
-      .iconfont{
-        margin-left: 0.9rem;
-        margin-right: 0.9rem;
-        margin-bottom: 3rem;
-        font-size: 2rem;
-        color: #9e9e9e;
-        text-decoration: none;
-      }
+      align-items: center;
+      margin: {
+        left: 1rem;
+        right: 1rem;
+        top: 1.5rem;
+      };
     }
   }
+  .contract-container{
+    @include font_color("secondaryTextColor");
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 1.5rem;
+    .iconfont{
+      margin-left: 0.9rem;
+      margin-right: 0.9rem;
+      margin-bottom: 3rem;
+      font-size: 2rem;
+      @include font_color("secondaryTextColor");
+      text-decoration: none;
+    }
+  }
+}
 </style>

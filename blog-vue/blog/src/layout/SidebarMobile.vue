@@ -67,7 +67,7 @@ import store from "@/store";
       }
 
       const handleMaskClick = () => {
-        store.dispatch('toggleSidebar');
+        store.dispatch('closeSidebar');
         document.body.style.overflow = 'auto';
       }
 
@@ -84,9 +84,10 @@ import store from "@/store";
 </script>
 
 <style lang="scss" scoped>
+@use "@/theme/_handle.scss" as *;
   a {
     text-decoration: none;
-    color: #9e9e9e;
+    @include font_color("secondaryTextColor");
   }
   .sidebar-open {
     transform: translateX(0%);
@@ -101,7 +102,7 @@ import store from "@/store";
     transition: all cubic-bezier(0.39, 0.575, 0.565, 1) 0.5s;
     height: 100vh;
     width: 75%;
-    background: #121212;
+    @include background_color("contentBackgroudColor");
     overflow: auto;
   }
   .transparent-mask {
@@ -112,7 +113,7 @@ import store from "@/store";
     opacity: 0;
     position: fixed;
     right: 0;
-    background: #121212;
+    @include background_color("contentBackgroudColor");
     z-index: 2;
   }
   @keyframes mask-anim {
@@ -128,85 +129,38 @@ import store from "@/store";
     margin-right: 5rem;
     height: 0.2rem;
     opacity: 0.5;
-    background: #8b1bce;
+    @include background_color("decorateColor");
   }
   // 侧边栏
   .sidebar {
-    background: #121212;
+    @include background_color("contentBackgroudColor");
     margin-top: 1rem;
     top: 0.5rem;
     display: flex;
     flex-direction: column;
     width: 100%;
     height: 100%;
-
-    :deep(.spinner) {
-      &::after{
-        background-color: #d4d3d3;
-      }
-    }
     // 站点信息
     .site-info {
       top: 0.5rem;
       height: 15rem;
       margin-top: 0.5rem;
-      background: #121212;
+      @include background_color("contentBackgroudColor");
       .announcement{
         display: block;
         margin: 1.2rem;
         text-align: center;
-        color: #9e9e9e;
+        @include font_color("secondaryTextColor");
       }
       .site-state{
         text-align: center;
-        color: #9e9e9e;
+        @include font_color("secondaryTextColor");
       }
     }
 
   }
   .article-menu-mobile {
     margin-left: 1rem;
-  }
-// 我的信息
-  .my-info{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    .avatar{
-      margin-top: 1rem;
-      width: 7rem;
-      height: 7rem;
-      border-radius: 50%;
-      background-image: url("../assets/images/avater.jpg");
-      background-repeat: round;
-    }
-    .name{
-      margin-top: 1rem;
-      font-size: 1.5rem;
-      font-weight: bold;
-    }
-    .art-info{
-      display: flex;
-      font-size: 1.2rem;
-      color: #9e9e9e;
-      .line{
-        background: #353535;
-        margin-top: 2rem;
-        height: 3.5rem;
-        width: 0.05rem;
-      }
-      .count{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        margin: {
-          left: 1rem;
-          right: 1rem;
-          top: 1.5rem;
-        };
-      }
-    }
   }
 
 .sidebar-menu {
@@ -215,7 +169,7 @@ import store from "@/store";
   a{
     margin-left: 1rem;
     margin-top: 1rem;
-    color: #d0d0d0;
+    @include font_color("primaryTextColor");
     text-decoration: none;
   }
 }

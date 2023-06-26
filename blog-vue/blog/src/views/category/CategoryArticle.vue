@@ -59,7 +59,7 @@
 
 <script lang="ts">
 import '../../assets/iconfont.css';
-import { getArticleListByCategoryId } from '../../api/index';
+import { getArticleListByCategoryId } from '@/api';
 import {useRouter} from 'vue-router';
 import { ref, onMounted,onActivated } from 'vue';
 import { useStore } from 'vuex';
@@ -121,11 +121,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-:deep(.spinner){
-    &::after{
-      background-color: #d4d3d3;
-    }
-}
+@use "@/theme/_handle.scss" as *;
 .no-loading {
   visibility: collapse;
   opacity: 0;
@@ -145,7 +141,7 @@ export default {
 }
 .loading-bar-full {
   display: flex;
-  background-color: #121212;
+  @include background_color("contentBackgroudColor");
   transition: all 0.5s;
   height: 100vh;
   position: absolute;
@@ -178,7 +174,7 @@ export default {
   text-align: center;
   .article-title{
     font-size: 1.5rem;
-    color: #d0d0d0;
+    @include font_color("primaryTextColor");
     &:hover{
       cursor: pointer;
       &::after{
@@ -189,7 +185,7 @@ export default {
       content: "";
       height: 1px;
       width: 100%;
-      background-color: #fff;
+      @include background_color("highlightTextColor");
       display: flex;
       visibility: visible;
       transform: scaleX(0);
@@ -203,7 +199,7 @@ export default {
     display: flex;
     justify-content: center;
     .info{
-        color: #9e9e9e;
+        @include font_color("secondaryTextColor");
         font-size: 0.8rem;
         margin-left: 1.2rem;
         margin-top: 0.2rem;
@@ -221,11 +217,12 @@ export default {
     margin: auto;
     width: 8rem;
     height: 2.2rem;
-    border: 0.13rem solid #D0D0D0;
+    border: 0.13rem solid;
+    @include border_color("primaryTextColor");
     :hover{
       cursor: pointer;
-      background: #d0d0d0;
-      color: #121212
+      @include background_color("primaryTextColor");
+      @include font_color("contentBackgroudColor");
     }
     .read-btn{
       transition: all 0.5s;
@@ -245,7 +242,7 @@ export default {
     }
     height: 1px;
     width: 5rem;
-    background: #6f6f6f; 
+    @include background_color("splitLineColor");
   }
 }
 
@@ -258,18 +255,6 @@ export default {
   margin-bottom: 2rem !important;
 }
 
-:deep(.Page){
-  color: #d0d0d0;
-  }
-  :deep(.Page-active){
-    color: #121212;
-  }
-  :deep(.Control){
-    fill: #353535;
-  }
-  :deep(.Control-active){
-    fill: #9e9e9e;
-  } 
 /* 移动端 */
 @media screen and (max-width: 900px){
   .info-text{

@@ -1,8 +1,11 @@
 <template>
     <div class="categories-container">
-<!--        <div class="loading-bar-full" :class="{'no-loading': !isLoading,'is-loading': isLoading}" >
-            <v-loading></v-loading>
-        </div>-->
+        <div class="loading-bar-full" :class="{'no-loading': !isLoading,'is-loading': isLoading}" >
+          <bounce-loader
+              :loading="true"
+              :color="'#fff'"
+          />
+        </div>
         <div class="category-card"
             v-for="category in categoryList"
             :key="category.id"
@@ -18,7 +21,7 @@
 </template>
 
 <script lang="ts">
-import { getCategoryList } from '@/api/index';
+import { getCategoryList } from '@/api';
 import { ref } from 'vue';
 import router from '@/router';
 export default {
@@ -47,11 +50,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-:deep(.spinner){
-    &::after{
-      background-color: #d4d3d3;
-    }
-}
+@use "@/theme/_handle.scss" as *;
 .no-loading {
   visibility: collapse;
   opacity: 0;
@@ -63,7 +62,7 @@ export default {
 }
 .loading-bar-full {
   display: flex;
-  background-color: #121212;
+  @include background_color("contentBackgroudColor");
   transition: all 0.5s;
   height: 100vh;
   position: absolute;
@@ -84,8 +83,8 @@ export default {
         margin-top: 1rem;
         width: 100%;
         .category-card{
-            &:hover{           
-                background: #535353;
+            &:hover{
+                @include background_color("cardHoverBackgroundColor");
                 cursor: pointer;
             }
             text-decoration: none;
@@ -99,18 +98,18 @@ export default {
             width: 20rem;
             height: 10rem;
             border-radius: 20px;
-            background: #1e1e1e;
+            @include background_color("mainBackgroundColor");
             .categoryText{
-                color: #d0d0d0;
+              @include font_color("primaryTextColor");
             }
             .text{
                 font-size: 1rem;
-                color: #9e9e9e;
+                @include font_color("secondaryTextColor");
                 .count{
                   font-style: italic;  
                   font-weight: bold;
-                  font-size: 1.2rem;  
-                  color: #d0d0d0;
+                  font-size: 1.2rem;
+                  @include font_color("primaryTextColor");
                 }
             }
         }

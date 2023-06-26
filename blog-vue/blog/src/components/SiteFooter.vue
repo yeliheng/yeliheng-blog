@@ -20,13 +20,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .site-footer {
-      text-align: center;
-      background: inherit ;
-      opacity: 0.5;
-      width: 100%;
-    }
-    a {
-      color: #fff;
-    }
+@use "@/theme/_handle.scss" as *;
+.site-footer {
+  text-align: center;
+  background: inherit ;
+  opacity: 0.5;
+  width: 100%;
+}
+a {
+  @include font_color("highlightTextColor");
+}
 </style>

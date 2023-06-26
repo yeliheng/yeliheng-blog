@@ -14,6 +14,9 @@
 <script>
 import './index.scss';
 export default {
-
+  setup() {
+    window.document.documentElement.setAttribute('data-theme', 'dark');
+    return {}
+  }
 }
 </script>
