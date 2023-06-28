@@ -11,7 +11,7 @@
   <!-- 头部(PC) -->
     <div class="header">
         <!-- TODO: 后台获取站点信息 -->
-        <iframe src="/fontmesh/index.html"></iframe>
+        <iframe :src="src"></iframe>
          <div class="button-container">
             <router-link class="index-button header-button" to="/">
                 <span class="iconfont icon-shouye"></span>
@@ -87,9 +87,31 @@ export default {
         store.state.showSidebar
     );
 
+    const isDarkMode = computed(
+        () => store.state.isDarkMode
+    );
+
+    let src = `/fontmesh/index.html?isDarkMode=${isDarkMode.value}`;
+    // 每次isDarkMode变化时刷新iframe
+    store.watch(
+        (state) => state.isDarkMode,
+        () => {
+          if(isDarkMode.value) {
+            src = '/fontmesh/index.html?isDarkMode=true';
+          }else {
+            src = '/fontmesh/index.html?isDarkMode=false';
+          }
+          console.log(src);
+          // 获取iframe元素
+          const iframe = document.querySelector('iframe');
+          iframe.contentWindow.location.reload();
+        }
+    );
+
     return {
       handleOpen,
-      isOpen
+      isOpen,
+      src
     };
   }
 

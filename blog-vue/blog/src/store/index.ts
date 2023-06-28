@@ -11,9 +11,9 @@ export default createStore({
         content: '',
       }
     },
+    isDarkMode: true,
   },
   mutations: {
-
     TOGGLE_SIDEBAR: (state) => {
       state.showSidebar = !state.showSidebar;
     },
@@ -23,6 +23,9 @@ export default createStore({
     SET_INFO: (state,siteInfo) => {
       state.siteInfo = siteInfo;
     },
+    SET_DARK_MODE: (state, isDarkMode) => {
+      state.isDarkMode = isDarkMode;
+    }
   },
   actions: {
     toggleSidebar({commit}) {
@@ -31,6 +34,9 @@ export default createStore({
     closeSidebar({commit}) {
       commit('CLOSE_SIDEBAR');
     },
+    toggleDarkMode({commit, state}) {
+        commit('SET_DARK_MODE', !state.isDarkMode);
+    }
   },
   modules: {
   }

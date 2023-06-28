@@ -27,7 +27,6 @@
           <span style="font-size: 1.3rem; font-weight: bold; display: flex; justify-content: center;margin-top: 1.3rem;">文章目录</span>
           <div class="article-menu toc"></div>
         </div>
-
     </div>
 
     <!-- 内容区 -->

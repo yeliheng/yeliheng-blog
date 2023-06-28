@@ -1,6 +1,8 @@
 <template>
   <!-- 作者信息 -->
         <div class="my-info">
+            <span class="iconfont icon-rijianmoshi theme-button" @click="toggleTheme()" v-show="isDarkMode"></span>
+            <span class="iconfont icon-yejianmoshi theme-button" @click="toggleTheme()" v-show="!isDarkMode"></span>
             <router-link class="avatar" to="/about" @click="store.dispatch('closeSidebar');"></router-link>
             <span class="name">Liam Ye</span>
             <div class="art-info">
@@ -30,7 +32,7 @@
 
 <script>
 import { getSiteInfo } from '@/api';
-import { ref } from 'vue';
+import {computed, ref} from 'vue';
 import { useStore } from 'vuex';
 import store from "@/store";
 export default {
@@ -53,9 +55,17 @@ export default {
     const handleClick = () => {
       store.dispatch('closeSidebar');
     };
+    const toggleTheme = () => {
+      store.dispatch('toggleDarkMode');
+    };
+
+    const isDarkMode = computed(() => store.state.isDarkMode);
+
     return {
       siteInfo,
       handleClick,
+      toggleTheme,
+      isDarkMode
     }
   }
 
@@ -129,6 +139,17 @@ a {
       font-size: 2rem;
       @include font_color("secondaryTextColor");
       text-decoration: none;
+    }
+  }
+
+  .theme-button {
+    @include font_color("splitLineColor");
+    font-size: 2rem;
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    &:hover {
+      cursor: pointer;
     }
   }
 }
