@@ -62,6 +62,7 @@ export default {
     const toggleTheme = () => {
       console.log("切换主题")
       store.dispatch('toggleDarkMode');
+      console.log(store.getters.isDarkMode);
     };
 
     const isDarkMode = ref(store.getters.isDarkMode);
