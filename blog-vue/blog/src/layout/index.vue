@@ -108,7 +108,6 @@ export default {
 
     const refreshIframe = (src) => {
       // 获取iframe元素
-      console.log("开始刷新iframe",src.value);
       const iframe = document.querySelector('iframe');
       if(iframe != null) {
         iframe.src = src.value;

@@ -31,18 +31,6 @@
         <div class="split-line"></div>
       </div>
 
-      <div class="loading-bar-full" :class="{'no-loading': !isLoading,'is-loading': isLoading}" ref="loadingBar">
-        <bounce-loader
-            :loading="true"
-            :color="'#fff'"
-        />
-      </div>
-      <div class="loading-bar" ref="loadingBar">
-        <bounce-loader
-            :loading="true"
-            :color="'#fff'"
-        />
-      </div>
       <div class="pagination">
         <v-pagination
           v-model="page"
@@ -61,7 +49,7 @@
 import '../../assets/iconfont.css';
 import { getArticleList } from '@/api';
 import {useRouter} from 'vue-router';
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 import { useStore } from 'vuex';
 export default {
   setup(){
@@ -70,27 +58,21 @@ export default {
     const page = ref(1);
     const pageSize = 10;
     const articleList = ref([]);
-    const loadingBar = ref(null);
     const store = useStore();
-
-    const isLoading = ref(true);
-    onMounted(() => {
-      loadingBar.value
-    });
-    //TODO: 内容加载动画
+    store.dispatch('isLoading');
     getArticleList({"page": page.value,"pageSize": pageSize}).then((res: any) => {
       pageCount.value = res.data.pages;
       articleList.value = res.data.list;
-      
-      isLoading.value = false;
+      store.dispatch('notLoading');
     });
 
     const loadArticle = () => {
-      loadingBar.value.style.opacity = "1";
+      store.dispatch('isLoading');
       getArticleList({"page": page.value,"pageSize": pageSize}).then((res: any) => {
         articleList.value = res.data.list;
-        loadingBar.value.style.opacity = "0";
+      }).then(() => {
         scrollTo(0,0);
+        store.dispatch('notLoading');
       });
     }
 
@@ -107,9 +89,7 @@ export default {
       articleList,
       pageCount,
       page,
-      loadingBar,
       readArticle,
-      isLoading,
     }
   }
 
@@ -118,15 +98,6 @@ export default {
 
 <style lang="scss" scoped>
 @use "@/theme/_handle.scss" as *;
-.no-loading {
-  visibility: collapse;
-  opacity: 0;
-}
-
-.is-loading {
-  visibility: visible;
-  opacity: 1;
-}
 
 .is-top {
   @include font_color("highlightTextColor");
@@ -135,32 +106,6 @@ export default {
     top: 0.4rem;
   }
   font-size: 1rem;
-}
-
-//底部的loadingBar
-.loading-bar{
-  transition: all 0.5s;
-  opacity: 0;
-  display: flex;
-  justify-content: center;
-  margin-bottom: 2rem;
-}
-
-//全屏的loadingBar
-.loading-bar-full {
-  display: flex;
-  @include background_color("contentBackgroudColor");
-  transition: all 0.5s;
-  height: 100%;
-  position: absolute;
-  top: 0;             
-  bottom: 0;           
-  left: 0;        
-  right: 0;
-  margin: auto;
-  justify-content: center;
-  align-items: center;
-  z-index: 999999;
 }
 
 @keyframes change-opcity{

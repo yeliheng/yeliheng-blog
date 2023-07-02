@@ -7,18 +7,22 @@
       </keep-alive>
       <component :is="Component" v-if="!$route.meta.keepAlive" />
     </router-view>
+    <loading-bar />
   </div>
 </template>
 
 <script lang="ts">
 import './index.scss';
 import { useStore } from 'vuex';
+import LoadingBar from "@/components/LoadingBar.vue";
 
 export default {
+  components: {LoadingBar},
   setup() {
     const store = useStore();
     // 设置主题
     window.document.documentElement.setAttribute('data-theme', store.getters.isDarkMode ? 'dark' : 'light');
+
     // 监听store中isDarkMode的变化状态
     store.watch(
       (state) => state.isDarkMode,
@@ -27,7 +31,8 @@ export default {
       }
     );
 
-    return {}
+    return {
+    }
   }
 }
 </script>

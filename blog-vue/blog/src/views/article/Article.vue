@@ -1,24 +1,17 @@
 <template>
 <div class="home-container">
   <sidebar-mobile class="sidebar-mobile" ></sidebar-mobile>
-  <div class="loading-bar" ref="loadingBar" >
-    <bounce-loader class="loading-bar"
-        :loading="true"
-        :color="'#fff'"
-    />
-  </div>
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
   <div class="header-mobile">
     <div class="button-container-mobile" @click="handleOpen()">
         <span class="iconfont icon-mulu"></span>
     </div>
     <router-link class="site-info" to="/" @click="onSiteClick()">Yeliheng的技术小站</router-link>
-
   </div>
 
   <div class="body-container">
 
-<!-- 侧边栏(PC) -->
+    <!-- 侧边栏(PC) -->
     <div class="sidebar" >
         <!-- 作者信息 -->
         <my-profile></my-profile>
@@ -65,7 +58,7 @@
 </template>
 
 <script lang="ts">
-import '../../assets/iconfont.css';
+import '@/assets/iconfont.css';
 import { getArticleByUrl} from '@/api';
 import { useRouter } from 'vue-router';
 import { ref, onMounted } from 'vue';
@@ -85,10 +78,7 @@ export default {
   setup(){
     const router = useRouter();
     const store = useStore();
-    const pageCount = ref();
-    const page = ref(1);
-    const pageSize = 5;
-    const isLoading = ref(true);
+    store.dispatch("isLoading");
     const article = ref({
       'title': '',
       'content': '',
@@ -97,10 +87,8 @@ export default {
       'createdAt': ''
     });
     const articleWrap = ref();
-    const loadingBar = ref();
     const articleMenu = ref();
 
-    let top = 0;
     const handleOpen = () => {
       store.dispatch('toggleSidebar');
       document.body.style.overflow = 'hidden';
@@ -108,19 +96,16 @@ export default {
     const isOpen = computed(() =>
         store.state.showSidebar
     );
+
     onMounted(() => {
       articleWrap;
-      loadingBar;
       articleMenu;
     });
-    //TODO: 内容加载动画
+
     getArticleByUrl(router.currentRoute.value.params.url).then((res: any) => {
-      
       document.title = res.data.title + ' - Yeliheng的技术小站';
       article.value = res.data;
       articleWrap.value.style.opacity = "1";
-      loadingBar.value.style.opacity = "0";
-      loadingBar.value.style.visibility = 'collapse';
       articleMenu.value.style.position = "sticky";
       setTimeout(() => {
         tocbot.init({
@@ -142,13 +127,13 @@ export default {
           scrollSmoothDuration: 100,
           scrollSmooth: true,
           onClick(){
-            store.dispatch("closeSidebar")
+            store.dispatch("closeSidebar");
           }
         });
       if(articleWrap.value.scrollHeight < window.innerHeight){
         articleWrap.value.style.height = window.innerHeight + 'px';
       }
-      isLoading.value = false;
+      store.dispatch("notLoading");
       });
     });
     const onSiteClick = () => {
@@ -156,13 +141,9 @@ export default {
     }
 
     return {
-      pageCount,
-      page,
       article,
       articleWrap,
       articleMenu,
-      loadingBar,
-      isLoading,
       isOpen,
       handleOpen,
       onSiteClick,
@@ -192,8 +173,6 @@ export default {
     background-color: #bb46ff;
   }
 }
-
-
 
 .article-content{
   text-align: start;
@@ -236,22 +215,6 @@ export default {
   display: flex;
   justify-content: center;
   height: 100%;
-}
-.loading-bar{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  @include background_color("mainBackgroundColor");
-  transition: all 0.5s;
-  opacity: 1;
-  position: absolute;
-  top: 0;             
-  bottom: 0;           
-  left: 0;        
-  right: 0;
-  margin: auto;
-  height: 100%;
-  z-index: 9999;
 }
 
 .content{
