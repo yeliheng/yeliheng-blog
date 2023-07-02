@@ -197,6 +197,7 @@ export default {
   
   // 站点信息
   .article-menu-container{
+    transition: all 0.5s;
     position: initial;
     top: 0.5rem;
     padding-bottom: 2rem;
@@ -217,7 +218,7 @@ export default {
 }
 
 .content{
-  transition: all 1s;
+  transition: all 0.5s;
   opacity: 0;
   @include background_color("contentBackgroudColor");
   width: 70vw;

@@ -91,6 +91,7 @@ a {
 // 我的信息
 .my-info{
   @include background_color("contentBackgroudColor");
+  transition: all 0.5s;
   display: flex;
   flex-direction: column;
   align-items: center;

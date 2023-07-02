@@ -57,6 +57,7 @@
     top: 0.5rem;
     height: 15rem;
     margin-top: 0.5rem;
+    transition: all 0.5s;
     @include background_color("contentBackgroudColor");
     .announcement{
       display: block;

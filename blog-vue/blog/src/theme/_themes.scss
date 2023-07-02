@@ -14,6 +14,8 @@ $themes: (
                 reverseTextColor: #121212, //反转文字颜色，白->黑
                 borderColor: #d0d0d0, // 边框描边颜色
                 markdownBorderBottomColor: #2a2f35, // markdown的border-bottom颜色
+                markdownTrBackgroundColor: #0d1117, // markdown的tr奇数行背景色
+                markdownTr2nBackgroundColor: #161b22,// markdown的tr偶数行背景色
         ),
 
         // 日间主题
@@ -31,5 +33,7 @@ $themes: (
                 reverseTextColor: #fff, //反转文字颜色，白->黑
                 borderColor: #EDF3FE, // 边框描边颜色
                 markdownBorderBottomColor: #d2d9e0, // markdown的border-bottom颜色
+                markdownTrBackgroundColor: #fff, // markdown的tr奇数行背景色
+                markdownTr2nBackgroundColor: #F6F8FA,// markdown的tr偶数行背景色
         ),
 );

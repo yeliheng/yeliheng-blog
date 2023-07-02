@@ -16,10 +16,12 @@ html {
 body{
     @include font_color("primaryTextColor");
     @include background_color("mainBackgroundColor");
+  transition: all 0.5s;
 }
 
 // markdown样式
 .markdown-body {
+  transition: all 0.5s;
   text-align: start;
   margin-top: 3rem;
   @include background_color("contentBackgroudColor");
@@ -29,6 +31,18 @@ body{
   }
   hr {
     @include background_color("markdownBorderBottomColor");
+  }
+  // 奇数行tr背景色
+  tr:nth-child(odd) {
+      @include background_color("markdownTrBackgroundColor");
+  }
+  // 偶数行tr背景色
+  tr:nth-child(even) {
+      @include background_color("markdownTr2nBackgroundColor");
+  }
+  // 表格边框颜色
+  th,tr,td {
+    @include border_color("markdownBorderBottomColor");
   }
 }
 
