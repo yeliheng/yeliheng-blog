@@ -60,9 +60,7 @@ export default {
       store.dispatch('closeSidebar');
     };
     const toggleTheme = () => {
-      console.log("切换主题")
       store.dispatch('toggleDarkMode');
-      console.log(store.getters.isDarkMode);
     };
 
     const isDarkMode = ref(store.getters.isDarkMode);

@@ -43,8 +43,9 @@ export default createStore({
     closeSidebar({commit}) {
       commit('CLOSE_SIDEBAR');
     },
-    toggleDarkMode({commit,getters}) {
-      commit('TOGGLE_DARK_MODE',getters.isDarkMode);
+    toggleDarkMode({commit}) {
+      const isDarkMode = Cookies.get('isDarkMode') == '1';
+      commit('TOGGLE_DARK_MODE',isDarkMode);
     },
     isLoading({commit}) {
         commit('IS_LOADING');
@@ -55,11 +56,7 @@ export default createStore({
   },
   getters: {
     isDarkMode: state => {
-      if(Cookies.get('isDarkMode') == '1'){
-        return true;
-      }else{
-        return false;
-      }
+      return Cookies.get('isDarkMode') == '1';
     }
   },
   modules: {
