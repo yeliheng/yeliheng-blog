@@ -1,38 +1,39 @@
 <template>
-  <!-- 作者信息 -->
-        <div class="my-info">
-            <span class="iconfont icon-rijianmoshi theme-button" @click="toggleTheme()" v-show="isDarkMode"></span>
-            <span class="iconfont icon-yejianmoshi theme-button" @click="toggleTheme()" v-show="!isDarkMode"></span>
-            <router-link class="avatar" to="/about" @click="store.dispatch('closeSidebar');"></router-link>
-            <span class="name">Liam Ye</span>
-            <div class="art-info">
-              <router-link class="article-count count" to="/" @click="handleClick()">
-                <span>文章</span>
-                <span>{{siteInfo.articlesCount}}</span>
-              </router-link>
-              <div class="line"></div>
-              <router-link class="category-count count" to="/categories" @click="handleClick()">
-                <span>分类</span>
-                <span>{{siteInfo.categoriesCount}}</span>
-              </router-link>
-              <div class="line"></div>
-              <router-link to="/tags" class="tag-count count" @click="handleClick()">
-                <span>标签</span>
-                <span>{{siteInfo.tagsCount}}</span>
-              </router-link>
-            </div>
-            <div class="contract-container">
-              <a class="iconfont icon-github" href="https://github.com/yeliheng" target="_blank"></a>
-              <a class="iconfont icon-shouye" href="/"></a>
-              <a class="iconfont icon-email-fill" href="mailto:yeliheng00@gmail.com" target="_blank"></a>
-            </div>
-            
-        </div>
+  <div class="profile-container">
+    <span class="iconfont icon-rijianmoshi theme-button" @click="toggleTheme()" v-show=isDarkMode></span>
+    <span class="iconfont icon-yejianmoshi theme-button" @click="toggleTheme()" v-show="!isDarkMode"></span>
+    <!-- 作者信息 -->
+    <div class="my-info">
+      <router-link class="avatar" to="/about" @click="store.dispatch('closeSidebar');"></router-link>
+      <span class="name">Liam Ye</span>
+      <div class="art-info">
+        <router-link class="article-count count" to="/" @click="handleClick()">
+          <span>文章</span>
+          <span>{{siteInfo.articlesCount}}</span>
+        </router-link>
+        <div class="line"></div>
+        <router-link class="category-count count" to="/categories" @click="handleClick()">
+          <span>分类</span>
+          <span>{{siteInfo.categoriesCount}}</span>
+        </router-link>
+        <div class="line"></div>
+        <router-link to="/tags" class="tag-count count" @click="handleClick()">
+          <span>标签</span>
+          <span>{{siteInfo.tagsCount}}</span>
+        </router-link>
+      </div>
+      <div class="contract-container">
+        <a class="iconfont icon-github" href="https://github.com/yeliheng" target="_blank"></a>
+        <a class="iconfont icon-shouye" href="/"></a>
+        <a class="iconfont icon-email-fill" href="mailto:yeliheng00@gmail.com" target="_blank"></a>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
 import { getSiteInfo } from '@/api';
-import {computed, ref} from 'vue';
+import {ref} from 'vue';
 import { useStore } from 'vuex';
 import store from "@/store";
 export default {
@@ -43,15 +44,18 @@ export default {
   },
   setup() {
     const store = useStore();
+
     const siteInfo = ref({
       'articleCount': '∞',
       'categoriesCount': '∞',
       'tagsCount': '∞',
     });
+
     getSiteInfo().then((res) => {
       siteInfo.value = res.data;
       store.commit('SET_INFO',res.data);
     });
+
     const handleClick = () => {
       store.dispatch('closeSidebar');
     };
@@ -59,7 +63,13 @@ export default {
       store.dispatch('toggleDarkMode');
     };
 
-    const isDarkMode = computed(() => store.state.isDarkMode);
+    const isDarkMode = ref(store.getters.isDarkMode);
+    store.watch(
+        (state) => state.isDarkMode,
+        (newVal) => {
+          isDarkMode.value = newVal;
+        }
+    );
 
     return {
       siteInfo,
@@ -141,16 +151,20 @@ a {
       text-decoration: none;
     }
   }
+}
+.theme-button {
+  @include font_color("splitLineColor");
+  font-size: 2rem;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
 
-  .theme-button {
-    @include font_color("splitLineColor");
-    font-size: 2rem;
-    position: absolute;
-    top: 1.5rem;
-    right: 1.5rem;
-    &:hover {
-      cursor: pointer;
-    }
+  &:hover {
+    cursor: pointer;
   }
+}
+
+.profile-container {
+  position: relative;
 }
 </style>

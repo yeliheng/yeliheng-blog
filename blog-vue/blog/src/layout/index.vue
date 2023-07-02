@@ -68,7 +68,7 @@ import SiteFooter from '@/components/SiteFooter.vue';
 import Sidebar from "@/layout/Sidebar.vue";
 import {useStore} from "vuex";
 import store from "@/store";
-import {computed} from "vue";
+import {computed, ref} from "vue"
 export default {
   components: { MyProfile, SidebarMobile,SiteFooter, Sidebar},
   computed: {
@@ -88,25 +88,33 @@ export default {
     );
 
     const isDarkMode = computed(
-        () => store.state.isDarkMode
+        () => store.getters.isDarkMode
     );
 
-    let src = `/fontmesh/index.html?isDarkMode=${isDarkMode.value}`;
+    let src = ref(`/fontmesh/index.html?isDarkMode=${isDarkMode.value}`);
     // 每次isDarkMode变化时刷新iframe
     store.watch(
         (state) => state.isDarkMode,
         () => {
-          if(isDarkMode.value) {
-            src = '/fontmesh/index.html?isDarkMode=true';
+          if(store.state.isDarkMode) {
+            src.value = '/fontmesh/index.html?isDarkMode=true'
+            refreshIframe(src);
           }else {
-            src = '/fontmesh/index.html?isDarkMode=false';
+            src.value = '/fontmesh/index.html?isDarkMode=false';
+            refreshIframe(src);
           }
-          console.log(src);
-          // 获取iframe元素
-          const iframe = document.querySelector('iframe');
-          iframe.contentWindow.location.reload();
         }
     );
+
+    const refreshIframe = (src) => {
+      // 获取iframe元素
+      console.log("开始刷新iframe",src.value);
+      const iframe = document.querySelector('iframe');
+      if(iframe != null) {
+        iframe.src = src.value;
+        iframe.contentWindow.location.reload();
+      }
+    }
 
     return {
       handleOpen,

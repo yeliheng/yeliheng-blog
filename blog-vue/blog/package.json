@@ -13,6 +13,7 @@
     "core-js": "^3.6.5",
     "github-markdown-css": "^5.1.0",
     "highlight.js": "^11.3.1",
+    "js-cookie": "^3.0.1",
     "tocbot": "^4.17.3",
     "vue": "^3.0.0",
     "vue-class-component": "^8.0.0-0",
@@ -23,6 +24,7 @@
     "vuex": "^4.0.0-0"
   },
   "devDependencies": {
+    "@types/js-cookie": "^3.0.3",
     "@vue/cli-plugin-router": "~4.5.19",
     "@vue/cli-plugin-typescript": "~4.5.19",
     "@vue/cli-plugin-vuex": "~4.5.19",

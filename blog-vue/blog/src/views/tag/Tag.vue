@@ -81,7 +81,7 @@ export default {
         
         .tag-card{
             &:hover{
-                @include background_color("cardBackgroundColor");
+                @include background_color("cardHoverBackgroundColor");
                 cursor: pointer;
             }
             text-decoration: none;

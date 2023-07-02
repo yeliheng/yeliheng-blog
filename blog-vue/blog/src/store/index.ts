@@ -1,4 +1,5 @@
-import { createStore } from 'vuex'
+import { createStore } from 'vuex';
+import Cookies from "js-cookie";
 
 export default createStore({
   state: {
@@ -11,7 +12,7 @@ export default createStore({
         content: '',
       }
     },
-    isDarkMode: true,
+    isDarkMode: Cookies.get('isDarkMode'),
   },
   mutations: {
     TOGGLE_SIDEBAR: (state) => {
@@ -23,9 +24,10 @@ export default createStore({
     SET_INFO: (state,siteInfo) => {
       state.siteInfo = siteInfo;
     },
-    SET_DARK_MODE: (state, isDarkMode) => {
-      state.isDarkMode = isDarkMode;
-    }
+    TOGGLE_DARK_MODE: (state,isDarkMode) => {
+      state.isDarkMode = !isDarkMode;
+      Cookies.set('isDarkMode',state.isDarkMode ? '1' : '0');
+    },
   },
   actions: {
     toggleSidebar({commit}) {
@@ -34,8 +36,17 @@ export default createStore({
     closeSidebar({commit}) {
       commit('CLOSE_SIDEBAR');
     },
-    toggleDarkMode({commit, state}) {
-        commit('SET_DARK_MODE', !state.isDarkMode);
+    toggleDarkMode({commit,getters}) {
+      commit('TOGGLE_DARK_MODE',getters.isDarkMode);
+    }
+  },
+  getters: {
+    isDarkMode: state => {
+      if(Cookies.get('isDarkMode') == '1'){
+        return true;
+      }else{
+        return false;
+      }
     }
   },
   modules: {

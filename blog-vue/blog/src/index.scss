@@ -6,48 +6,48 @@
     //box-sizing: border-box;
 }
 
+html {
+  font-size: 14px;
+  font-family: Avenir, Helvetica, Arial, sans-serif, 'Microsoft YaHei';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body{
+    @include font_color("primaryTextColor");
+    @include background_color("mainBackgroundColor");
+}
+
+// markdown样式
+.markdown-body {
+  text-align: start;
+  margin-top: 3rem;
+  @include background_color("contentBackgroudColor");
+  @include font_color("primaryTextColor");
+  h1,h2,h3,h4,h5,h6 {
+    @include border_color("markdownBorderBottomColor");
+  }
+  hr {
+    @include background_color("markdownBorderBottomColor");
+  }
+}
+
+// 底部分页样式
+.Page {
+  @include font_color("primaryTextColor");
+}
+.Page-active{
+  @include font_color("contentBackgroudColor");
+}
+.Control {
+  @include fill_color("cardHoverBackgroundColor");
+}
+.Control-active {
+  @include fill_color("primaryTextColor");
+}
+
+@media screen and (min-width: 1450px) {
   html {
-    font-size: 14px;
-    font-family: Avenir, Helvetica, Arial, sans-serif, 'Microsoft YaHei';
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+      font-size: 75%;
   }
-  
-  body{
-      @include font_color("primaryTextColor");
-      @include background_color("mainBackgroundColor");
-  }
-
-  // markdown样式
-  .markdown-body {
-    text-align: start;
-    margin-top: 3rem;
-    @include background_color("contentBackgroudColor");
-    @include font_color("primaryTextColor");
-    h1,h2,h3,h4,h5,h6 {
-      @include border_color("markdownBorderBottomColor");
-    }
-    hr {
-      @include background_color("markdownBorderBottomColor");
-    }
-  }
-
-  // 底部分页样式
-  .Page {
-    @include font_color("primaryTextColor");
-  }
-  .Page-active{
-    @include font_color("contentBackgroudColor");
-  }
-  .Control {
-    @include fill_color("cardHoverBackgroundColor");
-  }
-  .Control-active {
-    @include fill_color("primaryTextColor");
-  }
-
-  @media screen and (min-width: 1450px) {
-    html {
-        font-size: 75%;
-    }
 }
