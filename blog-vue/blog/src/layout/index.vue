@@ -2,7 +2,7 @@
 <div class="home-container">
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
   <!-- 头部(移动端) -->
-    <div class="header-mobile" @touchmove.prevent>
+    <div class="header-mobile">
       <div class="button-container-mobile"  @click="handleOpen()">
           <span class="iconfont icon-mulu" v-if="!isOpen"></span>
       </div>
@@ -80,7 +80,7 @@ export default {
     const store = useStore();
 
     const handleOpen = () => {
-      store.dispatch('toggleSidebar');
+      store.dispatch('openSidebar');
 
     };
     const isOpen = computed(() =>

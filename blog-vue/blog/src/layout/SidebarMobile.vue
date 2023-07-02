@@ -56,7 +56,8 @@ import store from "@/store";
       const siteInfo = computed(() => store.state.siteInfo);
 
       const date = new Date();
-      const year = ref();  const handleClick = () => {
+      const year = ref();
+      const handleClick = () => {
         year.value = date.getFullYear();
         store.dispatch('closeSidebar');
       }
@@ -68,7 +69,6 @@ import store from "@/store";
 
       const handleMaskClick = () => {
         store.dispatch('closeSidebar');
-        document.body.style.overflow = 'auto';
       }
 
       return {

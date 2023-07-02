@@ -90,8 +90,7 @@ export default {
     const articleMenu = ref();
 
     const handleOpen = () => {
-      store.dispatch('toggleSidebar');
-      document.body.style.overflow = 'hidden';
+      store.dispatch('openSidebar');
     };
     const isOpen = computed(() =>
         store.state.showSidebar

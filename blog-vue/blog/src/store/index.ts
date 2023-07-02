@@ -19,6 +19,9 @@ export default createStore({
     TOGGLE_SIDEBAR: (state) => {
       state.showSidebar = !state.showSidebar;
     },
+    OPEN_SIDEBAR: (state) => {
+        state.showSidebar = true;
+    },
     CLOSE_SIDEBAR: (state) => {
       state.showSidebar = false;
     },
@@ -40,8 +43,13 @@ export default createStore({
     toggleSidebar({commit}) {
       commit('TOGGLE_SIDEBAR');
     },
+    openSidebar({commit}) {
+      commit('OPEN_SIDEBAR');
+      document.body.style.overflow = 'hidden';
+    },
     closeSidebar({commit}) {
       commit('CLOSE_SIDEBAR');
+      document.body.style.overflow = 'auto';
     },
     toggleDarkMode({commit}) {
       const isDarkMode = Cookies.get('isDarkMode') == '1';
