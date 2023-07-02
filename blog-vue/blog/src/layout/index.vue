@@ -97,7 +97,7 @@ export default {
         (state) => state.isDarkMode,
         () => {
           if(store.state.isDarkMode) {
-            src.value = '/fontmesh/index.html?isDarkMode=true'
+            src.value = '/fontmesh/index.html?isDarkMode=true';
             refreshIframe(src);
           }else {
             src.value = '/fontmesh/index.html?isDarkMode=false';
@@ -110,7 +110,6 @@ export default {
       // 获取iframe元素
       const iframe = document.querySelector('iframe');
       if(iframe != null) {
-        iframe.src = src.value;
         iframe.contentWindow.location.reload();
       }
     }
