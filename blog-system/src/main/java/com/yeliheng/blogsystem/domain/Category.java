@@ -1,13 +1,13 @@
 package com.yeliheng.blogsystem.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import io.swagger.annotations.ApiModel;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.jeecgframework.poi.excel.annotation.Excel;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
-@ApiModel(description = "文章分类")
+@Schema(description = "文章分类")
 public class Category {
 
     private Long id;

@@ -7,7 +7,7 @@ import com.yeliheng.blogcommon.utils.StringUtils;
 import com.yeliheng.blogsystem.domain.LoginBody;
 import com.yeliheng.blogsystem.service.ILoginService;
 import com.yeliheng.blogweb.common.CommonResponse;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-@Api(tags = "登录")
+@Tag(name = "登录")
 @RestController
 public class LoginController {
 

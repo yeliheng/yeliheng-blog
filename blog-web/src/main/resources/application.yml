@@ -25,7 +25,21 @@ server:
     whitelabel:
       # 关闭默认whitelabel
       enabled: false
-
+# 指标监控
+management:
+  endpoint:
+    prometheus:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+# springdoc
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
 #MyBatis框架配置
 mybatis:
   configuration:
@@ -92,4 +106,3 @@ system:
       max-filename-length: 100
       # 允许的文件大小(M)
       max-file-size: 5
-

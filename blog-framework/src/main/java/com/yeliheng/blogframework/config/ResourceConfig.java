@@ -14,8 +14,6 @@ public class ResourceConfig extends WebMvcConfigurationSupport {
      */
     @Override
     protected void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/swagger-ui/**")
-                .addResourceLocations("classpath:/META-INF/resources/webjars/springfox-swagger-ui/");
         registry.addResourceHandler("/webjars/**")
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");
         //头像静态资源

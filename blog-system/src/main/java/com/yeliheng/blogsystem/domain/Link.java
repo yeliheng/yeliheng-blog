@@ -1,12 +1,12 @@
 package com.yeliheng.blogsystem.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import io.swagger.annotations.ApiModel;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
-@ApiModel(description = "友情链接")
+@Schema(description = "友情链接")
 public class Link {
 
     private Long id;

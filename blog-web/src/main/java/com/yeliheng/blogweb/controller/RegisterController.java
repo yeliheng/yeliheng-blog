@@ -6,7 +6,7 @@ import com.yeliheng.blogcommon.exception.RequestFormatException;
 import com.yeliheng.blogsystem.domain.RegisterUser;
 import com.yeliheng.blogsystem.service.IRegisterService;
 import com.yeliheng.blogweb.common.CommonResponse;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-@Api(tags = "注册")
+@Tag(name = "注册")
 @RestController
 @Validated
 public class RegisterController {

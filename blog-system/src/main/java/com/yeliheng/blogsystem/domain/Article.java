@@ -1,17 +1,16 @@
 package com.yeliheng.blogsystem.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import io.swagger.annotations.ApiModel;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.jeecgframework.poi.excel.annotation.Excel;
 import org.jeecgframework.poi.excel.annotation.ExcelCollection;
 import org.jeecgframework.poi.excel.annotation.ExcelEntity;
 
 import javax.validation.constraints.NotBlank;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
-@ApiModel(description = "文章")
+@Schema(description = "文章")
 public class Article {
     @Excel(name = "文章ID")
     private Long id;

@@ -1,19 +1,19 @@
 package com.yeliheng.blogsystem.domain;
 
-import io.swagger.annotations.ApiModelProperty;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import javax.validation.constraints.NotBlank;
 
 public class RegisterUser {
-    @ApiModelProperty("用户名")
+    @Schema(title = "用户名")
     @NotBlank
     private String username;
 
-    @ApiModelProperty("密码")
+    @Schema(title = "密码")
     @NotBlank
     private String password;
 
-    @ApiModelProperty("确认密码")
+    @Schema(title = "确认密码")
     @NotBlank
     private String password_confirm;
 

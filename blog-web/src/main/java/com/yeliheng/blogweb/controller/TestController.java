@@ -5,7 +5,7 @@ import com.yeliheng.blogframework.storage.OssStorage;
 import com.yeliheng.blogsystem.mapper.UserMapper;
 import com.yeliheng.blogsystem.utils.UserUtils;
 import com.yeliheng.blogweb.common.CommonResponse;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-@Api(tags = "测试API ")
+@Tag(name = "测试API")
 @RestController
 public class TestController {
     @Autowired

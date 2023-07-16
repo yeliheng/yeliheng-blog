@@ -1,14 +1,14 @@
 package com.yeliheng.blogsystem.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import io.swagger.annotations.ApiModel;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.jeecgframework.poi.excel.annotation.Excel;
 
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
-@ApiModel(description = "Tag")
+@Schema(description = "Tag")
 public class Tag {
 
     @Excel(name = "标签ID")

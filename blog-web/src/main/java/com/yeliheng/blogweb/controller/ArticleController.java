@@ -5,17 +5,16 @@ package com.yeliheng.blogweb.controller;
 import com.yeliheng.blogcommon.annotation.Log;
 import com.yeliheng.blogcommon.constant.BusinessType;
 import com.yeliheng.blogsystem.domain.Article;
-import com.yeliheng.blogsystem.domain.User;
 import com.yeliheng.blogsystem.service.IArticleService;
 import com.yeliheng.blogweb.common.CommonResponse;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
-@Api(tags = "文章模块")
+@Tag(name = "文章模块")
 @RestController
 public class ArticleController {
     @Autowired
