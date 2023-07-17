@@ -25,6 +25,9 @@ server:
     whitelabel:
       # 关闭默认whitelabel
       enabled: false
+  tomcat:
+    mbeanregistry:
+      enabled: true
 # 指标监控
 management:
   endpoints:
