@@ -8,6 +8,7 @@
       <component :is="Component" v-if="!$route.meta.keepAlive" />
     </router-view>
     <loading-bar />
+    <back-to-top></back-to-top>
   </div>
 </template>
 
@@ -15,9 +16,10 @@
 import './index.scss';
 import { useStore } from 'vuex';
 import LoadingBar from "@/components/LoadingBar.vue";
+import BackToTop from "@/components/BackToTop.vue";
 
 export default {
-  components: {LoadingBar},
+  components: {BackToTop, LoadingBar},
   setup() {
     const store = useStore();
     // 设置主题
