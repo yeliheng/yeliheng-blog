@@ -1,6 +1,6 @@
 <template>
   <div class="back-to-top">
-    <span class="iconfont icon-fanhuidingbu1" @click="backToTop()" ></span>
+    <span class="iconfont icon-fanhuidingbu1" @click="backToTop()"></span>
   </div>
 
 </template>

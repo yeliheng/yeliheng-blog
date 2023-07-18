@@ -60,7 +60,7 @@ body{
   @include fill_color("primaryTextColor");
 }
 
-@media screen and (min-width: 1450px) {
+@media screen and (min-width: 900px) {
   html {
       font-size: 75%;
   }

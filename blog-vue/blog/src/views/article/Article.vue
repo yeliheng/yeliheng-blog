@@ -49,7 +49,10 @@
         
       </div>
       <site-footer></site-footer>
-    </div> 
+    </div>
+
+    <!--  功能按钮  -->
+    <function-button></function-button>
     
   </div>
   
@@ -64,12 +67,13 @@ import { useRouter } from 'vue-router';
 import { ref, onMounted } from 'vue';
 import tocbot from 'tocbot';
 import SidebarMobile from '@/layout/SidebarMobile.vue';
+import FunctionButton from '@/components/FunctionButton.vue';
 import { useStore } from 'vuex';
 import SiteFooter from '@/components/SiteFooter.vue';
 import {computed} from "vue";
 import store from "@/store";
 export default {
-  components: { SidebarMobile, SiteFooter },
+  components: { SidebarMobile, SiteFooter, FunctionButton },
   computed: {
     store() {
       return store
@@ -188,7 +192,7 @@ export default {
   opacity: 1;
   display: flex;
   flex-direction: column;
-  width: 17vw;
+  width: 22rem;
   margin: {
     top: 0.5rem;
     left: 0.5rem;
@@ -221,7 +225,7 @@ export default {
   transition: all 0.5s;
   opacity: 0;
   @include background_color("contentBackgroudColor");
-  width: 70vw;
+  width: 85rem;
   margin: {
     top: 0.5rem;
     right: 0.5rem;
@@ -230,8 +234,8 @@ export default {
     padding: {
       top: 3rem;
       bottom: 3rem;
-      left: 1.5rem;
-      right: 1.5rem;
+      left: 6rem;
+      right: 6rem;
     }
     text-align: center;
     .article-title{
@@ -299,6 +303,10 @@ export default {
     width: 100%;
     margin: 4rem 0 0;
     .article-container{
+      padding: {
+        left: 1.5rem;
+        right: 1.5rem;
+      }
       .article-info{
         .info{
           margin-left: 0.6rem;

@@ -232,7 +232,7 @@ iframe {
   visibility: hidden;
   animation: bottom-top-anim 0.8s ease 0.5s forwards;
   @include background_color("contentBackgroudColor");
-  width: 90rem;
+  width: 85rem;
   margin: {
     top: 0.5rem;
     right: 0.5rem;

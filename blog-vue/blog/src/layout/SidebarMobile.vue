@@ -101,7 +101,7 @@ a {
   position: fixed;
   transition: all cubic-bezier(0.39, 0.575, 0.565, 1) 0.5s;
   height: 100vh;
-  width: 75%;
+  width: 280px;
   @include background_color("contentBackgroudColor");
   overflow: auto;
 }
