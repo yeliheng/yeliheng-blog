@@ -17,6 +17,8 @@ import com.yeliheng.blogsystem.service.IArticleService;
 import com.yeliheng.blogsystem.utils.UserUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.jeecgframework.poi.excel.entity.ExportParams;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +30,8 @@ import java.util.List;
 public class ArticleServiceImpl implements IArticleService {
 
     private static final int ARTICLE_URL_LENGTH = 8;
+
+    private static final Logger log = LoggerFactory.getLogger(ArticleServiceImpl.class);
     @Autowired
     private ArticleMapper articleMapper;
     @Autowired
@@ -152,6 +156,7 @@ public class ArticleServiceImpl implements IArticleService {
         Article article = articleMapper.getArticleByUrl(articleUrl);
         if(article == null)
             throw new NotFoundException("文章不存在");
+        log.debug("article:{}",article.getCreatedAt());
         articleMapper.increaseViewsByArticleId(article.getId());
         return article;
     }
