@@ -1,8 +1,7 @@
 package com.yeliheng.blogweb.controller;
 
 import com.yeliheng.blogcommon.annotation.Log;
-import com.yeliheng.blogcommon.constant.BusinessType;
-import com.yeliheng.blogsystem.domain.Article;
+import com.yeliheng.blogcommon.constant.OperateType;
 import com.yeliheng.blogsystem.domain.OperateLog;
 import com.yeliheng.blogsystem.service.IOperateLogService;
 import com.yeliheng.blogweb.common.CommonResponse;
@@ -28,7 +27,7 @@ public class OperateLogController {
 
     @DeleteMapping("/admin/operateLogs")
     @PreAuthorize("@perm.hasPerm('admin:operatelog:delete')")
-    @Log(moduleName = "删除操作日志", businessType = BusinessType.DELETE)
+    @Log(moduleName = "删除操作日志", operateType = OperateType.DELETE)
     public CommonResponse<Object> deleteOperateLogs(@RequestParam Long[] operateLogIds) {
         operateLogService.deleteOperateLog(operateLogIds);
         return CommonResponse.success();
@@ -36,13 +35,13 @@ public class OperateLogController {
 
     @DeleteMapping("/admin/operateLogs/clear")
     @PreAuthorize("@perm.hasPerm('admin:operatelog:delete')")
-    @Log(moduleName = "清空操作日志", businessType = BusinessType.DELETE)
+    @Log(moduleName = "清空操作日志", operateType = OperateType.DELETE)
     public CommonResponse<Object> clearOperateLogs() {
         operateLogService.clearOperateLog();
         return CommonResponse.success();
     }
 
-    @Log(moduleName = "导出日志",businessType = BusinessType.EXPORT)
+    @Log(moduleName = "导出日志",operateType = OperateType.EXPORT)
     @PreAuthorize("@perm.hasPerm('admin:operatelog:export')")
     @GetMapping(value = "/admin/operateLogs/export")
     public CommonResponse<Object> export(OperateLog operateLog) {

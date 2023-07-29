@@ -2,9 +2,8 @@ package com.yeliheng.blogweb.controller;
 
 
 import com.yeliheng.blogcommon.annotation.Log;
-import com.yeliheng.blogcommon.constant.BusinessType;
+import com.yeliheng.blogcommon.constant.OperateType;
 import com.yeliheng.blogcommon.exception.UnauthorizedException;
-import com.yeliheng.blogcommon.utils.ExcelUtils;
 import com.yeliheng.blogcommon.utils.ServletUtils;
 import com.yeliheng.blogcommon.utils.StringUtils;
 import com.yeliheng.blogsystem.domain.LoginUser;
@@ -17,7 +16,6 @@ import com.yeliheng.blogsystem.service.IUserService;
 import com.yeliheng.blogsystem.utils.TokenUtils;
 import com.yeliheng.blogsystem.utils.UserUtils;
 import com.yeliheng.blogweb.common.CommonResponse;
-import org.jeecgframework.poi.excel.entity.ExportParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -42,7 +40,7 @@ public class UserController {
     @Autowired
     private IMenuService menuService;
 
-    @Log(moduleName = "新增用户",businessType = BusinessType.INSERT)
+    @Log(moduleName = "新增用户",operateType = OperateType.INSERT)
     @PreAuthorize("@perm.hasPerm('admin:users:add')")
     @PostMapping
     public CommonResponse<Object> add(@Validated @RequestBody User user) {
@@ -51,7 +49,7 @@ public class UserController {
     }
 
 
-    @Log(moduleName = "修改用户",businessType = BusinessType.UPDATE)
+    @Log(moduleName = "修改用户",operateType = OperateType.UPDATE)
     @PreAuthorize("@perm.hasPerm('admin:users:edit')")
     @PutMapping
     public CommonResponse<Object> update(@Validated @RequestBody User user) {
@@ -59,7 +57,7 @@ public class UserController {
         return CommonResponse.success();
     }
 
-    @Log(moduleName = "删除用户",businessType = BusinessType.DELETE)
+    @Log(moduleName = "删除用户",operateType = OperateType.DELETE)
     @PreAuthorize("@perm.hasPerm('admin:users:delete')")
     @DeleteMapping
     public CommonResponse<Object> delete(@RequestParam("id") Long id) {
@@ -102,7 +100,7 @@ public class UserController {
     }
 
 
-    @Log(moduleName = "导出用户",businessType = BusinessType.EXPORT)
+    @Log(moduleName = "导出用户",operateType = OperateType.EXPORT)
     @PreAuthorize("@perm.hasPerm('admin:users:export')")
     @GetMapping(value = "/export")
     public CommonResponse<Object> export(User user) {

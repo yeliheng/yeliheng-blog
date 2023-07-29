@@ -15,10 +15,11 @@ import org.springframework.util.CollectionUtils;
 import java.util.Set;
 
 /**
- * 自定义权限控制器实现-参考RuoYi框架做法
+ * 自定义权限控制器实现
  */
 @Service("perm")
 public class PermissionUtils {
+
     @Autowired
     private TokenUtils tokenUtils;
     @Autowired

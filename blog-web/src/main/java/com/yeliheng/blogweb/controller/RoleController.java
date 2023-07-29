@@ -2,7 +2,7 @@ package com.yeliheng.blogweb.controller;
 
 
 import com.yeliheng.blogcommon.annotation.Log;
-import com.yeliheng.blogcommon.constant.BusinessType;
+import com.yeliheng.blogcommon.constant.OperateType;
 import com.yeliheng.blogcommon.utils.StringUtils;
 import com.yeliheng.blogsystem.domain.Role;
 import com.yeliheng.blogsystem.service.IRoleService;
@@ -19,21 +19,21 @@ public class RoleController {
     private IRoleService roleService;
 
     @PreAuthorize("@perm.hasPerm('admin:roles:add')")
-    @Log(moduleName = "添加角色",businessType = BusinessType.INSERT)
+    @Log(moduleName = "添加角色",operateType = OperateType.INSERT)
     @PostMapping("/admin/roles")
     public CommonResponse<Object> add(@Validated @RequestBody Role role){
         roleService.addRole(role);
         return CommonResponse.success();
     }
     @PreAuthorize("@perm.hasPerm('admin:roles:delete')")
-    @Log(moduleName = "删除角色",businessType = BusinessType.DELETE)
+    @Log(moduleName = "删除角色",operateType = OperateType.DELETE)
     @DeleteMapping("/admin/roles")
     public CommonResponse<Object> delete(@RequestParam Long id){
         roleService.deleteRole(id);
         return CommonResponse.success();
     }
     @PreAuthorize("@perm.hasPerm('admin:roles:edit')")
-    @Log(moduleName = "修改角色",businessType = BusinessType.UPDATE)
+    @Log(moduleName = "修改角色",operateType = OperateType.UPDATE)
     @PutMapping("/admin/roles")
     public CommonResponse<Object> update(@RequestBody Role role){
         roleService.updateRole(role);

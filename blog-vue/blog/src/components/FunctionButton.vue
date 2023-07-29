@@ -19,10 +19,11 @@ export default {
 <style lang="scss" scoped>
 @use "@/theme/_handle.scss" as *;
 .button-container {
+  transition: all 0.5s;
   position: sticky;
   height: 16rem;
   width: 5.5rem;
-  top: 70vh;
+  top: 60vh;
   //margin-left: 0.5rem;
   border-radius: 0.5rem;
   text-align: center;

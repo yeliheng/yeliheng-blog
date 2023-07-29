@@ -18,8 +18,8 @@ public class OperateLog {
     @Excel(name = "模块名",width = 20)
     private String moduleName;
 
-    @Excel(name = "业务类型", replace = {"其他_0", "插入_1", "删除_2", "修改_3", "查询_4", "导出_5"})
-    private int businessType;
+    @Excel(name = "操作类型", replace = {"其他_0", "插入_1", "删除_2", "修改_3", "查询_4", "导出_5"})
+    private int operateType;
 
     @Excel(name = "操作者IP",width = 25)
     private String ip;
@@ -83,12 +83,12 @@ public class OperateLog {
         this.moduleName = moduleName;
     }
 
-    public int getBusinessType() {
-        return businessType;
+    public int getOperateType() {
+        return operateType;
     }
 
-    public void setBusinessType(int businessType) {
-        this.businessType = businessType;
+    public void setOperateType(int operateType) {
+        this.operateType = operateType;
     }
 
     public String getIp() {

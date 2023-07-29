@@ -26,7 +26,7 @@ CREATE TABLE `operate_log` (
   `user_id` bigint(20) DEFAULT NULL COMMENT '操作者ID',
   `username` varchar(255) DEFAULT NULL COMMENT '操作者用户名',
   `module_name` varchar(255) DEFAULT NULL COMMENT '模块名称',
-  `business_type` int(2) DEFAULT '0' COMMENT '业务类型',
+  `operate_type` int(2) DEFAULT '0' COMMENT '操作类型',
   `ip` varchar(255) DEFAULT NULL COMMENT '操作者IP',
   `url` varchar(255) DEFAULT NULL COMMENT '接口URL',
   `method` varchar(255) DEFAULT NULL COMMENT '请求方法',

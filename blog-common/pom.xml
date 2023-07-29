@@ -58,6 +58,14 @@
             <version>1.4.0</version>
         </dependency>
 
+        <!-- 事件总线 -->
+        <dependency>
+            <groupId>com.yeliheng</groupId>
+            <artifactId>eventbus</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
+
     </dependencies>
 
 </project>

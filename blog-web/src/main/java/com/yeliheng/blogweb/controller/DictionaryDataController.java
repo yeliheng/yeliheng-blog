@@ -1,7 +1,7 @@
 package com.yeliheng.blogweb.controller;
 
 import com.yeliheng.blogcommon.annotation.Log;
-import com.yeliheng.blogcommon.constant.BusinessType;
+import com.yeliheng.blogcommon.constant.OperateType;
 import com.yeliheng.blogsystem.domain.DictionaryData;
 import com.yeliheng.blogsystem.service.IDictionaryDataService;
 import com.yeliheng.blogweb.common.CommonResponse;
@@ -16,7 +16,7 @@ public class DictionaryDataController {
     private IDictionaryDataService dictionaryDataService;
 
     @PreAuthorize("@perm.hasPerm('admin:dictionarydata:add')")
-    @Log(moduleName = "添加字典数据",businessType = BusinessType.INSERT)
+    @Log(moduleName = "添加字典数据",operateType = OperateType.INSERT)
     @PostMapping("/admin/dictionaryData")
     public CommonResponse<Object> add(@Validated @RequestBody DictionaryData dictionaryData) {
         dictionaryDataService.addDictionaryData(dictionaryData);
@@ -24,7 +24,7 @@ public class DictionaryDataController {
     }
 
     @PreAuthorize("@perm.hasPerm('admin:dictionarydata:delete')")
-    @Log(moduleName = "删除字典数据",businessType = BusinessType.DELETE)
+    @Log(moduleName = "删除字典数据",operateType = OperateType.DELETE)
     @DeleteMapping("/admin/dictionaryData")
     public CommonResponse<Object> delete(@RequestParam Long id) {
         dictionaryDataService.deleteDictionaryData(id);
@@ -32,7 +32,7 @@ public class DictionaryDataController {
     }
 
     @PreAuthorize("@perm.hasPerm('admin:dictionarydata:edit')")
-    @Log(moduleName = "修改字典数据",businessType = BusinessType.INSERT)
+    @Log(moduleName = "修改字典数据",operateType = OperateType.INSERT)
     @PutMapping("/admin/dictionaryData")
     public CommonResponse<Object> update(@RequestBody DictionaryData dictionaryData) {
         dictionaryDataService.updateDictionaryData(dictionaryData);

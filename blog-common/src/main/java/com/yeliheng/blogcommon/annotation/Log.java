@@ -1,6 +1,6 @@
 package com.yeliheng.blogcommon.annotation;
 
-import com.yeliheng.blogcommon.constant.BusinessType;
+import com.yeliheng.blogcommon.constant.OperateType;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -17,7 +17,7 @@ public @interface Log {
     public String moduleName() default "";
 
     /**
-     * 业务类型
+     * 操作类型
      */
-    public int businessType() default BusinessType.OTHER;
+    public int operateType() default OperateType.OTHER;
 }

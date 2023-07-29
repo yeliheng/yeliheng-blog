@@ -1,6 +1,6 @@
 package com.yeliheng.blogcommon.constant;
 
-public class BusinessType {
+public class OperateType {
 
     public final static int OTHER = 0; //其它
 

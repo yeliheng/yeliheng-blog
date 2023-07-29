@@ -156,7 +156,6 @@ public class ArticleServiceImpl implements IArticleService {
         Article article = articleMapper.getArticleByUrl(articleUrl);
         if(article == null)
             throw new NotFoundException("文章不存在");
-        log.info("article:{}",article.getCreatedAt());
         articleMapper.increaseViewsByArticleId(article.getId());
         return article;
     }

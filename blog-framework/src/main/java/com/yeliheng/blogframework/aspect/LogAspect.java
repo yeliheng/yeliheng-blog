@@ -62,8 +62,8 @@ public class LogAspect {
         operateLog.setUsername(loginUser.getUsername());
         //模块名称
         operateLog.setModuleName(log.moduleName());
-        //业务类型
-        operateLog.setBusinessType(log.businessType());
+        //操作类型
+        operateLog.setOperateType(log.operateType());
         //Ip地址
         operateLog.setIp(IpAddressUtils.getIpAddr(request));
         //操作的地址

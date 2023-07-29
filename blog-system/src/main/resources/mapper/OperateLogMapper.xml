@@ -8,7 +8,7 @@
         <if test="userId != null and userId != ''">user_id,</if>
         <if test="username != null and username != ''">username,</if>
         <if test="moduleName != null and moduleName != ''">module_name,</if>
-        <if test="businessType != null and businessType != ''">business_type,</if>
+        <if test="operateType != null and operateType != ''">operate_type,</if>
         <if test="ip != null and ip != ''">ip,</if>
         <if test="url != null and url != ''">url,</if>
         <if test="method != null and method != ''">method,</if>
@@ -23,7 +23,7 @@
         <if test="userId != null and userId != ''">#{userId},</if>
         <if test="username != null and username != ''">#{username},</if>
         <if test="moduleName != null and moduleName != ''">#{moduleName},</if>
-        <if test="businessType != null and businessType != ''">#{businessType},</if>
+        <if test="operateType != null and operateType != ''">#{operateType},</if>
         <if test="ip != null and ip != ''">#{ip},</if>
         <if test="url != null and url != ''">#{url},</if>
         <if test="method != null and method != ''">#{method},</if>
@@ -46,8 +46,8 @@
             <if test="username != null and username != ''">
                 and username = #{username}
             </if>
-            <if test="businessType != null and businessType != ''">
-                and business_type = #{businessType}
+            <if test="operateType != null and operateType != ''">
+                and operate_type = #{operateType}
             </if>
             <if test="status != null and status != ''">
                 and status = #{status}

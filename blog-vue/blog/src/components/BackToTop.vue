@@ -39,7 +39,7 @@ export default {
   @include font_color("secondaryTextColor");
   cursor: pointer;
   transition: all 0.5s;
-  opacity: 1;
+  opacity: 0;
   border-radius: 50%;
   .icon-fanhuidingbu1 {
     font-size: 3rem;
