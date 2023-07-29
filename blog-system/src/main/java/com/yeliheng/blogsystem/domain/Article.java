@@ -56,11 +56,9 @@ public class Article {
     private List<Tag> tags;
 
     @Excel(name = "发布时间", width = 25, format = "yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date createdAt;
 
     @Excel(name = "更新时间", width = 25, format = "yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date updatedAt;
 
 

@@ -20,7 +20,6 @@ spring:
       # 连接池类型: Druid
       type: com.alibaba.druid.pool.DruidDataSource
       driver-class-name: com.mysql.cj.jdbc.Driver
-    # jackson配置
     jackson:
       time-zone: GMT+8
       date-format: yyyy-MM-dd HH:mm:ss
