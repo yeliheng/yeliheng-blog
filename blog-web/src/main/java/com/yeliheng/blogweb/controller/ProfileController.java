@@ -1,13 +1,15 @@
 package com.yeliheng.blogweb.controller;
 
 import com.yeliheng.blogcommon.annotation.Log;
+import com.yeliheng.blogcommon.config.LocalStorageConfig;
 import com.yeliheng.blogcommon.constant.OperateType;
 import com.yeliheng.blogcommon.exception.RequestFormatException;
 import com.yeliheng.blogcommon.exception.UnexpectedException;
 import com.yeliheng.blogcommon.utils.ServletUtils;
 import com.yeliheng.blogcommon.utils.StringUtils;
-import com.yeliheng.blogframework.storage.FileSystemAdapter;
-import com.yeliheng.blogframework.storage.LocalStorage;
+import com.yeliheng.blogframework.storage.FileSystem;
+import com.yeliheng.blogframework.storage.FileUtils;
+import com.yeliheng.blogframework.storage.adapter.LocalStorageAdapter;
 import com.yeliheng.blogsystem.domain.LoginUser;
 import com.yeliheng.blogsystem.domain.User;
 import com.yeliheng.blogsystem.mapper.UserMapper;
@@ -15,6 +17,7 @@ import com.yeliheng.blogsystem.service.IUserService;
 import com.yeliheng.blogsystem.utils.TokenUtils;
 import com.yeliheng.blogsystem.utils.UserUtils;
 import com.yeliheng.blogweb.common.CommonResponse;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -64,21 +67,33 @@ public class ProfileController {
     @PostMapping("/avatar")
     @Log(moduleName = "设置头像",operateType = OperateType.INSERT)
     public CommonResponse<Object> setAvatar(MultipartFile file) {
-        if(StringUtils.isNull(file) || file.isEmpty()) throw new RequestFormatException("文件不能为空!");
-        String[] allowedExt = {"png","jpg","jpeg","gif"}; //设置允许的后缀
-        LocalStorage localStorage = new LocalStorage("avatar"); //新建一个存储器
-        FileSystemAdapter adapter = new FileSystemAdapter(localStorage);
-        String path = adapter.getFileSystem().handleFile(file,userUtils.getLoginUserId().toString(),allowedExt);
-        if(StringUtils.isEmpty(path))
+        if(StringUtils.isNull(file) || file.isEmpty()) {
+            throw new RequestFormatException("文件不能为空!");
+        }
+
+        String fileName = FileUtils.encodeFileName(FilenameUtils.getExtension(file.getOriginalFilename()));
+        String filePath = String.format("%s/%s/%s", LocalStorageConfig.getFilePath(), "avatar", fileName);
+
+        // 文件存储在本地
+        LocalStorageAdapter localStorageAdapter = new LocalStorageAdapter();
+        FileSystem fileSystem = new FileSystem(localStorageAdapter);
+
+        try {
+            fileSystem.write(file,filePath);
+        } catch (Exception e) {
+            e.printStackTrace();
             throw new UnexpectedException();
+        }
+
         User user = new User();
-        user.setAvatar(path);
+        String relativePath = String.format("/avatar/%s", fileName);
+        user.setAvatar(relativePath);
         userService.updateProfile(user);
         //刷新缓存
         LoginUser loginUser = tokenUtils.getLoginUser(ServletUtils.getRequest());
         //刷新缓存
         loginUser.setUser(userMapper.selectUserByUserId(loginUser.getUser().getId()));
         tokenUtils.refreshLoginUser(loginUser);
-        return CommonResponse.success(path);
+        return CommonResponse.success(relativePath);
     }
 }

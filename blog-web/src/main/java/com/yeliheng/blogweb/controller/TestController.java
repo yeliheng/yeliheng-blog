@@ -1,11 +1,18 @@
 package com.yeliheng.blogweb.controller;
 
-import com.yeliheng.blogframework.storage.FileSystemAdapter;
-import com.yeliheng.blogframework.storage.OssStorage;
+import com.yeliheng.blogcommon.config.LocalStorageConfig;
+import com.yeliheng.blogcommon.exception.RequestFormatException;
+import com.yeliheng.blogcommon.exception.UnexpectedException;
+import com.yeliheng.blogcommon.utils.StringUtils;
+import com.yeliheng.blogframework.storage.FileSystem;
+import com.yeliheng.blogframework.storage.FileUtils;
+import com.yeliheng.blogframework.storage.adapter.AliOssStorageAdapter;
+import com.yeliheng.blogframework.storage.adapter.LocalStorageAdapter;
 import com.yeliheng.blogsystem.mapper.UserMapper;
 import com.yeliheng.blogsystem.utils.UserUtils;
 import com.yeliheng.blogweb.common.CommonResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,10 +32,25 @@ public class TestController {
     @PreAuthorize("@perm.hasPerm('aa:bb:cc')")
     @ResponseBody
     @PostMapping("test")
-    public CommonResponse<Object> test(@RequestParam("file")MultipartFile multipartFile){
-        String[] allowedExt = {"png","jpg","jpeg","gif"}; //设置允许的后缀
-        OssStorage ossStorage = new OssStorage(); //新建一个存储器
-        FileSystemAdapter adapter = new FileSystemAdapter(ossStorage);
-        return CommonResponse.success(adapter.getFileSystem().handleFile(multipartFile,"y-network",userUtils.getLoginUserId().toString(),allowedExt));
+    public CommonResponse<Object> test(@RequestParam("file") MultipartFile file) {
+        if (StringUtils.isNull(file) || file.isEmpty()) {
+            throw new RequestFormatException("文件不能为空!");
+        }
+
+        String fileName = FileUtils.encodeFileName(FilenameUtils.getExtension(file.getOriginalFilename()));
+        String filePath = String.format("%s/%s", "avatar", fileName);
+
+        // 文件存储在本地
+        AliOssStorageAdapter ossStorageAdapter = new AliOssStorageAdapter("yeliheng-test");
+        FileSystem fileSystem = new FileSystem(ossStorageAdapter);
+
+        try {
+            fileSystem.write(file, filePath);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new UnexpectedException();
+        }
+        return CommonResponse.success();
     }
+
 }

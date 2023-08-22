@@ -1,12 +1,12 @@
 package com.yeliheng.blogframework.storage.adapter;
 
-import com.yeliheng.blogframework.storage.FileSystemAdapterNew;
+import com.yeliheng.blogframework.storage.FileSystemAdapter;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.nio.file.Paths;
 
-public class LocalStorageAdapter implements FileSystemAdapterNew {
+public class LocalStorageAdapter implements FileSystemAdapter {
 
     @Override
     public void write(MultipartFile file, String path) throws IOException {
