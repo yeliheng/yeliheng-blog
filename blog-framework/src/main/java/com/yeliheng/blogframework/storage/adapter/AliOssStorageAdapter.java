@@ -9,6 +9,11 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * 阿里云OSS存储适配器
+ * 文件会存储到OSS中指定的bucket
+ * 请提前配置好accessKeyId和accessKeySecret信息
+ */
 public class AliOssStorageAdapter implements FileSystemAdapter {
 
     private final String endpoint = OssStorageConfig.getEndpoint();

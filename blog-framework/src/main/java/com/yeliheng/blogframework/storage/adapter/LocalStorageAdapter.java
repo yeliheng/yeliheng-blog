@@ -6,6 +6,11 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 import java.nio.file.Paths;
 
+/**
+ * 本地文件存储适配器
+ * 直接存储文件到本地磁盘中
+ * 请提前配置好本地文件存储路径
+ */
 public class LocalStorageAdapter implements FileSystemAdapter {
 
     @Override
