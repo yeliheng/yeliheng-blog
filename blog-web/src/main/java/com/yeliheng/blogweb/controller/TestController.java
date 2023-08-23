@@ -1,12 +1,15 @@
 package com.yeliheng.blogweb.controller;
 
+import com.yeliheng.blogcommon.config.KodoStorageConfig;
 import com.yeliheng.blogcommon.config.LocalStorageConfig;
+import com.yeliheng.blogcommon.config.OssStorageConfig;
 import com.yeliheng.blogcommon.exception.RequestFormatException;
 import com.yeliheng.blogcommon.exception.UnexpectedException;
 import com.yeliheng.blogcommon.utils.StringUtils;
 import com.yeliheng.blogframework.storage.FileSystem;
 import com.yeliheng.blogframework.storage.FileUtils;
 import com.yeliheng.blogframework.storage.adapter.AliOssStorageAdapter;
+import com.yeliheng.blogframework.storage.adapter.KodoStorageAdapter;
 import com.yeliheng.blogframework.storage.adapter.LocalStorageAdapter;
 import com.yeliheng.blogsystem.mapper.UserMapper;
 import com.yeliheng.blogsystem.utils.UserUtils;
@@ -41,11 +44,12 @@ public class TestController {
         String filePath = String.format("%s/%s", "avatar", fileName);
 
         // 文件存储在本地
-        AliOssStorageAdapter ossStorageAdapter = new AliOssStorageAdapter("yeliheng-test");
-        FileSystem fileSystem = new FileSystem(ossStorageAdapter);
+        KodoStorageAdapter kodoStorageAdapter = new KodoStorageAdapter("yeliheng-blog");
+        FileSystem fileSystem = new FileSystem(kodoStorageAdapter);
+        System.out.println(fileSystem.exist("avatar/20230823220250-7a8842a961464d63b34841ef032efdb3.jpg"));
 
         try {
-            fileSystem.write(file, filePath);
+          //  fileSystem.write(file, filePath);
         } catch (Exception e) {
             e.printStackTrace();
             throw new UnexpectedException();

@@ -29,6 +29,7 @@
         <module>blog-framework</module>
         <module>blog-system</module>
         <module>blog-web</module>
+        <module>blog-code-generator</module>
     </modules>
 
     <!--  版本声明  -->
