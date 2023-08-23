@@ -1,0 +1,18 @@
+package ${packageName}.domain;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.v3.oas.annotations.media.Schema;
+import org.jeecgframework.poi.excel.annotation.Excel;
+import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
+
+@Schema(description = "${classDesc}")
+public class ${ClassName} implements Serializable{
+
+    private static final long serialVersionUID = 1L;
+
+    private String id;
+
+
+
+}

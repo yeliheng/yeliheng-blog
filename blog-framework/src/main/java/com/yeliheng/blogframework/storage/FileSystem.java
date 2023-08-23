@@ -32,4 +32,8 @@ public class FileSystem {
     public boolean exist(String path) {
         return fileSystemAdapter.exist(path);
     }
+
+    public String getURL(String path) {
+        return fileSystemAdapter.getURL(path);
+    }
 }

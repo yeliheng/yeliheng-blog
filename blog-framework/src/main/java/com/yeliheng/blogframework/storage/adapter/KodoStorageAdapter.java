@@ -1,6 +1,5 @@
 package com.yeliheng.blogframework.storage.adapter;
 
-import com.qiniu.http.Response;
 import com.qiniu.storage.BucketManager;
 import com.qiniu.storage.Configuration;
 import com.qiniu.storage.Region;
@@ -20,7 +19,7 @@ public class KodoStorageAdapter implements FileSystemAdapter {
     private final String accessKey = KodoStorageConfig.getAccessKey();
     private final String secretKey = KodoStorageConfig.getSecretKey();
     private final Configuration cfg = new Configuration(Region.autoRegion());
-    private Auth auth = Auth.create(accessKey, secretKey);;
+    private final Auth auth = Auth.create(accessKey, secretKey);
 
     public KodoStorageAdapter(String bucket) {
         this.bucket = bucket;
@@ -63,5 +62,10 @@ public class KodoStorageAdapter implements FileSystemAdapter {
         } catch (Exception ignored) {
             return false;
         }
+    }
+
+    @Override
+    public String getURL(String path) {
+        return null;
     }
 }

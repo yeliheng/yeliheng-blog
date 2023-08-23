@@ -1,0 +1,60 @@
+package ${packageName}.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import com.yeliheng.blogcommon.annotation.Log;
+import com.yeliheng.blogcommon.constant.OperateType;
+import com.yeliheng.blogcommon.utils.StringUtils;
+import com.yeliheng.blogweb.common.CommonResponse;
+
+import ${packageName}.domain.${ClassName};
+import ${packageName}.service.I${ClassName}Service;
+
+@RestController
+public class ${ClassName}Controller {
+    @Autowired
+    private I${ClassName}Service ${className}Service;
+
+    @PreAuthorize("@perm.hasPerm('${moduleName}:${className}:add')")
+    @Log(moduleName = "添加${classDesc}", operateType = OperateType.INSERT)
+    @PostMapping("/${moduleName}/${className}")
+    public CommonResponse<Object> add(@Validated @RequestBody ${ClassName} ${className}) {
+        ${className}Service.add${ClassName}(${className});
+        return CommonResponse.success();
+    }
+
+    @PreAuthorize("@perm.hasPerm('${moduleName}:${className}:delete')")
+    @Log(moduleName = "删除${classDesc}", operateType = OperateType.DELETE)
+    @DeleteMapping("/${moduleName}/${className}")
+    public CommonResponse<Object> delete(@RequestParam Long id) {
+        ${className}Service.delete${ClassName}(id);
+        return CommonResponse.success();
+    }
+
+    @PreAuthorize("@perm.hasPerm('${moduleName}:${className}:edit')")
+    @Log(moduleName = "修改${classDesc}", operateType = OperateType.UPDATE)
+    @PutMapping("/${moduleName}/${className}")
+    public CommonResponse<Object> update(@RequestBody ${ClassName} ${className}) {
+        ${className}Service.update${ClassName}(${className});
+        return CommonResponse.success();
+    }
+
+    @PreAuthorize("@perm.hasPerm('${moduleName}:${className}:query')")
+    @GetMapping("/${moduleName}/${className}/{id}")
+    public CommonResponse<Object> query(@PathVariable("articleId") Long articleId) {
+        return CommonResponse.success(${className}Service.query${ClassName}(articleId));
+    }
+
+    @PreAuthorize("@perm.hasPerm('${moduleName}:${className}:list')")
+    @GetMapping("/${moduleName}/${className}")
+    public CommonResponse<Object> list(@RequestParam(value = "page",defaultValue = "1") Integer page,
+                                       @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize
+    {ClassName} ${className}) {
+        return CommonResponse.success(${className}Service.list${ClassName}(${className},page,pageSize));
+    }
+
+
+}

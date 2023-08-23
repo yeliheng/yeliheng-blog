@@ -37,4 +37,11 @@ public interface FileSystemAdapter {
      * @return 是否存在
      */
     public boolean exist(String path);
+
+    /**
+     * 获取指定文件路径的访问URL
+     * @param path 路径
+     * @return URL
+     */
+    public String getURL(String path);
 }

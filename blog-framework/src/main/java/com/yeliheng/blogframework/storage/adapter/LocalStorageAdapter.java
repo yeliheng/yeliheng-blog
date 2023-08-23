@@ -49,4 +49,9 @@ public class LocalStorageAdapter implements FileSystemAdapter {
     public boolean exist(String path) {
         return Paths.get(path).toFile().exists();
     }
+
+    @Override
+    public String getURL(String path) {
+        return null;
+    }
 }

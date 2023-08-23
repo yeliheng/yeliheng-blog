@@ -54,4 +54,9 @@ public class AliOssStorageAdapter implements FileSystemAdapter {
         ossClient.shutdown();
         return exist;
     }
+
+    @Override
+    public String getURL(String path) {
+        return null;
+    }
 }
