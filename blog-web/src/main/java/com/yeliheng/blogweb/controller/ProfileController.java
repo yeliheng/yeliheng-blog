@@ -1,6 +1,7 @@
 package com.yeliheng.blogweb.controller;
 
 import com.yeliheng.blogcommon.annotation.Log;
+import com.yeliheng.blogcommon.annotation.Upload;
 import com.yeliheng.blogcommon.config.LocalStorageConfig;
 import com.yeliheng.blogcommon.constant.OperateType;
 import com.yeliheng.blogcommon.exception.RequestFormatException;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
+@Validated
 @RequestMapping("/users/profile")
 public class ProfileController {
     @Autowired
@@ -66,7 +68,7 @@ public class ProfileController {
      */
     @PostMapping("/avatar")
     @Log(moduleName = "设置头像",operateType = OperateType.INSERT)
-    public CommonResponse<Object> setAvatar(MultipartFile file) {
+    public CommonResponse<Object> setAvatar(@Upload(maxSize = 20, allowType = "jpg,png") MultipartFile file) {
         if(StringUtils.isNull(file) || file.isEmpty()) {
             throw new RequestFormatException("文件不能为空!");
         }
@@ -91,7 +93,6 @@ public class ProfileController {
         userService.updateProfile(user);
         //刷新缓存
         LoginUser loginUser = tokenUtils.getLoginUser(ServletUtils.getRequest());
-        //刷新缓存
         loginUser.setUser(userMapper.selectUserByUserId(loginUser.getUser().getId()));
         tokenUtils.refreshLoginUser(loginUser);
         return CommonResponse.success(relativePath);

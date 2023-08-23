@@ -14,10 +14,10 @@ public @interface Log {
     /**
      * 模块名称
      */
-    public String moduleName() default "";
+    String moduleName() default "";
 
     /**
      * 操作类型
      */
-    public int operateType() default OperateType.OTHER;
+    int operateType() default OperateType.OTHER;
 }

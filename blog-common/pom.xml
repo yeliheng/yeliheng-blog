@@ -65,6 +65,11 @@
             <version>1.0.0</version>
         </dependency>
 
+        <!-- 验证框架 -->
+        <dependency>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+        </dependency>
 
     </dependencies>
 

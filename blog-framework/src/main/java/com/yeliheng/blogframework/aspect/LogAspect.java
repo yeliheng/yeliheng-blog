@@ -27,7 +27,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.Map;
 
 @Component
@@ -111,7 +110,7 @@ public class LogAspect {
      * @return json字符串
      */
     private String parseParams(Object[] paramsArray) {
-        String params = "";
+        StringBuilder params = new StringBuilder();
         if (paramsArray != null && paramsArray.length > 0)
         {
             for (int i = 0; i < paramsArray.length; i++)
@@ -119,11 +118,11 @@ public class LogAspect {
                 if (StringUtils.isNotNull(paramsArray[i]) && !isMultipartFileObject(paramsArray[i]))
                 {
                     Object jsonObj = JSON.toJSON(paramsArray[i]);
-                    params += jsonObj.toString() + " ";
+                    params.append(jsonObj.toString()).append(" ");
                 }
             }
         }
-        return params.trim();
+        return params.toString().trim();
     }
 
 
@@ -144,17 +143,15 @@ public class LogAspect {
         else if (Collection.class.isAssignableFrom(cls))
         {
             Collection collection = (Collection) o;
-            for (Iterator iter = collection.iterator(); iter.hasNext();)
-            {
-                return iter.next() instanceof MultipartFile;
+            for (Object value : collection) {
+                return value instanceof MultipartFile;
             }
         }
         else if (Map.class.isAssignableFrom(cls))
         {
             Map map = (Map) o;
-            for (Iterator iter = map.entrySet().iterator(); iter.hasNext();)
-            {
-                Map.Entry entry = (Map.Entry) iter.next();
+            for (Object value : map.entrySet()) {
+                Map.Entry entry = (Map.Entry) value;
                 return entry.getValue() instanceof MultipartFile;
             }
         }
