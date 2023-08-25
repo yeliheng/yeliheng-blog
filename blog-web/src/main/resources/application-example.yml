@@ -52,6 +52,8 @@ system:
     local:
       # 文件上传绝对路径 例如：(Windows: D:/YNetwork/storage || Linux: /home/YNetwork/storage || MacOS: /Users/myUser/YNetwork/storage)
       file-path: D:/YNetwork/storage
+      # 服务器信息，用于生成下载地址 格式：http://ip:端口或https://域名:端口
+      server-domain: https://www.yeliheng.com:8080
     # OSS对象存储配置（文档地址：https://help.aliyun.com/product/31815.html）
     oss:
       # 接入点（例如：华东1-杭州: https://oss-cn-hangzhou.aliyuncs.com）
@@ -59,10 +61,14 @@ system:
       # 安全信息
       access-key-id: accessKeyId
       access-key-secret: accessKey安全码
+      # 请修改为自己bucket对应的域名
+      server-domain: http://cdn.aliyun.com
     # 七牛云对象存储配置（文档地址：https://developer.qiniu.com/kodo/1239/java）
     kodo:
       access-key: accessKey
       secret-key: secretKey
+      # 请修改为自己bucket对应的域名
+      server-domain: http://mock.qiniu.com
 
 
   #日志设置

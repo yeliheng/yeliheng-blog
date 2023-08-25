@@ -7,11 +7,13 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "system.file-system.oss")
 public class OssStorageConfig {
 
-    private static String endpoint; //接入点
+    private static String endpoint;
 
-    private static String accessKeyId; //accessKeyId
+    private static String accessKeyId;
 
-    private static String accessKeySecret; //accessKeySecret
+    private static String accessKeySecret;
+
+    private static String serverDomain;
 
     public static String getEndpoint() {
         return endpoint;
@@ -35,5 +37,13 @@ public class OssStorageConfig {
 
     public void setAccessKeySecret(String accessKeySecret) {
         OssStorageConfig.accessKeySecret = accessKeySecret;
+    }
+
+    public static String getServerDomain() {
+        return serverDomain;
+    }
+
+    public void setServerDomain(String serverDomain) {
+        OssStorageConfig.serverDomain = serverDomain;
     }
 }

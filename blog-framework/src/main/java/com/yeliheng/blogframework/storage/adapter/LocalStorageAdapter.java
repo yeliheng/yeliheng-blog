@@ -1,5 +1,6 @@
 package com.yeliheng.blogframework.storage.adapter;
 
+import com.yeliheng.blogcommon.config.LocalStorageConfig;
 import com.yeliheng.blogframework.storage.FileSystemAdapter;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -51,7 +52,7 @@ public class LocalStorageAdapter implements FileSystemAdapter {
     }
 
     @Override
-    public String getURL(String path) {
-        return null;
+    public String getPublicUrl(String path) {
+        return String.format("%s/%s", LocalStorageConfig.getServerDomain(), path);
     }
 }

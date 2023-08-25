@@ -2,12 +2,15 @@ package com.yeliheng.blogframework.storage.adapter;
 
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
+import com.yeliheng.blogcommon.config.KodoStorageConfig;
 import com.yeliheng.blogcommon.config.OssStorageConfig;
+import com.yeliheng.blogcommon.utils.StringUtils;
 import com.yeliheng.blogframework.storage.FileSystemAdapter;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLEncoder;
 
 /**
  * 阿里云OSS存储适配器
@@ -56,7 +59,16 @@ public class AliOssStorageAdapter implements FileSystemAdapter {
     }
 
     @Override
-    public String getURL(String path) {
-        return null;
+    public String getPublicUrl(String path) {
+        String encodedFileName = "";
+        try {
+            encodedFileName = URLEncoder.encode(path, "utf-8").replace("+", "%20");
+            if(StringUtils.isEmpty(encodedFileName)) {
+                return "";
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return String.format("%s/%s", KodoStorageConfig.getServerDomain(), encodedFileName);
     }
 }

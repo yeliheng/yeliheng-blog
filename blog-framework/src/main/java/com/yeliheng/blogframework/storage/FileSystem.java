@@ -1,5 +1,6 @@
 package com.yeliheng.blogframework.storage;
 
+import com.yeliheng.blogcommon.utils.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -13,27 +14,42 @@ public class FileSystem {
         this.fileSystemAdapter = fileSystemAdapter;
     }
 
-    public FileSystemAdapter getFileSystemAdapterNew() {
+    public FileSystemAdapter getFileSystemAdapter() {
         return fileSystemAdapter;
     }
 
     public void write(MultipartFile file, String path) throws IOException {
+        if(StringUtils.isEmpty(path)) {
+            return;
+        }
         fileSystemAdapter.write(file, path);
     }
 
     public void writeStream(InputStream inputStream, String path) throws IOException {
+        if(StringUtils.isEmpty(path)) {
+            return;
+        }
         fileSystemAdapter.writeStream(inputStream, path);
     }
 
     public boolean delete(String path) {
+        if(StringUtils.isEmpty(path)) {
+            return false;
+        }
         return fileSystemAdapter.delete(path);
     }
 
     public boolean exist(String path) {
+        if(StringUtils.isEmpty(path)) {
+            return false;
+        }
         return fileSystemAdapter.exist(path);
     }
 
-    public String getURL(String path) {
-        return fileSystemAdapter.getURL(path);
+    public String getPublicURL(String path) {
+        if(StringUtils.isEmpty(path)) {
+            return "";
+        }
+        return fileSystemAdapter.getPublicUrl(path);
     }
 }

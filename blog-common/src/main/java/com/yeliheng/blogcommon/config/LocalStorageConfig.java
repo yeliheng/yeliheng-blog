@@ -7,11 +7,9 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "system.file-system.local")
 public class LocalStorageConfig {
 
-    private static String filePath; //文件系统的绝对路径
+    private static String filePath;
 
-    private static int maxFilenameLength; //最大文件名长度
-
-    private static long maxFileSize; //最大文件大小
+    private static String serverDomain;
 
     public static String getFilePath() {
         return filePath;
@@ -21,19 +19,11 @@ public class LocalStorageConfig {
         LocalStorageConfig.filePath = filePath;
     }
 
-    public static int getMaxFilenameLength() {
-        return maxFilenameLength;
+    public static String getServerDomain() {
+        return serverDomain;
     }
 
-    public void setMaxFilenameLength(int maxFilenameLength) {
-        LocalStorageConfig.maxFilenameLength = maxFilenameLength;
-    }
-
-    public static long getMaxFileSize() {
-        return maxFileSize;
-    }
-
-    public void setMaxFileSize(long maxFileSize) {
-        LocalStorageConfig.maxFileSize = maxFileSize;
+    public void setServerDomain(String serverDomain) {
+        LocalStorageConfig.serverDomain = serverDomain;
     }
 }
