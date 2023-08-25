@@ -19,7 +19,7 @@ public class FileUtils {
      * @param originalFileExt 原始的文件扩展名
      * @return 编码后的文件名
      */
-    public static String encodeFileName(String originalFileExt) {
+    public static String encodeFileNameWithUUID(String originalFileExt) {
         return DateUtils.getUnsignedLocalDateTimeStr() +  "-" + UUIDUtils.generateSimpleUUID() + "." + originalFileExt;
     }
 

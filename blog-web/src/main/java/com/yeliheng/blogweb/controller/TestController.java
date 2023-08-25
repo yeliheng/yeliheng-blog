@@ -6,7 +6,6 @@ import com.yeliheng.blogcommon.utils.StringUtils;
 import com.yeliheng.blogframework.storage.FileSystem;
 import com.yeliheng.blogframework.storage.FileUtils;
 import com.yeliheng.blogframework.storage.adapter.KodoStorageAdapter;
-import com.yeliheng.blogframework.storage.adapter.LocalStorageAdapter;
 import com.yeliheng.blogsystem.mapper.UserMapper;
 import com.yeliheng.blogsystem.utils.UserUtils;
 import com.yeliheng.blogweb.common.CommonResponse;
@@ -36,7 +35,7 @@ public class TestController {
             throw new RequestFormatException("文件不能为空!");
         }
 
-        String fileName = FileUtils.encodeFileName(FilenameUtils.getExtension(file.getOriginalFilename()));
+        String fileName = FileUtils.encodeFileNameWithUUID(FilenameUtils.getExtension(file.getOriginalFilename()));
         String filePath = String.format("%s/%s", "avatar", fileName);
 
         // 文件存储在本地

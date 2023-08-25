@@ -3,15 +3,24 @@ package com.yeliheng.blogweb.controller;
 
 
 import com.yeliheng.blogcommon.annotation.Log;
+import com.yeliheng.blogcommon.annotation.Upload;
 import com.yeliheng.blogcommon.constant.OperateType;
+import com.yeliheng.blogcommon.exception.RequestFormatException;
+import com.yeliheng.blogcommon.exception.UnexpectedException;
+import com.yeliheng.blogcommon.utils.StringUtils;
+import com.yeliheng.blogframework.storage.FileSystem;
+import com.yeliheng.blogframework.storage.FileUtils;
+import com.yeliheng.blogframework.storage.adapter.KodoStorageAdapter;
 import com.yeliheng.blogsystem.domain.Article;
 import com.yeliheng.blogsystem.service.IArticleService;
 import com.yeliheng.blogweb.common.CommonResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @Tag(name = "文章模块")
@@ -160,5 +169,29 @@ public class ArticleController {
     public CommonResponse<Object> export(Article article) {
         return CommonResponse.success(articleService.exportArticle(article));
     }
+
+    @PreAuthorize("@perm.hasPerm('admin:articles:add')")
+    @PostMapping(value = "/admin/articles/uploadImage")
+    public CommonResponse<Object> uploadImage(@RequestParam("file") @Upload(allowType = "jpg,png,gif") MultipartFile file) {
+        final String BUCKET = "yeliheng-blog";
+        final String IMG_RELATIVE_PATH = "blog-images/new";
+        if (StringUtils.isNull(file) || file.isEmpty()) {
+            throw new RequestFormatException("文件不能为空!");
+        }
+
+        String fileName = FileUtils.encodeFileNameWithUUID(FilenameUtils.getExtension(file.getOriginalFilename()));
+        String filePath = String.format("%s/%s", IMG_RELATIVE_PATH, fileName);
+
+        KodoStorageAdapter kodoStorageAdapter = new KodoStorageAdapter(BUCKET);
+        FileSystem fileSystem = new FileSystem(kodoStorageAdapter);
+        try {
+            fileSystem.write(file, filePath);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new UnexpectedException();
+        }
+        return CommonResponse.success(fileSystem.getPublicURL(filePath));
+    }
+
 
 }

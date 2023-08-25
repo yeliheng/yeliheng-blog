@@ -73,7 +73,7 @@ public class ProfileController {
             throw new RequestFormatException("文件不能为空!");
         }
 
-        String fileName = FileUtils.encodeFileName(FilenameUtils.getExtension(file.getOriginalFilename()));
+        String fileName = FileUtils.encodeFileNameWithUUID(FilenameUtils.getExtension(file.getOriginalFilename()));
         String filePath = String.format("%s/%s/%s", LocalStorageConfig.getFilePath(), "avatar", fileName);
 
         // 文件存储在本地
