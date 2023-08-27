@@ -173,24 +173,10 @@ public class ArticleController {
     @PreAuthorize("@perm.hasPerm('admin:articles:add')")
     @PostMapping(value = "/admin/articles/uploadImage")
     public CommonResponse<Object> uploadImage(@RequestParam("file") @Upload(allowType = "jpg,png,gif") MultipartFile file) {
-        final String BUCKET = "yeliheng-blog";
-        final String IMG_RELATIVE_PATH = "blog-images/new";
         if (StringUtils.isNull(file) || file.isEmpty()) {
             throw new RequestFormatException("文件不能为空!");
         }
-
-        String fileName = FileUtils.encodeFileNameWithUUID(FilenameUtils.getExtension(file.getOriginalFilename()));
-        String filePath = String.format("%s/%s", IMG_RELATIVE_PATH, fileName);
-
-        KodoStorageAdapter kodoStorageAdapter = new KodoStorageAdapter(BUCKET);
-        FileSystem fileSystem = new FileSystem(kodoStorageAdapter);
-        try {
-            fileSystem.write(file, filePath);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new UnexpectedException();
-        }
-        return CommonResponse.success(fileSystem.getPublicURL(filePath));
+        return CommonResponse.success(articleService.uploadImage(file));
     }
 
 

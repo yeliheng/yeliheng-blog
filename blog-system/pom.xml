@@ -33,6 +33,12 @@
             <artifactId>blog-common</artifactId>
         </dependency>
 
+        <!--    框架模块    -->
+        <dependency>
+            <groupId>com.yeliheng</groupId>
+            <artifactId>blog-framework</artifactId>
+        </dependency>
+
         <!-- SpringBoot 验证器 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

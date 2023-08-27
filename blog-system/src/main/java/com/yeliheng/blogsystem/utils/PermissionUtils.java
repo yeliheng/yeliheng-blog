@@ -1,4 +1,4 @@
-package com.yeliheng.blogframework.permission;
+package com.yeliheng.blogsystem.utils;
 
 import com.yeliheng.blogcommon.constant.Constants;
 import com.yeliheng.blogcommon.utils.ServletUtils;

@@ -3,6 +3,7 @@ package com.yeliheng.blogsystem.service;
 import com.github.pagehelper.PageInfo;
 import com.yeliheng.blogsystem.domain.Article;
 import com.yeliheng.blogsystem.domain.User;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -95,5 +96,12 @@ public interface IArticleService {
      * @param article 文章筛选条件
      * @return 导出的excel路径
      */
-    public String exportArticle(Article article);
+    String exportArticle(Article article);
+
+    /**
+     * 上传文章图片
+     * @param file 图片文件
+     */
+    String uploadImage(MultipartFile file);
+
 }

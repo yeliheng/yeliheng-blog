@@ -1,4 +1,4 @@
-package com.yeliheng.blogframework.config;
+package com.yeliheng.blogsystem.config;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.parser.ParserConfig;

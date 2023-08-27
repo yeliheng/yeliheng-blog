@@ -5,9 +5,13 @@ import com.github.pagehelper.PageInfo;
 import com.yeliheng.blogcommon.exception.GeneralException;
 import com.yeliheng.blogcommon.exception.InternalServerException;
 import com.yeliheng.blogcommon.exception.NotFoundException;
+import com.yeliheng.blogcommon.exception.UnexpectedException;
 import com.yeliheng.blogcommon.utils.ExcelUtils;
 import com.yeliheng.blogcommon.utils.StringUtils;
 import com.yeliheng.blogcommon.utils.WordUtils;
+import com.yeliheng.blogframework.storage.FileSystem;
+import com.yeliheng.blogframework.storage.FileUtils;
+import com.yeliheng.blogframework.storage.adapter.KodoStorageAdapter;
 import com.yeliheng.blogsystem.domain.AritcleTag;
 import com.yeliheng.blogsystem.domain.Article;
 import com.yeliheng.blogsystem.mapper.ArticleMapper;
@@ -15,6 +19,7 @@ import com.yeliheng.blogsystem.mapper.ArticleTagMapper;
 import com.yeliheng.blogsystem.mapper.CategoryMapper;
 import com.yeliheng.blogsystem.service.IArticleService;
 import com.yeliheng.blogsystem.utils.UserUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.jeecgframework.poi.excel.entity.ExportParams;
 import org.slf4j.Logger;
@@ -22,6 +27,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -212,6 +218,24 @@ public class ArticleServiceImpl implements IArticleService {
         exportParams.setTitle("文章列表");
         exportParams.setSheetName("文章列表");
         return excelUtils.exportExcel(exportParams,articleList,Article.class);
+    }
+
+    @Override
+    public String uploadImage(MultipartFile file) {
+        final String BUCKET = "yeliheng-blog";
+        final String IMG_RELATIVE_PATH = "blog-images/new";
+        String fileName = FileUtils.encodeFileNameWithUUID(FilenameUtils.getExtension(file.getOriginalFilename()));
+        String filePath = String.format("%s/%s", IMG_RELATIVE_PATH, fileName);
+
+        KodoStorageAdapter kodoStorageAdapter = new KodoStorageAdapter(BUCKET);
+        FileSystem fileSystem = new FileSystem(kodoStorageAdapter);
+        try {
+            fileSystem.write(file, filePath);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new UnexpectedException();
+        }
+        return fileSystem.getPublicURL(filePath);
     }
 
 

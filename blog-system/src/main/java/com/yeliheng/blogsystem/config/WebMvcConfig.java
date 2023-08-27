@@ -1,4 +1,4 @@
-package com.yeliheng.blogframework.config;
+package com.yeliheng.blogsystem.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

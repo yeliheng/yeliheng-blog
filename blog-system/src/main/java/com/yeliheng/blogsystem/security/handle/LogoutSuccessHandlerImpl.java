@@ -1,10 +1,8 @@
-package com.yeliheng.blogframework.security.handle;
+package com.yeliheng.blogsystem.security.handle;
 
 import com.alibaba.fastjson.JSON;
-import com.yeliheng.blogcommon.exception.UnauthorizedException;
 import com.yeliheng.blogcommon.utils.ServletUtils;
 import com.yeliheng.blogcommon.utils.StringUtils;
-import com.yeliheng.blogsystem.domain.LoginUser;
 import com.yeliheng.blogsystem.dto.ErrorDTO;
 import com.yeliheng.blogsystem.utils.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.yeliheng.blogframework.aspect;
+package com.yeliheng.blogsystem.aspect;
 
 import com.alibaba.fastjson.JSON;
 import com.yeliheng.blogcommon.exception.ApiException;
