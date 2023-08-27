@@ -18,7 +18,13 @@
       <div class="article-content">
         <el-input class="title" v-model="article.title" placeholder="请输入标题" @blur="saveDraft()"></el-input>
         <el-input class="summary" v-model="article.summary" placeholder="请输入文章简介" @blur="saveDraft()" style="margin-bottom: 0.5rem;"></el-input>
-        <v-md-editor v-model="article.content" placeholder="正文" @blur="saveDraft()"></v-md-editor>
+        <v-md-editor
+            v-model="article.content"
+            :disabled-menus="[]"
+            placeholder="正文"
+            @blur="saveDraft()"
+            @upload-image="handleUploadImage"
+        />
       </div>
       <div class="article-footer">
         <div class="category">
@@ -89,7 +95,7 @@
 
 <script lang="ts">
 import { Ref, ref } from 'vue';
-import { addArticle, getCategories,getTags } from '@/api/article';
+import {addArticle, getCategories, getTags, uploadImage} from '@/api/article';
 import {ElMessage, ElMessageBox} from 'element-plus';
 import { useRouter } from "vue-router";
 export default {
@@ -186,6 +192,21 @@ setup() {
         if(article.value.title == '' && article.value.content == '')
             localStorage.removeItem('draft');
     }
+
+    const handleUploadImage = (event, insertImage, files) => {
+      console.log(files);
+      // 上传图片到服务器
+      uploadImage(files[0]).then((data: any) => {
+        if(!data.errCode){
+          insertImage({
+            url: data.data,
+            desc: files[0].name,
+          });
+        } else {
+          ElMessage.error(data.detail);
+        }
+      });
+    }
     
 
     return {
@@ -200,6 +221,7 @@ setup() {
         existDraft,
         revertDraft,
         trashDraft,
+        handleUploadImage,
     }
       
     }

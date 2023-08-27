@@ -10,7 +10,7 @@
     "lint": "vue-cli-service lint -fix"
   },
   "dependencies": {
-    "@kangc/v-md-editor": "^2.3.12",
+    "@kangc/v-md-editor": "^2.3.17",
     "@types/js-cookie": "^3.0.0",
     "@types/nprogress": "^0.2.0",
     "axios": "^0.23.0",

@@ -64,3 +64,14 @@ export function exportArticles() {
         method: 'get',
     });
 }
+
+// 上传图片 通过formData
+export function uploadImage(file: File) {
+    const formData = new FormData();
+    formData.append('file', file);
+    return request({
+        url: '/admin/articles/uploadImage',
+        method: 'post',
+        data: formData
+    });
+}
