@@ -1,6 +1,7 @@
 package com.yeliheng.blogcommon.utils;
 
 import com.yeliheng.blogcommon.constant.Constants;
+import com.yeliheng.blogcommon.constant.RedisKeys;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -48,7 +49,7 @@ public class DictionaryUtils<T> {
      * 清除字典缓存
      */
     public void clearDictionaryCache() {
-        Collection<String> keys = redisUtils.keys(Constants.DICTIONARY_KEY + "*");
+        Collection<String> keys = redisUtils.keys(String.format(RedisKeys.DICTIONARY_KEY,"*"));
         redisUtils.deleteObject(keys);
     }
 
@@ -58,7 +59,7 @@ public class DictionaryUtils<T> {
      * @return 键
      */
     public String getKey(String key) {
-        return Constants.DICTIONARY_KEY + key;
+        return String.format(RedisKeys.DICTIONARY_KEY, key);
     }
 
 

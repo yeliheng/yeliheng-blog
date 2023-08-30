@@ -5,6 +5,7 @@ import com.baomidou.kaptcha.Kaptcha;
 import com.yeliheng.blogcommon.exception.RequestFormatException;
 import com.yeliheng.blogcommon.utils.StringUtils;
 import com.yeliheng.blogsystem.domain.LoginBody;
+import com.yeliheng.blogsystem.domain.RefreshToken;
 import com.yeliheng.blogsystem.service.ILoginService;
 import com.yeliheng.blogweb.common.CommonResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -40,7 +41,13 @@ public class LoginController {
             kaptcha.validate(loginBody.getCode());
         }
 
-        String token = loginService.login(loginBody.getUsername(),loginBody.getPassword(),loginBody.isRememberMe());
+        Map<String,String> token = loginService.login(loginBody.getUsername(),loginBody.getPassword(),loginBody.isRememberMe());
+        return CommonResponse.success(token);
+    }
+
+    @PostMapping("/refreshToken")
+    public CommonResponse<Object> refreshToken(@RequestBody @Validated RefreshToken refreshToken) {
+        String token = loginService.refreshToken(refreshToken.getToken());
         Map<String,String> resultMap = new HashMap<>();
         resultMap.put("token",token);
         return CommonResponse.success(resultMap);

@@ -1,6 +1,7 @@
 package com.yeliheng.blogsystem.utils;
 
 import com.yeliheng.blogcommon.constant.Constants;
+import com.yeliheng.blogcommon.constant.RedisKeys;
 import com.yeliheng.blogcommon.exception.UnexpectedException;
 import com.yeliheng.blogcommon.utils.RedisUtils;
 import com.yeliheng.blogcommon.utils.ServletUtils;
@@ -27,9 +28,13 @@ public class TokenUtils {
     @Autowired
     private RedisUtils redisUtils;
 
-    //过期时间
+    // Token过期时间
     @Value("${token.expireTime}")
     private int expireTime;
+
+    // 刷新Token过期时间
+    @Value("${token.refreshTokenExpireDays}")
+    private int refreshTokenExpireDays;
 
     // 令牌密钥
     @Value("${token.secret}")
@@ -45,11 +50,11 @@ public class TokenUtils {
      * @param rememberMe 记住我
      * @return 令牌
      */
-    public String createToken(LoginUser loginUser,boolean rememberMe) {
+    public String createToken(LoginUser loginUser, boolean rememberMe) {
         String uuid = UUIDUtils.generateUUID();
         if(!rememberMe) {
             setLoginUser(uuid,loginUser,expireTime);
-        }else {
+        } else {
             setLoginUser(uuid,loginUser,10080);
         }
 
@@ -57,6 +62,17 @@ public class TokenUtils {
         claims.put(Constants.CLAIMS_KEY,uuid);
         return Jwts.builder().setClaims(claims)
             .signWith(SignatureAlgorithm.HS512, secret).compressWith(CompressionCodecs.GZIP).compact();
+    }
+
+    /**
+     * 刷新令牌
+     * @param loginUser 登录的用户
+     * @return 刷新的令牌
+     */
+    public String createRefreshToken(LoginUser loginUser) {
+        String uuid = UUIDUtils.generateUUID();
+        setRefreshToken(uuid, loginUser, refreshTokenExpireDays);
+        return uuid;
     }
 
     /**
@@ -71,7 +87,6 @@ public class TokenUtils {
                 .getBody();
     }
 
-
     /**
      * 将登录的用户写入缓存
      * @param uuid uuid
@@ -83,12 +98,22 @@ public class TokenUtils {
     }
 
     /**
+     * 将用于刷新的token写入缓存
+     * @param uuid uuid
+     * @param loginUser 登录的用户
+     * @param expireTime 缓存过期时间
+     */
+    public void setRefreshToken(String uuid, LoginUser loginUser,int expireTime){
+        redisUtils.setCacheObject(String.format(RedisKeys.REFRESH_TOKEN_KEY, uuid), loginUser, expireTime, TimeUnit.DAYS);
+    }
+
+    /**
      * 刷新登录的用户缓存
      * @param loginUser 登录的用户实体
      */
     public void refreshLoginUser(LoginUser loginUser) {
         String uuid = getUUID(ServletUtils.getRequest());
-        redisUtils.setCacheObject(getTokenCacheKey(uuid),loginUser,expireTime,TimeUnit.MINUTES);
+        redisUtils.setCacheObject(getTokenCacheKey(uuid), loginUser, expireTime, TimeUnit.MINUTES);
     }
 
     /**
@@ -135,6 +160,15 @@ public class TokenUtils {
     }
 
     /**
+     * 从缓存中取出登录的用户
+     * @param refreshToken 刷新token
+     * @return 登录的用户实体
+     */
+    public LoginUser getLoginUserFromRefreshToken(String refreshToken) {
+        return redisUtils.getCacheObject(String.format(RedisKeys.REFRESH_TOKEN_KEY, refreshToken));
+    }
+
+    /**
      * 获取uuid信息
      * @param request 请求实例
      * @return uuid
@@ -155,7 +189,7 @@ public class TokenUtils {
      * @return 缓存键
      */
     public String getTokenCacheKey(String key) {
-        return Constants.LOGIN_USER_KEY + key;
+        return String.format(RedisKeys.LOGIN_USER_KEY, key);
     }
 
 
