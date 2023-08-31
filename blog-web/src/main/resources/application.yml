@@ -62,8 +62,8 @@ pagehelper:
 token:
   # 令牌有效期(默认30分钟)
   expireTime: 30
-  # 刷新令牌有效期(默认7天)
-  refreshTokenExpireDays: 7
+  # 刷新令牌有效期(默认30天)
+  refreshTokenExpireDays: 30
   # 令牌密钥
   secret: yeliheng123
   # 令牌请求头

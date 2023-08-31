@@ -1,9 +1,10 @@
-import { getInfo, login, logout } from "@/api/login";
-import { getToken,setToken,removeToken } from "@/utils/auth";
+import {getInfo, login, logout} from "@/api/login";
+import {getToken, setToken, removeToken, getRefreshToken, setRefreshToken, removeRefreshToken} from "@/utils/auth";
 import { ElMessage } from "element-plus";
 
 const state = {
     token: getToken(),
+    refreshToken: getRefreshToken(),
     username: '',
     profile: {},
     roles: [],
@@ -13,6 +14,9 @@ const state = {
 const mutations = {
     SET_TOKEN: (state, token) => {
         state.token = token
+    },
+    SET_REFRESH_TOKEN: (state, refreshToken) => {
+        state.refreshToken = refreshToken;
     },
     SET_USERNAME: (state, username) => {
         state.username = username;
@@ -44,8 +48,11 @@ const actions = {
                     return;
                 }
                 const token:string = res.data.token;
+                const refreshToken:string = res.data.refreshToken;
                 setToken(token);
+                setRefreshToken(refreshToken)
                 commit('SET_TOKEN',token);
+                commit('SET_REFRESH_TOKEN',refreshToken);
                 resolve();
             }).catch(error => {
                 reject(error);
@@ -54,13 +61,10 @@ const actions = {
     },
 
     //登出
-    Logout({commit}){
+    Logout({commit}: { commit: any }){
         return new Promise<void>((resolve, reject) => {
             logout().then((res:any) => {
-                commit('SET_TOKEN','');
-                commit('SET_ROLES',[]);
-                commit('SET_PERMISSIONS','');
-                removeToken();
+                this.RemoveAllTokens({commit});
                 resolve();
             }).catch(error => {
                 reject(error);
@@ -68,12 +72,19 @@ const actions = {
         });
     },
 
+    // 设置token
+    SetToken({commit},token){
+        commit('SET_TOKEN',token);
+        setToken(token);
+    },
+
     //移除保存的Token
-    RemoveToken({commit}){
+    RemoveAllTokens({commit}){
         commit('SET_TOKEN','');
         commit('SET_ROLES',[]);
         commit('SET_PERMISSIONS','');
         removeToken();
+        removeRefreshToken();
     },
 
     //获取用户信息
@@ -99,6 +110,7 @@ const actions = {
 
 const getters = {
     token: state => state.token,
+    refreshToken: state => state.refreshToken,
     username: state => state.username,  
     roles: state => state.roles,
     permissions: state => state.permissions,

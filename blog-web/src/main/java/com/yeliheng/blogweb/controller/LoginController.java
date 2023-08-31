@@ -47,7 +47,7 @@ public class LoginController {
 
     @PostMapping("/refreshToken")
     public CommonResponse<Object> refreshToken(@RequestBody @Validated RefreshToken refreshToken) {
-        String token = loginService.refreshToken(refreshToken.getToken());
+        String token = loginService.refreshToken(refreshToken.getRefreshToken());
         Map<String,String> resultMap = new HashMap<>();
         resultMap.put("token",token);
         return CommonResponse.success(resultMap);

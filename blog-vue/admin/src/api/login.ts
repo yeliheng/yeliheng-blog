@@ -25,3 +25,14 @@ export function logout() {
         method: 'post',
     });
 }
+
+export function refreshToken(refreshToken) {
+    const data = {
+        refreshToken
+    };
+    return request({
+        url: '/refreshToken',
+        method: 'post',
+        data: data
+    });
+}
