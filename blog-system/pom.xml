@@ -70,6 +70,12 @@
             <version>2.2.0</version>
         </dependency>
 
+        <!--    Spring Data JPA   -->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jpa</artifactId>
+        </dependency>
+
         <!-- SpringSecurity框架 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

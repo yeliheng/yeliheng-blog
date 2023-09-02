@@ -3,8 +3,10 @@ package com.yeliheng.blogcommon.utils;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
+import java.util.Date;
 
 public class DateUtils {
 
@@ -25,6 +27,16 @@ public class DateUtils {
      */
     public static String getLocalDateTimeStr() {
         return format(LocalDateTime.now(), DATETIME_PATTERN);
+    }
+
+    /**
+     * 获取当前日期和时间
+     *
+     * @return 日期时间
+     */
+    public static Date getLocalDateTime() {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATETIME_PATTERN);
+        return Date.from(LocalDateTime.parse(getLocalDateTimeStr(), dateTimeFormatter).atZone(ZoneId.systemDefault()).toInstant());
     }
 
     /**

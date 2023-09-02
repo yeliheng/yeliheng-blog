@@ -12,6 +12,7 @@ import com.yeliheng.blogframework.storage.FileSystem;
 import com.yeliheng.blogframework.storage.FileUtils;
 import com.yeliheng.blogframework.storage.adapter.KodoStorageAdapter;
 import com.yeliheng.blogsystem.domain.Article;
+import com.yeliheng.blogsystem.domain.Draft;
 import com.yeliheng.blogsystem.service.IArticleService;
 import com.yeliheng.blogweb.common.CommonResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -177,6 +178,45 @@ public class ArticleController {
             throw new RequestFormatException("文件不能为空!");
         }
         return CommonResponse.success(articleService.uploadImage(file));
+    }
+
+    // 保存草稿
+    @PreAuthorize("@perm.hasPerm('admin:articles:add')")
+    @PostMapping(value = "/admin/articles/draft")
+    public CommonResponse<Object> draft(@RequestBody Draft draft) {
+        articleService.addDraft(draft);
+        return CommonResponse.success();
+    }
+
+    // 删除草稿
+    @PreAuthorize("@perm.hasPerm('admin:articles:delete')")
+    @DeleteMapping(value = "/admin/articles/draft")
+    public CommonResponse<Object> deleteDraft(@RequestParam("id") Long id) {
+        articleService.deleteDraft(id);
+        return CommonResponse.success();
+    }
+
+    // 获取草稿
+    @PreAuthorize("@perm.hasPerm('admin:articles:get')")
+    @GetMapping(value = "/admin/articles/draft")
+    public CommonResponse<Object> getDraft(@RequestParam("id") Long id) {
+        return CommonResponse.success(articleService.getDraftById(id));
+    }
+
+    // 更新草稿
+    @PreAuthorize("@perm.hasPerm('admin:articles:edit')")
+    @PutMapping(value = "/admin/articles/draft")
+    public CommonResponse<Object> updateDraft(@RequestBody Draft draft) {
+        articleService.updateDraft(draft);
+        return CommonResponse.success();
+    }
+
+    // 分页获取草稿
+    @PreAuthorize("@perm.hasPerm('admin:articles:list')")
+    @GetMapping(value = "/admin/articles/draft/list")
+    public CommonResponse<Object> listDraft(@RequestParam(value = "page",defaultValue = "0") Integer page,
+                                            @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize) {
+        return CommonResponse.success(articleService.listDraft(page, pageSize));
     }
 
 

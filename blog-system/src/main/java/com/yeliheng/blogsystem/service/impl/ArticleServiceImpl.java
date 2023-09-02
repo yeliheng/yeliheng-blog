@@ -6,18 +6,22 @@ import com.yeliheng.blogcommon.exception.GeneralException;
 import com.yeliheng.blogcommon.exception.InternalServerException;
 import com.yeliheng.blogcommon.exception.NotFoundException;
 import com.yeliheng.blogcommon.exception.UnexpectedException;
+import com.yeliheng.blogcommon.utils.DateUtils;
 import com.yeliheng.blogcommon.utils.ExcelUtils;
 import com.yeliheng.blogcommon.utils.StringUtils;
 import com.yeliheng.blogcommon.utils.WordUtils;
 import com.yeliheng.blogframework.storage.FileSystem;
 import com.yeliheng.blogframework.storage.FileUtils;
 import com.yeliheng.blogframework.storage.adapter.KodoStorageAdapter;
+import com.yeliheng.blogsystem.dao.DraftRepository;
 import com.yeliheng.blogsystem.domain.AritcleTag;
 import com.yeliheng.blogsystem.domain.Article;
+import com.yeliheng.blogsystem.domain.Draft;
 import com.yeliheng.blogsystem.mapper.ArticleMapper;
 import com.yeliheng.blogsystem.mapper.ArticleTagMapper;
 import com.yeliheng.blogsystem.mapper.CategoryMapper;
 import com.yeliheng.blogsystem.service.IArticleService;
+import com.yeliheng.blogsystem.utils.TokenUtils;
 import com.yeliheng.blogsystem.utils.UserUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -25,11 +29,16 @@ import org.jeecgframework.poi.excel.entity.ExportParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -44,6 +53,8 @@ public class ArticleServiceImpl implements IArticleService {
     private CategoryMapper categoryMapper;
     @Autowired
     private ArticleTagMapper articleTagMapper;
+    @Autowired
+    private DraftRepository draftRepository;
     @Autowired
     private UserUtils userUtils;
     @Autowired
@@ -238,6 +249,61 @@ public class ArticleServiceImpl implements IArticleService {
         return fileSystem.getPublicURL(filePath);
     }
 
+    /**
+     * 发布草稿文章
+     *
+     * @param draft 草稿实体
+     */
+    @Override
+    public void addDraft(Draft draft) {
+        draft.setUserId(userUtils.getLoginUserId());
+        draft.setCreatedAt(DateUtils.getLocalDateTime());
+        draft.setUpdatedAt(DateUtils.getLocalDateTime());
+        draftRepository.save(draft);
+    }
+
+    /**
+     * 更新草稿文章
+     *
+     * @param draft 草稿实体
+     */
+    @Override
+    public void updateDraft(Draft draft) {
+        if(draft.getId() == null)
+            throw new GeneralException("草稿Id不能为空");
+        Draft oldDraft = draftRepository.findById(draft.getId()).orElseThrow(() -> new GeneralException("草稿不存在"));
+        draft.setUserId(userUtils.getLoginUserId());
+        draft.setCreatedAt(oldDraft.getCreatedAt());
+        draft.setUpdatedAt(DateUtils.getLocalDateTime());
+        draftRepository.save(draft);
+    }
+
+    /**
+     * 删除草稿文章
+     *
+     * @param draftId 草稿Id
+     */
+    @Override
+    public void deleteDraft(Long draftId) {
+        draftRepository.deleteById(draftId);
+    }
+
+    /**
+     * 获取草稿文章
+     *
+     * @param draftId 草稿Id
+     * @return 草稿文章实体
+     */
+    @Override
+    public Draft getDraftById(Long draftId) {
+        return draftRepository.findById(draftId).orElse(null);
+    }
+
+    @Override
+    public Page<Draft> listDraft(int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize, Sort.Direction.DESC, "createdAt");
+        return draftRepository.findAll(pageable);
+    }
 
     /**
      *
@@ -258,7 +324,6 @@ public class ArticleServiceImpl implements IArticleService {
             if(list.size() > 0){
                 articleTagMapper.setArticleTags(list);
             }
-
         }
     }
 
