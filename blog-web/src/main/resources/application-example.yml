@@ -32,22 +32,6 @@ spring:
         wall:
           config:
             multi-statement-allow: true
-  # Spring Data JPA 配置
-  jpa:
-    # Hibernate配置
-    hibernate:
-      # 自动创建|更新表结构
-      ddl-auto: none
-    # 显示SQL
-    show-sql: true
-    # session懒加载
-    open-in-view: false
-    properties:
-      hibernate:
-        # 打印SQL
-        show_sql: true
-        # 格式化SQL
-        format_sql: true
   # Redis 配置
   redis:
     host: localhost

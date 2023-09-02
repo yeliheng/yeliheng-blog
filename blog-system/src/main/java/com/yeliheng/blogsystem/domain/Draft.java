@@ -7,11 +7,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Schema(description = "文章草稿")
-@Entity
-@Table(name = "draft")
 public class Draft implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Long userId;
