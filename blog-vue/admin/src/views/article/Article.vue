@@ -11,13 +11,14 @@
           <el-switch class="private-sw" v-model="article.visible" active-value="0" inactive-value="1"/>
           <span>置顶</span>
           <el-switch class="top-sw" v-model="article.top" active-value="1" inactive-value="0"/>
-          <el-button class="publish-btn" type="primary" @click="publishArticle" style="margin-left: 1rem;">保存并发布</el-button>
+          <el-button type="success" @click="openDraftBox" style="margin-left: 1rem;">草稿箱</el-button>
+          <el-button type="primary" @click="publishArticle" style="margin-left: 1rem;">保存并发布</el-button>
         </div>
       </div>
 
       <div class="article-content">
         <el-input class="title" v-model="article.title" placeholder="请输入标题" @blur="saveDraft()"></el-input>
-        <el-input class="summary" v-model="article.summary" placeholder="请输入文章简介" @blur="saveDraft()" style="margin-bottom: 0.5rem;"></el-input>
+        <el-input class="summary" v-model="article.summary" placeholder="请输入文章简介" style="margin-bottom: 0.5rem;" @blur="saveDraft()"></el-input>
         <v-md-editor
             v-model="article.content"
             :disabled-menus="[]"
@@ -29,7 +30,7 @@
       <div class="article-footer">
         <div class="category">
           <span>分类:</span>
-          <el-select class="category-select" v-model="article.categoryId" clearable placeholder="选择一个分类" @blur="saveDraft()" @remove-tag="saveDraft()">
+          <el-select class="category-select" v-model="article.categoryId" clearable placeholder="选择一个分类">
             <el-option
                 v-for="item in categories"
                 :key="item.id"
@@ -41,7 +42,7 @@
         </div>
         <div class="tag">
           <span>标签:</span>
-          <el-select class="tag-select" v-model="article.tagIds" multiple placeholder="选择标签" @blur="saveDraft()" @remove-tag="saveDraft()">
+          <el-select class="tag-select" v-model="article.tagIds" multiple placeholder="选择标签">
             <el-option
                 v-for="item in tags"
                 :key="item.id"
@@ -72,7 +73,7 @@
       </template>
     </el-dialog>
 
-    <el-dialog
+<!--    <el-dialog
         v-model="existDraft"
         width="20rem"
         title="提示"
@@ -88,7 +89,7 @@
         >
       </span>
       </template>
-    </el-dialog>
+    </el-dialog>-->
   </div>
 
 </template>
@@ -98,6 +99,7 @@ import { Ref, ref } from 'vue';
 import {addArticle, getCategories, getTags, uploadImage} from '@/api/article';
 import {ElMessage, ElMessageBox} from 'element-plus';
 import { useRouter } from "vue-router";
+import {addDraft, updateDraft} from "@/api/draft";
 export default {
 setup() {
     const router = useRouter();
@@ -105,7 +107,8 @@ setup() {
     let categories: Ref = ref([]);
     let tags: Ref = ref([]);
     let dialogVisible = ref(false);
-    const existDraft = ref(false);
+    // const existDraft = ref(false);
+    let draftId = ref(null);
     let loading = ref(false);
     getCategories().then((data) => {
         categories.value = data.data;
@@ -116,6 +119,7 @@ setup() {
     });
 
     const article = ref({
+        id: null,
         categoryId: null,
         tagIds: [],
         title: "",
@@ -126,18 +130,14 @@ setup() {
     })
 
     //检查是否存在草稿
-    if(localStorage.getItem('draft')){
-        existDraft.value = true;
-    }else{
-        existDraft.value = false;
-    }
+    //existDraft.value = !!localStorage.getItem('draft');
 
-    const revertDraft = () => {
+/*    const revertDraft = () => {
         article.value = JSON.parse(localStorage.getItem('draft'));
         existDraft.value = false;
-    }
+    }*/
 
-    const trashDraft = () => {
+/*    const trashDraft = () => {
       ElMessageBox.confirm('确定吗？所有的草稿将被删除！', "警告", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -146,7 +146,7 @@ setup() {
         localStorage.removeItem('draft');
         existDraft.value = false;
       });
-    }
+    }*/
 
     const publishArticle = () => {
         if(article.value.title.trim() == ""){
@@ -178,19 +178,37 @@ setup() {
                 });
                 router.push('/articles/list');
                 //删除草稿
-                localStorage.removeItem('draft');
-                existDraft.value = false;
+/*                localStorage.removeItem('draft');
+                existDraft.value = false;*/
             } else {
               ElMessage.error(data.detail);
             }
         });
     }
 
+    // 保存草稿
     const saveDraft = () => {
-        if(article.value.title != '' || article.value.content != '')
-            localStorage.setItem('draft',JSON.stringify(article.value));
-        if(article.value.title == '' && article.value.content == '')
-            localStorage.removeItem('draft');
+        if(article.value.title != '' || article.value.content != '' || article.value.summary != '') {
+          if(draftId.value == null) {
+            addDraft(article.value).then((data: any) => {
+              if(!data.errCode){
+                draftId.value = data.data;
+                console.log("创建草稿: ", draftId.value);
+              } else {
+                console.error("保存草稿失败！", data.detail);
+              }
+            });
+          } else {
+            article.value.id = draftId.value;
+            updateDraft(article.value).then((data: any) => {
+              if(!data.errCode){
+                console.log("更新草稿: ", draftId.value);
+              } else {
+                console.error("更新草稿失败！", data.detail);
+              }
+            });
+          }
+        }
     }
 
     const handleUploadImage = (event, insertImage, files) => {
@@ -207,21 +225,27 @@ setup() {
         }
       });
     }
+
+    const openDraftBox = () => {
+      router.push('/draft/list');
+    }
     
 
     return {
         categories,
         tags,
         article,
+        draftId,
         dialogVisible,
         loading,
         publishArticle,
         onConfirmClick,
+       // existDraft,
+       // revertDraft,
+      //  trashDraft,
         saveDraft,
-        existDraft,
-        revertDraft,
-        trashDraft,
         handleUploadImage,
+        openDraftBox,
     }
       
     }

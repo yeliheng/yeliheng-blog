@@ -69,8 +69,8 @@ export default {
             if(command === "logout"){
                 store.dispatch('Logout').then(() => {
                     router.push('/login');
-                }).catch(() => {
-                    Promise.reject();
+                }).catch((error) => {
+                    Promise.reject(error);
                 });
             }
         }

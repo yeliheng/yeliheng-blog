@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface DraftMapper {
 
-    boolean addDraft(Draft draft);
+    Long addDraft(Draft draft);
 
     int updateDraft(Draft draft);
 

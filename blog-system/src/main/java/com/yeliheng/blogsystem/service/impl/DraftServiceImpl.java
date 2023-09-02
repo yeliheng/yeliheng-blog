@@ -30,9 +30,9 @@ public class DraftServiceImpl implements IDraftService {
      * @param draft 草稿实体
      */
     @Override
-    public void addDraft(Draft draft) {
+    public Long addDraft(Draft draft) {
         draft.setUserId(userUtils.getLoginUserId());
-        draftMapper.addDraft(draft);
+        return draftMapper.addDraft(draft);
     }
 
     /**

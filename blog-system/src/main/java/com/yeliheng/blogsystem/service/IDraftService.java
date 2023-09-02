@@ -10,7 +10,7 @@ public interface IDraftService {
      * 保存草稿文章
      * @param draft 草稿实体
      */
-    void addDraft(Draft draft);
+    Long addDraft(Draft draft);
 
     /**
      * 更新草稿文章

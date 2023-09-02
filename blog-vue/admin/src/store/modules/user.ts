@@ -64,7 +64,11 @@ const actions = {
     Logout({commit}: { commit: any }){
         return new Promise<void>((resolve, reject) => {
             logout().then((res:any) => {
-                this.RemoveAllTokens({commit});
+                commit('SET_TOKEN','');
+                commit('SET_ROLES',[]);
+                commit('SET_PERMISSIONS','');
+                removeToken();
+                removeRefreshToken();
                 resolve();
             }).catch(error => {
                 reject(error);
@@ -76,15 +80,6 @@ const actions = {
     SetToken({commit},token){
         commit('SET_TOKEN',token);
         setToken(token);
-    },
-
-    //移除保存的Token
-    RemoveAllTokens({commit}){
-        commit('SET_TOKEN','');
-        commit('SET_ROLES',[]);
-        commit('SET_PERMISSIONS','');
-        removeToken();
-        removeRefreshToken();
     },
 
     //获取用户信息
