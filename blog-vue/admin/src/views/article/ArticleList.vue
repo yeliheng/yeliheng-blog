@@ -245,7 +245,7 @@ export default {
         }
 
         const handleEditClick = (id) => {
-            router.push('/articles/' + id);
+            router.push('/articles/publish/' + id);
         }
 
       const handleExport = () => {

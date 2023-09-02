@@ -5,14 +5,15 @@
 
       <div class="article-header">
         <div class="line"></div>
-        <span>发布文章</span>
+        <span>文章编辑器</span>
         <div class="article-btn">
           <span>私密</span>
           <el-switch class="private-sw" v-model="article.visible" active-value="0" inactive-value="1"/>
           <span>置顶</span>
           <el-switch class="top-sw" v-model="article.top" active-value="1" inactive-value="0"/>
           <el-button type="success" @click="openDraftBox" style="margin-left: 1rem;">草稿箱</el-button>
-          <el-button type="primary" @click="publishArticle" style="margin-left: 1rem;">保存并发布</el-button>
+          <el-button type="primary" v-if="articleId == null" @click="publishArticle" style="margin-left: 1rem;">保存并发布</el-button>
+          <el-button type="primary" v-else @click="publishArticle" style="margin-left: 1rem;">更新</el-button>
         </div>
       </div>
 
@@ -95,15 +96,54 @@
 </template>
 
 <script lang="ts">
-import { Ref, ref } from 'vue';
-import {addArticle, getCategories, getTags, uploadImage} from '@/api/article';
+import {Ref, ref, watch} from 'vue';
+import {addArticle, getArticleByIdBacked, getCategories, getTags, updateArticle, uploadImage} from '@/api/article';
 import {ElMessage, ElMessageBox} from 'element-plus';
 import { useRouter } from "vue-router";
 import {addDraft, updateDraft} from "@/api/draft";
 export default {
 setup() {
     const router = useRouter();
-
+    const article = ref({
+      id: null,
+      categoryId: null,
+      tagIds: [],
+      title: "",
+      summary: "",
+      content: "",
+      visible: 1,
+      top: 0,
+    });
+    let articleId = ref(router.currentRoute.value.params.id);
+    watch(() => router.currentRoute.value.params.id, () => {
+      articleId.value = router.currentRoute.value.params.id;
+      // 如果是更新文章，获取文章信息
+      if(articleId.value != null){
+        //拉取文章信息
+        getArticleByIdBacked(router.currentRoute.value.params.id).then((data) => {
+          let articleData = ref();
+          articleData.value = data.data;
+          let tagIds = [];
+          articleData.value.tags.forEach(item => {
+            tagIds.push(item.id);
+          });
+          article.value = articleData.value;
+          article.value.tagIds = tagIds;
+          loading.value = false;
+        })
+      }else {
+        article.value = {
+          id: null,
+          categoryId: null,
+          tagIds: [],
+          title: "",
+          summary: "",
+          content: "",
+          visible: 1,
+          top: 0,
+        };
+      }
+    }, {immediate: true});
     let categories: Ref = ref([]);
     let tags: Ref = ref([]);
     let dialogVisible = ref(false);
@@ -117,17 +157,6 @@ setup() {
     getTags().then((data) => {
         tags.value = data.data;
     });
-
-    const article = ref({
-        id: null,
-        categoryId: null,
-        tagIds: [],
-        title: "",
-        summary: "",
-        content: "",
-        visible: 1,
-        top: 0,
-    })
 
     //检查是否存在草稿
     //existDraft.value = !!localStorage.getItem('draft');
@@ -167,28 +196,40 @@ setup() {
         dialogVisible.value = true;
     };
 
+
     const onConfirmClick = () => {
-        loading.value = true;
-        addArticle(article.value).then((data: any) => {
-            dialogVisible.value = false;
-            if(!data.errCode){
-                ElMessage({
-                    message: "发布成功！",
-                    type: 'success',
-                });
-                router.push('/articles/list');
-                //删除草稿
-/*                localStorage.removeItem('draft');
-                existDraft.value = false;*/
-            } else {
-              ElMessage.error(data.detail);
-            }
+      loading.value = true;
+      if (article.value.id != null) {
+        updateArticle(article.value).then((data: any) => {
+          dialogVisible.value = false;
+          loading.value = false;
+          if (!data.errCode) {
+            ElMessage({
+              message: "文章更新成功!",
+              type: 'success',
+            });
+            router.push('/articles/list');
+          }
         });
+      } else {
+        addArticle(article.value).then((data: any) => {
+          dialogVisible.value = false;
+          if (!data.errCode) {
+            ElMessage({
+              message: "发布成功！",
+              type: 'success',
+            });
+            router.push('/articles/list');
+          } else {
+            ElMessage.error(data.detail);
+          }
+        });
+      }
     }
 
     // 保存草稿
     const saveDraft = () => {
-        if(article.value.title != '' || article.value.content != '' || article.value.summary != '') {
+       /* if(article.value.title != '' || article.value.content != '' || article.value.summary != '') {
           if(draftId.value == null) {
             addDraft(article.value).then((data: any) => {
               if(!data.errCode){
@@ -199,7 +240,6 @@ setup() {
               }
             });
           } else {
-            article.value.id = draftId.value;
             updateDraft(article.value).then((data: any) => {
               if(!data.errCode){
                 console.log("更新草稿: ", draftId.value);
@@ -208,7 +248,7 @@ setup() {
               }
             });
           }
-        }
+        }*/
     }
 
     const handleUploadImage = (event, insertImage, files) => {
@@ -232,20 +272,21 @@ setup() {
     
 
     return {
-        categories,
-        tags,
-        article,
-        draftId,
-        dialogVisible,
-        loading,
-        publishArticle,
-        onConfirmClick,
-       // existDraft,
-       // revertDraft,
-      //  trashDraft,
-        saveDraft,
-        handleUploadImage,
-        openDraftBox,
+      categories,
+      tags,
+      article,
+      draftId,
+      dialogVisible,
+      loading,
+      publishArticle,
+      onConfirmClick,
+     // existDraft,
+     // revertDraft,
+    //  trashDraft,
+      saveDraft,
+      handleUploadImage,
+      openDraftBox,
+      articleId,
     }
       
     }
