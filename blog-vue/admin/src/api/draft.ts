@@ -11,7 +11,7 @@ export function addDraft(draft: IDraft) {
 }
 
 // 删除草稿
-export function deleteDraft(id: number) {
+export function deleteDraft(id) {
     return request({
         url: '/admin/draft',
         method: 'delete',
@@ -29,10 +29,11 @@ export function updateDraft(draft: IDraft) {
 }
 
 // 获取草稿
-export function getDraft(id: number) {
+export function getDraft(id: any) {
     return request({
-        url: '/admin/draft/' + id,
+        url: '/admin/draft/',
         method: 'get',
+        params: {'id': id}
     });
 }
 

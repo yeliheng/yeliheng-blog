@@ -5,8 +5,9 @@
 <mapper namespace="com.yeliheng.blogsystem.mapper.DraftMapper">
 
     <resultMap id="DraftResult" type="Draft">
-        <id property="id" column="id" />
+        <id property="draftId" column="draft_id" />
         <result property="userId" column="user_id" />
+        <result property="articleId" column="article_id" />
         <result property="title" column="title" />
         <result property="summary" column="summary" />
         <result property="content" column="content" />
@@ -15,17 +16,19 @@
     </resultMap>
 
     <resultMap id="DraftListResult" type="Draft">
-        <id property="id" column="id" />
+        <id property="draftId" column="draft_id" />
         <result property="userId" column="user_id" />
+        <result property="articleId" column="article_id" />
         <result property="title" column="title" />
         <result property="summary" column="summary" />
         <result property="createdAt" column="created_at" />
         <result property="updatedAt" column="updated_at" />
     </resultMap>
 
-    <insert id="addDraft" parameterType="Draft" useGeneratedKeys="true" keyProperty="id">
+    <insert id="addDraft" parameterType="Draft" useGeneratedKeys="true" keyProperty="draftId">
         insert into draft(
         <if test="userId != null and userId != ''">user_id,</if>
+        <if test="articleId != null and articleId != ''">article_id,</if>
         <if test="title != null and title != ''">title,</if>
         <if test="summary != null and summary != ''">summary,</if>
         <if test="content != null and content != ''">content,</if>
@@ -33,6 +36,7 @@
         updated_at
         )values (
         <if test="userId != null and userId != ''">#{userId},</if>
+        <if test="articleId != null and articleId != ''">#{articleId},</if>
         <if test="title != null and title != ''">#{title},</if>
         <if test="summary != null and summary != ''">#{summary},</if>
         <if test="content != null and content != ''">#{content},</if>
@@ -45,25 +49,26 @@
         update draft
         <set>
             <if test="userId != null and userId != ''">user_id = #{userId},</if>
+            <if test="articleId != null and articleId != ''">article_id = #{articleId},</if>
             <if test="title != null and title != ''">title = #{title},</if>
             <if test="summary != null">summary = #{summary},</if>
             <if test="content != null and content != ''">content = #{content},</if>
             updated_at = sysdate()
         </set>
-        where id = #{id}
+        where draft_id = #{draftId}
     </update>
 
     <select id="getDraftList" resultMap="DraftListResult">
-        select id, user_id, title, summary, created_at, updated_at from draft order by id desc
+        select draft_id, user_id, article_id, title, summary, created_at, updated_at from draft order by draft_id desc
     </select>
 
 
     <select id="getDraftById" resultMap="DraftResult" parameterType="Long">
-        select id, user_id, title, summary, content, created_at, updated_at from draft where id = #{draftId}
+        select draft_id, user_id, article_id, title, summary, content, created_at, updated_at from draft where draft_id = #{draftId}
     </select>
 
     <delete id="deleteDraftById" parameterType="Long">
-        delete from draft where id = #{draftId}
+        delete from draft where draft_id = #{draftId}
     </delete>
 
 </mapper>

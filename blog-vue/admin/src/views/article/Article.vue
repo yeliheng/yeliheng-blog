@@ -100,13 +100,15 @@ import {Ref, ref, watch} from 'vue';
 import {addArticle, getArticleByIdBacked, getCategories, getTags, updateArticle, uploadImage} from '@/api/article';
 import {ElMessage, ElMessageBox} from 'element-plus';
 import { useRouter } from "vue-router";
-import {addDraft, updateDraft} from "@/api/draft";
+import {addDraft, deleteDraft, getDraft, updateDraft} from "@/api/draft";
 export default {
 setup() {
     const router = useRouter();
     const article = ref({
       id: null,
+      articleId: null,
       categoryId: null,
+      draftId: null,
       tagIds: [],
       title: "",
       summary: "",
@@ -114,13 +116,14 @@ setup() {
       visible: 1,
       top: 0,
     });
-    let articleId = ref(router.currentRoute.value.params.id);
-    watch(() => router.currentRoute.value.params.id, () => {
-      articleId.value = router.currentRoute.value.params.id;
+    const articleId = ref(router.currentRoute.value.params.articleId);
+    const draftId = ref(router.currentRoute.value.params.draftId);
+    watch(() => router.currentRoute.value.params, () => {
+      articleId.value = router.currentRoute.value.params.articleId;
       // 如果是更新文章，获取文章信息
-      if(articleId.value != null){
+      if(articleId.value != null) {
         //拉取文章信息
-        getArticleByIdBacked(router.currentRoute.value.params.id).then((data) => {
+        getArticleByIdBacked(articleId.value).then((data) => {
           let articleData = ref();
           articleData.value = data.data;
           let tagIds = [];
@@ -129,12 +132,24 @@ setup() {
           });
           article.value = articleData.value;
           article.value.tagIds = tagIds;
+          draftId.value = articleData.value.draftId;
           loading.value = false;
         })
-      }else {
+      } else if (router.currentRoute.value.params.draftId != null) {
+        // 从草稿中恢复
+        getDraft(router.currentRoute.value.params.draftId).then((data) => {
+          let draftData = ref();
+          draftData.value = data.data;
+          article.value = draftData.value;
+          article.value.id = draftData.value.articleId;
+          loading.value = false;
+        })
+      } else {
         article.value = {
           id: null,
+          articleId: null,
           categoryId: null,
+          draftId: null,
           tagIds: [],
           title: "",
           summary: "",
@@ -148,7 +163,6 @@ setup() {
     let tags: Ref = ref([]);
     let dialogVisible = ref(false);
     // const existDraft = ref(false);
-    let draftId = ref(null);
     let loading = ref(false);
     getCategories().then((data) => {
         categories.value = data.data;
@@ -199,6 +213,7 @@ setup() {
 
     const onConfirmClick = () => {
       loading.value = true;
+      article.value.draftId = draftId.value;
       if (article.value.id != null) {
         updateArticle(article.value).then((data: any) => {
           dialogVisible.value = false;
@@ -219,6 +234,8 @@ setup() {
               message: "发布成功！",
               type: 'success',
             });
+            article.value.articleId = data.data;
+            updateDraft(article.value);
             router.push('/articles/list');
           } else {
             ElMessage.error(data.detail);
@@ -229,8 +246,10 @@ setup() {
 
     // 保存草稿
     const saveDraft = () => {
-       /* if(article.value.title != '' || article.value.content != '' || article.value.summary != '') {
+        if(article.value.title != '' || article.value.content != '' || article.value.summary != '') {
           if(draftId.value == null) {
+            // 这个id是因为数据库中存储的id没有辨识，需要修改
+            article.value.articleId = article.value.id;
             addDraft(article.value).then((data: any) => {
               if(!data.errCode){
                 draftId.value = data.data;
@@ -240,15 +259,20 @@ setup() {
               }
             });
           } else {
+            article.value.draftId = draftId.value;
             updateDraft(article.value).then((data: any) => {
               if(!data.errCode){
                 console.log("更新草稿: ", draftId.value);
               } else {
-                console.error("更新草稿失败！", data.detail);
+                if(data.errCode == 'GENERAL_EXCEPTION') {
+                  draftId.value = null;
+                  return;
+                }
+                console.error("更新草稿失败！", data);
               }
             });
           }
-        }*/
+        }
     }
 
     const handleUploadImage = (event, insertImage, files) => {

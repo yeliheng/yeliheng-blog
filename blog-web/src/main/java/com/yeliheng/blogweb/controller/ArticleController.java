@@ -41,8 +41,7 @@ public class ArticleController {
     @Log(moduleName = "发布文章",operateType = OperateType.INSERT)
     @PostMapping("/admin/articles")
     public CommonResponse<Object> add(@Validated @RequestBody Article article){
-        articleService.addArticle(article);
-        return CommonResponse.success();
+        return CommonResponse.success(articleService.addArticle(article));
     }
 
     /**

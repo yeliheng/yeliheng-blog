@@ -8,6 +8,7 @@
         <id property="id" column="id" />
         <result property="userId" column="user_id" />
         <result property="categoryId" column="category_id" />
+        <result property="draftId" column="draft_id" />
         <result property="title" column="title" />
         <result property="summary" column="summary" />
         <result property="content" column="content" />
@@ -27,6 +28,7 @@
         <id property="id" column="id" />
         <result property="userId" column="user_id" />
         <result property="categoryId" column="category_id" />
+        <result property="draftId" column="draft_id" />
         <result property="title" column="title" />
         <result property="summary" column="summary" />
         <result property="url" column="url" />
@@ -78,14 +80,14 @@
     </resultMap>
 
     <sql id="selectArticleVo">
-        select a.id, a.user_id, a.category_id, a.title, a.summary, a.url, a.top, a.visible, a.words, a.views, a.reading_time, a.created_at, a.updated_at,
+        select a.id, a.user_id, a.category_id, a.draft_id, a.title, a.summary, a.url, a.top, a.visible, a.words, a.views, a.reading_time, a.created_at, a.updated_at,
                c.id as category_id, c.category_name
         from article a
             left join category c on a.category_id = c.id
     </sql>
 
     <sql id="selectArticleDetailVo">
-        select a.id, a.user_id, a.category_id, a.title, a.summary, a.content, a.url, a.top, a.visible, a.words, a.views, a.reading_time, a.created_at, a.updated_at,
+        select a.id, a.user_id, a.category_id, a.draft_id, a.title, a.summary, a.content, a.url, a.top, a.visible, a.words, a.views, a.reading_time, a.created_at, a.updated_at,
                c.id as category_id, c.category_name,
                atg.id, atg.article_id, atg.tag_id,
                t.id as tag_id, t.tag_name
@@ -99,6 +101,7 @@
         insert into article(
         <if test="userId != null and userId != ''">user_id,</if>
         <if test="categoryId != null and categoryId != ''">category_id,</if>
+        <if test="draftId != null and draftId != ''">draft_id,</if>
         <if test="title != null and title != ''">title,</if>
         <if test="summary != null and summary != ''">summary,</if>
         <if test="content != null and content != ''">content,</if>
@@ -112,6 +115,7 @@
         )values (
         <if test="userId != null and userId != ''">#{userId},</if>
         <if test="categoryId != null and categoryId != ''">#{categoryId},</if>
+        <if test="draftId != null and draftId != ''">#{draftId},</if>
         <if test="title != null and title != ''">#{title},</if>
         <if test="summary != null and summary != ''">#{summary},</if>
         <if test="content != null and content != ''">#{content},</if>
@@ -130,6 +134,7 @@
         <set>
             <if test="userId != null and userId != ''">user_id = #{userId},</if>
             category_id = #{categoryId},
+            <if test="draftId != null and draftId != ''">draft_id = #{draftId},</if>
             <if test="title != null and title != ''">title = #{title},</if>
             <if test="summary != null">summary = #{summary},</if>
             <if test="content != null and content != ''">content = #{content},</if>

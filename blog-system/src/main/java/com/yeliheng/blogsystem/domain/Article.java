@@ -1,6 +1,5 @@
 package com.yeliheng.blogsystem.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.jeecgframework.poi.excel.annotation.Excel;
 import org.jeecgframework.poi.excel.annotation.ExcelCollection;
@@ -18,6 +17,8 @@ public class Article {
     private Long userId;
 
     private Long categoryId;
+
+    private Long draftId;
 
     @Excel(name = "文章标题",width = 30)
     @NotBlank(message = "标题不能为空")
@@ -84,6 +85,14 @@ public class Article {
 
     public void setCategoryId(Long categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public Long getDraftId() {
+        return draftId;
+    }
+
+    public void setDraftId(Long draftId) {
+        this.draftId = draftId;
     }
 
     public String getTitle() {

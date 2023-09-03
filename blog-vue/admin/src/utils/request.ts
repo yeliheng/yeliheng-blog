@@ -24,7 +24,6 @@ export const refreshTokenRequest = () => {
         return;
     }
     isRefreshing = true;
-    console.log(getRefreshToken());
     refreshToken(getRefreshToken()).then((res: any) => {
         if(res.errCode == 'GENERAL_EXCEPTION') {
             ElMessage.error("用户凭据已过期，请重新登录!");

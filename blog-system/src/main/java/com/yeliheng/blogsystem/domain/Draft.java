@@ -2,15 +2,17 @@ package com.yeliheng.blogsystem.domain;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
 @Schema(description = "文章草稿")
 public class Draft implements Serializable {
-    private Long id;
+
+    private Long draftId;
 
     private Long userId;
+
+    private Long articleId;
 
     private String title;
 
@@ -22,12 +24,12 @@ public class Draft implements Serializable {
 
     private Date updatedAt;
 
-    public void setId(Long id) {
-        this.id = id;
+    public Long getDraftId() {
+        return draftId;
     }
 
-    public Long getId() {
-        return id;
+    public void setDraftId(Long draftId) {
+        this.draftId = draftId;
     }
 
     public Long getUserId() {
@@ -36,6 +38,14 @@ public class Draft implements Serializable {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public Long getArticleId() {
+        return articleId;
+    }
+
+    public void setArticleId(Long articleId) {
+        this.articleId = articleId;
     }
 
     public String getTitle() {

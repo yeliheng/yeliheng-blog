@@ -13,20 +13,16 @@
             v-loading="table.loading"
         >
           <el-table-column type="selection" width="55" />
-          <el-table-column property="id" label="草稿编号" width="100" align="center" sortable>
-            <template #default="scope">
-              <i v-if="scope.row.top == '1'" class="fa fa-thumb-tack" style="color: #579ff8"> </i>
-              {{scope.row.id}}
-            </template>
-          </el-table-column>
+          <el-table-column property="draftId" label="草稿编号" width="100" align="center" sortable />
+          <el-table-column property="articleId" label="文章编号" width="100" align="center" sortable />
           <el-table-column property="title" label="标题" width="220" align="center" sortable/>
           <el-table-column property="summary" label="摘要" width="220" align="center" sortable/>
           <el-table-column property="createdAt" label="创建时间" width="150" align="center" sortable />
           <el-table-column property="updatedAt" label="更新时间" width="150" align="center" sortable />
           <el-table-column label="操作" align="center">
             <template #default="scope">
-              <el-button type="text" size="mini" icon="fa fa-edit" @click="handleEditClick(scope.row.id)">继续编辑</el-button>
-              <el-popconfirm title="确定删除该草稿? " @confirm="handleDelete(scope.row.id)">
+              <el-button type="text" size="mini" icon="fa fa-edit" @click="handleEditClick(scope.row.draftId)">继续编辑</el-button>
+              <el-popconfirm title="确定删除该草稿? " @confirm="handleDelete(scope.row.draftId)">
                 <template #reference>
                   <el-button type="text" size="mini" style="color: #ff8989;" icon="fa fa-trash">删除</el-button>
                 </template>
@@ -123,7 +119,7 @@ export default {
     }
 
     const handleEditClick = (id) => {
-      router.push('/draft/' + id);
+      router.push('/draft/edit/' + id);
     }
 
     return {

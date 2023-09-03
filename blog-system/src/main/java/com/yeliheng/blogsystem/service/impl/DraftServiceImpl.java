@@ -42,7 +42,7 @@ public class DraftServiceImpl implements IDraftService {
      */
     @Override
     public void updateDraft(Draft draft) {
-        if(draft.getId() == null)
+        if(draft.getDraftId() == null)
             throw new GeneralException("草稿Id不能为空");
         int rows = draftMapper.updateDraft(draft);
         if(rows <= 0) throw new GeneralException("更新失败，草稿可能不存在");

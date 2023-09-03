@@ -4,9 +4,9 @@ import com.yeliheng.blogsystem.domain.Article;
 
 import java.util.List;
 
-public interface ArticleMapper{
+public interface ArticleMapper {
     
-    boolean addArticle(Article article);
+    Long addArticle(Article article);
 
     int updateArticle(Article article);
 

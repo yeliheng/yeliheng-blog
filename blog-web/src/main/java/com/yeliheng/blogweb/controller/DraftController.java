@@ -18,7 +18,7 @@ public class DraftController {
     @PostMapping(value = "/admin/draft")
     public CommonResponse<Object> draft(@RequestBody Draft draft) {
         draftService.addDraft(draft);
-        return CommonResponse.success(draft.getId());
+        return CommonResponse.success(draft.getDraftId());
     }
 
     // 删除草稿

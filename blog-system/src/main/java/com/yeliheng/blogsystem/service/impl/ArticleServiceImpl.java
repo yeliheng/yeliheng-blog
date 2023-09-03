@@ -58,7 +58,7 @@ public class ArticleServiceImpl implements IArticleService {
      */
     @Override
     @Transactional
-    public void addArticle(Article article) {
+    public Long addArticle(Article article) {
         article.setUserId(userUtils.getLoginUserId());
         int wordCount = WordUtils.wordCount(article.getContent());
         article.setWords(wordCount);
@@ -68,10 +68,10 @@ public class ArticleServiceImpl implements IArticleService {
             if(categoryMapper.existsById(article.getCategoryId()) <= 0)
                 throw new GeneralException("分类不存在，请修改后重新发布！");
 
-        boolean result = articleMapper.addArticle(article);
-        if(!result) throw new InternalServerException("发布文章失败，未知错误");
+        articleMapper.addArticle(article);
         //插入文章标签
         insertArticleTag(article);
+        return article.getId();
     }
 
     /**
