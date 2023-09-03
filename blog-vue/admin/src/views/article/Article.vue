@@ -146,7 +146,7 @@ setup() {
           draftData.value = data.data;
           article.value.title = draftData.value.title;
           article.value.summary = draftData.value.summary;
-          article.value.content = draftData.value.content;
+          article.value.content = draftData.value.content ? draftData.value.content : "";
           article.value.id = draftData.value.articleId;
           loading.value = false;
         })
