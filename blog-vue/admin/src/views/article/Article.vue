@@ -144,7 +144,9 @@ setup() {
         getDraft(router.currentRoute.value.params.draftId).then((data) => {
           let draftData = ref();
           draftData.value = data.data;
-          article.value = draftData.value;
+          article.value.title = draftData.value.title;
+          article.value.summary = draftData.value.summary;
+          article.value.content = draftData.value.content;
           article.value.id = draftData.value.articleId;
           loading.value = false;
         })
