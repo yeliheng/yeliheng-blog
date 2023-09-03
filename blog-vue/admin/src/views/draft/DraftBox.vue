@@ -52,7 +52,7 @@
 </template>
 
 <script lang="ts">
-import { ref } from 'vue';
+import {onActivated, ref} from 'vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import {ElMessage} from 'element-plus';
@@ -66,6 +66,10 @@ export default {
     const router = useRouter();
 
     const formSize = ref('large');
+
+    onActivated(() => {
+      listDraft();
+    });
 
     //适配移动端
     if(store.state.app.isMobile){
@@ -96,8 +100,6 @@ export default {
             table.value.loading = false;
           });
     }
-
-    listDraft();
 
     const handleSizeChange = (pageSize: number) => {
       table.value.pageSize = pageSize;

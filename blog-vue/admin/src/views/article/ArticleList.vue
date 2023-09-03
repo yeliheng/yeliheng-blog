@@ -120,7 +120,7 @@
 </template>
 
 <script lang="ts">
-import { ref } from 'vue';
+import {onActivated, ref} from 'vue';
 import {deleteArticle, exportArticles, getArticlesAdmin, getCategories} from '@/api/article';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
@@ -128,11 +128,13 @@ import {ElMessage, ElMessageBox} from 'element-plus';
 import {download} from "@/api/download";
 import fileDownload from "js-file-download";
 
-export default {    
-    setup(){
-
+export default {
+  setup(){
+        onActivated(() => {
+            listArticles();
+        });
         const store = useStore();
-        
+
         const router = useRouter();
 
         const formSize = ref('large');
@@ -181,9 +183,9 @@ export default {
 
         const searchParams: any = ref({
             title: '',
-            summary: '', 
+            summary: '',
             categoryId: null,
-            visible: null,  
+            visible: null,
         });
 
         const categories: any = ref([]);
@@ -205,8 +207,6 @@ export default {
                 table.value.loading = false;
             });
         }
-
-        listArticles();
 
         const handleSizeChange = (pageSize: number) => {
             table.value.pageSize = pageSize;

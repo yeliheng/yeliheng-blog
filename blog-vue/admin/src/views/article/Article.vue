@@ -18,13 +18,13 @@
       </div>
 
       <div class="article-content">
-        <el-input class="title" v-model="article.title" placeholder="请输入标题" @blur="saveDraft()"></el-input>
-        <el-input class="summary" v-model="article.summary" placeholder="请输入文章简介" style="margin-bottom: 0.5rem;" @blur="saveDraft()"></el-input>
+        <el-input class="title" v-model="article.title" placeholder="请输入标题" @change="saveDraft()"></el-input>
+        <el-input class="summary" v-model="article.summary" placeholder="请输入文章简介" style="margin-bottom: 0.5rem;" @change="saveDraft()"></el-input>
         <v-md-editor
             v-model="article.content"
             :disabled-menus="[]"
             placeholder="正文"
-            @blur="saveDraft()"
+            @change="saveDraft()"
             @upload-image="handleUploadImage"
         />
       </div>
@@ -244,15 +244,23 @@ setup() {
       }
     }
 
+    const lastDraftSaveTime = ref(0);
+    const lastSuccessSaved = ref(false);
+
     // 保存草稿
     const saveDraft = () => {
         if(article.value.title != '' || article.value.content != '' || article.value.summary != '') {
+          let delay = Date.now() - lastDraftSaveTime.value
+          if(delay < 5000 && lastSuccessSaved.value == true) {
+            return;
+          }
           if(draftId.value == null) {
             // 这个id是因为数据库中存储的id没有辨识，需要修改
             article.value.articleId = article.value.id;
             addDraft(article.value).then((data: any) => {
               if(!data.errCode){
                 draftId.value = data.data;
+                lastDraftSaveTime.value = Date.now();
                 console.log("创建草稿: ", draftId.value);
               } else {
                 console.error("保存草稿失败！", data.detail);
@@ -262,6 +270,7 @@ setup() {
             article.value.draftId = draftId.value;
             updateDraft(article.value).then((data: any) => {
               if(!data.errCode){
+                lastDraftSaveTime.value = Date.now();
                 console.log("更新草稿: ", draftId.value);
               } else {
                 if(data.errCode == 'GENERAL_EXCEPTION') {
