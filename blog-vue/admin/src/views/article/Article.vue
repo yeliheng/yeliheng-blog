@@ -84,7 +84,7 @@
 
       <template #footer>
       <span class="dialog-footer" style="display: flex; justify-content: center;">
-        <el-button @click="trashDraft()">取消</el-button>
+        <el-button @click="">取消</el-button>
         <el-button type="primary" @click="revertDraft()"
         >确定</el-button
         >
@@ -118,6 +118,7 @@ setup() {
     });
     const articleId = ref(router.currentRoute.value.params.articleId);
     const draftId = ref(router.currentRoute.value.params.draftId);
+    const existDraft = ref(false);
     watch(() => router.currentRoute.value.params, () => {
       articleId.value = router.currentRoute.value.params.articleId;
       // 如果是更新文章，获取文章信息
@@ -133,6 +134,9 @@ setup() {
           article.value = articleData.value;
           article.value.tagIds = tagIds;
           draftId.value = articleData.value.draftId;
+/*          getDraft(article.value.draftId).then((data) => {
+              existDraft.value = data.data != null;
+          });*/
           loading.value = false;
         })
       } else if (router.currentRoute.value.params.draftId != null) {
@@ -162,7 +166,6 @@ setup() {
     let categories: Ref = ref([]);
     let tags: Ref = ref([]);
     let dialogVisible = ref(false);
-    // const existDraft = ref(false);
     let loading = ref(false);
     getCategories().then((data) => {
         categories.value = data.data;
@@ -173,12 +176,9 @@ setup() {
     });
 
     //检查是否存在草稿
-    //existDraft.value = !!localStorage.getItem('draft');
-
-/*    const revertDraft = () => {
-        article.value = JSON.parse(localStorage.getItem('draft'));
-        existDraft.value = false;
-    }*/
+    const revertDraft = () => {
+        router.push("/draft/edit/" + article.value.draftId);
+    }
 
 /*    const trashDraft = () => {
       ElMessageBox.confirm('确定吗？所有的草稿将被删除！', "警告", {
@@ -285,7 +285,6 @@ setup() {
     }
 
     const handleUploadImage = (event, insertImage, files) => {
-      console.log(files);
       // 上传图片到服务器
       uploadImage(files[0]).then((data: any) => {
         if(!data.errCode){
@@ -314,7 +313,7 @@ setup() {
       publishArticle,
       onConfirmClick,
      // existDraft,
-     // revertDraft,
+      //revertDraft,
     //  trashDraft,
       saveDraft,
       handleUploadImage,
