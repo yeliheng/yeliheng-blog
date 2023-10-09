@@ -50,9 +50,9 @@
         <set>
             <if test="userId != null and userId != ''">user_id = #{userId},</if>
             <if test="articleId != null and articleId != ''">article_id = #{articleId},</if>
-            <if test="title != null and title != ''">title = #{title},</if>
-            <if test="summary != null">summary = #{summary},</if>
-            <if test="content != null and content != ''">content = #{content},</if>
+            title = #{title},
+            summary = #{summary},
+            content = #{content},
             updated_at = sysdate()
         </set>
         where draft_id = #{draftId}

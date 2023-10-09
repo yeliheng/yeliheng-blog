@@ -18,13 +18,13 @@
       </div>
 
       <div class="article-content">
-        <el-input class="title" v-model="article.title" placeholder="请输入标题" @change="saveDraft()"></el-input>
-        <el-input class="summary" v-model="article.summary" placeholder="请输入文章简介" style="margin-bottom: 0.5rem;" @change="saveDraft()"></el-input>
+        <el-input class="title" v-model="article.title" placeholder="请输入标题" @change="draftChanged"></el-input>
+        <el-input class="summary" v-model="article.summary" placeholder="请输入文章简介" style="margin-bottom: 0.5rem;" @change="draftChanged"></el-input>
         <v-md-editor
             v-model="article.content"
             :disabled-menus="[]"
             placeholder="正文"
-            @change="saveDraft()"
+            @change="draftChanged"
             @upload-image="handleUploadImage"
         />
       </div>
@@ -102,7 +102,7 @@ import {ElMessage, ElMessageBox} from 'element-plus';
 import { useRouter } from "vue-router";
 import {addDraft, deleteDraft, getDraft, updateDraft} from "@/api/draft";
 export default {
-setup() {
+  setup() {
     const router = useRouter();
     const article = ref({
       id: null,
@@ -117,8 +117,12 @@ setup() {
       top: 0,
     });
     const articleId = ref(router.currentRoute.value.params.articleId);
-    const draftId = ref(router.currentRoute.value.params.draftId);
-    const existDraft = ref(false);
+    let draftId = router.currentRoute.value.params.draftId;
+
+    watch(() => router.currentRoute.value.params.draftId,() => {
+      draftId = router.currentRoute.value.params.draftId;
+    });
+
     watch(() => router.currentRoute.value.params, () => {
       articleId.value = router.currentRoute.value.params.articleId;
       // 如果是更新文章，获取文章信息
@@ -133,10 +137,7 @@ setup() {
           });
           article.value = articleData.value;
           article.value.tagIds = tagIds;
-          draftId.value = articleData.value.draftId;
-/*          getDraft(article.value.draftId).then((data) => {
-              existDraft.value = data.data != null;
-          });*/
+          draftId = articleData.value.draftId;
           loading.value = false;
         })
       } else if (router.currentRoute.value.params.draftId != null) {
@@ -172,26 +173,10 @@ setup() {
     getCategories().then((data) => {
         categories.value = data.data;
     });
-    
+
     getTags().then((data) => {
         tags.value = data.data;
     });
-
-    //检查是否存在草稿
-    const revertDraft = () => {
-        router.push("/draft/edit/" + article.value.draftId);
-    }
-
-/*    const trashDraft = () => {
-      ElMessageBox.confirm('确定吗？所有的草稿将被删除！', "警告", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      }).then(function() {
-        localStorage.removeItem('draft');
-        existDraft.value = false;
-      });
-    }*/
 
     const publishArticle = () => {
         if(article.value.title.trim() == ""){
@@ -212,10 +197,9 @@ setup() {
         dialogVisible.value = true;
     };
 
-
     const onConfirmClick = () => {
       loading.value = true;
-      article.value.draftId = draftId.value;
+      article.value.draftId = draftId;
       if (article.value.id != null) {
         updateArticle(article.value).then((data: any) => {
           dialogVisible.value = false;
@@ -246,37 +230,42 @@ setup() {
       }
     }
 
-    const lastDraftSaveTime = ref(0);
-    const lastSuccessSaved = ref(false);
+    let isDraftSaved = false;
+
+    // 定时检查草稿是否保存
+    setInterval(() => {
+      if(!isDraftSaved) {
+        saveDraft();
+      }
+    },5000);
+
+    const draftChanged = () => {
+      isDraftSaved = false;
+    }
 
     // 保存草稿
     const saveDraft = () => {
+      isDraftSaved = true;
         if(article.value.title != '' || article.value.content != '' || article.value.summary != '') {
-          let delay = Date.now() - lastDraftSaveTime.value
-          if(delay < 5000 && lastSuccessSaved.value == true) {
-            return;
-          }
-          if(draftId.value == null) {
+          if(draftId == null) {
             // 这个id是因为数据库中存储的id没有辨识，需要修改
             article.value.articleId = article.value.id;
             addDraft(article.value).then((data: any) => {
               if(!data.errCode){
-                draftId.value = data.data;
-                lastDraftSaveTime.value = Date.now();
-                console.log("创建草稿: ", draftId.value);
+                draftId = data.data;
+                console.log("创建草稿: ", draftId);
               } else {
                 console.error("保存草稿失败！", data.detail);
               }
             });
           } else {
-            article.value.draftId = draftId.value;
+            article.value.draftId = draftId;
             updateDraft(article.value).then((data: any) => {
               if(!data.errCode){
-                lastDraftSaveTime.value = Date.now();
-                console.log("更新草稿: ", draftId.value);
+                console.log("更新草稿: ", draftId);
               } else {
                 if(data.errCode == 'GENERAL_EXCEPTION') {
-                  draftId.value = null;
+                  draftId = null;
                   return;
                 }
                 console.error("更新草稿失败！", data);
@@ -303,7 +292,6 @@ setup() {
     const openDraftBox = () => {
       router.push('/draft/list');
     }
-    
 
     return {
       categories,
@@ -314,16 +302,13 @@ setup() {
       loading,
       publishArticle,
       onConfirmClick,
-     // existDraft,
-      //revertDraft,
-    //  trashDraft,
       saveDraft,
       handleUploadImage,
       openDraftBox,
       articleId,
+      draftChanged,
     }
-      
-    }
+  }
 }
 </script>
 
