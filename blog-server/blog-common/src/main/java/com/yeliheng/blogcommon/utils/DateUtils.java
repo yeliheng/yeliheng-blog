@@ -1,5 +1,6 @@
 package com.yeliheng.blogcommon.utils;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -77,5 +78,20 @@ public class DateUtils {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(pattern);
         return dateTimeFormatter.format(temporal);
     }
+
+    /**
+     * 将Date转换为yyyyMMdd_HHmmss格式的字符串
+     */
+    public static String dateToUnsignedString(Date date) {
+        return new SimpleDateFormat(UNSIGNED_DATETIME_PATTERN).format(date);
+    }
+
+    /**
+     * 将Date转换为yyyy-MM-dd HH:mm:ss格式的字符串
+     */
+    public static String dateToDateTimeString(Date date) {
+        return new SimpleDateFormat(DATETIME_PATTERN).format(date);
+    }
+
 
 }

@@ -38,8 +38,16 @@
           <el-form-item>
             <router-link to="/articles/publish"><el-button type="primary">发布文章</el-button></router-link>
           </el-form-item>
+          <el-dialog
+              title="导出为？"
+              v-model="exportFormVisible"
+              width="40rem"
+          >
+            <el-button type="primary" @click="handleExportMarkdown" :loading="exporting">批量导出为Markdown</el-button>
+            <el-button type="primary" @click="handleExportExcel" :loading="exporting">批量导出为Excel</el-button>
+          </el-dialog>
           <el-form-item>
-            <el-button type="success" @click="handleExport()" :loading="exporting">导出</el-button>
+            <el-button type="success" @click="exportFormVisible = true" :loading="exporting">导出</el-button>
           </el-form-item>
         </el-form>
 
@@ -121,7 +129,13 @@
 
 <script lang="ts">
 import {onActivated, ref} from 'vue';
-import {deleteArticle, exportArticles, getArticlesAdmin, getCategories} from '@/api/article';
+import {
+  deleteArticle,
+  exportArticlesExcel,
+  exportArticlesMarkdown,
+  getArticlesAdmin,
+  getCategories
+} from '@/api/article';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import {ElMessage, ElMessageBox} from 'element-plus';
@@ -140,6 +154,8 @@ export default {
         const formSize = ref('large');
 
         const exporting = ref(false);
+
+        const exportFormVisible = ref(false);
 
         const getVisibleDict = (visible) => {
             let label = '';
@@ -248,28 +264,54 @@ export default {
             router.push('/articles/publish/' + id);
         }
 
-      const handleExport = () => {
-        ElMessageBox.confirm('是否导出？', "警告", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        }).then(function() {
-          exporting.value = true;
-          exportArticles().then((res: any) => {
-            if(res.data) {
-              const path = res.data;
-              download(path).then((blob: any) => {
-                fileDownload(blob,new Date().getTime() + "_文章列表.xlsx");
-                exporting.value = false;
-              }).catch(() => {
-                exporting.value = false;
-              });
-            }
-          }).catch(() => {
-            exporting.value = false;
+        const handleExportExcel = () => {
+          ElMessageBox.confirm('是否导出？', "警告", {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning"
+          }).then(function() {
+            exportFormVisible.value = false;
+            exporting.value = true;
+            exportArticlesExcel().then((res: any) => {
+              if(res.data) {
+                const path = res.data;
+                download(path).then((blob: any) => {
+                  fileDownload(blob,new Date().getTime() + "_文章列表.xlsx");
+                  exporting.value = false;
+                }).catch(() => {
+                  exporting.value = false;
+                });
+              }
+            }).catch(() => {
+              exporting.value = false;
+            });
           });
-        });
-      };
+        };
+
+        const handleExportMarkdown = () => {
+          ElMessageBox.confirm('是否导出？', "警告", {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning"
+          }).then(function() {
+            exportFormVisible.value = false;
+            exporting.value = true;
+            exportArticlesMarkdown().then((res: any) => {
+              if(res.data) {
+                const path = res.data;
+                download(path).then((blob: any) => {
+                  fileDownload(blob,new Date().getTime() + "_文章导出.zip");
+                  exporting.value = false;
+                }).catch(() => {
+                  exporting.value = false;
+                });
+              }
+            }).catch(() => {
+              exporting.value = false;
+            });
+          });
+        }
+
 
         return {
             table,
@@ -283,8 +325,10 @@ export default {
             getVisibleDict,
             handleDelete,
             handleEditClick,
-            handleExport,
+            handleExportExcel,
+            handleExportMarkdown,
             exporting,
+            exportFormVisible
             };
         }
 }

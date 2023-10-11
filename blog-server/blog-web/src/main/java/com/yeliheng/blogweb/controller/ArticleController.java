@@ -6,17 +6,11 @@ import com.yeliheng.blogcommon.annotation.Log;
 import com.yeliheng.blogcommon.annotation.Upload;
 import com.yeliheng.blogcommon.constant.OperateType;
 import com.yeliheng.blogcommon.exception.RequestFormatException;
-import com.yeliheng.blogcommon.exception.UnexpectedException;
 import com.yeliheng.blogcommon.utils.StringUtils;
-import com.yeliheng.blogframework.storage.FileSystem;
-import com.yeliheng.blogframework.storage.FileUtils;
-import com.yeliheng.blogframework.storage.adapter.KodoStorageAdapter;
 import com.yeliheng.blogsystem.domain.Article;
-import com.yeliheng.blogsystem.domain.Draft;
 import com.yeliheng.blogsystem.service.IArticleService;
 import com.yeliheng.blogweb.common.CommonResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -163,11 +157,18 @@ public class ArticleController {
         return CommonResponse.success();
     }
 
-    @Log(moduleName = "导出文章",operateType = OperateType.EXPORT)
+    @Log(moduleName = "导出文章Excel",operateType = OperateType.EXPORT)
     @PreAuthorize("@perm.hasPerm('admin:articles:export')")
     @GetMapping(value = "/admin/articles/export")
-    public CommonResponse<Object> export(Article article) {
+    public CommonResponse<Object> exportExcel(Article article) {
         return CommonResponse.success(articleService.exportArticle(article));
+    }
+
+    @Log(moduleName = "导出文章Markdown",operateType = OperateType.EXPORT)
+    @PreAuthorize("@perm.hasPerm('admin:articles:export')")
+    @GetMapping(value = "/admin/articles/exportAllToMarkdown")
+    public CommonResponse<Object> exportAllToMarkdown() {
+        return CommonResponse.success(articleService.exportAllToMarkdown());
     }
 
     @PreAuthorize("@perm.hasPerm('admin:articles:add')")

@@ -3,6 +3,8 @@ package com.yeliheng.blogframework.storage;
 import com.yeliheng.blogcommon.utils.DateUtils;
 import com.yeliheng.blogcommon.utils.UUIDUtils;
 
+import java.io.File;
+
 public class FileUtils {
 
     /**
@@ -21,6 +23,14 @@ public class FileUtils {
      */
     public static String encodeFileNameWithUUID(String originalFileExt) {
         return DateUtils.getUnsignedLocalDateTimeStr() +  "-" + UUIDUtils.generateSimpleUUID() + "." + originalFileExt;
+    }
+
+    public static boolean mkdirIfNotExists(String path) {
+        File file = new File(path);
+        if (!file.exists()) {
+            return file.mkdirs();
+        }
+        return true;
     }
 
 

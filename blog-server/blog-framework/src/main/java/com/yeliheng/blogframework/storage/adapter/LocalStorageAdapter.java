@@ -2,6 +2,7 @@ package com.yeliheng.blogframework.storage.adapter;
 
 import com.yeliheng.blogcommon.config.LocalStorageConfig;
 import com.yeliheng.blogframework.storage.FileSystemAdapter;
+import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
@@ -44,6 +45,11 @@ public class LocalStorageAdapter implements FileSystemAdapter {
     public boolean delete(String path) {
         File file = new File(path);
         return file.delete();
+    }
+
+    @Override
+    public boolean deleteDirectory(String path) {
+        return FileSystemUtils.deleteRecursively(new File(path));
     }
 
     @Override

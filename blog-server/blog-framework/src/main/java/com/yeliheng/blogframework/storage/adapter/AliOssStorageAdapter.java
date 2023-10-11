@@ -51,6 +51,11 @@ public class AliOssStorageAdapter implements FileSystemAdapter {
     }
 
     @Override
+    public boolean deleteDirectory(String path) {
+        return false;
+    }
+
+    @Override
     public boolean exist(String path) {
         OSS ossClient = new OSSClientBuilder().build(endpoint,accessKeyId,accessKeySecret);
         boolean exist = ossClient.doesObjectExist(bucket, path);

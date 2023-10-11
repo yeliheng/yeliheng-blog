@@ -57,14 +57,25 @@ export function updateArticle(article) {
     });
 }
 
-//导出文章
-export function exportArticles() {
+/**
+ * 导出所有文章为excel
+ */
+export function exportArticlesExcel() {
     return request({
         url: '/admin/articles/export',
         method: 'get',
     });
 }
 
+/**
+ * 导出所有文章为markdown
+ */
+export function exportArticlesMarkdown() {
+    return request({
+        url: '/admin/articles/exportAllToMarkdown',
+        method: 'get',
+    });
+}
 // 上传图片 通过formData
 export function uploadImage(file: File) {
     const formData = new FormData();

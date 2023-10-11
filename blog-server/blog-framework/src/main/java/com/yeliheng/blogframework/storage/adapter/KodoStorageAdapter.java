@@ -56,6 +56,11 @@ public class KodoStorageAdapter implements FileSystemAdapter {
     }
 
     @Override
+    public boolean deleteDirectory(String path) {
+        return false;
+    }
+
+    @Override
     public boolean exist(String path) {
         BucketManager bucketManager = new BucketManager(auth, cfg);
         try {

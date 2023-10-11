@@ -2,6 +2,7 @@ package com.yeliheng.blogsystem.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.yeliheng.blogcommon.config.LocalStorageConfig;
 import com.yeliheng.blogcommon.exception.GeneralException;
 import com.yeliheng.blogcommon.exception.InternalServerException;
 import com.yeliheng.blogcommon.exception.NotFoundException;
@@ -13,12 +14,12 @@ import com.yeliheng.blogcommon.utils.WordUtils;
 import com.yeliheng.blogframework.storage.FileSystem;
 import com.yeliheng.blogframework.storage.FileUtils;
 import com.yeliheng.blogframework.storage.adapter.KodoStorageAdapter;
+import com.yeliheng.blogframework.storage.adapter.LocalStorageAdapter;
 import com.yeliheng.blogsystem.domain.AritcleTag;
 import com.yeliheng.blogsystem.domain.Article;
 import com.yeliheng.blogsystem.mapper.ArticleMapper;
 import com.yeliheng.blogsystem.mapper.ArticleTagMapper;
 import com.yeliheng.blogsystem.mapper.CategoryMapper;
-import com.yeliheng.blogsystem.mapper.DraftMapper;
 import com.yeliheng.blogsystem.service.IArticleService;
 import com.yeliheng.blogsystem.utils.UserUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -31,8 +32,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 @Service
 public class ArticleServiceImpl implements IArticleService {
@@ -220,6 +224,131 @@ public class ArticleServiceImpl implements IArticleService {
         exportParams.setTitle("文章列表");
         exportParams.setSheetName("文章列表");
         return excelUtils.exportExcel(exportParams,articleList,Article.class);
+    }
+
+    @Override
+    public String exportAllToMarkdown() {
+        List<Article> articleList = articleMapper.exportArticlesBacked(null);
+        // 导出到临时目录
+        String exportDir = String.format("%s/articles_export_tmp/markdown", LocalStorageConfig.getFilePath());
+        if(!FileUtils.mkdirIfNotExists(exportDir)) {
+            throw new InternalServerException("创建目录失败!");
+        }
+        for(Article article : articleList){
+            String fileName = String.format("%s_%s.md", DateUtils.dateToUnsignedString(article.getCreatedAt()), article.getTitle());
+            String filePath = String.format("%s/%s", exportDir, fileName);
+            // 判断文章分类是否存在
+            if(article.getCategory() != null) {
+                String categoryDir = String.format("%s/%s", exportDir, article.getCategory().getCategoryName());
+                if(!FileUtils.mkdirIfNotExists(categoryDir)) {
+                    throw new InternalServerException("创建目录失败!");
+                }
+                filePath = String.format("%s/%s", categoryDir, fileName);
+            }
+
+            // 生成md文件
+            try {
+                PrintWriter writer = new PrintWriter(filePath);
+                writer.println(writeArticleMeta(article));
+                writer.println(article.getContent());
+                writer.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                throw new UnexpectedException();
+            }
+        }
+
+        // 压缩成zip
+        String relativePath = "articles_export_tmp/zip";
+        String zipFilePath = String.format("%s/%s", LocalStorageConfig.getFilePath(), relativePath);
+        if(!FileUtils.mkdirIfNotExists(zipFilePath)) {
+            throw new InternalServerException("创建目录失败!");
+        }
+
+        String zipName = String.format("%s_articles_archive.zip", DateUtils.dateToUnsignedString(DateUtils.getLocalDateTime()));
+        String zipFinalPath = String.format("%s/%s", zipFilePath, zipName);
+        try {
+            FileOutputStream fos = new FileOutputStream(zipFinalPath);
+            ZipOutputStream zipOut = new ZipOutputStream(fos);
+            zipDirectory(exportDir, exportDir, zipOut);
+            zipOut.close();
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new UnexpectedException();
+        }
+
+        // 删除临时目录
+        LocalStorageAdapter localStorageAdapter = new LocalStorageAdapter();
+        FileSystem fileSystem = new FileSystem(localStorageAdapter);
+        fileSystem.deleteDirectory(exportDir);
+
+        return String.format("/%s/%s", relativePath, zipName);
+    }
+
+    /**
+     * 递归压缩目录
+     * @param sourceDirPath 源目录
+     * @param currentDirPath 当前目录
+     * @param zipOut zip输出流
+     * @throws IOException IO异常
+     */
+    private static void zipDirectory(String sourceDirPath, String currentDirPath, ZipOutputStream zipOut) throws IOException {
+        File dir = new File(currentDirPath);
+        File[] files = dir.listFiles();
+
+        for (File file : files) {
+            if (file.isDirectory()) {
+                zipDirectory(sourceDirPath, file.getPath(), zipOut);
+            } else {
+                String entryName = getEntryName(sourceDirPath, file);
+                ZipEntry entry = new ZipEntry(entryName);
+                zipOut.putNextEntry(entry);
+                FileInputStream fis = new FileInputStream(file);
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = fis.read(buffer)) != -1) {
+                    zipOut.write(buffer, 0, bytesRead);
+                }
+                fis.close();
+            }
+        }
+    }
+
+    /**
+     * 获取zip中文件的路径
+     * @param sourceDirPath 源目录
+     * @param file 文件
+     * @return zip中文件的路径
+     */
+    private static String getEntryName(String sourceDirPath, File file) {
+        String entryName = file.getPath().substring(sourceDirPath.length() + 1);
+        return entryName.replace(File.separator, "/");
+    }
+
+
+    /**
+     * 生成文章元信息
+     * @param article 文章实体
+     * @return 文章元信息
+     */
+    private String writeArticleMeta(Article article) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("title: ").append(article.getTitle()).append("\n");
+        stringBuilder.append("summary: ").append(article.getSummary()).append("\n");
+        if(StringUtils.isNotEmpty(article.getTags())) {
+            stringBuilder.append("tags: ");
+            article.getTags().stream().forEach(tag -> stringBuilder.append("#").append(tag.getTagName()).append(" "));
+            stringBuilder.append("\n");
+        }
+        if(article.getCategory() != null) {
+            stringBuilder.append("category: ").append(article.getCategory().getCategoryName()).append("\n");
+        }
+        stringBuilder.append("url: ").append(article.getUrl()).append("\n");
+        stringBuilder.append("date: ").append(DateUtils.dateToDateTimeString(article.getCreatedAt())).append("\n");
+        stringBuilder.append("last edit: ").append(DateUtils.dateToDateTimeString(article.getUpdatedAt())).append("\n");
+        stringBuilder.append("<!--more-->");
+        return stringBuilder.toString();
     }
 
     @Override

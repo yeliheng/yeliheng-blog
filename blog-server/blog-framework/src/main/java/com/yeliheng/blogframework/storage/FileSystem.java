@@ -39,6 +39,13 @@ public class FileSystem {
         return fileSystemAdapter.delete(path);
     }
 
+    public boolean deleteDirectory(String path) {
+        if(StringUtils.isEmpty(path)) {
+            return false;
+        }
+        return fileSystemAdapter.deleteDirectory(path);
+    }
+
     public boolean exist(String path) {
         if(StringUtils.isEmpty(path)) {
             return false;

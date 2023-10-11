@@ -32,6 +32,13 @@ public interface FileSystemAdapter {
     public boolean delete(String path);
 
     /**
+     * 删除指定路径的目录
+     * @param path 路径
+     * @return 是否删除成功
+     */
+    public boolean deleteDirectory(String path);
+
+    /**
      * 判断指定路径的文件是否存在
      * @param path 路径
      * @return 是否存在

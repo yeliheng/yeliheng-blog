@@ -96,6 +96,11 @@ public interface IArticleService {
     String exportArticle(Article article);
 
     /**
+     * 导出所有文章为Markdown
+     */
+    String exportAllToMarkdown();
+
+    /**
      * 上传文章图片
      * @param file 图片文件
      */
