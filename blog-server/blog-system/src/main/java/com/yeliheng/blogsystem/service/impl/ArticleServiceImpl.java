@@ -22,11 +22,13 @@ import com.yeliheng.blogsystem.mapper.ArticleTagMapper;
 import com.yeliheng.blogsystem.mapper.CategoryMapper;
 import com.yeliheng.blogsystem.service.IArticleService;
 import com.yeliheng.blogsystem.utils.UserUtils;
+import com.yeliheng.blogsystem.vo.ArticleVo;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.jeecgframework.poi.excel.entity.ExportParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,19 +60,29 @@ public class ArticleServiceImpl implements IArticleService {
     /**
      * 新增文章
      *
-     * @param article 文章实体
+     * @param articleVo 文章请求
      */
     @Override
     @Transactional
-    public Long addArticle(Article article) {
+    public Long addArticle(ArticleVo articleVo) {
+        Article article = new Article();
+        BeanUtils.copyProperties(articleVo, article);
         article.setUserId(userUtils.getLoginUserId());
-        int wordCount = WordUtils.wordCount(article.getContent());
+        int wordCount = WordUtils.wordCount(articleVo.getContent());
         article.setWords(wordCount);
         article.setReadingTime(WordUtils.calReadingTimeByWords(wordCount));
         article.setUrl(generateUrl());
-        if(StringUtils.isNotNull(article.getCategoryId()))
-            if(categoryMapper.existsById(article.getCategoryId()) <= 0)
+        if(StringUtils.isNotNull(article.getCategoryId())) {
+            if(categoryMapper.existsById(article.getCategoryId()) <= 0) {
                 throw new GeneralException("分类不存在，请修改后重新发布！");
+            }
+        }
+        if(StringUtils.isNotEmpty(articleVo.getCreatedAt())) {
+            article.setCreatedAt(DateUtils.stringToDateTime(articleVo.getCreatedAt()));
+        } else {
+            article.setCreatedAt(DateUtils.getLocalDateTime());
+        }
+        article.setUpdatedAt(DateUtils.getLocalDateTime());
 
         articleMapper.addArticle(article);
         //插入文章标签

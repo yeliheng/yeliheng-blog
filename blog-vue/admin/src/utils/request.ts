@@ -1,5 +1,5 @@
 import axios from "axios";
-import {getRefreshToken, getToken} from "@/utils/auth";
+import {getRefreshToken, getToken, removeRefreshToken, removeToken} from "@/utils/auth";
 import { ElMessage } from "element-plus";
 import store from "@/store";
 import router from "@/router";
@@ -12,6 +12,7 @@ let unauthorizedRequests: any[] = []; // 过期的请求
 
 export const addRequest = (request) => {
     unauthorizedRequests.push(request);
+    console.log("push request")
 }
 
 export const retryRequests = () => {
@@ -24,12 +25,14 @@ export const refreshTokenRequest = () => {
         return;
     }
     isRefreshing = true;
+    const refreshTokenCookie = getRefreshToken();
+    if(!refreshTokenCookie) {
+        handleTokenFetchFailed();
+        return;
+    }
     refreshToken(getRefreshToken()).then((res: any) => {
         if(res.errCode == 'GENERAL_EXCEPTION') {
-            ElMessage.error("用户凭据已过期，请重新登录!");
-            store.dispatch('RemoveAllTokens');
-            router.push('/login');
-            isRefreshing = false;
+            handleTokenFetchFailed();
             return;
         }
         const token:string = res.data.token;
@@ -37,11 +40,17 @@ export const refreshTokenRequest = () => {
         // 刷新完token后，重新发送请求
         retryRequests();
     }).catch(error => {
-        ElMessage.error("用户凭据已过期，请重新登录!");
-        store.dispatch('RemoveAllTokens');
-        router.push('/login');
-        isRefreshing = false;
+        handleTokenFetchFailed();
     });
+}
+
+const handleTokenFetchFailed = () => {
+    ElMessage.error("用户凭据已过期，请重新登录!");
+    store.dispatch('RemoveAllTokens');
+    removeToken();
+    removeRefreshToken();
+    router.push('/login');
+    isRefreshing = false;
 }
 
 const service = axios.create({

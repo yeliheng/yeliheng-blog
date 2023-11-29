@@ -9,6 +9,7 @@ import com.yeliheng.blogcommon.exception.RequestFormatException;
 import com.yeliheng.blogcommon.utils.StringUtils;
 import com.yeliheng.blogsystem.domain.Article;
 import com.yeliheng.blogsystem.service.IArticleService;
+import com.yeliheng.blogsystem.vo.ArticleVo;
 import com.yeliheng.blogweb.common.CommonResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class ArticleController {
     @PreAuthorize("@perm.hasPerm('admin:articles:add')")
     @Log(moduleName = "发布文章",operateType = OperateType.INSERT)
     @PostMapping("/admin/articles")
-    public CommonResponse<Object> add(@Validated @RequestBody Article article){
+    public CommonResponse<Object> add(@Validated @RequestBody ArticleVo article){
         return CommonResponse.success(articleService.addArticle(article));
     }
 
