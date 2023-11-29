@@ -2,6 +2,7 @@ package com.yeliheng.blogsystem.service;
 
 import com.github.pagehelper.PageInfo;
 import com.yeliheng.blogsystem.domain.Article;
+import com.yeliheng.blogsystem.vo.ArticleVo;
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -9,10 +10,10 @@ public interface IArticleService {
 
     /**
      *  新增文章
-     * @param article 文章实体
+     * @param articleVo 文章实体
      *
      *  */
-    Long addArticle(Article article);
+    Long addArticle(ArticleVo articleVo);
 
     /**
      *  删除文章

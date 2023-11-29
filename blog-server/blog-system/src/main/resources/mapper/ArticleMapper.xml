@@ -124,8 +124,8 @@
         <if test="visible != null and visible != ''">#{visible},</if>
         <if test="words != null and words != ''">#{words},</if>
         <if test="readingTime != null and readingTime != ''">#{readingTime},</if>
-        sysdate(),
-        sysdate()
+        #{createdAt},
+        #{updatedAt}
         )
     </insert>
 

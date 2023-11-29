@@ -1,6 +1,6 @@
 <template>
   <div>
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0"/>
     <div class="article-container">
 
       <div class="article-header">
@@ -12,14 +12,16 @@
           <span>置顶</span>
           <el-switch class="top-sw" v-model="article.top" active-value="1" inactive-value="0"/>
           <el-button type="success" @click="openDraftBox" style="margin-left: 1rem;">草稿箱</el-button>
-          <el-button type="primary" v-if="articleId == null" @click="publishArticle" style="margin-left: 1rem;">保存并发布</el-button>
+          <el-button type="primary" v-if="articleId == null" @click="publishArticle" style="margin-left: 1rem;">保存并发布
+          </el-button>
           <el-button type="primary" v-else @click="publishArticle" style="margin-left: 1rem;">更新</el-button>
         </div>
       </div>
 
       <div class="article-content">
         <el-input class="title" v-model="article.title" placeholder="请输入标题" @change="draftChanged"></el-input>
-        <el-input class="summary" v-model="article.summary" placeholder="请输入文章简介" style="margin-bottom: 0.5rem;" @change="draftChanged"></el-input>
+        <el-input class="summary" v-model="article.summary" placeholder="请输入文章简介" style="margin-bottom: 0.5rem;"
+                  @change="draftChanged"></el-input>
         <v-md-editor
             v-model="article.content"
             :disabled-menus="[]"
@@ -31,7 +33,7 @@
       <div class="article-footer">
         <div class="category">
           <span>分类:</span>
-          <el-select class="category-select" v-model="article.categoryId" clearable placeholder="选择一个分类">
+          <el-select class="selector" v-model="article.categoryId" clearable placeholder="选择一个分类">
             <el-option
                 v-for="item in categories"
                 :key="item.id"
@@ -43,7 +45,7 @@
         </div>
         <div class="tag">
           <span>标签:</span>
-          <el-select class="tag-select" v-model="article.tagIds" multiple placeholder="选择标签">
+          <el-select class="selector" v-model="article.tagIds" multiple placeholder="选择标签">
             <el-option
                 v-for="item in tags"
                 :key="item.id"
@@ -52,6 +54,17 @@
             >
             </el-option>
           </el-select>
+        </div>
+        <div class="publish-time">
+          <span>发布时间:</span>
+          <el-date-picker
+              style="margin-left: 0.5rem;"
+              v-model="article.createdAt"
+              type="datetime"
+              format="YYYY-MM-DD HH:mm:ss"
+              value-format="YYYY-MM-DD HH:mm:ss"
+              placeholder="选择发布时间">
+          </el-date-picker>
         </div>
 
       </div>
@@ -74,23 +87,23 @@
       </template>
     </el-dialog>
 
-<!--    <el-dialog
-        v-model="existDraft"
-        width="20rem"
-        title="提示"
-        :close-on-click-modal="false"
-    >
-      <span>你有未保存的草稿文章，是否恢复？</span>
-
-      <template #footer>
-      <span class="dialog-footer" style="display: flex; justify-content: center;">
-        <el-button @click="">取消</el-button>
-        <el-button type="primary" @click="revertDraft()"
-        >确定</el-button
+    <!--    <el-dialog
+            v-model="existDraft"
+            width="20rem"
+            title="提示"
+            :close-on-click-modal="false"
         >
-      </span>
-      </template>
-    </el-dialog>-->
+          <span>你有未保存的草稿文章，是否恢复？</span>
+
+          <template #footer>
+          <span class="dialog-footer" style="display: flex; justify-content: center;">
+            <el-button @click="">取消</el-button>
+            <el-button type="primary" @click="revertDraft()"
+            >确定</el-button
+            >
+          </span>
+          </template>
+        </el-dialog>-->
   </div>
 
 </template>
@@ -99,8 +112,9 @@
 import {Ref, ref, watch} from 'vue';
 import {addArticle, getArticleByIdBacked, getCategories, getTags, updateArticle, uploadImage} from '@/api/article';
 import {ElMessage, ElMessageBox} from 'element-plus';
-import { useRouter } from "vue-router";
+import {useRouter} from "vue-router";
 import {addDraft, deleteDraft, getDraft, updateDraft} from "@/api/draft";
+
 export default {
   setup() {
     const router = useRouter();
@@ -115,18 +129,19 @@ export default {
       content: "",
       visible: 1,
       top: 0,
+      createdAt: "",
     });
     const articleId = ref(router.currentRoute.value.params.articleId);
     let draftId = router.currentRoute.value.params.draftId;
 
-    watch(() => router.currentRoute.value.params.draftId,() => {
+    watch(() => router.currentRoute.value.params.draftId, () => {
       draftId = router.currentRoute.value.params.draftId;
     });
 
     watch(() => router.currentRoute.value.params, () => {
       articleId.value = router.currentRoute.value.params.articleId;
       // 如果是更新文章，获取文章信息
-      if(articleId.value != null) {
+      if (articleId.value != null) {
         //拉取文章信息
         getArticleByIdBacked(articleId.value).then((data) => {
           let articleData = ref();
@@ -163,6 +178,7 @@ export default {
           content: "",
           visible: 1,
           top: 0,
+          createdAt: "",
         };
       }
     }, {immediate: true});
@@ -171,30 +187,30 @@ export default {
     let dialogVisible = ref(false);
     let loading = ref(false);
     getCategories().then((data) => {
-        categories.value = data.data;
+      categories.value = data.data;
     });
 
     getTags().then((data) => {
-        tags.value = data.data;
+      tags.value = data.data;
     });
 
     const publishArticle = () => {
-        if(article.value.title.trim() == ""){
-            ElMessage({
-                message: '文章标题不能为空!',
-                type: 'error',
-            });
-            return;
-        }
-        if(article.value.content.trim() == ""){
-            ElMessage({
-                message: '文章内容不能为空!',
-                type: 'error',
-            });
-            return;
-        }
-        loading.value = false;
-        dialogVisible.value = true;
+      if (article.value.title.trim() == "") {
+        ElMessage({
+          message: '文章标题不能为空!',
+          type: 'error',
+        });
+        return;
+      }
+      if (article.value.content.trim() == "") {
+        ElMessage({
+          message: '文章内容不能为空!',
+          type: 'error',
+        });
+        return;
+      }
+      loading.value = false;
+      dialogVisible.value = true;
     };
 
     const onConfirmClick = () => {
@@ -234,10 +250,10 @@ export default {
 
     // 定时检查草稿是否保存
     setInterval(() => {
-      if(!isDraftSaved) {
+      if (!isDraftSaved) {
         saveDraft();
       }
-    },5000);
+    }, 5000);
 
     const draftChanged = () => {
       isDraftSaved = false;
@@ -246,39 +262,40 @@ export default {
     // 保存草稿
     const saveDraft = () => {
       isDraftSaved = true;
-        if(article.value.title != '' || article.value.content != '' || article.value.summary != '') {
-          if(draftId == null) {
-            // 这个id是因为数据库中存储的id没有辨识，需要修改
-            article.value.articleId = article.value.id;
-            addDraft(article.value).then((data: any) => {
-              if(!data.errCode){
-                draftId = data.data;
-                console.log("创建草稿: ", draftId);
-              } else {
-                console.error("保存草稿失败！", data.detail);
+      if (article.value.title != '' || article.value.content != '' || article.value.summary != '') {
+        if (draftId == null) {
+          // 这个id是因为数据库中存储的id没有辨识，需要修改
+          article.value.articleId = article.value.id;
+          addDraft(article.value).then((data: any) => {
+            if (!data.errCode) {
+              draftId = data.data;
+              console.log("2333333", article.value.createdAt);
+              console.log("创建草稿: ", draftId);
+            } else {
+              console.error("保存草稿失败！", data.detail);
+            }
+          });
+        } else {
+          article.value.draftId = draftId;
+          updateDraft(article.value).then((data: any) => {
+            if (!data.errCode) {
+              console.log("更新草稿: ", draftId);
+            } else {
+              if (data.errCode == 'GENERAL_EXCEPTION') {
+                draftId = null;
+                return;
               }
-            });
-          } else {
-            article.value.draftId = draftId;
-            updateDraft(article.value).then((data: any) => {
-              if(!data.errCode){
-                console.log("更新草稿: ", draftId);
-              } else {
-                if(data.errCode == 'GENERAL_EXCEPTION') {
-                  draftId = null;
-                  return;
-                }
-                console.error("更新草稿失败！", data);
-              }
-            });
-          }
+              console.error("更新草稿失败！", data);
+            }
+          });
         }
+      }
     }
 
     const handleUploadImage = (event, insertImage, files) => {
       // 上传图片到服务器
       uploadImage(files[0]).then((data: any) => {
-        if(!data.errCode){
+        if (!data.errCode) {
           insertImage({
             url: data.data,
             desc: files[0].name,
@@ -313,60 +330,69 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.article-btn{
+.article-btn {
   display: flex;
   align-items: center;
   margin-left: 1rem;
-    > span{  
-       margin-right: 0.3rem;
-    }
-    .private-sw{
-        margin-right: 1rem;
-    }
-    
-}
-.article-header{
-    display: flex;
-    margin-bottom: 1rem;
-    >span{
-        font-size: 20px;
-        margin-left: 0.5rem;
-    }
+
+  > span {
+    margin-right: 0.3rem;
+  }
+
+  .private-sw {
+    margin-right: 1rem;
+  }
 
 }
-.line{
-    width: 0.5rem;
-    height: 2rem;
-    background: #666666;
-}
-.article-content{
-    .title{
-        margin-bottom: 0.5rem;
-    }
-}
-.article-footer{
-    display: flex;
-    justify-content: center;
-    margin-top: 1rem;
-    span{
-        font-size: 1.1rem;
-        font-weight: bold;      
-    }
-    .category-select{
-        margin-left: 0.5rem;
-        width: 30vw;
-    }
-    .tag{
-        margin-left: 1rem;
-    }
-    .tag-select{
-        margin-left: 0.5rem;
-        width: 30vw;
-    }
+
+.article-header {
+  display: flex;
+  margin-bottom: 1rem;
+
+  > span {
+    font-size: 20px;
+    margin-left: 0.5rem;
+  }
+
 }
 
-:deep(.v-md-editor){
+.line {
+  width: 0.5rem;
+  height: 2rem;
+  background: #666666;
+}
+
+.article-content {
+  .title {
+    margin-bottom: 0.5rem;
+  }
+}
+
+.article-footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+
+  span {
+    font-size: 1.1rem;
+    font-weight: bold;
+  }
+
+  .tag {
+    margin-left: 3rem;
+  }
+
+  .selector {
+    margin-left: 0.5rem;
+  }
+
+  .publish-time {
+    margin-left: 3rem;
+  }
+}
+
+:deep(.v-md-editor) {
   height: 60vh;
 }
-    
+
 </style>

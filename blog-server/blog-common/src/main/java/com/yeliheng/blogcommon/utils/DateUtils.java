@@ -93,5 +93,15 @@ public class DateUtils {
         return new SimpleDateFormat(DATETIME_PATTERN).format(date);
     }
 
-
+    /**
+     * 将yyyy-MM-dd HH:mm:ss格式的字符串转为Date
+     * 异常则返回当前时间
+     */
+    public static Date stringToDateTime(String str) {
+        try {
+            return new SimpleDateFormat(DATETIME_PATTERN).parse(str);
+        } catch (Exception e) {
+            return getLocalDateTime();
+        }
+    }
 }
