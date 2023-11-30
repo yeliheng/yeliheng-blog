@@ -7,10 +7,7 @@ import com.yeliheng.blogcommon.exception.GeneralException;
 import com.yeliheng.blogcommon.exception.InternalServerException;
 import com.yeliheng.blogcommon.exception.NotFoundException;
 import com.yeliheng.blogcommon.exception.UnexpectedException;
-import com.yeliheng.blogcommon.utils.DateUtils;
-import com.yeliheng.blogcommon.utils.ExcelUtils;
-import com.yeliheng.blogcommon.utils.StringUtils;
-import com.yeliheng.blogcommon.utils.WordUtils;
+import com.yeliheng.blogcommon.utils.*;
 import com.yeliheng.blogframework.storage.FileSystem;
 import com.yeliheng.blogframework.storage.FileUtils;
 import com.yeliheng.blogframework.storage.adapter.KodoStorageAdapter;
@@ -23,7 +20,8 @@ import com.yeliheng.blogsystem.mapper.CategoryMapper;
 import com.yeliheng.blogsystem.service.IArticleService;
 import com.yeliheng.blogsystem.utils.UserUtils;
 import com.yeliheng.blogsystem.vo.ArticleVo;
-import org.apache.commons.io.FilenameUtils;
+import net.coobird.thumbnailator.Thumbnails;
+import net.coobird.thumbnailator.geometry.Positions;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.jeecgframework.poi.excel.entity.ExportParams;
 import org.slf4j.Logger;
@@ -34,6 +32,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,12 +72,12 @@ public class ArticleServiceImpl implements IArticleService {
         article.setWords(wordCount);
         article.setReadingTime(WordUtils.calReadingTimeByWords(wordCount));
         article.setUrl(generateUrl());
-        if(StringUtils.isNotNull(article.getCategoryId())) {
-            if(categoryMapper.existsById(article.getCategoryId()) <= 0) {
+        if (StringUtils.isNotNull(article.getCategoryId())) {
+            if (categoryMapper.existsById(article.getCategoryId()) <= 0) {
                 throw new GeneralException("分类不存在，请修改后重新发布！");
             }
         }
-        if(StringUtils.isNotEmpty(articleVo.getCreatedAt())) {
+        if (StringUtils.isNotEmpty(articleVo.getCreatedAt())) {
             article.setCreatedAt(DateUtils.stringToDateTime(articleVo.getCreatedAt()));
         } else {
             article.setCreatedAt(DateUtils.getLocalDateTime());
@@ -98,7 +98,7 @@ public class ArticleServiceImpl implements IArticleService {
     @Transactional
     @Override
     public void deleteAritcle(Long articleId) {
-        if(articleMapper.deleteArticleById(articleId) <= 0)
+        if (articleMapper.deleteArticleById(articleId) <= 0)
             throw new GeneralException("删除失败，文章可能不存在");
         //删除文章与标签关联
         deleteArticleAllTags(articleId);
@@ -107,7 +107,7 @@ public class ArticleServiceImpl implements IArticleService {
     /**
      * 修改文章
      *
-     * @param article   文章实体
+     * @param article 文章实体
      */
     @Transactional
     @Override
@@ -115,11 +115,11 @@ public class ArticleServiceImpl implements IArticleService {
         int wordCount = WordUtils.wordCount(article.getContent());
         article.setWords(wordCount);
         article.setReadingTime(WordUtils.calReadingTimeByWords(wordCount));
-        if(StringUtils.isNotNull(article.getCategoryId()))
-            if(categoryMapper.existsById(article.getCategoryId()) <= 0)
+        if (StringUtils.isNotNull(article.getCategoryId()))
+            if (categoryMapper.existsById(article.getCategoryId()) <= 0)
                 throw new GeneralException("分类不存在，请修改后重新发布！");
         int rows = articleMapper.updateArticle(article);
-        if(rows <= 0) throw new GeneralException("更新失败，文章可能不存在");
+        if (rows <= 0) throw new GeneralException("更新失败，文章可能不存在");
         //删除该文章的所有标签
         deleteArticleAllTags(article.getId());
         //插入标签
@@ -135,7 +135,7 @@ public class ArticleServiceImpl implements IArticleService {
      */
     @Override
     public PageInfo<Article> getArticles(Integer page, Integer pageSize) {
-        PageHelper.startPage(page,pageSize);
+        PageHelper.startPage(page, pageSize);
         List<Article> articleList = articleMapper.getArticles();
         return new PageInfo<>(articleList);
     }
@@ -148,8 +148,8 @@ public class ArticleServiceImpl implements IArticleService {
      * @return 文章列表
      */
     @Override
-    public PageInfo<Article> getArticlesBacked(Integer page, Integer pageSize,Article article) {
-        PageHelper.startPage(page,pageSize);
+    public PageInfo<Article> getArticlesBacked(Integer page, Integer pageSize, Article article) {
+        PageHelper.startPage(page, pageSize);
         List<Article> articleList = articleMapper.getArticlesBacked(article);
         return new PageInfo<>(articleList);
     }
@@ -164,7 +164,7 @@ public class ArticleServiceImpl implements IArticleService {
     public Article getArticleById(Long articleId) {
         Article article = articleMapper.getArticleById(articleId);
         articleMapper.increaseViewsByArticleId(articleId);
-        if(article == null)
+        if (article == null)
             throw new NotFoundException("文章不存在");
         return article;
     }
@@ -178,7 +178,7 @@ public class ArticleServiceImpl implements IArticleService {
     @Override
     public Article getArticleByUrl(String articleUrl) {
         Article article = articleMapper.getArticleByUrl(articleUrl);
-        if(article == null)
+        if (article == null)
             throw new NotFoundException("文章不存在");
         articleMapper.increaseViewsByArticleId(article.getId());
         return article;
@@ -202,8 +202,8 @@ public class ArticleServiceImpl implements IArticleService {
      * @return 文章列表
      */
     @Override
-    public PageInfo<Article> getArticlesByCategory(Long categoryId,Integer page, Integer pageSize) {
-        PageHelper.startPage(page,pageSize);
+    public PageInfo<Article> getArticlesByCategory(Long categoryId, Integer page, Integer pageSize) {
+        PageHelper.startPage(page, pageSize);
         List<Article> articleList = articleMapper.getArticlesByCategoryId(categoryId);
         return new PageInfo<>(articleList);
     }
@@ -211,14 +211,14 @@ public class ArticleServiceImpl implements IArticleService {
     /**
      * 通过标签获取文章
      *
-     * @param tagId 标签Id
-     * @param page 第几页
+     * @param tagId    标签Id
+     * @param page     第几页
      * @param pageSize 每页显示多少
      * @return 文章列表
      */
     @Override
     public PageInfo<Article> getArticlesByTag(Long tagId, Integer page, Integer pageSize) {
-        PageHelper.startPage(page,pageSize);
+        PageHelper.startPage(page, pageSize);
         List<Article> articleList = articleMapper.getArticlesByTagId(tagId);
         return new PageInfo<>(articleList);
     }
@@ -231,11 +231,11 @@ public class ArticleServiceImpl implements IArticleService {
      */
     @Override
     public String exportArticle(Article article) {
-        List<Article> articleList =  articleMapper.exportArticlesBacked(article);
+        List<Article> articleList = articleMapper.exportArticlesBacked(article);
         ExportParams exportParams = new ExportParams();
         exportParams.setTitle("文章列表");
         exportParams.setSheetName("文章列表");
-        return excelUtils.exportExcel(exportParams,articleList,Article.class);
+        return excelUtils.exportExcel(exportParams, articleList, Article.class);
     }
 
     @Override
@@ -243,16 +243,16 @@ public class ArticleServiceImpl implements IArticleService {
         List<Article> articleList = articleMapper.exportArticlesBacked(null);
         // 导出到临时目录
         String exportDir = String.format("%s/articles_export_tmp/markdown", LocalStorageConfig.getFilePath());
-        if(!FileUtils.mkdirIfNotExists(exportDir)) {
+        if (!FileUtils.mkdirIfNotExists(exportDir)) {
             throw new InternalServerException("创建目录失败!");
         }
-        for(Article article : articleList){
+        for (Article article : articleList) {
             String fileName = String.format("%s_%s.md", DateUtils.dateToUnsignedString(article.getCreatedAt()), article.getTitle());
             String filePath = String.format("%s/%s", exportDir, fileName);
             // 判断文章分类是否存在
-            if(article.getCategory() != null) {
+            if (article.getCategory() != null) {
                 String categoryDir = String.format("%s/%s", exportDir, article.getCategory().getCategoryName());
-                if(!FileUtils.mkdirIfNotExists(categoryDir)) {
+                if (!FileUtils.mkdirIfNotExists(categoryDir)) {
                     throw new InternalServerException("创建目录失败!");
                 }
                 filePath = String.format("%s/%s", categoryDir, fileName);
@@ -273,7 +273,7 @@ public class ArticleServiceImpl implements IArticleService {
         // 压缩成zip
         String relativePath = "articles_export_tmp/zip";
         String zipFilePath = String.format("%s/%s", LocalStorageConfig.getFilePath(), relativePath);
-        if(!FileUtils.mkdirIfNotExists(zipFilePath)) {
+        if (!FileUtils.mkdirIfNotExists(zipFilePath)) {
             throw new InternalServerException("创建目录失败!");
         }
 
@@ -300,9 +300,10 @@ public class ArticleServiceImpl implements IArticleService {
 
     /**
      * 递归压缩目录
-     * @param sourceDirPath 源目录
+     *
+     * @param sourceDirPath  源目录
      * @param currentDirPath 当前目录
-     * @param zipOut zip输出流
+     * @param zipOut         zip输出流
      * @throws IOException IO异常
      */
     private static void zipDirectory(String sourceDirPath, String currentDirPath, ZipOutputStream zipOut) throws IOException {
@@ -329,8 +330,9 @@ public class ArticleServiceImpl implements IArticleService {
 
     /**
      * 获取zip中文件的路径
+     *
      * @param sourceDirPath 源目录
-     * @param file 文件
+     * @param file          文件
      * @return zip中文件的路径
      */
     private static String getEntryName(String sourceDirPath, File file) {
@@ -341,6 +343,7 @@ public class ArticleServiceImpl implements IArticleService {
 
     /**
      * 生成文章元信息
+     *
      * @param article 文章实体
      * @return 文章元信息
      */
@@ -348,12 +351,12 @@ public class ArticleServiceImpl implements IArticleService {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("title: ").append(article.getTitle()).append("\n");
         stringBuilder.append("summary: ").append(article.getSummary()).append("\n");
-        if(StringUtils.isNotEmpty(article.getTags())) {
+        if (StringUtils.isNotEmpty(article.getTags())) {
             stringBuilder.append("tags: ");
-            article.getTags().stream().forEach(tag -> stringBuilder.append("#").append(tag.getTagName()).append(" "));
+            article.getTags().forEach(tag -> stringBuilder.append("#").append(tag.getTagName()).append(" "));
             stringBuilder.append("\n");
         }
-        if(article.getCategory() != null) {
+        if (article.getCategory() != null) {
             stringBuilder.append("category: ").append(article.getCategory().getCategoryName()).append("\n");
         }
         stringBuilder.append("url: ").append(article.getUrl()).append("\n");
@@ -367,53 +370,66 @@ public class ArticleServiceImpl implements IArticleService {
     public String uploadImage(MultipartFile file) {
         final String BUCKET = "yeliheng-blog";
         final String IMG_RELATIVE_PATH = "blog-images/new";
-        String fileName = FileUtils.encodeFileNameWithUUID(FilenameUtils.getExtension(file.getOriginalFilename()));
+        String fileName = FileUtils.encodeFileNameWithUUID("jpg");
         String filePath = String.format("%s/%s", IMG_RELATIVE_PATH, fileName);
-
-        KodoStorageAdapter kodoStorageAdapter = new KodoStorageAdapter(BUCKET);
-        FileSystem fileSystem = new FileSystem(kodoStorageAdapter);
+        // 压缩图片
         try {
-            fileSystem.write(file, filePath);
-        } catch (Exception e) {
+            InputStream watermark = generateWatermark();
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            Thumbnails.of(file.getInputStream())
+                    .outputFormat("jpeg")
+                    .scale(1f)
+                    .watermark(Positions.BOTTOM_LEFT, ImageIO.read(watermark), 1f)
+                    .toOutputStream(os);
+
+            KodoStorageAdapter kodoStorageAdapter = new KodoStorageAdapter(BUCKET);
+            FileSystem fileSystem = new FileSystem(kodoStorageAdapter);
+            fileSystem.writeStream(new ByteArrayInputStream(os.toByteArray()), filePath);
+            return fileSystem.getPublicURL(filePath);
+        } catch (IOException e) {
             e.printStackTrace();
             throw new UnexpectedException();
         }
-        return fileSystem.getPublicURL(filePath);
+    }
+
+    private InputStream generateWatermark() {
+        return ImageUtils.addTextWatermark("Yeliheng的技术小站", "www.yeliheng.com",
+                400, 100, new Color(140, 140, 140), 10);
     }
 
     /**
-     *
      * 新增文章标签
+     *
      * @param article 文章实体
      */
-    public void insertArticleTag(Article article){
+    public void insertArticleTag(Article article) {
         Long[] tags = article.getTagIds();
-        if(StringUtils.isNotNull(tags)){
+        if (StringUtils.isNotNull(tags)) {
             //新增关联
             List<AritcleTag> list = new ArrayList<>();
-            for(Long tagId : tags){
+            for (Long tagId : tags) {
                 AritcleTag aritcleTag = new AritcleTag();
                 aritcleTag.setArticleId(article.getId());
                 aritcleTag.setTagId(tagId);
                 list.add(aritcleTag);
             }
-            if(list.size() > 0){
+            if (!list.isEmpty()) {
                 articleTagMapper.setArticleTags(list);
             }
         }
     }
 
     /**
-     *
      * 删除某篇文章的所有标签
+     *
      * @param articleId 文章Id
      */
-    public void deleteArticleAllTags(Long articleId){
+    public void deleteArticleAllTags(Long articleId) {
         articleTagMapper.deleteArticleAllTags(articleId);
     }
 
     private String generateUrl() {
-       return RandomStringUtils.random(ARTICLE_URL_LENGTH, "0123456789abcdef");
+        return RandomStringUtils.random(ARTICLE_URL_LENGTH, "0123456789abcdef");
     }
 
 }
