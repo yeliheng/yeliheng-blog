@@ -22,6 +22,7 @@ import com.yeliheng.blogsystem.utils.UserUtils;
 import com.yeliheng.blogsystem.vo.ArticleVo;
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.geometry.Positions;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.jeecgframework.poi.excel.entity.ExportParams;
 import org.slf4j.Logger;
@@ -377,7 +378,7 @@ public class ArticleServiceImpl implements IArticleService {
             InputStream watermark = generateWatermark();
             ByteArrayOutputStream os = new ByteArrayOutputStream();
             Thumbnails.of(file.getInputStream())
-                    .outputFormat("jpeg")
+                    .outputFormat("jpg")
                     .scale(1f)
                     .watermark(Positions.BOTTOM_LEFT, ImageIO.read(watermark), 1f)
                     .toOutputStream(os);
@@ -393,7 +394,7 @@ public class ArticleServiceImpl implements IArticleService {
     }
 
     private InputStream generateWatermark() {
-        return ImageUtils.addTextWatermark("Yeliheng的技术小站", "www.yeliheng.com",
+        return ImageUtils.addTextWatermark("www.yeliheng.com",
                 400, 100, new Color(140, 140, 140), 10);
     }
 
