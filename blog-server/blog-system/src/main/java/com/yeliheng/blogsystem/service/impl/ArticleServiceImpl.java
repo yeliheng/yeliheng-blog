@@ -371,18 +371,24 @@ public class ArticleServiceImpl implements IArticleService {
     public String uploadImage(MultipartFile file) {
         final String BUCKET = "yeliheng-blog";
         final String IMG_RELATIVE_PATH = "blog-images/new";
-        String fileName = FileUtils.encodeFileNameWithUUID("jpg");
+        String fileName = FileUtils.encodeFileNameWithUUID(FilenameUtils.getExtension(file.getOriginalFilename()));
         String filePath = String.format("%s/%s", IMG_RELATIVE_PATH, fileName);
+        ByteArrayOutputStream os;
+        // 文件大小小于500k的只加水印
+        try {
+            System.out.println(file.getSize());
+            if (file.getSize() < 500 * 1024) {
+                os = addWatermark(file);
+            } else {
+                os = compressImage(file);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new UnexpectedException();
+        }
+
         // 压缩图片
         try {
-            InputStream watermark = generateWatermark();
-            ByteArrayOutputStream os = new ByteArrayOutputStream();
-            Thumbnails.of(file.getInputStream())
-                    .outputFormat("jpg")
-                    .scale(1f)
-                    .watermark(Positions.BOTTOM_LEFT, ImageIO.read(watermark), 1f)
-                    .toOutputStream(os);
-
             KodoStorageAdapter kodoStorageAdapter = new KodoStorageAdapter(BUCKET);
             FileSystem fileSystem = new FileSystem(kodoStorageAdapter);
             fileSystem.writeStream(new ByteArrayInputStream(os.toByteArray()), filePath);
@@ -396,6 +402,25 @@ public class ArticleServiceImpl implements IArticleService {
     private InputStream generateWatermark() {
         return ImageUtils.addTextWatermark("www.yeliheng.com",
                 400, 100, new Color(140, 140, 140), 10);
+    }
+
+    private ByteArrayOutputStream compressImage(MultipartFile file) throws IOException {
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        Thumbnails.of(file.getInputStream())
+                .outputFormat("jpg")
+                .scale(1f)
+                .watermark(Positions.BOTTOM_LEFT, ImageIO.read(generateWatermark()), 1f)
+                .toOutputStream(os);
+        return os;
+    }
+
+    private ByteArrayOutputStream addWatermark(MultipartFile file) throws IOException {
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        Thumbnails.of(file.getInputStream())
+                .scale(1f)
+                .watermark(Positions.BOTTOM_LEFT, ImageIO.read(generateWatermark()), 1f)
+                .toOutputStream(os);
+        return os;
     }
 
     /**
