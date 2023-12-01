@@ -376,7 +376,6 @@ public class ArticleServiceImpl implements IArticleService {
         ByteArrayOutputStream os;
         // 文件大小小于500k的只加水印
         try {
-            System.out.println(file.getSize());
             if (file.getSize() < 500 * 1024) {
                 os = addWatermark(file);
             } else {
