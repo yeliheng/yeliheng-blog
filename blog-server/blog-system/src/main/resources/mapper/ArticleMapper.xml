@@ -151,7 +151,7 @@
 
     <select id="getArticles" resultMap="ArticleListResult">
         <include refid="selectArticleVo" />
-        where visible = 1 order by top desc , a.id desc
+        where visible = 1 order by top desc , a.created_at desc
     </select>
 
     <select id="getArticlesBacked" parameterType="Article" resultMap="ArticleListResult">
@@ -170,7 +170,7 @@
             and category_id = #{categoryId}
         </if>
         </where>
-        order by top desc, a.id desc
+        order by top desc, a.created_at desc
     </select>
 
     <select id="getArticleById" resultMap="ArticleResult">
@@ -202,7 +202,7 @@
                  left join article_tag atg on atg.article_id = a.id
                  left join tag t on t.id = atg.tag_id
                  left join category c on a.category_id = c.id
-        where atg.tag_id = #{tagId} and visible = 1 order by a.id desc
+        where atg.tag_id = #{tagId} and visible = 1 order by a.created_at desc
     </select>
 
     <update id="increaseViewsByArticleId" parameterType="Long">
