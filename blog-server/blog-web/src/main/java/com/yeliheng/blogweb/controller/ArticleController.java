@@ -48,7 +48,7 @@ public class ArticleController {
     @PreAuthorize("@perm.hasPerm('admin:articles:edit')")
     @Log(moduleName = "更新文章",operateType = OperateType.UPDATE)
     @PutMapping("/admin/articles")
-    public CommonResponse<Object> update(@Validated @RequestBody Article article){
+    public CommonResponse<Object> update(@Validated @RequestBody ArticleVo article){
         articleService.updateArticle(article);
         return CommonResponse.success();
     }

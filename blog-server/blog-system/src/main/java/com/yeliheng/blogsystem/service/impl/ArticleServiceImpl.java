@@ -108,21 +108,29 @@ public class ArticleServiceImpl implements IArticleService {
     /**
      * 修改文章
      *
-     * @param article 文章实体
+     * @param articleVo 文章实体
      */
     @Transactional
     @Override
-    public void updateArticle(Article article) {
-        int wordCount = WordUtils.wordCount(article.getContent());
+    public void updateArticle(ArticleVo articleVo) {
+        Article article = new Article();
+        BeanUtils.copyProperties(articleVo, article);
+        int wordCount = WordUtils.wordCount(articleVo.getContent());
         article.setWords(wordCount);
         article.setReadingTime(WordUtils.calReadingTimeByWords(wordCount));
-        if (StringUtils.isNotNull(article.getCategoryId()))
-            if (categoryMapper.existsById(article.getCategoryId()) <= 0)
+        if (StringUtils.isNotNull(articleVo.getCategoryId()))
+            if (categoryMapper.existsById(articleVo.getCategoryId()) <= 0)
                 throw new GeneralException("分类不存在，请修改后重新发布！");
+        if (StringUtils.isNotEmpty(articleVo.getCreatedAt())) {
+            article.setCreatedAt(DateUtils.stringToDateTime(articleVo.getCreatedAt()));
+        } else {
+            article.setCreatedAt(DateUtils.getLocalDateTime());
+        }
+        article.setUpdatedAt(DateUtils.getLocalDateTime());
         int rows = articleMapper.updateArticle(article);
         if (rows <= 0) throw new GeneralException("更新失败，文章可能不存在");
         //删除该文章的所有标签
-        deleteArticleAllTags(article.getId());
+        deleteArticleAllTags(articleVo.getId());
         //插入标签
         insertArticleTag(article);
     }

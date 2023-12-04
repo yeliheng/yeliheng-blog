@@ -27,7 +27,7 @@ public interface IArticleService {
      * @param article 文章实体
      *
      *  */
-    void updateArticle(Article article);
+    void updateArticle(ArticleVo articleVo);
 
     /**
      *  获取分页的文章

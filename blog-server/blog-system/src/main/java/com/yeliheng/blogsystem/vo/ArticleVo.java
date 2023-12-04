@@ -12,6 +12,8 @@ import java.util.List;
 @Schema(description = "文章")
 public class ArticleVo {
 
+    private Long id;
+
     private Long categoryId;
 
     private Long draftId;
@@ -29,6 +31,8 @@ public class ArticleVo {
     private String visible;
 
     private List<Tag> tags;
+
+    private Long[] tagIds;
 
     private String createdAt;
 
